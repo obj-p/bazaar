@@ -1,2 +1,5 @@
+.antlr
+.build
 .DS_Store
+bin
 
