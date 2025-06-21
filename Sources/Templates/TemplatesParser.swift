@@ -1,9 +1,9 @@
 // Generated from Sources/Templates/TemplatesParser.g4 by ANTLR 4.13.1
-import Antlr4
+@preconcurrency import Antlr4
 
 open class TemplatesParser: Parser {
 
-	internal static var _decisionToDFA: [DFA] = {
+    nonisolated(unsafe) internal static var _decisionToDFA: [DFA] = {
           var decisionToDFA = [DFA]()
           let length = TemplatesParser._ATN.getNumberOfDecisions()
           for i in 0..<length {

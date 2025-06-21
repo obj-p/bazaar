@@ -1,9 +1,9 @@
 // Generated from Sources/Templates/TemplatesLexer.g4 by ANTLR 4.13.1
-import Antlr4
+@preconcurrency import Antlr4
 
 open class TemplatesLexer: Lexer {
 
-	internal static var _decisionToDFA: [DFA] = {
+    nonisolated(unsafe) internal static var _decisionToDFA: [DFA] = {
           var decisionToDFA = [DFA]()
           let length = TemplatesLexer._ATN.getNumberOfDecisions()
           for i in 0..<length {

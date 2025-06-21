@@ -1,4 +1,6 @@
 .antlr
 .build
 .DS_Store
+.swiftpm
 bin
+Package.resolved

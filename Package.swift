@@ -10,6 +10,9 @@ let package = Package(
             targets: ["bazaar"]
         )
     ],
+    dependencies: [
+        .package(url: "https://github.com/antlr/antlr4", exact: "4.13.1")
+    ],
     targets: [
         .target(
             name: "bazaar"),
@@ -18,6 +21,12 @@ let package = Package(
             dependencies: ["bazaar"]
         ),
         .target(
-            name: "Templates")
+            name: "Templates",
+            dependencies: [.product(name: "Antlr4", package: "antlr4")]
+        ),
+        .testTarget(
+            name: "TemplatesTests",
+            dependencies: ["Templates"]
+        )
     ]
 )
