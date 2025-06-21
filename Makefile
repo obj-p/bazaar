@@ -1,13 +1,22 @@
-ANTLR_JAR        = antlr-4.13.1-complete.jar
-ANTLR_JAR_TARGET = bin/$(ANTLR_JAR)
-ANTLR            = java -jar bin/$(ANTLR_JAR)
+ANTLR_JAR          = antlr-4.13.1-complete.jar
+ANTLR_JAR_TARGET   = bin/$(ANTLR_JAR)
+ANTLR              = java -jar bin/$(ANTLR_JAR)
+PRE_COMMIT_VERSION = 4.2.0
+PRE_COMMIT         = python3 bin/pre-commit-$(PRE_COMMIT_VERSION).pyz
+PRE_COMMIT_TARGET  = bin/pre-commit-$(PRE_COMMIT_VERSION).pyz
 
 $(ANTLR_JAR_TARGET):
 	@curl --create-dirs --output-dir bin -O https://www.antlr.org/download/$(ANTLR_JAR)
 
+$(PRE_COMMIT_TARGET):
+	@curl --create-dirs --output-dir bin -LO \
+		https://github.com/pre-commit/pre-commit/releases/download/v$(PRE_COMMIT_VERSION)/pre-commit-$(PRE_COMMIT_VERSION).pyz
+
 .PHONY: bootstrap
 bootstrap:
 	@mint bootstrap
+	@$(MAKE) $(PRE_COMMIT_TARGET)
+	@$(PRE_COMMIT) install
 
 .PHONY: fmt
 fmt:
@@ -20,6 +29,9 @@ lint:
 .PHONY: parsers
 parsers: Sources/Templates/TemplatesParser.swift
 
+.PHONY: pre-commit
+pre-commit:
+	@$(PRE_COMMIT) run
+
 Sources/Templates/TemplatesParser.swift: $(ANTLR_JAR_TARGET)
 	@$(ANTLR) -Dlanguage=Swift -package antlr -o . Sources/Templates/TemplatesLexer.g4 Sources/Templates/TemplatesParser.g4 -visitor
-
