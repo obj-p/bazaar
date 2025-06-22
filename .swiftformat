@@ -1,3 +1,4 @@
+--exclude Sources/Schema
 --exclude Sources/Template
 
 ## Rules (https://github.com/nicklockwood/SwiftFormat/blob/main/Rules.md)

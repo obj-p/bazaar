@@ -2,6 +2,7 @@ exclude: |
   (?x)^(
     .*.interp |
     .*.tokens |
+    Sources\/Schema\/.*.swift |
     Sources\/Template\/.*.swift
   )$
 repos:

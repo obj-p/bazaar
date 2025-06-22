@@ -1,0 +1,14 @@
+DATA=1
+EFFECT=2
+VIEW=3
+LPARANS=4
+RPARANS=5
+QUESTION=6
+IDENTIFIER=7
+WS=8
+'data'=1
+'effect'=2
+'view'=3
+'('=4
+')'=5
+'?'=6

@@ -4,8 +4,8 @@ SCRIPTS_DIR    := $(dir $(realpath $(lastword $(MAKEFILE_LIST))))
 ANTLR_JAR_PATH  = $(abspath $(SCRIPTS_DIR)/../$(BIN_ANTLR_JAR))
 ANTLR           = java -jar $(ANTLR_JAR_PATH)
 GRAMMAR_LEXER  ?=
-GRAMMAR_PARSER ?=
 GRAMMAR_NAME   ?=
+GRAMMAR_PARSER ?=
 GRAMMAR_RULE   ?=
 GRUN            = CLASSPATH=$(ANTLR_JAR_PATH):. java org.antlr.v4.gui.TestRig
 

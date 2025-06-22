@@ -1,7 +1,7 @@
 GRAMMAR_LEXER  = TemplateLexer.g4
 GRAMMAR_NAME   = Template
-GRAMMAR_RULE  ?= schema
 GRAMMAR_PARSER = TemplateParser.g4
+GRAMMAR_RULE  ?= schema
 
 include ../../scripts/ANTLR.mk
 

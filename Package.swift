@@ -27,7 +27,7 @@ let package = Package(
         .testTarget(
             name: "SchemaTests",
             dependencies: ["Schema"]
-        )
+        ),
         .target(
             name: "Template",
             dependencies: [.product(name: "Antlr4", package: "antlr4")]
