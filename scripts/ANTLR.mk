@@ -8,6 +8,7 @@ GRAMMAR_NAME   ?=
 GRAMMAR_PARSER ?=
 GRAMMAR_RULE   ?=
 GRUN            = CLASSPATH=$(ANTLR_JAR_PATH):. java org.antlr.v4.gui.TestRig
+GRUN_INPUT     ?=
 
 ifneq ($(and $(GRAMMAR_LEXER),$(GRAMMAR_PARSER)),)
 GENERATED_LEXER  = $(basename $(GRAMMAR_LEXER)).swift
@@ -33,7 +34,7 @@ force-parser:
 
 .PHONY: grun
 grun: .antlr-java
-	@cd .antlr-java && $(GRUN) $(GRAMMAR_NAME) $(GRAMMAR_RULE) -gui
+	@cd .antlr-java && $(GRUN) $(GRAMMAR_NAME) $(GRAMMAR_RULE) -gui $(abspath $(GRUN_INPUT))
 
 .PHONY: parser
 parser: GENERATED_PARSER
