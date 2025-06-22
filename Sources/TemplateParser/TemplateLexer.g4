@@ -2,8 +2,11 @@ lexer grammar TemplateLexer;
 
 VIEW    : 'view';
 
-LPARANS   : '(';
-RPARANS   : ')';
+COMMA     : ',';
+LCURLY    : '{';
+RCURLY    : '}';
+LPAREN    : '(';
+RPAREN    : ')';
 QUESTION  : '?';
 
 IDENTIFIER

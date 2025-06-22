@@ -9,11 +9,11 @@ schema
     ;
 
 data
-    : DATA identifier data_body
+    : DATA identifier data_clause
     ;
 
-data_body
-    : LPARANS data_members RPARANS
+data_clause
+    : LPAREN data_members RPAREN
     ;
 
 data_members

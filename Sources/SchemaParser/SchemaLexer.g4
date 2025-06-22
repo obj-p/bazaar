@@ -3,8 +3,8 @@ lexer grammar SchemaLexer;
 DATA    : 'data';
 VIEW    : 'component';
 
-LPARANS   : '(';
-RPARANS   : ')';
+LPAREN    : '(';
+RPAREN    : ')';
 QUESTION  : '?';
 
 IDENTIFIER

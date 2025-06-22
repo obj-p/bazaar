@@ -20,6 +20,7 @@ $(GENERATED_PARSER):
 .antlr-java:
 	@$(MAKE) force-antlr-java
 
+.PHONY: force-antlr-java
 force-antlr-java:
 	@rm -rf .antlr-java
 	@mkdir -p .antlr-java
@@ -33,9 +34,9 @@ force-parser:
 	@bash $(SCRIPTS_DIR)/patch-antlr-generated-code.sh $(GENERATED_PARSER)
 
 .PHONY: grun
-grun: .antlr-java
+grun: force-antlr-java
 	@cd .antlr-java && $(GRUN) $(GRAMMAR_NAME) $(GRAMMAR_RULE) -gui $(abspath $(GRUN_INPUT))
 
 .PHONY: parser
-parser: GENERATED_PARSER
+parser: $(GENERATED_PARSER)
 endif
