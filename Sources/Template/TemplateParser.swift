@@ -81,18 +81,6 @@ open class TemplateParser: Parser {
 			return TemplateParser.RULE_template
 		}
 		override open
-		func enterRule(_ listener: ParseTreeListener) {
-			if let listener = listener as? TemplateParserListener {
-				listener.enterTemplate(self)
-			}
-		}
-		override open
-		func exitRule(_ listener: ParseTreeListener) {
-			if let listener = listener as? TemplateParserListener {
-				listener.exitTemplate(self)
-			}
-		}
-		override open
 		func accept<T>(_ visitor: ParseTreeVisitor<T>) -> T? {
 			if let visitor = visitor as? TemplateParserVisitor {
 			    return visitor.visitTemplate(self)
@@ -155,18 +143,6 @@ open class TemplateParser: Parser {
 			return TemplateParser.RULE_view
 		}
 		override open
-		func enterRule(_ listener: ParseTreeListener) {
-			if let listener = listener as? TemplateParserListener {
-				listener.enterView(self)
-			}
-		}
-		override open
-		func exitRule(_ listener: ParseTreeListener) {
-			if let listener = listener as? TemplateParserListener {
-				listener.exitView(self)
-			}
-		}
-		override open
 		func accept<T>(_ visitor: ParseTreeVisitor<T>) -> T? {
 			if let visitor = visitor as? TemplateParserVisitor {
 			    return visitor.visitView(self)
@@ -212,18 +188,6 @@ open class TemplateParser: Parser {
 		override open
 		func getRuleIndex() -> Int {
 			return TemplateParser.RULE_identifier
-		}
-		override open
-		func enterRule(_ listener: ParseTreeListener) {
-			if let listener = listener as? TemplateParserListener {
-				listener.enterIdentifier(self)
-			}
-		}
-		override open
-		func exitRule(_ listener: ParseTreeListener) {
-			if let listener = listener as? TemplateParserListener {
-				listener.exitIdentifier(self)
-			}
 		}
 		override open
 		func accept<T>(_ visitor: ParseTreeVisitor<T>) -> T? {

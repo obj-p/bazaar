@@ -84,18 +84,6 @@ open class SchemaParser: Parser {
 			return SchemaParser.RULE_schema
 		}
 		override open
-		func enterRule(_ listener: ParseTreeListener) {
-			if let listener = listener as? SchemaParserListener {
-				listener.enterSchema(self)
-			}
-		}
-		override open
-		func exitRule(_ listener: ParseTreeListener) {
-			if let listener = listener as? SchemaParserListener {
-				listener.exitSchema(self)
-			}
-		}
-		override open
 		func accept<T>(_ visitor: ParseTreeVisitor<T>) -> T? {
 			if let visitor = visitor as? SchemaParserVisitor {
 			    return visitor.visitSchema(self)
@@ -162,18 +150,6 @@ open class SchemaParser: Parser {
 			return SchemaParser.RULE_data
 		}
 		override open
-		func enterRule(_ listener: ParseTreeListener) {
-			if let listener = listener as? SchemaParserListener {
-				listener.enterData(self)
-			}
-		}
-		override open
-		func exitRule(_ listener: ParseTreeListener) {
-			if let listener = listener as? SchemaParserListener {
-				listener.exitData(self)
-			}
-		}
-		override open
 		func accept<T>(_ visitor: ParseTreeVisitor<T>) -> T? {
 			if let visitor = visitor as? SchemaParserVisitor {
 			    return visitor.visitData(self)
@@ -231,18 +207,6 @@ open class SchemaParser: Parser {
 			return SchemaParser.RULE_data_body
 		}
 		override open
-		func enterRule(_ listener: ParseTreeListener) {
-			if let listener = listener as? SchemaParserListener {
-				listener.enterData_body(self)
-			}
-		}
-		override open
-		func exitRule(_ listener: ParseTreeListener) {
-			if let listener = listener as? SchemaParserListener {
-				listener.exitData_body(self)
-			}
-		}
-		override open
 		func accept<T>(_ visitor: ParseTreeVisitor<T>) -> T? {
 			if let visitor = visitor as? SchemaParserVisitor {
 			    return visitor.visitData_body(self)
@@ -294,18 +258,6 @@ open class SchemaParser: Parser {
 		override open
 		func getRuleIndex() -> Int {
 			return SchemaParser.RULE_data_members
-		}
-		override open
-		func enterRule(_ listener: ParseTreeListener) {
-			if let listener = listener as? SchemaParserListener {
-				listener.enterData_members(self)
-			}
-		}
-		override open
-		func exitRule(_ listener: ParseTreeListener) {
-			if let listener = listener as? SchemaParserListener {
-				listener.exitData_members(self)
-			}
 		}
 		override open
 		func accept<T>(_ visitor: ParseTreeVisitor<T>) -> T? {
@@ -372,18 +324,6 @@ open class SchemaParser: Parser {
 			return SchemaParser.RULE_member
 		}
 		override open
-		func enterRule(_ listener: ParseTreeListener) {
-			if let listener = listener as? SchemaParserListener {
-				listener.enterMember(self)
-			}
-		}
-		override open
-		func exitRule(_ listener: ParseTreeListener) {
-			if let listener = listener as? SchemaParserListener {
-				listener.exitMember(self)
-			}
-		}
-		override open
 		func accept<T>(_ visitor: ParseTreeVisitor<T>) -> T? {
 			if let visitor = visitor as? SchemaParserVisitor {
 			    return visitor.visitMember(self)
@@ -441,18 +381,6 @@ open class SchemaParser: Parser {
 			return SchemaParser.RULE_member_identifier
 		}
 		override open
-		func enterRule(_ listener: ParseTreeListener) {
-			if let listener = listener as? SchemaParserListener {
-				listener.enterMember_identifier(self)
-			}
-		}
-		override open
-		func exitRule(_ listener: ParseTreeListener) {
-			if let listener = listener as? SchemaParserListener {
-				listener.exitMember_identifier(self)
-			}
-		}
-		override open
 		func accept<T>(_ visitor: ParseTreeVisitor<T>) -> T? {
 			if let visitor = visitor as? SchemaParserVisitor {
 			    return visitor.visitMember_identifier(self)
@@ -498,18 +426,6 @@ open class SchemaParser: Parser {
 			return SchemaParser.RULE_type_identifier
 		}
 		override open
-		func enterRule(_ listener: ParseTreeListener) {
-			if let listener = listener as? SchemaParserListener {
-				listener.enterType_identifier(self)
-			}
-		}
-		override open
-		func exitRule(_ listener: ParseTreeListener) {
-			if let listener = listener as? SchemaParserListener {
-				listener.exitType_identifier(self)
-			}
-		}
-		override open
 		func accept<T>(_ visitor: ParseTreeVisitor<T>) -> T? {
 			if let visitor = visitor as? SchemaParserVisitor {
 			    return visitor.visitType_identifier(self)
@@ -553,18 +469,6 @@ open class SchemaParser: Parser {
 		override open
 		func getRuleIndex() -> Int {
 			return SchemaParser.RULE_identifier
-		}
-		override open
-		func enterRule(_ listener: ParseTreeListener) {
-			if let listener = listener as? SchemaParserListener {
-				listener.enterIdentifier(self)
-			}
-		}
-		override open
-		func exitRule(_ listener: ParseTreeListener) {
-			if let listener = listener as? SchemaParserListener {
-				listener.exitIdentifier(self)
-			}
 		}
 		override open
 		func accept<T>(_ visitor: ParseTreeVisitor<T>) -> T? {

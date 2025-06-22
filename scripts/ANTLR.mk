@@ -28,7 +28,7 @@ force-antlr-java:
 
 .PHONY: force-parser
 force-parser:
-	@$(ANTLR) -Dlanguage=Swift -package antlr -o . $(GRAMMAR_LEXER) $(GRAMMAR_PARSER) -visitor
+	@$(ANTLR) -Dlanguage=Swift -package antlr -o . $(GRAMMAR_LEXER) $(GRAMMAR_PARSER) -no-listener -visitor
 	@bash $(SCRIPTS_DIR)/patch-antlr-generated-code.sh $(GENERATED_LEXER)
 	@bash $(SCRIPTS_DIR)/patch-antlr-generated-code.sh $(GENERATED_PARSER)
 
