@@ -1,4 +1,4 @@
-// Generated from Sources/Template/TemplateParser.g4 by ANTLR 4.13.1
+// Generated from TemplateParser.g4 by ANTLR 4.13.1
 @preconcurrency import Antlr4
 
 open class TemplateParser: Parser {
@@ -16,27 +16,23 @@ open class TemplateParser: Parser {
 
 	public
 	enum Tokens: Int {
-		case EOF = -1, DATA = 1, EFFECT = 2, VIEW = 3, LPARANS = 4, RPARANS = 5, 
-                 QUESTION = 6, IDENTIFIER = 7, WS = 8
+		case EOF = -1, VIEW = 1, LPARANS = 2, RPARANS = 3, QUESTION = 4, IDENTIFIER = 5, 
+                 WS = 6
 	}
 
 	public
-	static let RULE_schema = 0, RULE_data = 1, RULE_data_body = 2, RULE_data_members = 3, 
-            RULE_member = 4, RULE_member_identifier = 5, RULE_type_identifier = 6, 
-            RULE_identifier = 7
+	static let RULE_template = 0, RULE_view = 1, RULE_identifier = 2
 
 	public
 	static let ruleNames: [String] = [
-		"schema", "data", "data_body", "data_members", "member", "member_identifier", 
-		"type_identifier", "identifier"
+		"template", "view", "identifier"
 	]
 
 	private static let _LITERAL_NAMES: [String?] = [
-		nil, "'data'", "'effect'", "'view'", "'('", "')'", "'?'"
+		nil, "'view'", "'('", "')'", "'?'"
 	]
 	private static let _SYMBOLIC_NAMES: [String?] = [
-		nil, "DATA", "EFFECT", "VIEW", "LPARANS", "RPARANS", "QUESTION", "IDENTIFIER", 
-		"WS"
+		nil, "VIEW", "LPARANS", "RPARANS", "QUESTION", "IDENTIFIER", "WS"
 	]
 	public
 	static let VOCABULARY = Vocabulary(_LITERAL_NAMES, _SYMBOLIC_NAMES)
@@ -67,42 +63,42 @@ open class TemplateParser: Parser {
 	}
 
 
-	public class SchemaContext: ParserRuleContext {
+	public class TemplateContext: ParserRuleContext {
 			open
 			func EOF() -> TerminalNode? {
 				return getToken(TemplateParser.Tokens.EOF.rawValue, 0)
 			}
 			open
-			func data() -> [DataContext] {
-				return getRuleContexts(DataContext.self)
+			func view() -> [ViewContext] {
+				return getRuleContexts(ViewContext.self)
 			}
 			open
-			func data(_ i: Int) -> DataContext? {
-				return getRuleContext(DataContext.self, i)
+			func view(_ i: Int) -> ViewContext? {
+				return getRuleContext(ViewContext.self, i)
 			}
 		override open
 		func getRuleIndex() -> Int {
-			return TemplateParser.RULE_schema
+			return TemplateParser.RULE_template
 		}
 		override open
 		func enterRule(_ listener: ParseTreeListener) {
 			if let listener = listener as? TemplateParserListener {
-				listener.enterSchema(self)
+				listener.enterTemplate(self)
 			}
 		}
 		override open
 		func exitRule(_ listener: ParseTreeListener) {
 			if let listener = listener as? TemplateParserListener {
-				listener.exitSchema(self)
+				listener.exitTemplate(self)
 			}
 		}
 		override open
 		func accept<T>(_ visitor: ParseTreeVisitor<T>) -> T? {
 			if let visitor = visitor as? TemplateParserVisitor {
-			    return visitor.visitSchema(self)
+			    return visitor.visitTemplate(self)
 			}
 			else if let visitor = visitor as? TemplateParserBaseVisitor {
-			    return visitor.visitSchema(self)
+			    return visitor.visitTemplate(self)
 			}
 			else {
 			     return visitor.visitChildren(self)
@@ -110,29 +106,29 @@ open class TemplateParser: Parser {
 		}
 	}
 	@discardableResult
-	 open func schema() throws -> SchemaContext {
-		var _localctx: SchemaContext
-		_localctx = SchemaContext(_ctx, getState())
-		try enterRule(_localctx, 0, TemplateParser.RULE_schema)
+	 open func template() throws -> TemplateContext {
+		var _localctx: TemplateContext
+		_localctx = TemplateContext(_ctx, getState())
+		try enterRule(_localctx, 0, TemplateParser.RULE_template)
 		var _la: Int = 0
 		defer {
 	    		try! exitRule()
 	    }
 		do {
 		 	try enterOuterAlt(_localctx, 1)
-		 	setState(17) 
+		 	setState(7) 
 		 	try _errHandler.sync(self)
 		 	_la = try _input.LA(1)
 		 	repeat {
-		 		setState(16)
-		 		try data()
+		 		setState(6)
+		 		try view()
 
 
-		 		setState(19); 
+		 		setState(9); 
 		 		try _errHandler.sync(self)
 		 		_la = try _input.LA(1)
-		 	} while (_la == TemplateParser.Tokens.DATA.rawValue)
-		 	setState(21)
+		 	} while (_la == TemplateParser.Tokens.VIEW.rawValue)
+		 	setState(11)
 		 	try match(TemplateParser.Tokens.EOF.rawValue)
 
 		}
@@ -145,321 +141,38 @@ open class TemplateParser: Parser {
 		return _localctx
 	}
 
-	public class DataContext: ParserRuleContext {
+	public class ViewContext: ParserRuleContext {
 			open
-			func DATA() -> TerminalNode? {
-				return getToken(TemplateParser.Tokens.DATA.rawValue, 0)
+			func VIEW() -> TerminalNode? {
+				return getToken(TemplateParser.Tokens.VIEW.rawValue, 0)
 			}
-			open
-			func identifier() -> IdentifierContext? {
-				return getRuleContext(IdentifierContext.self, 0)
-			}
-			open
-			func data_body() -> Data_bodyContext? {
-				return getRuleContext(Data_bodyContext.self, 0)
-			}
-		override open
-		func getRuleIndex() -> Int {
-			return TemplateParser.RULE_data
-		}
-		override open
-		func enterRule(_ listener: ParseTreeListener) {
-			if let listener = listener as? TemplateParserListener {
-				listener.enterData(self)
-			}
-		}
-		override open
-		func exitRule(_ listener: ParseTreeListener) {
-			if let listener = listener as? TemplateParserListener {
-				listener.exitData(self)
-			}
-		}
-		override open
-		func accept<T>(_ visitor: ParseTreeVisitor<T>) -> T? {
-			if let visitor = visitor as? TemplateParserVisitor {
-			    return visitor.visitData(self)
-			}
-			else if let visitor = visitor as? TemplateParserBaseVisitor {
-			    return visitor.visitData(self)
-			}
-			else {
-			     return visitor.visitChildren(self)
-			}
-		}
-	}
-	@discardableResult
-	 open func data() throws -> DataContext {
-		var _localctx: DataContext
-		_localctx = DataContext(_ctx, getState())
-		try enterRule(_localctx, 2, TemplateParser.RULE_data)
-		defer {
-	    		try! exitRule()
-	    }
-		do {
-		 	try enterOuterAlt(_localctx, 1)
-		 	setState(23)
-		 	try match(TemplateParser.Tokens.DATA.rawValue)
-		 	setState(24)
-		 	try identifier()
-		 	setState(25)
-		 	try data_body()
-
-		}
-		catch ANTLRException.recognition(let re) {
-			_localctx.exception = re
-			_errHandler.reportError(self, re)
-			try _errHandler.recover(self, re)
-		}
-
-		return _localctx
-	}
-
-	public class Data_bodyContext: ParserRuleContext {
-			open
-			func LPARANS() -> TerminalNode? {
-				return getToken(TemplateParser.Tokens.LPARANS.rawValue, 0)
-			}
-			open
-			func data_members() -> Data_membersContext? {
-				return getRuleContext(Data_membersContext.self, 0)
-			}
-			open
-			func RPARANS() -> TerminalNode? {
-				return getToken(TemplateParser.Tokens.RPARANS.rawValue, 0)
-			}
-		override open
-		func getRuleIndex() -> Int {
-			return TemplateParser.RULE_data_body
-		}
-		override open
-		func enterRule(_ listener: ParseTreeListener) {
-			if let listener = listener as? TemplateParserListener {
-				listener.enterData_body(self)
-			}
-		}
-		override open
-		func exitRule(_ listener: ParseTreeListener) {
-			if let listener = listener as? TemplateParserListener {
-				listener.exitData_body(self)
-			}
-		}
-		override open
-		func accept<T>(_ visitor: ParseTreeVisitor<T>) -> T? {
-			if let visitor = visitor as? TemplateParserVisitor {
-			    return visitor.visitData_body(self)
-			}
-			else if let visitor = visitor as? TemplateParserBaseVisitor {
-			    return visitor.visitData_body(self)
-			}
-			else {
-			     return visitor.visitChildren(self)
-			}
-		}
-	}
-	@discardableResult
-	 open func data_body() throws -> Data_bodyContext {
-		var _localctx: Data_bodyContext
-		_localctx = Data_bodyContext(_ctx, getState())
-		try enterRule(_localctx, 4, TemplateParser.RULE_data_body)
-		defer {
-	    		try! exitRule()
-	    }
-		do {
-		 	try enterOuterAlt(_localctx, 1)
-		 	setState(27)
-		 	try match(TemplateParser.Tokens.LPARANS.rawValue)
-		 	setState(28)
-		 	try data_members()
-		 	setState(29)
-		 	try match(TemplateParser.Tokens.RPARANS.rawValue)
-
-		}
-		catch ANTLRException.recognition(let re) {
-			_localctx.exception = re
-			_errHandler.reportError(self, re)
-			try _errHandler.recover(self, re)
-		}
-
-		return _localctx
-	}
-
-	public class Data_membersContext: ParserRuleContext {
-			open
-			func member() -> [MemberContext] {
-				return getRuleContexts(MemberContext.self)
-			}
-			open
-			func member(_ i: Int) -> MemberContext? {
-				return getRuleContext(MemberContext.self, i)
-			}
-		override open
-		func getRuleIndex() -> Int {
-			return TemplateParser.RULE_data_members
-		}
-		override open
-		func enterRule(_ listener: ParseTreeListener) {
-			if let listener = listener as? TemplateParserListener {
-				listener.enterData_members(self)
-			}
-		}
-		override open
-		func exitRule(_ listener: ParseTreeListener) {
-			if let listener = listener as? TemplateParserListener {
-				listener.exitData_members(self)
-			}
-		}
-		override open
-		func accept<T>(_ visitor: ParseTreeVisitor<T>) -> T? {
-			if let visitor = visitor as? TemplateParserVisitor {
-			    return visitor.visitData_members(self)
-			}
-			else if let visitor = visitor as? TemplateParserBaseVisitor {
-			    return visitor.visitData_members(self)
-			}
-			else {
-			     return visitor.visitChildren(self)
-			}
-		}
-	}
-	@discardableResult
-	 open func data_members() throws -> Data_membersContext {
-		var _localctx: Data_membersContext
-		_localctx = Data_membersContext(_ctx, getState())
-		try enterRule(_localctx, 6, TemplateParser.RULE_data_members)
-		var _la: Int = 0
-		defer {
-	    		try! exitRule()
-	    }
-		do {
-		 	try enterOuterAlt(_localctx, 1)
-		 	setState(34)
-		 	try _errHandler.sync(self)
-		 	_la = try _input.LA(1)
-		 	while (_la == TemplateParser.Tokens.IDENTIFIER.rawValue) {
-		 		setState(31)
-		 		try member()
-
-
-		 		setState(36)
-		 		try _errHandler.sync(self)
-		 		_la = try _input.LA(1)
-		 	}
-
-		}
-		catch ANTLRException.recognition(let re) {
-			_localctx.exception = re
-			_errHandler.reportError(self, re)
-			try _errHandler.recover(self, re)
-		}
-
-		return _localctx
-	}
-
-	public class MemberContext: ParserRuleContext {
-			open
-			func member_identifier() -> Member_identifierContext? {
-				return getRuleContext(Member_identifierContext.self, 0)
-			}
-			open
-			func type_identifier() -> Type_identifierContext? {
-				return getRuleContext(Type_identifierContext.self, 0)
-			}
-			open
-			func QUESTION() -> TerminalNode? {
-				return getToken(TemplateParser.Tokens.QUESTION.rawValue, 0)
-			}
-		override open
-		func getRuleIndex() -> Int {
-			return TemplateParser.RULE_member
-		}
-		override open
-		func enterRule(_ listener: ParseTreeListener) {
-			if let listener = listener as? TemplateParserListener {
-				listener.enterMember(self)
-			}
-		}
-		override open
-		func exitRule(_ listener: ParseTreeListener) {
-			if let listener = listener as? TemplateParserListener {
-				listener.exitMember(self)
-			}
-		}
-		override open
-		func accept<T>(_ visitor: ParseTreeVisitor<T>) -> T? {
-			if let visitor = visitor as? TemplateParserVisitor {
-			    return visitor.visitMember(self)
-			}
-			else if let visitor = visitor as? TemplateParserBaseVisitor {
-			    return visitor.visitMember(self)
-			}
-			else {
-			     return visitor.visitChildren(self)
-			}
-		}
-	}
-	@discardableResult
-	 open func member() throws -> MemberContext {
-		var _localctx: MemberContext
-		_localctx = MemberContext(_ctx, getState())
-		try enterRule(_localctx, 8, TemplateParser.RULE_member)
-		var _la: Int = 0
-		defer {
-	    		try! exitRule()
-	    }
-		do {
-		 	try enterOuterAlt(_localctx, 1)
-		 	setState(37)
-		 	try member_identifier()
-		 	setState(39)
-		 	try _errHandler.sync(self)
-		 	_la = try _input.LA(1)
-		 	if (_la == TemplateParser.Tokens.QUESTION.rawValue) {
-		 		setState(38)
-		 		try match(TemplateParser.Tokens.QUESTION.rawValue)
-
-		 	}
-
-		 	setState(41)
-		 	try type_identifier()
-
-		}
-		catch ANTLRException.recognition(let re) {
-			_localctx.exception = re
-			_errHandler.reportError(self, re)
-			try _errHandler.recover(self, re)
-		}
-
-		return _localctx
-	}
-
-	public class Member_identifierContext: ParserRuleContext {
 			open
 			func identifier() -> IdentifierContext? {
 				return getRuleContext(IdentifierContext.self, 0)
 			}
 		override open
 		func getRuleIndex() -> Int {
-			return TemplateParser.RULE_member_identifier
+			return TemplateParser.RULE_view
 		}
 		override open
 		func enterRule(_ listener: ParseTreeListener) {
 			if let listener = listener as? TemplateParserListener {
-				listener.enterMember_identifier(self)
+				listener.enterView(self)
 			}
 		}
 		override open
 		func exitRule(_ listener: ParseTreeListener) {
 			if let listener = listener as? TemplateParserListener {
-				listener.exitMember_identifier(self)
+				listener.exitView(self)
 			}
 		}
 		override open
 		func accept<T>(_ visitor: ParseTreeVisitor<T>) -> T? {
 			if let visitor = visitor as? TemplateParserVisitor {
-			    return visitor.visitMember_identifier(self)
+			    return visitor.visitView(self)
 			}
 			else if let visitor = visitor as? TemplateParserBaseVisitor {
-			    return visitor.visitMember_identifier(self)
+			    return visitor.visitView(self)
 			}
 			else {
 			     return visitor.visitChildren(self)
@@ -467,73 +180,18 @@ open class TemplateParser: Parser {
 		}
 	}
 	@discardableResult
-	 open func member_identifier() throws -> Member_identifierContext {
-		var _localctx: Member_identifierContext
-		_localctx = Member_identifierContext(_ctx, getState())
-		try enterRule(_localctx, 10, TemplateParser.RULE_member_identifier)
+	 open func view() throws -> ViewContext {
+		var _localctx: ViewContext
+		_localctx = ViewContext(_ctx, getState())
+		try enterRule(_localctx, 2, TemplateParser.RULE_view)
 		defer {
 	    		try! exitRule()
 	    }
 		do {
 		 	try enterOuterAlt(_localctx, 1)
-		 	setState(43)
-		 	try identifier()
-
-		}
-		catch ANTLRException.recognition(let re) {
-			_localctx.exception = re
-			_errHandler.reportError(self, re)
-			try _errHandler.recover(self, re)
-		}
-
-		return _localctx
-	}
-
-	public class Type_identifierContext: ParserRuleContext {
-			open
-			func identifier() -> IdentifierContext? {
-				return getRuleContext(IdentifierContext.self, 0)
-			}
-		override open
-		func getRuleIndex() -> Int {
-			return TemplateParser.RULE_type_identifier
-		}
-		override open
-		func enterRule(_ listener: ParseTreeListener) {
-			if let listener = listener as? TemplateParserListener {
-				listener.enterType_identifier(self)
-			}
-		}
-		override open
-		func exitRule(_ listener: ParseTreeListener) {
-			if let listener = listener as? TemplateParserListener {
-				listener.exitType_identifier(self)
-			}
-		}
-		override open
-		func accept<T>(_ visitor: ParseTreeVisitor<T>) -> T? {
-			if let visitor = visitor as? TemplateParserVisitor {
-			    return visitor.visitType_identifier(self)
-			}
-			else if let visitor = visitor as? TemplateParserBaseVisitor {
-			    return visitor.visitType_identifier(self)
-			}
-			else {
-			     return visitor.visitChildren(self)
-			}
-		}
-	}
-	@discardableResult
-	 open func type_identifier() throws -> Type_identifierContext {
-		var _localctx: Type_identifierContext
-		_localctx = Type_identifierContext(_ctx, getState())
-		try enterRule(_localctx, 12, TemplateParser.RULE_type_identifier)
-		defer {
-	    		try! exitRule()
-	    }
-		do {
-		 	try enterOuterAlt(_localctx, 1)
-		 	setState(45)
+		 	setState(13)
+		 	try match(TemplateParser.Tokens.VIEW.rawValue)
+		 	setState(14)
 		 	try identifier()
 
 		}
@@ -584,13 +242,13 @@ open class TemplateParser: Parser {
 	 open func identifier() throws -> IdentifierContext {
 		var _localctx: IdentifierContext
 		_localctx = IdentifierContext(_ctx, getState())
-		try enterRule(_localctx, 14, TemplateParser.RULE_identifier)
+		try enterRule(_localctx, 4, TemplateParser.RULE_identifier)
 		defer {
 	    		try! exitRule()
 	    }
 		do {
 		 	try enterOuterAlt(_localctx, 1)
-		 	setState(47)
+		 	setState(16)
 		 	try match(TemplateParser.Tokens.IDENTIFIER.rawValue)
 
 		}
@@ -604,19 +262,11 @@ open class TemplateParser: Parser {
 	}
 
 	static let _serializedATN:[Int] = [
-		4,1,8,50,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,2,6,7,6,2,7,7,
-		7,1,0,4,0,18,8,0,11,0,12,0,19,1,0,1,0,1,1,1,1,1,1,1,1,1,2,1,2,1,2,1,2,
-		1,3,5,3,33,8,3,10,3,12,3,36,9,3,1,4,1,4,3,4,40,8,4,1,4,1,4,1,5,1,5,1,6,
-		1,6,1,7,1,7,1,7,0,0,8,0,2,4,6,8,10,12,14,0,0,44,0,17,1,0,0,0,2,23,1,0,
-		0,0,4,27,1,0,0,0,6,34,1,0,0,0,8,37,1,0,0,0,10,43,1,0,0,0,12,45,1,0,0,0,
-		14,47,1,0,0,0,16,18,3,2,1,0,17,16,1,0,0,0,18,19,1,0,0,0,19,17,1,0,0,0,
-		19,20,1,0,0,0,20,21,1,0,0,0,21,22,5,0,0,1,22,1,1,0,0,0,23,24,5,1,0,0,24,
-		25,3,14,7,0,25,26,3,4,2,0,26,3,1,0,0,0,27,28,5,4,0,0,28,29,3,6,3,0,29,
-		30,5,5,0,0,30,5,1,0,0,0,31,33,3,8,4,0,32,31,1,0,0,0,33,36,1,0,0,0,34,32,
-		1,0,0,0,34,35,1,0,0,0,35,7,1,0,0,0,36,34,1,0,0,0,37,39,3,10,5,0,38,40,
-		5,6,0,0,39,38,1,0,0,0,39,40,1,0,0,0,40,41,1,0,0,0,41,42,3,12,6,0,42,9,
-		1,0,0,0,43,44,3,14,7,0,44,11,1,0,0,0,45,46,3,14,7,0,46,13,1,0,0,0,47,48,
-		5,7,0,0,48,15,1,0,0,0,3,19,34,39
+		4,1,6,19,2,0,7,0,2,1,7,1,2,2,7,2,1,0,4,0,8,8,0,11,0,12,0,9,1,0,1,0,1,1,
+		1,1,1,1,1,2,1,2,1,2,0,0,3,0,2,4,0,0,16,0,7,1,0,0,0,2,13,1,0,0,0,4,16,1,
+		0,0,0,6,8,3,2,1,0,7,6,1,0,0,0,8,9,1,0,0,0,9,7,1,0,0,0,9,10,1,0,0,0,10,
+		11,1,0,0,0,11,12,5,0,0,1,12,1,1,0,0,0,13,14,5,1,0,0,14,15,3,4,2,0,15,3,
+		1,0,0,0,16,17,5,5,0,0,17,5,1,0,0,0,1,9
 	]
 
 	public

@@ -1,4 +1,4 @@
-// Generated from Sources/Template/TemplateParser.g4 by ANTLR 4.13.1
+// Generated from TemplateParser.g4 by ANTLR 4.13.1
 import Antlr4
 
 /**
@@ -10,72 +10,22 @@ import Antlr4
  */
 open class TemplateParserVisitor<T>: ParseTreeVisitor<T> {
 	/**
-	 * Visit a parse tree produced by {@link TemplateParser#schema}.
+	 * Visit a parse tree produced by {@link TemplateParser#template}.
 	- Parameters:
 	  - ctx: the parse tree
 	- returns: the visitor result
 	 */
-	open func visitSchema(_ ctx: TemplateParser.SchemaContext) -> T {
+	open func visitTemplate(_ ctx: TemplateParser.TemplateContext) -> T {
 	 	fatalError(#function + " must be overridden")
 	}
 
 	/**
-	 * Visit a parse tree produced by {@link TemplateParser#data}.
+	 * Visit a parse tree produced by {@link TemplateParser#view}.
 	- Parameters:
 	  - ctx: the parse tree
 	- returns: the visitor result
 	 */
-	open func visitData(_ ctx: TemplateParser.DataContext) -> T {
-	 	fatalError(#function + " must be overridden")
-	}
-
-	/**
-	 * Visit a parse tree produced by {@link TemplateParser#data_body}.
-	- Parameters:
-	  - ctx: the parse tree
-	- returns: the visitor result
-	 */
-	open func visitData_body(_ ctx: TemplateParser.Data_bodyContext) -> T {
-	 	fatalError(#function + " must be overridden")
-	}
-
-	/**
-	 * Visit a parse tree produced by {@link TemplateParser#data_members}.
-	- Parameters:
-	  - ctx: the parse tree
-	- returns: the visitor result
-	 */
-	open func visitData_members(_ ctx: TemplateParser.Data_membersContext) -> T {
-	 	fatalError(#function + " must be overridden")
-	}
-
-	/**
-	 * Visit a parse tree produced by {@link TemplateParser#member}.
-	- Parameters:
-	  - ctx: the parse tree
-	- returns: the visitor result
-	 */
-	open func visitMember(_ ctx: TemplateParser.MemberContext) -> T {
-	 	fatalError(#function + " must be overridden")
-	}
-
-	/**
-	 * Visit a parse tree produced by {@link TemplateParser#member_identifier}.
-	- Parameters:
-	  - ctx: the parse tree
-	- returns: the visitor result
-	 */
-	open func visitMember_identifier(_ ctx: TemplateParser.Member_identifierContext) -> T {
-	 	fatalError(#function + " must be overridden")
-	}
-
-	/**
-	 * Visit a parse tree produced by {@link TemplateParser#type_identifier}.
-	- Parameters:
-	  - ctx: the parse tree
-	- returns: the visitor result
-	 */
-	open func visitType_identifier(_ ctx: TemplateParser.Type_identifierContext) -> T {
+	open func visitView(_ ctx: TemplateParser.ViewContext) -> T {
 	 	fatalError(#function + " must be overridden")
 	}
 

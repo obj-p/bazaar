@@ -1,7 +1,5 @@
 lexer grammar TemplateLexer;
 
-DATA    : 'data';
-EFFECT  : 'effect';
 VIEW    : 'view';
 
 LPARANS   : '(';

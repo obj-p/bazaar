@@ -4,13 +4,3 @@ GRAMMAR_PARSER = SchemaParser.g4
 GRAMMAR_RULE  ?= schema
 
 include ../../scripts/ANTLR.mk
-
-.PHONY: force-parser
-force-parser:
-	@$(ANTLR) -Dlanguage=Swift -package antlr -o . SchemaLexer.g4 SchemaParser.g4 -visitor
-
-.PHONY: parser
-parser: SchemaParser.swift
-
-SchemaParser.swift:
-	@$(MAKE) force-parser

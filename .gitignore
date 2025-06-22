@@ -1,4 +1,5 @@
 .antlr
+.antlr-java
 .build
 .DS_Store
 .swiftpm

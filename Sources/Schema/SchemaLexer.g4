@@ -1,8 +1,7 @@
 lexer grammar SchemaLexer;
 
 DATA    : 'data';
-EFFECT  : 'effect';
-VIEW    : 'view';
+VIEW    : 'component';
 
 LPARANS   : '(';
 RPARANS   : ')';

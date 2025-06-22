@@ -9,83 +9,84 @@ import Antlr4
  * operations with no return type.
  */
 open class SchemaParserVisitor<T>: ParseTreeVisitor<T> {
-    /**
-      * Visit a parse tree produced by {@link SchemaParser#schema}.
-     - Parameters:
-       - ctx: the parse tree
-     - returns: the visitor result
-      */
-    open func visitSchema(_: SchemaParser.SchemaContext) -> T {
-        fatalError(#function + " must be overridden")
-    }
+	/**
+	 * Visit a parse tree produced by {@link SchemaParser#schema}.
+	- Parameters:
+	  - ctx: the parse tree
+	- returns: the visitor result
+	 */
+	open func visitSchema(_ ctx: SchemaParser.SchemaContext) -> T {
+	 	fatalError(#function + " must be overridden")
+	}
 
-    /**
-      * Visit a parse tree produced by {@link SchemaParser#data}.
-     - Parameters:
-       - ctx: the parse tree
-     - returns: the visitor result
-      */
-    open func visitData(_: SchemaParser.DataContext) -> T {
-        fatalError(#function + " must be overridden")
-    }
+	/**
+	 * Visit a parse tree produced by {@link SchemaParser#data}.
+	- Parameters:
+	  - ctx: the parse tree
+	- returns: the visitor result
+	 */
+	open func visitData(_ ctx: SchemaParser.DataContext) -> T {
+	 	fatalError(#function + " must be overridden")
+	}
 
-    /**
-      * Visit a parse tree produced by {@link SchemaParser#data_body}.
-     - Parameters:
-       - ctx: the parse tree
-     - returns: the visitor result
-      */
-    open func visitData_body(_: SchemaParser.Data_bodyContext) -> T {
-        fatalError(#function + " must be overridden")
-    }
+	/**
+	 * Visit a parse tree produced by {@link SchemaParser#data_body}.
+	- Parameters:
+	  - ctx: the parse tree
+	- returns: the visitor result
+	 */
+	open func visitData_body(_ ctx: SchemaParser.Data_bodyContext) -> T {
+	 	fatalError(#function + " must be overridden")
+	}
 
-    /**
-      * Visit a parse tree produced by {@link SchemaParser#data_members}.
-     - Parameters:
-       - ctx: the parse tree
-     - returns: the visitor result
-      */
-    open func visitData_members(_: SchemaParser.Data_membersContext) -> T {
-        fatalError(#function + " must be overridden")
-    }
+	/**
+	 * Visit a parse tree produced by {@link SchemaParser#data_members}.
+	- Parameters:
+	  - ctx: the parse tree
+	- returns: the visitor result
+	 */
+	open func visitData_members(_ ctx: SchemaParser.Data_membersContext) -> T {
+	 	fatalError(#function + " must be overridden")
+	}
 
-    /**
-      * Visit a parse tree produced by {@link SchemaParser#member}.
-     - Parameters:
-       - ctx: the parse tree
-     - returns: the visitor result
-      */
-    open func visitMember(_: SchemaParser.MemberContext) -> T {
-        fatalError(#function + " must be overridden")
-    }
+	/**
+	 * Visit a parse tree produced by {@link SchemaParser#member}.
+	- Parameters:
+	  - ctx: the parse tree
+	- returns: the visitor result
+	 */
+	open func visitMember(_ ctx: SchemaParser.MemberContext) -> T {
+	 	fatalError(#function + " must be overridden")
+	}
 
-    /**
-      * Visit a parse tree produced by {@link SchemaParser#member_identifier}.
-     - Parameters:
-       - ctx: the parse tree
-     - returns: the visitor result
-      */
-    open func visitMember_identifier(_: SchemaParser.Member_identifierContext) -> T {
-        fatalError(#function + " must be overridden")
-    }
+	/**
+	 * Visit a parse tree produced by {@link SchemaParser#member_identifier}.
+	- Parameters:
+	  - ctx: the parse tree
+	- returns: the visitor result
+	 */
+	open func visitMember_identifier(_ ctx: SchemaParser.Member_identifierContext) -> T {
+	 	fatalError(#function + " must be overridden")
+	}
 
-    /**
-      * Visit a parse tree produced by {@link SchemaParser#type_identifier}.
-     - Parameters:
-       - ctx: the parse tree
-     - returns: the visitor result
-      */
-    open func visitType_identifier(_: SchemaParser.Type_identifierContext) -> T {
-        fatalError(#function + " must be overridden")
-    }
+	/**
+	 * Visit a parse tree produced by {@link SchemaParser#type_identifier}.
+	- Parameters:
+	  - ctx: the parse tree
+	- returns: the visitor result
+	 */
+	open func visitType_identifier(_ ctx: SchemaParser.Type_identifierContext) -> T {
+	 	fatalError(#function + " must be overridden")
+	}
 
-    /**
-      * Visit a parse tree produced by {@link SchemaParser#identifier}.
-     - Parameters:
-       - ctx: the parse tree
-     - returns: the visitor result
-      */
-    open func visitIdentifier(_: SchemaParser.IdentifierContext) -> T {
-        fatalError(#function + " must be overridden")
-    }
+	/**
+	 * Visit a parse tree produced by {@link SchemaParser#identifier}.
+	- Parameters:
+	  - ctx: the parse tree
+	- returns: the visitor result
+	 */
+	open func visitIdentifier(_ ctx: SchemaParser.IdentifierContext) -> T {
+	 	fatalError(#function + " must be overridden")
+	}
+
 }

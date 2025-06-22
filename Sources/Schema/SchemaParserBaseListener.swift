@@ -2,139 +2,140 @@
 
 import Antlr4
 
+
 /**
  * This class provides an empty implementation of {@link SchemaParserListener},
  * which can be extended to create a listener which only needs to handle a subset
  * of the available methods.
  */
 open class SchemaParserBaseListener: SchemaParserListener {
-    public init() {}
-    /**
-     * {@inheritDoc}
-     *
-     * <p>The default implementation does nothing.</p>
-     */
-    open func enterSchema(_: SchemaParser.SchemaContext) {}
-    /**
-     * {@inheritDoc}
-     *
-     * <p>The default implementation does nothing.</p>
-     */
-    open func exitSchema(_: SchemaParser.SchemaContext) {}
+     public init() { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	open func enterSchema(_ ctx: SchemaParser.SchemaContext) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	open func exitSchema(_ ctx: SchemaParser.SchemaContext) { }
 
-    /**
-     * {@inheritDoc}
-     *
-     * <p>The default implementation does nothing.</p>
-     */
-    open func enterData(_: SchemaParser.DataContext) {}
-    /**
-     * {@inheritDoc}
-     *
-     * <p>The default implementation does nothing.</p>
-     */
-    open func exitData(_: SchemaParser.DataContext) {}
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	open func enterData(_ ctx: SchemaParser.DataContext) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	open func exitData(_ ctx: SchemaParser.DataContext) { }
 
-    /**
-     * {@inheritDoc}
-     *
-     * <p>The default implementation does nothing.</p>
-     */
-    open func enterData_body(_: SchemaParser.Data_bodyContext) {}
-    /**
-     * {@inheritDoc}
-     *
-     * <p>The default implementation does nothing.</p>
-     */
-    open func exitData_body(_: SchemaParser.Data_bodyContext) {}
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	open func enterData_body(_ ctx: SchemaParser.Data_bodyContext) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	open func exitData_body(_ ctx: SchemaParser.Data_bodyContext) { }
 
-    /**
-     * {@inheritDoc}
-     *
-     * <p>The default implementation does nothing.</p>
-     */
-    open func enterData_members(_: SchemaParser.Data_membersContext) {}
-    /**
-     * {@inheritDoc}
-     *
-     * <p>The default implementation does nothing.</p>
-     */
-    open func exitData_members(_: SchemaParser.Data_membersContext) {}
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	open func enterData_members(_ ctx: SchemaParser.Data_membersContext) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	open func exitData_members(_ ctx: SchemaParser.Data_membersContext) { }
 
-    /**
-     * {@inheritDoc}
-     *
-     * <p>The default implementation does nothing.</p>
-     */
-    open func enterMember(_: SchemaParser.MemberContext) {}
-    /**
-     * {@inheritDoc}
-     *
-     * <p>The default implementation does nothing.</p>
-     */
-    open func exitMember(_: SchemaParser.MemberContext) {}
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	open func enterMember(_ ctx: SchemaParser.MemberContext) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	open func exitMember(_ ctx: SchemaParser.MemberContext) { }
 
-    /**
-     * {@inheritDoc}
-     *
-     * <p>The default implementation does nothing.</p>
-     */
-    open func enterMember_identifier(_: SchemaParser.Member_identifierContext) {}
-    /**
-     * {@inheritDoc}
-     *
-     * <p>The default implementation does nothing.</p>
-     */
-    open func exitMember_identifier(_: SchemaParser.Member_identifierContext) {}
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	open func enterMember_identifier(_ ctx: SchemaParser.Member_identifierContext) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	open func exitMember_identifier(_ ctx: SchemaParser.Member_identifierContext) { }
 
-    /**
-     * {@inheritDoc}
-     *
-     * <p>The default implementation does nothing.</p>
-     */
-    open func enterType_identifier(_: SchemaParser.Type_identifierContext) {}
-    /**
-     * {@inheritDoc}
-     *
-     * <p>The default implementation does nothing.</p>
-     */
-    open func exitType_identifier(_: SchemaParser.Type_identifierContext) {}
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	open func enterType_identifier(_ ctx: SchemaParser.Type_identifierContext) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	open func exitType_identifier(_ ctx: SchemaParser.Type_identifierContext) { }
 
-    /**
-     * {@inheritDoc}
-     *
-     * <p>The default implementation does nothing.</p>
-     */
-    open func enterIdentifier(_: SchemaParser.IdentifierContext) {}
-    /**
-     * {@inheritDoc}
-     *
-     * <p>The default implementation does nothing.</p>
-     */
-    open func exitIdentifier(_: SchemaParser.IdentifierContext) {}
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	open func enterIdentifier(_ ctx: SchemaParser.IdentifierContext) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	open func exitIdentifier(_ ctx: SchemaParser.IdentifierContext) { }
 
-    /**
-     * {@inheritDoc}
-     *
-     * <p>The default implementation does nothing.</p>
-     */
-    open func enterEveryRule(_: ParserRuleContext) throws {}
-    /**
-     * {@inheritDoc}
-     *
-     * <p>The default implementation does nothing.</p>
-     */
-    open func exitEveryRule(_: ParserRuleContext) throws {}
-    /**
-     * {@inheritDoc}
-     *
-     * <p>The default implementation does nothing.</p>
-     */
-    open func visitTerminal(_: TerminalNode) {}
-    /**
-     * {@inheritDoc}
-     *
-     * <p>The default implementation does nothing.</p>
-     */
-    open func visitErrorNode(_: ErrorNode) {}
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	open func enterEveryRule(_ ctx: ParserRuleContext) throws { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	open func exitEveryRule(_ ctx: ParserRuleContext) throws { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	open func visitTerminal(_ node: TerminalNode) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	open func visitErrorNode(_ node: ErrorNode) { }
 }

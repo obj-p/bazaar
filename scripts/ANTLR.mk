@@ -10,16 +10,31 @@ GRAMMAR_RULE   ?=
 GRUN            = CLASSPATH=$(ANTLR_JAR_PATH):. java org.antlr.v4.gui.TestRig
 
 ifneq ($(and $(GRAMMAR_LEXER),$(GRAMMAR_PARSER)),)
-.antlr:
-	@$(MAKE) force-antlr
+GENERATED_LEXER = $(basename $(GRAMMAR_LEXER)).swift
+GENERATED_PARSER = $(basename $(GRAMMAR_PARSER)).swift
 
-force-antlr:
-	@rm -rf .antlr
-	@mkdir -p .antlr
-	@$(ANTLR) -o .antlr $(GRAMMAR_LEXER) $(GRAMMAR_PARSER)
-	@cd .antlr && CLASSPATH=$(ANTLR_JAR_PATH) javac *.java
+$(GENERATED_PARSER):
+	@$(MAKE) force-parser
+
+.antlr-java:
+	@$(MAKE) force-antlr-java
+
+force-antlr-java:
+	@rm -rf .antlr-java
+	@mkdir -p .antlr-java
+	@$(ANTLR) -o .antlr-java $(GRAMMAR_LEXER) $(GRAMMAR_PARSER)
+	@cd .antlr-java && CLASSPATH=$(ANTLR_JAR_PATH) javac *.java
+
+.PHONY: force-parser
+force-parser:
+	@$(ANTLR) -Dlanguage=Swift -package antlr -o . $(GRAMMAR_LEXER) $(GRAMMAR_PARSER) -visitor
+	@bash $(SCRIPTS_DIR)/patch-antlr-generated-code.sh $(GENERATED_LEXER)
+	@bash $(SCRIPTS_DIR)/patch-antlr-generated-code.sh $(GENERATED_PARSER)
 
 .PHONY: grun
-grun: .antlr
-	@cd .antlr && $(GRUN) $(GRAMMAR_NAME) $(GRAMMAR_RULE) -gui
+grun: .antlr-java
+	@cd .antlr-java && $(GRUN) $(GRAMMAR_NAME) $(GRAMMAR_RULE) -gui
+
+.PHONY: parser
+parser: GENERATED_PARSER
 endif
