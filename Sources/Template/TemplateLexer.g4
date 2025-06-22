@@ -1,4 +1,4 @@
-lexer grammar TemplatesLexer;
+lexer grammar TemplateLexer;
 
 DATA    : 'data';
 EFFECT  : 'effect';

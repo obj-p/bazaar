@@ -2,7 +2,7 @@ exclude: |
   (?x)^(
     .*.interp |
     .*.tokens |
-    Sources\/Templates\/.*.swift
+    Sources\/Template\/.*.swift
   )$
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks

@@ -1,4 +1,4 @@
---exclude Sources/Templates
+--exclude Sources/Template
 
 ## Rules (https://github.com/nicklockwood/SwiftFormat/blob/main/Rules.md)
 --commas inline

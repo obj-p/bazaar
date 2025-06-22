@@ -1,7 +1,7 @@
-parser grammar TemplatesParser;
+parser grammar TemplateParser;
 
 options {
-  tokenVocab = TemplatesLexer;
+  tokenVocab = TemplateLexer;
 }
 
 schema

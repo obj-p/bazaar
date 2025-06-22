@@ -21,12 +21,12 @@ let package = Package(
             dependencies: ["bazaar"]
         ),
         .target(
-            name: "Templates",
+            name: "Template",
             dependencies: [.product(name: "Antlr4", package: "antlr4")]
         ),
         .testTarget(
-            name: "TemplatesTests",
-            dependencies: ["Templates"]
+            name: "TemplateTests",
+            dependencies: ["Template"]
         )
     ]
 )

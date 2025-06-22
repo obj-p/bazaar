@@ -1,118 +1,118 @@
-// Generated from Sources/Templates/TemplatesParser.g4 by ANTLR 4.13.1
+// Generated from Sources/Template/TemplateParser.g4 by ANTLR 4.13.1
 
 import Antlr4
 
 
 /**
- * This class provides an empty implementation of {@link TemplatesParserListener},
+ * This class provides an empty implementation of {@link TemplateParserListener},
  * which can be extended to create a listener which only needs to handle a subset
  * of the available methods.
  */
-open class TemplatesParserBaseListener: TemplatesParserListener {
+open class TemplateParserBaseListener: TemplateParserListener {
      public init() { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	open func enterSchema(_ ctx: TemplatesParser.SchemaContext) { }
+	open func enterSchema(_ ctx: TemplateParser.SchemaContext) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	open func exitSchema(_ ctx: TemplatesParser.SchemaContext) { }
+	open func exitSchema(_ ctx: TemplateParser.SchemaContext) { }
 
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	open func enterData(_ ctx: TemplatesParser.DataContext) { }
+	open func enterData(_ ctx: TemplateParser.DataContext) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	open func exitData(_ ctx: TemplatesParser.DataContext) { }
+	open func exitData(_ ctx: TemplateParser.DataContext) { }
 
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	open func enterData_body(_ ctx: TemplatesParser.Data_bodyContext) { }
+	open func enterData_body(_ ctx: TemplateParser.Data_bodyContext) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	open func exitData_body(_ ctx: TemplatesParser.Data_bodyContext) { }
+	open func exitData_body(_ ctx: TemplateParser.Data_bodyContext) { }
 
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	open func enterData_members(_ ctx: TemplatesParser.Data_membersContext) { }
+	open func enterData_members(_ ctx: TemplateParser.Data_membersContext) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	open func exitData_members(_ ctx: TemplatesParser.Data_membersContext) { }
+	open func exitData_members(_ ctx: TemplateParser.Data_membersContext) { }
 
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	open func enterMember(_ ctx: TemplatesParser.MemberContext) { }
+	open func enterMember(_ ctx: TemplateParser.MemberContext) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	open func exitMember(_ ctx: TemplatesParser.MemberContext) { }
+	open func exitMember(_ ctx: TemplateParser.MemberContext) { }
 
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	open func enterMember_identifier(_ ctx: TemplatesParser.Member_identifierContext) { }
+	open func enterMember_identifier(_ ctx: TemplateParser.Member_identifierContext) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	open func exitMember_identifier(_ ctx: TemplatesParser.Member_identifierContext) { }
+	open func exitMember_identifier(_ ctx: TemplateParser.Member_identifierContext) { }
 
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	open func enterType_identifier(_ ctx: TemplatesParser.Type_identifierContext) { }
+	open func enterType_identifier(_ ctx: TemplateParser.Type_identifierContext) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	open func exitType_identifier(_ ctx: TemplatesParser.Type_identifierContext) { }
+	open func exitType_identifier(_ ctx: TemplateParser.Type_identifierContext) { }
 
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	open func enterIdentifier(_ ctx: TemplatesParser.IdentifierContext) { }
+	open func enterIdentifier(_ ctx: TemplateParser.IdentifierContext) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	open func exitIdentifier(_ ctx: TemplatesParser.IdentifierContext) { }
+	open func exitIdentifier(_ ctx: TemplateParser.IdentifierContext) { }
 
 	/**
 	 * {@inheritDoc}

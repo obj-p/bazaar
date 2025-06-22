@@ -1,13 +1,13 @@
-// Generated from Sources/Templates/TemplatesLexer.g4 by ANTLR 4.13.1
+// Generated from Sources/Template/TemplateLexer.g4 by ANTLR 4.13.1
 @preconcurrency import Antlr4
 
-open class TemplatesLexer: Lexer {
+open class TemplateLexer: Lexer {
 
-    nonisolated(unsafe) internal static var _decisionToDFA: [DFA] = {
+	internal static let _decisionToDFA: [DFA] = {
           var decisionToDFA = [DFA]()
-          let length = TemplatesLexer._ATN.getNumberOfDecisions()
+          let length = TemplateLexer._ATN.getNumberOfDecisions()
           for i in 0..<length {
-          	    decisionToDFA.append(DFA(TemplatesLexer._ATN.getDecisionState(i)!, i))
+          	    decisionToDFA.append(DFA(TemplateLexer._ATN.getDecisionState(i)!, i))
           }
            return decisionToDFA
      }()
@@ -47,33 +47,33 @@ open class TemplatesLexer: Lexer {
 
 	override open
 	func getVocabulary() -> Vocabulary {
-		return TemplatesLexer.VOCABULARY
+		return TemplateLexer.VOCABULARY
 	}
 
 	public
 	required init(_ input: CharStream) {
 	    RuntimeMetaData.checkVersion("4.13.1", RuntimeMetaData.VERSION)
 		super.init(input)
-		_interp = LexerATNSimulator(self, TemplatesLexer._ATN, TemplatesLexer._decisionToDFA, TemplatesLexer._sharedContextCache)
+		_interp = LexerATNSimulator(self, TemplateLexer._ATN, TemplateLexer._decisionToDFA, TemplateLexer._sharedContextCache)
 	}
 
 	override open
-	func getGrammarFileName() -> String { return "TemplatesLexer.g4" }
+	func getGrammarFileName() -> String { return "TemplateLexer.g4" }
 
 	override open
-	func getRuleNames() -> [String] { return TemplatesLexer.ruleNames }
+	func getRuleNames() -> [String] { return TemplateLexer.ruleNames }
 
 	override open
-	func getSerializedATN() -> [Int] { return TemplatesLexer._serializedATN }
+	func getSerializedATN() -> [Int] { return TemplateLexer._serializedATN }
 
 	override open
-	func getChannelNames() -> [String] { return TemplatesLexer.channelNames }
+	func getChannelNames() -> [String] { return TemplateLexer.channelNames }
 
 	override open
-	func getModeNames() -> [String] { return TemplatesLexer.modeNames }
+	func getModeNames() -> [String] { return TemplateLexer.modeNames }
 
 	override open
-	func getATN() -> ATN { return TemplatesLexer._ATN }
+	func getATN() -> ATN { return TemplateLexer._ATN }
 
 	static let _serializedATN:[Int] = [
 		4,0,8,54,6,-1,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,2,6,7,6,

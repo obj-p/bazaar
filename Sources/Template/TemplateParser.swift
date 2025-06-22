@@ -1,13 +1,13 @@
-// Generated from Sources/Templates/TemplatesParser.g4 by ANTLR 4.13.1
+// Generated from Sources/Template/TemplateParser.g4 by ANTLR 4.13.1
 @preconcurrency import Antlr4
 
-open class TemplatesParser: Parser {
+open class TemplateParser: Parser {
 
-    nonisolated(unsafe) internal static var _decisionToDFA: [DFA] = {
+	internal static let _decisionToDFA: [DFA] = {
           var decisionToDFA = [DFA]()
-          let length = TemplatesParser._ATN.getNumberOfDecisions()
+          let length = TemplateParser._ATN.getNumberOfDecisions()
           for i in 0..<length {
-            decisionToDFA.append(DFA(TemplatesParser._ATN.getDecisionState(i)!, i))
+            decisionToDFA.append(DFA(TemplateParser._ATN.getDecisionState(i)!, i))
            }
            return decisionToDFA
      }()
@@ -42,35 +42,35 @@ open class TemplatesParser: Parser {
 	static let VOCABULARY = Vocabulary(_LITERAL_NAMES, _SYMBOLIC_NAMES)
 
 	override open
-	func getGrammarFileName() -> String { return "TemplatesParser.g4" }
+	func getGrammarFileName() -> String { return "TemplateParser.g4" }
 
 	override open
-	func getRuleNames() -> [String] { return TemplatesParser.ruleNames }
+	func getRuleNames() -> [String] { return TemplateParser.ruleNames }
 
 	override open
-	func getSerializedATN() -> [Int] { return TemplatesParser._serializedATN }
+	func getSerializedATN() -> [Int] { return TemplateParser._serializedATN }
 
 	override open
-	func getATN() -> ATN { return TemplatesParser._ATN }
+	func getATN() -> ATN { return TemplateParser._ATN }
 
 
 	override open
 	func getVocabulary() -> Vocabulary {
-	    return TemplatesParser.VOCABULARY
+	    return TemplateParser.VOCABULARY
 	}
 
 	override public
 	init(_ input:TokenStream) throws {
 	    RuntimeMetaData.checkVersion("4.13.1", RuntimeMetaData.VERSION)
 		try super.init(input)
-		_interp = ParserATNSimulator(self,TemplatesParser._ATN,TemplatesParser._decisionToDFA, TemplatesParser._sharedContextCache)
+		_interp = ParserATNSimulator(self,TemplateParser._ATN,TemplateParser._decisionToDFA, TemplateParser._sharedContextCache)
 	}
 
 
 	public class SchemaContext: ParserRuleContext {
 			open
 			func EOF() -> TerminalNode? {
-				return getToken(TemplatesParser.Tokens.EOF.rawValue, 0)
+				return getToken(TemplateParser.Tokens.EOF.rawValue, 0)
 			}
 			open
 			func data() -> [DataContext] {
@@ -82,26 +82,26 @@ open class TemplatesParser: Parser {
 			}
 		override open
 		func getRuleIndex() -> Int {
-			return TemplatesParser.RULE_schema
+			return TemplateParser.RULE_schema
 		}
 		override open
 		func enterRule(_ listener: ParseTreeListener) {
-			if let listener = listener as? TemplatesParserListener {
+			if let listener = listener as? TemplateParserListener {
 				listener.enterSchema(self)
 			}
 		}
 		override open
 		func exitRule(_ listener: ParseTreeListener) {
-			if let listener = listener as? TemplatesParserListener {
+			if let listener = listener as? TemplateParserListener {
 				listener.exitSchema(self)
 			}
 		}
 		override open
 		func accept<T>(_ visitor: ParseTreeVisitor<T>) -> T? {
-			if let visitor = visitor as? TemplatesParserVisitor {
+			if let visitor = visitor as? TemplateParserVisitor {
 			    return visitor.visitSchema(self)
 			}
-			else if let visitor = visitor as? TemplatesParserBaseVisitor {
+			else if let visitor = visitor as? TemplateParserBaseVisitor {
 			    return visitor.visitSchema(self)
 			}
 			else {
@@ -113,7 +113,7 @@ open class TemplatesParser: Parser {
 	 open func schema() throws -> SchemaContext {
 		var _localctx: SchemaContext
 		_localctx = SchemaContext(_ctx, getState())
-		try enterRule(_localctx, 0, TemplatesParser.RULE_schema)
+		try enterRule(_localctx, 0, TemplateParser.RULE_schema)
 		var _la: Int = 0
 		defer {
 	    		try! exitRule()
@@ -131,9 +131,9 @@ open class TemplatesParser: Parser {
 		 		setState(19); 
 		 		try _errHandler.sync(self)
 		 		_la = try _input.LA(1)
-		 	} while (_la == TemplatesParser.Tokens.DATA.rawValue)
+		 	} while (_la == TemplateParser.Tokens.DATA.rawValue)
 		 	setState(21)
-		 	try match(TemplatesParser.Tokens.EOF.rawValue)
+		 	try match(TemplateParser.Tokens.EOF.rawValue)
 
 		}
 		catch ANTLRException.recognition(let re) {
@@ -148,7 +148,7 @@ open class TemplatesParser: Parser {
 	public class DataContext: ParserRuleContext {
 			open
 			func DATA() -> TerminalNode? {
-				return getToken(TemplatesParser.Tokens.DATA.rawValue, 0)
+				return getToken(TemplateParser.Tokens.DATA.rawValue, 0)
 			}
 			open
 			func identifier() -> IdentifierContext? {
@@ -160,26 +160,26 @@ open class TemplatesParser: Parser {
 			}
 		override open
 		func getRuleIndex() -> Int {
-			return TemplatesParser.RULE_data
+			return TemplateParser.RULE_data
 		}
 		override open
 		func enterRule(_ listener: ParseTreeListener) {
-			if let listener = listener as? TemplatesParserListener {
+			if let listener = listener as? TemplateParserListener {
 				listener.enterData(self)
 			}
 		}
 		override open
 		func exitRule(_ listener: ParseTreeListener) {
-			if let listener = listener as? TemplatesParserListener {
+			if let listener = listener as? TemplateParserListener {
 				listener.exitData(self)
 			}
 		}
 		override open
 		func accept<T>(_ visitor: ParseTreeVisitor<T>) -> T? {
-			if let visitor = visitor as? TemplatesParserVisitor {
+			if let visitor = visitor as? TemplateParserVisitor {
 			    return visitor.visitData(self)
 			}
-			else if let visitor = visitor as? TemplatesParserBaseVisitor {
+			else if let visitor = visitor as? TemplateParserBaseVisitor {
 			    return visitor.visitData(self)
 			}
 			else {
@@ -191,14 +191,14 @@ open class TemplatesParser: Parser {
 	 open func data() throws -> DataContext {
 		var _localctx: DataContext
 		_localctx = DataContext(_ctx, getState())
-		try enterRule(_localctx, 2, TemplatesParser.RULE_data)
+		try enterRule(_localctx, 2, TemplateParser.RULE_data)
 		defer {
 	    		try! exitRule()
 	    }
 		do {
 		 	try enterOuterAlt(_localctx, 1)
 		 	setState(23)
-		 	try match(TemplatesParser.Tokens.DATA.rawValue)
+		 	try match(TemplateParser.Tokens.DATA.rawValue)
 		 	setState(24)
 		 	try identifier()
 		 	setState(25)
@@ -217,7 +217,7 @@ open class TemplatesParser: Parser {
 	public class Data_bodyContext: ParserRuleContext {
 			open
 			func LPARANS() -> TerminalNode? {
-				return getToken(TemplatesParser.Tokens.LPARANS.rawValue, 0)
+				return getToken(TemplateParser.Tokens.LPARANS.rawValue, 0)
 			}
 			open
 			func data_members() -> Data_membersContext? {
@@ -225,30 +225,30 @@ open class TemplatesParser: Parser {
 			}
 			open
 			func RPARANS() -> TerminalNode? {
-				return getToken(TemplatesParser.Tokens.RPARANS.rawValue, 0)
+				return getToken(TemplateParser.Tokens.RPARANS.rawValue, 0)
 			}
 		override open
 		func getRuleIndex() -> Int {
-			return TemplatesParser.RULE_data_body
+			return TemplateParser.RULE_data_body
 		}
 		override open
 		func enterRule(_ listener: ParseTreeListener) {
-			if let listener = listener as? TemplatesParserListener {
+			if let listener = listener as? TemplateParserListener {
 				listener.enterData_body(self)
 			}
 		}
 		override open
 		func exitRule(_ listener: ParseTreeListener) {
-			if let listener = listener as? TemplatesParserListener {
+			if let listener = listener as? TemplateParserListener {
 				listener.exitData_body(self)
 			}
 		}
 		override open
 		func accept<T>(_ visitor: ParseTreeVisitor<T>) -> T? {
-			if let visitor = visitor as? TemplatesParserVisitor {
+			if let visitor = visitor as? TemplateParserVisitor {
 			    return visitor.visitData_body(self)
 			}
-			else if let visitor = visitor as? TemplatesParserBaseVisitor {
+			else if let visitor = visitor as? TemplateParserBaseVisitor {
 			    return visitor.visitData_body(self)
 			}
 			else {
@@ -260,18 +260,18 @@ open class TemplatesParser: Parser {
 	 open func data_body() throws -> Data_bodyContext {
 		var _localctx: Data_bodyContext
 		_localctx = Data_bodyContext(_ctx, getState())
-		try enterRule(_localctx, 4, TemplatesParser.RULE_data_body)
+		try enterRule(_localctx, 4, TemplateParser.RULE_data_body)
 		defer {
 	    		try! exitRule()
 	    }
 		do {
 		 	try enterOuterAlt(_localctx, 1)
 		 	setState(27)
-		 	try match(TemplatesParser.Tokens.LPARANS.rawValue)
+		 	try match(TemplateParser.Tokens.LPARANS.rawValue)
 		 	setState(28)
 		 	try data_members()
 		 	setState(29)
-		 	try match(TemplatesParser.Tokens.RPARANS.rawValue)
+		 	try match(TemplateParser.Tokens.RPARANS.rawValue)
 
 		}
 		catch ANTLRException.recognition(let re) {
@@ -294,26 +294,26 @@ open class TemplatesParser: Parser {
 			}
 		override open
 		func getRuleIndex() -> Int {
-			return TemplatesParser.RULE_data_members
+			return TemplateParser.RULE_data_members
 		}
 		override open
 		func enterRule(_ listener: ParseTreeListener) {
-			if let listener = listener as? TemplatesParserListener {
+			if let listener = listener as? TemplateParserListener {
 				listener.enterData_members(self)
 			}
 		}
 		override open
 		func exitRule(_ listener: ParseTreeListener) {
-			if let listener = listener as? TemplatesParserListener {
+			if let listener = listener as? TemplateParserListener {
 				listener.exitData_members(self)
 			}
 		}
 		override open
 		func accept<T>(_ visitor: ParseTreeVisitor<T>) -> T? {
-			if let visitor = visitor as? TemplatesParserVisitor {
+			if let visitor = visitor as? TemplateParserVisitor {
 			    return visitor.visitData_members(self)
 			}
-			else if let visitor = visitor as? TemplatesParserBaseVisitor {
+			else if let visitor = visitor as? TemplateParserBaseVisitor {
 			    return visitor.visitData_members(self)
 			}
 			else {
@@ -325,7 +325,7 @@ open class TemplatesParser: Parser {
 	 open func data_members() throws -> Data_membersContext {
 		var _localctx: Data_membersContext
 		_localctx = Data_membersContext(_ctx, getState())
-		try enterRule(_localctx, 6, TemplatesParser.RULE_data_members)
+		try enterRule(_localctx, 6, TemplateParser.RULE_data_members)
 		var _la: Int = 0
 		defer {
 	    		try! exitRule()
@@ -335,7 +335,7 @@ open class TemplatesParser: Parser {
 		 	setState(34)
 		 	try _errHandler.sync(self)
 		 	_la = try _input.LA(1)
-		 	while (_la == TemplatesParser.Tokens.IDENTIFIER.rawValue) {
+		 	while (_la == TemplateParser.Tokens.IDENTIFIER.rawValue) {
 		 		setState(31)
 		 		try member()
 
@@ -366,30 +366,30 @@ open class TemplatesParser: Parser {
 			}
 			open
 			func QUESTION() -> TerminalNode? {
-				return getToken(TemplatesParser.Tokens.QUESTION.rawValue, 0)
+				return getToken(TemplateParser.Tokens.QUESTION.rawValue, 0)
 			}
 		override open
 		func getRuleIndex() -> Int {
-			return TemplatesParser.RULE_member
+			return TemplateParser.RULE_member
 		}
 		override open
 		func enterRule(_ listener: ParseTreeListener) {
-			if let listener = listener as? TemplatesParserListener {
+			if let listener = listener as? TemplateParserListener {
 				listener.enterMember(self)
 			}
 		}
 		override open
 		func exitRule(_ listener: ParseTreeListener) {
-			if let listener = listener as? TemplatesParserListener {
+			if let listener = listener as? TemplateParserListener {
 				listener.exitMember(self)
 			}
 		}
 		override open
 		func accept<T>(_ visitor: ParseTreeVisitor<T>) -> T? {
-			if let visitor = visitor as? TemplatesParserVisitor {
+			if let visitor = visitor as? TemplateParserVisitor {
 			    return visitor.visitMember(self)
 			}
-			else if let visitor = visitor as? TemplatesParserBaseVisitor {
+			else if let visitor = visitor as? TemplateParserBaseVisitor {
 			    return visitor.visitMember(self)
 			}
 			else {
@@ -401,7 +401,7 @@ open class TemplatesParser: Parser {
 	 open func member() throws -> MemberContext {
 		var _localctx: MemberContext
 		_localctx = MemberContext(_ctx, getState())
-		try enterRule(_localctx, 8, TemplatesParser.RULE_member)
+		try enterRule(_localctx, 8, TemplateParser.RULE_member)
 		var _la: Int = 0
 		defer {
 	    		try! exitRule()
@@ -413,9 +413,9 @@ open class TemplatesParser: Parser {
 		 	setState(39)
 		 	try _errHandler.sync(self)
 		 	_la = try _input.LA(1)
-		 	if (_la == TemplatesParser.Tokens.QUESTION.rawValue) {
+		 	if (_la == TemplateParser.Tokens.QUESTION.rawValue) {
 		 		setState(38)
-		 		try match(TemplatesParser.Tokens.QUESTION.rawValue)
+		 		try match(TemplateParser.Tokens.QUESTION.rawValue)
 
 		 	}
 
@@ -439,26 +439,26 @@ open class TemplatesParser: Parser {
 			}
 		override open
 		func getRuleIndex() -> Int {
-			return TemplatesParser.RULE_member_identifier
+			return TemplateParser.RULE_member_identifier
 		}
 		override open
 		func enterRule(_ listener: ParseTreeListener) {
-			if let listener = listener as? TemplatesParserListener {
+			if let listener = listener as? TemplateParserListener {
 				listener.enterMember_identifier(self)
 			}
 		}
 		override open
 		func exitRule(_ listener: ParseTreeListener) {
-			if let listener = listener as? TemplatesParserListener {
+			if let listener = listener as? TemplateParserListener {
 				listener.exitMember_identifier(self)
 			}
 		}
 		override open
 		func accept<T>(_ visitor: ParseTreeVisitor<T>) -> T? {
-			if let visitor = visitor as? TemplatesParserVisitor {
+			if let visitor = visitor as? TemplateParserVisitor {
 			    return visitor.visitMember_identifier(self)
 			}
-			else if let visitor = visitor as? TemplatesParserBaseVisitor {
+			else if let visitor = visitor as? TemplateParserBaseVisitor {
 			    return visitor.visitMember_identifier(self)
 			}
 			else {
@@ -470,7 +470,7 @@ open class TemplatesParser: Parser {
 	 open func member_identifier() throws -> Member_identifierContext {
 		var _localctx: Member_identifierContext
 		_localctx = Member_identifierContext(_ctx, getState())
-		try enterRule(_localctx, 10, TemplatesParser.RULE_member_identifier)
+		try enterRule(_localctx, 10, TemplateParser.RULE_member_identifier)
 		defer {
 	    		try! exitRule()
 	    }
@@ -496,26 +496,26 @@ open class TemplatesParser: Parser {
 			}
 		override open
 		func getRuleIndex() -> Int {
-			return TemplatesParser.RULE_type_identifier
+			return TemplateParser.RULE_type_identifier
 		}
 		override open
 		func enterRule(_ listener: ParseTreeListener) {
-			if let listener = listener as? TemplatesParserListener {
+			if let listener = listener as? TemplateParserListener {
 				listener.enterType_identifier(self)
 			}
 		}
 		override open
 		func exitRule(_ listener: ParseTreeListener) {
-			if let listener = listener as? TemplatesParserListener {
+			if let listener = listener as? TemplateParserListener {
 				listener.exitType_identifier(self)
 			}
 		}
 		override open
 		func accept<T>(_ visitor: ParseTreeVisitor<T>) -> T? {
-			if let visitor = visitor as? TemplatesParserVisitor {
+			if let visitor = visitor as? TemplateParserVisitor {
 			    return visitor.visitType_identifier(self)
 			}
-			else if let visitor = visitor as? TemplatesParserBaseVisitor {
+			else if let visitor = visitor as? TemplateParserBaseVisitor {
 			    return visitor.visitType_identifier(self)
 			}
 			else {
@@ -527,7 +527,7 @@ open class TemplatesParser: Parser {
 	 open func type_identifier() throws -> Type_identifierContext {
 		var _localctx: Type_identifierContext
 		_localctx = Type_identifierContext(_ctx, getState())
-		try enterRule(_localctx, 12, TemplatesParser.RULE_type_identifier)
+		try enterRule(_localctx, 12, TemplateParser.RULE_type_identifier)
 		defer {
 	    		try! exitRule()
 	    }
@@ -549,30 +549,30 @@ open class TemplatesParser: Parser {
 	public class IdentifierContext: ParserRuleContext {
 			open
 			func IDENTIFIER() -> TerminalNode? {
-				return getToken(TemplatesParser.Tokens.IDENTIFIER.rawValue, 0)
+				return getToken(TemplateParser.Tokens.IDENTIFIER.rawValue, 0)
 			}
 		override open
 		func getRuleIndex() -> Int {
-			return TemplatesParser.RULE_identifier
+			return TemplateParser.RULE_identifier
 		}
 		override open
 		func enterRule(_ listener: ParseTreeListener) {
-			if let listener = listener as? TemplatesParserListener {
+			if let listener = listener as? TemplateParserListener {
 				listener.enterIdentifier(self)
 			}
 		}
 		override open
 		func exitRule(_ listener: ParseTreeListener) {
-			if let listener = listener as? TemplatesParserListener {
+			if let listener = listener as? TemplateParserListener {
 				listener.exitIdentifier(self)
 			}
 		}
 		override open
 		func accept<T>(_ visitor: ParseTreeVisitor<T>) -> T? {
-			if let visitor = visitor as? TemplatesParserVisitor {
+			if let visitor = visitor as? TemplateParserVisitor {
 			    return visitor.visitIdentifier(self)
 			}
-			else if let visitor = visitor as? TemplatesParserBaseVisitor {
+			else if let visitor = visitor as? TemplateParserBaseVisitor {
 			    return visitor.visitIdentifier(self)
 			}
 			else {
@@ -584,14 +584,14 @@ open class TemplatesParser: Parser {
 	 open func identifier() throws -> IdentifierContext {
 		var _localctx: IdentifierContext
 		_localctx = IdentifierContext(_ctx, getState())
-		try enterRule(_localctx, 14, TemplatesParser.RULE_identifier)
+		try enterRule(_localctx, 14, TemplateParser.RULE_identifier)
 		defer {
 	    		try! exitRule()
 	    }
 		do {
 		 	try enterOuterAlt(_localctx, 1)
 		 	setState(47)
-		 	try match(TemplatesParser.Tokens.IDENTIFIER.rawValue)
+		 	try match(TemplateParser.Tokens.IDENTIFIER.rawValue)
 
 		}
 		catch ANTLRException.recognition(let re) {
