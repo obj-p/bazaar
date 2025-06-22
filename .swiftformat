@@ -1,5 +1,5 @@
---exclude Sources/Schema
---exclude Sources/Template
+--exclude Sources/SchemaParser
+--exclude Sources/TemplateParser
 
 ## Rules (https://github.com/nicklockwood/SwiftFormat/blob/main/Rules.md)
 --commas inline

@@ -1,5 +1,5 @@
 @preconcurrency import Antlr4
-import Template
+import TemplateParser
 import Testing
 
 struct TemplateParserTests {

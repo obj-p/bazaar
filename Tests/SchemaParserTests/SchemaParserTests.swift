@@ -1,5 +1,5 @@
 @preconcurrency import Antlr4
-import Schema
+import SchemaParser
 import Testing
 
 struct SchemaParserTests {
