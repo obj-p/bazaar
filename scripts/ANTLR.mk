@@ -10,7 +10,7 @@ GRAMMAR_RULE   ?=
 GRUN            = CLASSPATH=$(ANTLR_JAR_PATH):. java org.antlr.v4.gui.TestRig
 
 ifneq ($(and $(GRAMMAR_LEXER),$(GRAMMAR_PARSER)),)
-GENERATED_LEXER = $(basename $(GRAMMAR_LEXER)).swift
+GENERATED_LEXER  = $(basename $(GRAMMAR_LEXER)).swift
 GENERATED_PARSER = $(basename $(GRAMMAR_PARSER)).swift
 
 $(GENERATED_PARSER):

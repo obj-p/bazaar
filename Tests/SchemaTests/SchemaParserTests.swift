@@ -2,10 +2,12 @@
 import Schema
 import Testing
 
-struct TemplateParserTests {
+struct SchemaParserTests {
     static let example = """
-    data Text(
-        value String
+    data Person(
+        firstName String
+        middleName? String
+        lastName String
     )
     """
 

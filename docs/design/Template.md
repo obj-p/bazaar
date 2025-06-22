@@ -1,20 +1,15 @@
-```
-package main
+Person.bzr
 
-import "github.com/obj-p/cross/state"
+```
+data Person(
+    firstName String
+    lastName String
+)
 
 template Person(person Person) {
-    cross.useState()
-
-    Container {
+    Stack(axis: .vertical) {
         Text(person.firstName)
-
-        Button("Commit", onClick = {
-            let success = StorePerson(person)
-            if (success) {
-
-            }
-        })
+        Text(person.lastName)
     }
 }
 ```

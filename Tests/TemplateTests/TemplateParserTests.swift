@@ -4,9 +4,7 @@ import Testing
 
 struct TemplateParserTests {
     static let example = """
-    data Text(
-        value String
-    )
+    view Text
     """
 
     @Test
@@ -16,7 +14,7 @@ struct TemplateParserTests {
         let lexer = TemplateLexer(input)
         let ts = CommonTokenStream(lexer)
         let parser = try TemplateParser(ts)
-        let tree = try parser.schema()
+        let tree = try parser.template()
 
         // When
         Visitor().visit(tree)
@@ -24,13 +22,9 @@ struct TemplateParserTests {
 }
 
 class Visitor: TemplateParserBaseVisitor<Void> {
-    override func visitData(_ ctx: TemplateParser.DataContext) {
+    override func visitView(_ ctx: TemplateParser.ViewContext) {
         print(ctx.getText())
 
-        super.visitData(ctx)
-    }
-
-    override func visitMember(_ ctx: TemplateParser.MemberContext) {
-        print(ctx.getText())
+        super.visitView(ctx)
     }
 }
