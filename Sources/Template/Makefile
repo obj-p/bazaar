@@ -9,7 +9,7 @@ include ../../scripts/ANTLR.mk
 force-parser:
 	@$(ANTLR) -Dlanguage=Swift -package antlr -o . TemplateLexer.g4 TemplateParser.g4 -visitor
 
-.PHONY: parsers
+.PHONY: parser
 parser: TemplateParser.swift
 
 TemplateParser.swift:
