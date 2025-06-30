@@ -1,3 +1,2 @@
 excluded:
-  - Sources/SchemaParser
-  - Sources/TemplateParser
+  - Sources/Parser

@@ -1,8 +1,8 @@
 @preconcurrency import Antlr4
-import TemplateParser
+import Parser
 import Testing
 
-struct TemplateParserTests {
+struct ParserTests {
     static let example = """
     view Text
     """
@@ -11,9 +11,9 @@ struct TemplateParserTests {
     func parser() throws {
         // Given
         let input = ANTLRInputStream(Self.example)
-        let lexer = TemplateLexer(input)
+        let lexer = BazaarLexer(input)
         let ts = CommonTokenStream(lexer)
-        let parser = try TemplateParser(ts)
+        let parser = try BazaarParser(ts)
         let tree = try parser.template()
 
         // When
@@ -21,8 +21,8 @@ struct TemplateParserTests {
     }
 }
 
-class Visitor: TemplateParserBaseVisitor<Void> {
-    override func visitView(_ ctx: TemplateParser.ViewContext) {
+class Visitor: BazaarParserBaseVisitor<Void> {
+    override func visitView(_ ctx: BazaarParser.ViewContext) {
         print(ctx.getText())
 
         super.visitView(ctx)

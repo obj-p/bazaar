@@ -1,7 +1,7 @@
-parser grammar TemplateParser;
+parser grammar BazaarParser;
 
 options {
-  tokenVocab = TemplateLexer;
+  tokenVocab = BazaarLexer;
 }
 
 template

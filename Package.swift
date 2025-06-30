@@ -21,20 +21,12 @@ let package = Package(
             dependencies: ["bazaar"]
         ),
         .target(
-            name: "SchemaParser",
+            name: "Parser",
             dependencies: [.product(name: "Antlr4", package: "antlr4")]
         ),
         .testTarget(
-            name: "SchemaParserTests",
-            dependencies: ["SchemaParser"]
-        ),
-        .target(
-            name: "TemplateParser",
-            dependencies: [.product(name: "Antlr4", package: "antlr4")]
-        ),
-        .testTarget(
-            name: "TemplateParserTests",
-            dependencies: ["TemplateParser"]
+            name: "ParserTests",
+            dependencies: ["Parser"]
         )
     ]
 )

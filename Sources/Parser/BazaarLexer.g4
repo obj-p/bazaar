@@ -1,4 +1,4 @@
-lexer grammar TemplateLexer;
+lexer grammar BazaarLexer;
 
 VIEW    : 'view';
 

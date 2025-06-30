@@ -2,8 +2,7 @@ exclude: |
   (?x)^(
     .*.interp |
     .*.tokens |
-    Sources\/SchemaParser\/.*.swift |
-    Sources\/TemplateParser\/.*.swift
+    Sources\/Parser\/.*.swift |
   )$
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks

@@ -1,0 +1,8 @@
+data Person(
+    firstName String
+    lastName String
+)
+
+template Profile(person Person) {
+    Text("${person.lastName}, ${person.firstName}")
+}

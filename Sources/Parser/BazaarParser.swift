@@ -1,13 +1,13 @@
-// Generated from TemplateParser.g4 by ANTLR 4.13.1
+// Generated from BazaarParser.g4 by ANTLR 4.13.1
 @preconcurrency import Antlr4
 
-open class TemplateParser: Parser {
+open class BazaarParser: Parser {
 
 	internal static let _decisionToDFA: [DFA] = {
           var decisionToDFA = [DFA]()
-          let length = TemplateParser._ATN.getNumberOfDecisions()
+          let length = BazaarParser._ATN.getNumberOfDecisions()
           for i in 0..<length {
-            decisionToDFA.append(DFA(TemplateParser._ATN.getDecisionState(i)!, i))
+            decisionToDFA.append(DFA(BazaarParser._ATN.getDecisionState(i)!, i))
            }
            return decisionToDFA
      }()
@@ -42,35 +42,35 @@ open class TemplateParser: Parser {
 	static let VOCABULARY = Vocabulary(_LITERAL_NAMES, _SYMBOLIC_NAMES)
 
 	override open
-	func getGrammarFileName() -> String { return "TemplateParser.g4" }
+	func getGrammarFileName() -> String { return "BazaarParser.g4" }
 
 	override open
-	func getRuleNames() -> [String] { return TemplateParser.ruleNames }
+	func getRuleNames() -> [String] { return BazaarParser.ruleNames }
 
 	override open
-	func getSerializedATN() -> [Int] { return TemplateParser._serializedATN }
+	func getSerializedATN() -> [Int] { return BazaarParser._serializedATN }
 
 	override open
-	func getATN() -> ATN { return TemplateParser._ATN }
+	func getATN() -> ATN { return BazaarParser._ATN }
 
 
 	override open
 	func getVocabulary() -> Vocabulary {
-	    return TemplateParser.VOCABULARY
+	    return BazaarParser.VOCABULARY
 	}
 
 	override public
 	init(_ input:TokenStream) throws {
 	    RuntimeMetaData.checkVersion("4.13.1", RuntimeMetaData.VERSION)
 		try super.init(input)
-		_interp = ParserATNSimulator(self,TemplateParser._ATN,TemplateParser._decisionToDFA, TemplateParser._sharedContextCache)
+		_interp = ParserATNSimulator(self,BazaarParser._ATN,BazaarParser._decisionToDFA, BazaarParser._sharedContextCache)
 	}
 
 
 	public class TemplateContext: ParserRuleContext {
 			open
 			func EOF() -> TerminalNode? {
-				return getToken(TemplateParser.Tokens.EOF.rawValue, 0)
+				return getToken(BazaarParser.Tokens.EOF.rawValue, 0)
 			}
 			open
 			func view() -> [ViewContext] {
@@ -82,14 +82,14 @@ open class TemplateParser: Parser {
 			}
 		override open
 		func getRuleIndex() -> Int {
-			return TemplateParser.RULE_template
+			return BazaarParser.RULE_template
 		}
 		override open
 		func accept<T>(_ visitor: ParseTreeVisitor<T>) -> T? {
-			if let visitor = visitor as? TemplateParserVisitor {
+			if let visitor = visitor as? BazaarParserVisitor {
 			    return visitor.visitTemplate(self)
 			}
-			else if let visitor = visitor as? TemplateParserBaseVisitor {
+			else if let visitor = visitor as? BazaarParserBaseVisitor {
 			    return visitor.visitTemplate(self)
 			}
 			else {
@@ -101,7 +101,7 @@ open class TemplateParser: Parser {
 	 open func template() throws -> TemplateContext {
 		var _localctx: TemplateContext
 		_localctx = TemplateContext(_ctx, getState())
-		try enterRule(_localctx, 0, TemplateParser.RULE_template)
+		try enterRule(_localctx, 0, BazaarParser.RULE_template)
 		var _la: Int = 0
 		defer {
 	    		try! exitRule()
@@ -119,9 +119,9 @@ open class TemplateParser: Parser {
 		 		setState(17); 
 		 		try _errHandler.sync(self)
 		 		_la = try _input.LA(1)
-		 	} while (_la == TemplateParser.Tokens.VIEW.rawValue)
+		 	} while (_la == BazaarParser.Tokens.VIEW.rawValue)
 		 	setState(19)
-		 	try match(TemplateParser.Tokens.EOF.rawValue)
+		 	try match(BazaarParser.Tokens.EOF.rawValue)
 
 		}
 		catch ANTLRException.recognition(let re) {
@@ -136,7 +136,7 @@ open class TemplateParser: Parser {
 	public class ViewContext: ParserRuleContext {
 			open
 			func VIEW() -> TerminalNode? {
-				return getToken(TemplateParser.Tokens.VIEW.rawValue, 0)
+				return getToken(BazaarParser.Tokens.VIEW.rawValue, 0)
 			}
 			open
 			func identifier() -> IdentifierContext? {
@@ -148,14 +148,14 @@ open class TemplateParser: Parser {
 			}
 		override open
 		func getRuleIndex() -> Int {
-			return TemplateParser.RULE_view
+			return BazaarParser.RULE_view
 		}
 		override open
 		func accept<T>(_ visitor: ParseTreeVisitor<T>) -> T? {
-			if let visitor = visitor as? TemplateParserVisitor {
+			if let visitor = visitor as? BazaarParserVisitor {
 			    return visitor.visitView(self)
 			}
-			else if let visitor = visitor as? TemplateParserBaseVisitor {
+			else if let visitor = visitor as? BazaarParserBaseVisitor {
 			    return visitor.visitView(self)
 			}
 			else {
@@ -167,7 +167,7 @@ open class TemplateParser: Parser {
 	 open func view() throws -> ViewContext {
 		var _localctx: ViewContext
 		_localctx = ViewContext(_ctx, getState())
-		try enterRule(_localctx, 2, TemplateParser.RULE_view)
+		try enterRule(_localctx, 2, BazaarParser.RULE_view)
 		var _la: Int = 0
 		defer {
 	    		try! exitRule()
@@ -175,13 +175,13 @@ open class TemplateParser: Parser {
 		do {
 		 	try enterOuterAlt(_localctx, 1)
 		 	setState(21)
-		 	try match(TemplateParser.Tokens.VIEW.rawValue)
+		 	try match(BazaarParser.Tokens.VIEW.rawValue)
 		 	setState(22)
 		 	try identifier()
 		 	setState(24)
 		 	try _errHandler.sync(self)
 		 	_la = try _input.LA(1)
-		 	if (_la == TemplateParser.Tokens.LPAREN.rawValue) {
+		 	if (_la == BazaarParser.Tokens.LPAREN.rawValue) {
 		 		setState(23)
 		 		try parameter_clause()
 
@@ -201,11 +201,11 @@ open class TemplateParser: Parser {
 	public class Parameter_clauseContext: ParserRuleContext {
 			open
 			func LPAREN() -> TerminalNode? {
-				return getToken(TemplateParser.Tokens.LPAREN.rawValue, 0)
+				return getToken(BazaarParser.Tokens.LPAREN.rawValue, 0)
 			}
 			open
 			func RPAREN() -> TerminalNode? {
-				return getToken(TemplateParser.Tokens.RPAREN.rawValue, 0)
+				return getToken(BazaarParser.Tokens.RPAREN.rawValue, 0)
 			}
 			open
 			func parameter_list() -> Parameter_listContext? {
@@ -213,14 +213,14 @@ open class TemplateParser: Parser {
 			}
 		override open
 		func getRuleIndex() -> Int {
-			return TemplateParser.RULE_parameter_clause
+			return BazaarParser.RULE_parameter_clause
 		}
 		override open
 		func accept<T>(_ visitor: ParseTreeVisitor<T>) -> T? {
-			if let visitor = visitor as? TemplateParserVisitor {
+			if let visitor = visitor as? BazaarParserVisitor {
 			    return visitor.visitParameter_clause(self)
 			}
-			else if let visitor = visitor as? TemplateParserBaseVisitor {
+			else if let visitor = visitor as? BazaarParserBaseVisitor {
 			    return visitor.visitParameter_clause(self)
 			}
 			else {
@@ -232,7 +232,7 @@ open class TemplateParser: Parser {
 	 open func parameter_clause() throws -> Parameter_clauseContext {
 		var _localctx: Parameter_clauseContext
 		_localctx = Parameter_clauseContext(_ctx, getState())
-		try enterRule(_localctx, 4, TemplateParser.RULE_parameter_clause)
+		try enterRule(_localctx, 4, BazaarParser.RULE_parameter_clause)
 		var _la: Int = 0
 		defer {
 	    		try! exitRule()
@@ -240,18 +240,18 @@ open class TemplateParser: Parser {
 		do {
 		 	try enterOuterAlt(_localctx, 1)
 		 	setState(26)
-		 	try match(TemplateParser.Tokens.LPAREN.rawValue)
+		 	try match(BazaarParser.Tokens.LPAREN.rawValue)
 		 	setState(28)
 		 	try _errHandler.sync(self)
 		 	_la = try _input.LA(1)
-		 	if (_la == TemplateParser.Tokens.IDENTIFIER.rawValue) {
+		 	if (_la == BazaarParser.Tokens.IDENTIFIER.rawValue) {
 		 		setState(27)
 		 		try parameter_list()
 
 		 	}
 
 		 	setState(30)
-		 	try match(TemplateParser.Tokens.RPAREN.rawValue)
+		 	try match(BazaarParser.Tokens.RPAREN.rawValue)
 
 		}
 		catch ANTLRException.recognition(let re) {
@@ -274,22 +274,22 @@ open class TemplateParser: Parser {
 			}
 			open
 			func COMMA() -> [TerminalNode] {
-				return getTokens(TemplateParser.Tokens.COMMA.rawValue)
+				return getTokens(BazaarParser.Tokens.COMMA.rawValue)
 			}
 			open
 			func COMMA(_ i:Int) -> TerminalNode? {
-				return getToken(TemplateParser.Tokens.COMMA.rawValue, i)
+				return getToken(BazaarParser.Tokens.COMMA.rawValue, i)
 			}
 		override open
 		func getRuleIndex() -> Int {
-			return TemplateParser.RULE_parameter_list
+			return BazaarParser.RULE_parameter_list
 		}
 		override open
 		func accept<T>(_ visitor: ParseTreeVisitor<T>) -> T? {
-			if let visitor = visitor as? TemplateParserVisitor {
+			if let visitor = visitor as? BazaarParserVisitor {
 			    return visitor.visitParameter_list(self)
 			}
-			else if let visitor = visitor as? TemplateParserBaseVisitor {
+			else if let visitor = visitor as? BazaarParserBaseVisitor {
 			    return visitor.visitParameter_list(self)
 			}
 			else {
@@ -301,7 +301,7 @@ open class TemplateParser: Parser {
 	 open func parameter_list() throws -> Parameter_listContext {
 		var _localctx: Parameter_listContext
 		_localctx = Parameter_listContext(_ctx, getState())
-		try enterRule(_localctx, 6, TemplateParser.RULE_parameter_list)
+		try enterRule(_localctx, 6, BazaarParser.RULE_parameter_list)
 		var _la: Int = 0
 		defer {
 	    		try! exitRule()
@@ -313,9 +313,9 @@ open class TemplateParser: Parser {
 		 	setState(37)
 		 	try _errHandler.sync(self)
 		 	_la = try _input.LA(1)
-		 	while (_la == TemplateParser.Tokens.COMMA.rawValue) {
+		 	while (_la == BazaarParser.Tokens.COMMA.rawValue) {
 		 		setState(33)
-		 		try match(TemplateParser.Tokens.COMMA.rawValue)
+		 		try match(BazaarParser.Tokens.COMMA.rawValue)
 		 		setState(34)
 		 		try parameter()
 
@@ -346,18 +346,18 @@ open class TemplateParser: Parser {
 			}
 			open
 			func QUESTION() -> TerminalNode? {
-				return getToken(TemplateParser.Tokens.QUESTION.rawValue, 0)
+				return getToken(BazaarParser.Tokens.QUESTION.rawValue, 0)
 			}
 		override open
 		func getRuleIndex() -> Int {
-			return TemplateParser.RULE_parameter
+			return BazaarParser.RULE_parameter
 		}
 		override open
 		func accept<T>(_ visitor: ParseTreeVisitor<T>) -> T? {
-			if let visitor = visitor as? TemplateParserVisitor {
+			if let visitor = visitor as? BazaarParserVisitor {
 			    return visitor.visitParameter(self)
 			}
-			else if let visitor = visitor as? TemplateParserBaseVisitor {
+			else if let visitor = visitor as? BazaarParserBaseVisitor {
 			    return visitor.visitParameter(self)
 			}
 			else {
@@ -369,7 +369,7 @@ open class TemplateParser: Parser {
 	 open func parameter() throws -> ParameterContext {
 		var _localctx: ParameterContext
 		_localctx = ParameterContext(_ctx, getState())
-		try enterRule(_localctx, 8, TemplateParser.RULE_parameter)
+		try enterRule(_localctx, 8, BazaarParser.RULE_parameter)
 		var _la: Int = 0
 		defer {
 	    		try! exitRule()
@@ -381,9 +381,9 @@ open class TemplateParser: Parser {
 		 	setState(42)
 		 	try _errHandler.sync(self)
 		 	_la = try _input.LA(1)
-		 	if (_la == TemplateParser.Tokens.QUESTION.rawValue) {
+		 	if (_la == BazaarParser.Tokens.QUESTION.rawValue) {
 		 		setState(41)
-		 		try match(TemplateParser.Tokens.QUESTION.rawValue)
+		 		try match(BazaarParser.Tokens.QUESTION.rawValue)
 
 		 	}
 
@@ -407,14 +407,14 @@ open class TemplateParser: Parser {
 			}
 		override open
 		func getRuleIndex() -> Int {
-			return TemplateParser.RULE_type_identifier
+			return BazaarParser.RULE_type_identifier
 		}
 		override open
 		func accept<T>(_ visitor: ParseTreeVisitor<T>) -> T? {
-			if let visitor = visitor as? TemplateParserVisitor {
+			if let visitor = visitor as? BazaarParserVisitor {
 			    return visitor.visitType_identifier(self)
 			}
-			else if let visitor = visitor as? TemplateParserBaseVisitor {
+			else if let visitor = visitor as? BazaarParserBaseVisitor {
 			    return visitor.visitType_identifier(self)
 			}
 			else {
@@ -426,7 +426,7 @@ open class TemplateParser: Parser {
 	 open func type_identifier() throws -> Type_identifierContext {
 		var _localctx: Type_identifierContext
 		_localctx = Type_identifierContext(_ctx, getState())
-		try enterRule(_localctx, 10, TemplateParser.RULE_type_identifier)
+		try enterRule(_localctx, 10, BazaarParser.RULE_type_identifier)
 		defer {
 	    		try! exitRule()
 	    }
@@ -448,18 +448,18 @@ open class TemplateParser: Parser {
 	public class IdentifierContext: ParserRuleContext {
 			open
 			func IDENTIFIER() -> TerminalNode? {
-				return getToken(TemplateParser.Tokens.IDENTIFIER.rawValue, 0)
+				return getToken(BazaarParser.Tokens.IDENTIFIER.rawValue, 0)
 			}
 		override open
 		func getRuleIndex() -> Int {
-			return TemplateParser.RULE_identifier
+			return BazaarParser.RULE_identifier
 		}
 		override open
 		func accept<T>(_ visitor: ParseTreeVisitor<T>) -> T? {
-			if let visitor = visitor as? TemplateParserVisitor {
+			if let visitor = visitor as? BazaarParserVisitor {
 			    return visitor.visitIdentifier(self)
 			}
-			else if let visitor = visitor as? TemplateParserBaseVisitor {
+			else if let visitor = visitor as? BazaarParserBaseVisitor {
 			    return visitor.visitIdentifier(self)
 			}
 			else {
@@ -471,14 +471,14 @@ open class TemplateParser: Parser {
 	 open func identifier() throws -> IdentifierContext {
 		var _localctx: IdentifierContext
 		_localctx = IdentifierContext(_ctx, getState())
-		try enterRule(_localctx, 12, TemplateParser.RULE_identifier)
+		try enterRule(_localctx, 12, BazaarParser.RULE_identifier)
 		defer {
 	    		try! exitRule()
 	    }
 		do {
 		 	try enterOuterAlt(_localctx, 1)
 		 	setState(48)
-		 	try match(TemplateParser.Tokens.IDENTIFIER.rawValue)
+		 	try match(BazaarParser.Tokens.IDENTIFIER.rawValue)
 
 		}
 		catch ANTLRException.recognition(let re) {
