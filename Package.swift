@@ -22,7 +22,16 @@ let package = Package(
         ),
         .target(
             name: "Parser",
-            dependencies: [.product(name: "Antlr4", package: "antlr4")]
+            dependencies: [.product(name: "Antlr4", package: "antlr4")],
+            exclude: [
+                "BazaarLexer.g4",
+                "BazaarLexer.interp",
+                "BazaarLexer.tokens",
+                "BazaarParser.g4",
+                "BazaarParser.tokens",
+                "BazaarParser.interp",
+                "Makefile"
+            ]
         ),
         .testTarget(
             name: "ParserTests",

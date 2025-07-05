@@ -1,6 +1,7 @@
 lexer grammar BazaarLexer;
 
-VIEW    : 'view';
+COMPONENT    : 'component';
+DATA         : 'data';
 
 COMMA     : ',';
 LCURLY    : '{';

@@ -30,3 +30,7 @@ lint:
 .PHONY: pre-commit
 pre-commit:
 	@$(PRE_COMMIT) run
+
+.PHONY: test
+test:
+	@swift test
