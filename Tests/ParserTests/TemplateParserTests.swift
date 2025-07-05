@@ -4,7 +4,18 @@ import Testing
 
 struct ParserTests {
     static let example = """
-    view Text
+    data Person {
+        firstName String
+        lastName String
+    }
+
+    component Text {
+        value String
+    }
+
+    Profile(person Person) component {
+        Text(person.firstName)
+    }
     """
 
     @Test
@@ -14,7 +25,7 @@ struct ParserTests {
         let lexer = BazaarLexer(input)
         let ts = CommonTokenStream(lexer)
         let parser = try BazaarParser(ts)
-        let tree = try parser.template()
+        let tree = try parser.bzr()
 
         // When
         Visitor().visit(tree)
@@ -22,9 +33,18 @@ struct ParserTests {
 }
 
 class Visitor: BazaarParserBaseVisitor<Void> {
-    override func visitView(_ ctx: BazaarParser.ViewContext) {
-        print(ctx.getText())
+    override func visitData_declaration(_ ctx: BazaarParser.Data_declarationContext) {
+        print("Data: \(ctx.getText())")
+        super.visitData_declaration(ctx)
+    }
 
-        super.visitView(ctx)
+    override func visitComponent_declaration(_ ctx: BazaarParser.Component_declarationContext) {
+        print("Component: \(ctx.getText())")
+        super.visitComponent_declaration(ctx)
+    }
+
+    override func visitTemplate_declaration(_ ctx: BazaarParser.Template_declarationContext) {
+        print("Template: \(ctx.getText())")
+        super.visitTemplate_declaration(ctx)
     }
 }

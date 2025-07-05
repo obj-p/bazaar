@@ -4,7 +4,7 @@ GRAMMAR_PARSER   = $(GRAMMAR_NAME)Parser.g4
 GENERATED_LEXER  = $(GRAMMAR_NAME)Lexer.swift
 GENERATED_PARSER = $(GRAMMAR_NAME)Parser.swift
 GRUN_INPUT      ?=
-GRUN_RULE       ?= template
+GRUN_RULE       ?= bzr
 
 include ../../scripts/ANTLR.mk
 

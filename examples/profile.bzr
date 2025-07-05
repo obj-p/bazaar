@@ -1,0 +1,12 @@
+data Person {
+    firstName String
+    lastName String
+}
+
+component Text {
+    value String
+}
+
+template Profile(person Person) component {
+    Text(person.firstName)
+}
