@@ -13,7 +13,7 @@ struct ParserTests {
         value String
     }
 
-    Profile(person Person) component {
+    template Profile(person Person) {
         Text(person.firstName)
     }
     """

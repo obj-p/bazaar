@@ -7,6 +7,6 @@ component Text {
     value String
 }
 
-template Profile(person Person) component {
+template Profile(person Person) {
     Text(person.firstName)
 }
