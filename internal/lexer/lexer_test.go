@@ -1,21 +1,43 @@
 package lexer
 
-import (
-	"github.com/obj-p/bazaar/internal/token"
-	"testing"
-)
+import "testing"
 
 func TestNextToken(t *testing.T) {
-	input := ",(){}"
+	input := `
+	component Row {
+		children []component
+	}
+
+	component Button {
+		label string
+		onClick? function()
+	}
+
+	component Text {
+		value string
+	}
+
+	function print(message string)
+
+	template TextAndButtonRow() component {
+		Row {
+			Text("Hello, text!)
+
+			Button("Click me!, function() {
+				print("Hello, from button!)
+			})
+		}
+	}
+	`
+
 	tests := []struct {
-		expectedType    token.TokenType
+		expectedType    TokenType
 		expectedLiteral string
 	}{
-		{token.COMMA, ","},
-		{token.LPAREN, "("},
-		{token.RPAREN, ")"},
-		{token.LBRACE, "{"},
-		{token.RBRACE, "}"},
+		{COMPONENT, "component"},
+		{IDENTIFIER, "Row"},
+		{LBRACE, "{"},
+		{IDENTIFIER, "children"},
 	}
 
 	l := New(input)
