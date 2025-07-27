@@ -39,6 +39,8 @@ func (l *Lexer) NextToken() Token {
 		tok = newToken(COMMA, l.ch)
 	case '?':
 		tok = newToken(QUESTION, l.ch)
+	case 0:
+		tok.Type = EOF
 	default:
 		if isLetter(l.ch) {
 			tok.Literal = l.readIdentifier()

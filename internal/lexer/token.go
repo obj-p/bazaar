@@ -15,6 +15,12 @@ const (
 	NULL
 	TEMPLATE
 
+	// Control flow
+	FOR
+	IF
+	IN
+	LET
+
 	// Literals
 	BOOL
 	INT
@@ -40,12 +46,17 @@ type Token struct {
 }
 
 var keywords = map[string]TokenType{
+	"bool":      BOOL,
 	"component": COMPONENT,
 	"data":      DATA,
 	"double":    DOUBLE,
 	"enum":      ENUM,
+	"for":       FOR,
 	"function":  FUNCTION,
+	"if":        IF,
+	"in":        IN,
 	"int":       INT,
+	"let":       LET,
 	"null":      NULL,
 	"string":    STRING,
 	"template":  TEMPLATE,

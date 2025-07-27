@@ -22,25 +22,31 @@ func TestNextToken(t *testing.T) {
 		value string
 	}
 
-	function add(x int, y int)
+	function add(x int, y int) int
 
-	function truncate(x double)
+	function truncate(x double) int
 
 	function print(message string)
+
+	function dismiss(animated bool)
 
 	data TextAndButtonRowModel {
 		value string
 		label string
-		message string
+		message? string
 	}
 
-	template TextAndButtonRow(model TextAndButtonRowModel) component {
-		Row {
-			Text(model.value)
+	template TextAndButtonRow(models []TextAndButtonRowModel) {
+		for model in models {
+			Row {
+				Text(model.value)
 
-			Button(model.label, function() {
-				print(model.message)
-			})
+				Button(model.label, function() {
+					if let message = model.message {
+						print(message)
+					}
+				})
+			}
 		}
 	}
 	`
@@ -99,17 +105,25 @@ func TestNextToken(t *testing.T) {
 		{IDENTIFIER, "y"},
 		{INT, "int"},
 		{RPAREN, ")"},
+		{INT, "int"},
 		{FUNCTION, "function"},
 		{IDENTIFIER, "truncate"},
 		{LPAREN, "("},
 		{IDENTIFIER, "x"},
 		{DOUBLE, "double"},
 		{RPAREN, ")"},
+		{INT, "int"},
 		{FUNCTION, "function"},
 		{IDENTIFIER, "print"},
 		{LPAREN, "("},
 		{IDENTIFIER, "message"},
 		{STRING, "string"},
+		{RPAREN, ")"},
+		{FUNCTION, "function"},
+		{IDENTIFIER, "dismiss"},
+		{LPAREN, "("},
+		{IDENTIFIER, "animated"},
+		{BOOL, "bool"},
 		{RPAREN, ")"},
 		{DATA, "data"},
 		{IDENTIFIER, "TextAndButtonRowModel"},
@@ -119,7 +133,58 @@ func TestNextToken(t *testing.T) {
 		{IDENTIFIER, "label"},
 		{STRING, "string"},
 		{IDENTIFIER, "message"},
+		{QUESTION, "?"},
 		{STRING, "string"},
+		{RBRACE, "}"},
+		{TEMPLATE, "template"},
+		{IDENTIFIER, "TextAndButtonRow"},
+		{LPAREN, "("},
+		{IDENTIFIER, "models"},
+		{LBRACK, "["},
+		{RBRACK, "]"},
+		{IDENTIFIER, "TextAndButtonRowModel"},
+		{RPAREN, ")"},
+		{LBRACE, "{"},
+		{FOR, "for"},
+		{IDENTIFIER, "model"},
+		{IN, "in"},
+		{IDENTIFIER, "models"},
+		{LBRACE, "{"},
+		{IDENTIFIER, "Row"},
+		{LBRACE, "{"},
+		{IDENTIFIER, "Text"},
+		{LPAREN, "("},
+		{IDENTIFIER, "model"},
+		{DOT, "."},
+		{IDENTIFIER, "value"},
+		{RPAREN, ")"},
+		{IDENTIFIER, "Button"},
+		{LPAREN, "("},
+		{IDENTIFIER, "model"},
+		{DOT, "."},
+		{IDENTIFIER, "label"},
+		{COMMA, ","},
+		{FUNCTION, "function"},
+		{LPAREN, "("},
+		{RPAREN, ")"},
+		{LBRACE, "{"},
+		{IF, "if"},
+		{LET, "let"},
+		{IDENTIFIER, "message"},
+		{ASSIGN, "="},
+		{IDENTIFIER, "model"},
+		{DOT, "."},
+		{IDENTIFIER, "message"},
+		{LBRACE, "{"},
+		{IDENTIFIER, "print"},
+		{LPAREN, "("},
+		{IDENTIFIER, "message"},
+		{RPAREN, ")"},
+		{RBRACE, "}"},
+		{RBRACE, "}"},
+		{RPAREN, ")"},
+		{RBRACE, "}"},
+		{RBRACE, "}"},
 		{RBRACE, "}"},
 	}
 
@@ -137,5 +202,10 @@ func TestNextToken(t *testing.T) {
 			t.Fatalf("tests[%d] - literal wrong. expected=%q, got=%q",
 				i, tt.expectedLiteral, tok.Literal)
 		}
+	}
+
+	tok := l.NextToken()
+	if tok.Type != EOF || tok.Literal != "" {
+		t.Fatalf("expected EOF got=%q", tok.Literal)
 	}
 }
