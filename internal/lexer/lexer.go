@@ -27,12 +27,18 @@ func (l *Lexer) NextToken() Token {
 		tok = newToken(LPAREN, l.ch)
 	case ')':
 		tok = newToken(RPAREN, l.ch)
-	case ',':
-		tok = newToken(COMMA, l.ch)
 	case '{':
 		tok = newToken(LBRACE, l.ch)
 	case '}':
 		tok = newToken(RBRACE, l.ch)
+	case '=':
+		tok = newToken(ASSIGN, l.ch)
+	case '.':
+		tok = newToken(DOT, l.ch)
+	case ',':
+		tok = newToken(COMMA, l.ch)
+	case '?':
+		tok = newToken(QUESTION, l.ch)
 	default:
 		if isLetter(l.ch) {
 			tok.Literal = l.readIdentifier()
