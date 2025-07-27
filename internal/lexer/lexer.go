@@ -1,5 +1,7 @@
 package lexer
 
+import "github.com/obj-p/bazaar/internal/token"
+
 type Lexer struct {
 	input        string
 	position     int
@@ -13,48 +15,48 @@ func New(input string) *Lexer {
 	return l
 }
 
-func (l *Lexer) NextToken() Token {
-	var tok Token
+func (l *Lexer) NextToken() token.Token {
+	var tok token.Token
 
 	l.skipWhitespace()
 
 	switch l.ch {
 	case '[':
-		tok = newToken(LBRACK, l.ch)
+		tok = newToken(token.LBRACK, l.ch)
 	case ']':
-		tok = newToken(RBRACK, l.ch)
+		tok = newToken(token.RBRACK, l.ch)
 	case '(':
-		tok = newToken(LPAREN, l.ch)
+		tok = newToken(token.LPAREN, l.ch)
 	case ')':
-		tok = newToken(RPAREN, l.ch)
+		tok = newToken(token.RPAREN, l.ch)
 	case '{':
-		tok = newToken(LBRACE, l.ch)
+		tok = newToken(token.LBRACE, l.ch)
 	case '}':
-		tok = newToken(RBRACE, l.ch)
+		tok = newToken(token.RBRACE, l.ch)
 	case '+':
-		tok = newToken(PLUS, l.ch)
+		tok = newToken(token.PLUS, l.ch)
 	case '=':
-		tok = newToken(ASSIGN, l.ch)
+		tok = newToken(token.ASSIGN, l.ch)
 	case '.':
-		tok = newToken(DOT, l.ch)
+		tok = newToken(token.DOT, l.ch)
 	case ',':
-		tok = newToken(COMMA, l.ch)
+		tok = newToken(token.COMMA, l.ch)
 	case '?':
-		tok = newToken(QUESTION, l.ch)
+		tok = newToken(token.QUESTION, l.ch)
 	case 0:
-		tok.Type = EOF
+		tok.Type = token.EOF
 	default:
 		if isLetter(l.ch) {
 			tok.Literal = l.readIdentifier()
-			tok.Type = LookupIdentifier(tok.Literal)
+			tok.Type = token.LookupIdentifier(tok.Literal)
 			return tok
 		} else if isDigit(l.ch) {
 			// TODO: double
 			tok.Literal = l.readNumber()
-			tok.Type = INT
+			tok.Type = token.INT
 			return tok
 		} else {
-			tok = newToken(ILLEGAL, l.ch)
+			tok = newToken(token.ILLEGAL, l.ch)
 		}
 	}
 
@@ -114,6 +116,6 @@ func isLetter(ch byte) bool {
 	return 'a' <= ch && ch <= 'z' || 'A' <= ch && ch <= 'Z' || ch == '_'
 }
 
-func newToken(tokenType TokenType, ch byte) Token {
-	return Token{Type: tokenType, Literal: string(ch)}
+func newToken(tokenType token.TokenType, ch byte) token.Token {
+	return token.Token{Type: tokenType, Literal: string(ch)}
 }

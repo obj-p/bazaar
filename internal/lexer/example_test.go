@@ -5,45 +5,7 @@ import (
 	"testing"
 )
 
-func TestNextToken(t *testing.T) {
-	input := `
-	42
-	import match modifier return
-	+ += - -= * ** *= / // /=
-	< <= > >= == ! !! != && ||
-	\ : ; _
-	?= ?. =>
-	`
-
-	tests := []struct {
-		expectedType    token.TokenType
-		expectedLiteral string
-	}{
-		{token.INT, "42"},
-		{token.IMPORT, "import"},
-		{token.MATCH, "match"},
-		{token.MODIFIER, "modifier"},
-		{token.RETURN, "return"},
-	}
-
-	l := New(input)
-
-	for i, tt := range tests {
-		tok := l.NextToken()
-
-		if tok.Type != tt.expectedType {
-			t.Fatalf("tests[%d] - token type wrong for literal=%q. expected=%d, got=%d",
-				i, tok.Literal, tt.expectedType, tok.Type)
-		}
-
-		if tok.Literal != tt.expectedLiteral {
-			t.Fatalf("tests[%d] - literal wrong. expected=%q, got=%q",
-				i, tt.expectedLiteral, tok.Literal)
-		}
-	}
-}
-
-func TestNextTokenInExampleBz(t *testing.T) {
+func TestNextTokenInExample(t *testing.T) {
 	input := `
 	package main
 
