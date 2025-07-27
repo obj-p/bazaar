@@ -2,7 +2,7 @@ package lexer
 
 import "testing"
 
-func TestNextToken(t *testing.T) {
+func TestNextTokenWithValidSyntax(t *testing.T) {
 	input := `
 	enum RowAlignment {
 		top, center, bottom
@@ -207,5 +207,35 @@ func TestNextToken(t *testing.T) {
 	tok := l.NextToken()
 	if tok.Type != EOF || tok.Literal != "" {
 		t.Fatalf("expected EOF got=%q", tok.Literal)
+	}
+}
+
+func TestNextTokenWithInvalidSyntax(t *testing.T) {
+	input := `
+	+ += - -= ! != !! * *= / // /= == ?= ?. => \ : ;
+	modifier vararg and or not match
+	`
+
+	tests := []struct {
+		expectedType    TokenType
+		expectedLiteral string
+	}{
+		{PLUS, "+"},
+	}
+
+	l := New(input)
+
+	for i, tt := range tests {
+		tok := l.NextToken()
+
+		if tok.Type != tt.expectedType {
+			t.Fatalf("tests[%d] - token type wrong for literal=%q. expected=%d, got=%d",
+				i, tok.Literal, tt.expectedType, tok.Type)
+		}
+
+		if tok.Literal != tt.expectedLiteral {
+			t.Fatalf("tests[%d] - literal wrong. expected=%q, got=%q",
+				i, tt.expectedLiteral, tok.Literal)
+		}
 	}
 }

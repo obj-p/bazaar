@@ -27,6 +27,9 @@ const (
 	DOUBLE
 	STRING
 
+	// Operators
+	PLUS
+
 	// Punctuation
 	ASSIGN
 	COMMA
