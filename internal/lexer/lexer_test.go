@@ -2,8 +2,48 @@ package lexer
 
 import "testing"
 
-func TestNextTokenWithValidSyntax(t *testing.T) {
+func TestNextToken(t *testing.T) {
 	input := `
+	42
+	import match modifier return
+	+ += - -= * ** *= / // /=
+	< <= > >= == ! !! != && ||
+	\ : ;
+	?= ?. =>
+	`
+
+	tests := []struct {
+		expectedType    TokenType
+		expectedLiteral string
+	}{
+		{INT, "42"},
+		{IMPORT, "import"},
+		{MATCH, "match"},
+		{MODIFIER, "modifier"},
+		{RETURN, "return"},
+	}
+
+	l := New(input)
+
+	for i, tt := range tests {
+		tok := l.NextToken()
+
+		if tok.Type != tt.expectedType {
+			t.Fatalf("tests[%d] - token type wrong for literal=%q. expected=%d, got=%d",
+				i, tok.Literal, tt.expectedType, tok.Type)
+		}
+
+		if tok.Literal != tt.expectedLiteral {
+			t.Fatalf("tests[%d] - literal wrong. expected=%q, got=%q",
+				i, tt.expectedLiteral, tok.Literal)
+		}
+	}
+}
+
+func TestNextTokenInExampleBz(t *testing.T) {
+	input := `
+	package main
+
 	enum RowAlignment {
 		top, center, bottom
 	}
@@ -15,20 +55,20 @@ func TestNextTokenWithValidSyntax(t *testing.T) {
 
 	component Button {
 		label string
-		onClick? function() = null
+		onClick? func() = nil
 	}
 
 	component Text {
 		value string
 	}
 
-	function add(x int, y int) int
+	func add(x int, y int) int
 
-	function truncate(x double) int
+	func truncate(x double) int
 
-	function print(message string)
+	func print(message string)
 
-	function dismiss(animated bool)
+	func dismiss(animated bool)
 
 	data TextAndButtonRowModel {
 		value string
@@ -41,11 +81,11 @@ func TestNextTokenWithValidSyntax(t *testing.T) {
 			Row {
 				Text(model.value)
 
-				Button(model.label, function() {
+				Button(model.label) {
 					if let message = model.message {
 						print(message)
 					}
-				})
+				}
 			}
 		}
 	}
@@ -55,6 +95,8 @@ func TestNextTokenWithValidSyntax(t *testing.T) {
 		expectedType    TokenType
 		expectedLiteral string
 	}{
+		{PACKAGE, "package"},
+		{IDENTIFIER, "main"},
 		{ENUM, "enum"},
 		{IDENTIFIER, "RowAlignment"},
 		{LBRACE, "{"},
@@ -84,11 +126,11 @@ func TestNextTokenWithValidSyntax(t *testing.T) {
 		{STRING, "string"},
 		{IDENTIFIER, "onClick"},
 		{QUESTION, "?"},
-		{FUNCTION, "function"},
+		{FUNC, "func"},
 		{LPAREN, "("},
 		{RPAREN, ")"},
 		{ASSIGN, "="},
-		{NULL, "null"},
+		{NIL, "nil"},
 		{RBRACE, "}"},
 		{COMPONENT, "component"},
 		{IDENTIFIER, "Text"},
@@ -96,7 +138,7 @@ func TestNextTokenWithValidSyntax(t *testing.T) {
 		{IDENTIFIER, "value"},
 		{STRING, "string"},
 		{RBRACE, "}"},
-		{FUNCTION, "function"},
+		{FUNC, "func"},
 		{IDENTIFIER, "add"},
 		{LPAREN, "("},
 		{IDENTIFIER, "x"},
@@ -106,20 +148,20 @@ func TestNextTokenWithValidSyntax(t *testing.T) {
 		{INT, "int"},
 		{RPAREN, ")"},
 		{INT, "int"},
-		{FUNCTION, "function"},
+		{FUNC, "func"},
 		{IDENTIFIER, "truncate"},
 		{LPAREN, "("},
 		{IDENTIFIER, "x"},
 		{DOUBLE, "double"},
 		{RPAREN, ")"},
 		{INT, "int"},
-		{FUNCTION, "function"},
+		{FUNC, "func"},
 		{IDENTIFIER, "print"},
 		{LPAREN, "("},
 		{IDENTIFIER, "message"},
 		{STRING, "string"},
 		{RPAREN, ")"},
-		{FUNCTION, "function"},
+		{FUNC, "func"},
 		{IDENTIFIER, "dismiss"},
 		{LPAREN, "("},
 		{IDENTIFIER, "animated"},
@@ -163,9 +205,6 @@ func TestNextTokenWithValidSyntax(t *testing.T) {
 		{IDENTIFIER, "model"},
 		{DOT, "."},
 		{IDENTIFIER, "label"},
-		{COMMA, ","},
-		{FUNCTION, "function"},
-		{LPAREN, "("},
 		{RPAREN, ")"},
 		{LBRACE, "{"},
 		{IF, "if"},
@@ -182,7 +221,6 @@ func TestNextTokenWithValidSyntax(t *testing.T) {
 		{RPAREN, ")"},
 		{RBRACE, "}"},
 		{RBRACE, "}"},
-		{RPAREN, ")"},
 		{RBRACE, "}"},
 		{RBRACE, "}"},
 		{RBRACE, "}"},
@@ -207,35 +245,5 @@ func TestNextTokenWithValidSyntax(t *testing.T) {
 	tok := l.NextToken()
 	if tok.Type != EOF || tok.Literal != "" {
 		t.Fatalf("expected EOF got=%q", tok.Literal)
-	}
-}
-
-func TestNextTokenWithInvalidSyntax(t *testing.T) {
-	input := `
-	+ += - -= ! != !! * *= / // /= == ?= ?. => \ : ;
-	modifier vararg and or not match
-	`
-
-	tests := []struct {
-		expectedType    TokenType
-		expectedLiteral string
-	}{
-		{PLUS, "+"},
-	}
-
-	l := New(input)
-
-	for i, tt := range tests {
-		tok := l.NextToken()
-
-		if tok.Type != tt.expectedType {
-			t.Fatalf("tests[%d] - token type wrong for literal=%q. expected=%d, got=%d",
-				i, tok.Literal, tt.expectedType, tok.Type)
-		}
-
-		if tok.Literal != tt.expectedLiteral {
-			t.Fatalf("tests[%d] - literal wrong. expected=%q, got=%q",
-				i, tt.expectedLiteral, tok.Literal)
-		}
 	}
 }

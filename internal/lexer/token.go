@@ -11,8 +11,12 @@ const (
 	COMPONENT
 	DATA
 	ENUM
-	FUNCTION
-	NULL
+	FUNC
+	IMPORT
+	MODIFIER
+	NIL
+	PACKAGE
+	RETURN
 	TEMPLATE
 
 	// Control flow
@@ -20,6 +24,7 @@ const (
 	IF
 	IN
 	LET
+	MATCH
 
 	// Literals
 	BOOL
@@ -55,12 +60,17 @@ var keywords = map[string]TokenType{
 	"double":    DOUBLE,
 	"enum":      ENUM,
 	"for":       FOR,
-	"function":  FUNCTION,
+	"func":      FUNC,
 	"if":        IF,
+	"import":    IMPORT,
 	"in":        IN,
 	"int":       INT,
 	"let":       LET,
-	"null":      NULL,
+	"match":     MATCH,
+	"modifier":  MODIFIER,
+	"nil":       NIL,
+	"package":   PACKAGE,
+	"return":    RETURN,
 	"string":    STRING,
 	"template":  TEMPLATE,
 }
