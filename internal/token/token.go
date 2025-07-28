@@ -46,14 +46,14 @@ const (
 	SEMICOLON  // ;
 	UNDERSCORE // _
 
-	LBRACK   // [
-	RBRACK   // ]
-	LPAREN   // (
-	RPAREN   // )
-	LBRACE   // {
-	RBRACE   // }
-	QUESTION // ?
+	LBRACK // [
+	RBRACK // ]
+	LPAREN // (
+	RPAREN // )
+	LBRACE // {
+	RBRACE // }
 
+	QUESTION // ?
 	COALESCE // ??
 	UNWRAP   // !!
 	operator_end

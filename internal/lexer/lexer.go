@@ -24,6 +24,15 @@ func New(input string) *Lexer {
 	return l
 }
 
+func (l *Lexer) chooseLeftOnPeek(peekChar rune, left token.Token, right token.Token) token.Token {
+	if l.ch == peekChar {
+		l.nextChar()
+		return left
+	} else {
+		return right
+	}
+}
+
 func (l *Lexer) nextChar() rune {
 	ch := l.ch
 	l.readPosition += 1
@@ -46,6 +55,19 @@ func (l *Lexer) NextToken() token.Token {
 	}
 
 	switch ch {
+	case eof:
+		l.readPosition -= 1
+		tok = token.EOF
+	case '+':
+		tok = l.chooseLeftOnPeek('=', token.ADD_ASSIGN, token.ADD)
+	case '-':
+		tok = l.chooseLeftOnPeek('=', token.SUB_ASSIGN, token.SUB)
+	case '*':
+		tok = l.chooseLeftOnPeek('=', token.MUL_ASSIGN, token.MUL)
+	case '/':
+		tok = l.chooseLeftOnPeek('=', token.DIV_ASSIGN, token.DIV)
+	case '%':
+		tok = l.chooseLeftOnPeek('=', token.MOD_ASSIGN, token.MOD)
 	case '[':
 		tok = token.LBRACK
 	case ']':
@@ -58,8 +80,6 @@ func (l *Lexer) NextToken() token.Token {
 		tok = token.LBRACE
 	case '}':
 		tok = token.RBRACE
-	case '+':
-		tok = token.ADD
 	case '=':
 		tok = token.ASSIGN
 	case '.':
@@ -68,9 +88,6 @@ func (l *Lexer) NextToken() token.Token {
 		tok = token.COMMA
 	case '?':
 		tok = token.QUESTION
-	case eof:
-		l.readPosition -= 1
-		tok = token.EOF
 	default:
 		if isLetter(ch) {
 			tok = l.readIdentifier()
