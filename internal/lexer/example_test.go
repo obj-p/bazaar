@@ -57,7 +57,7 @@ func TestNextTokenInExample(t *testing.T) {
 	`
 
 	tests := []struct {
-		expectedType    token.TokenType
+		expectedToken   token.Token
 		expectedLiteral string
 	}{
 		{token.PACKAGE, "package"},
@@ -194,21 +194,24 @@ func TestNextTokenInExample(t *testing.T) {
 	l := New(input)
 
 	for i, tt := range tests {
-		tok := l.NextToken()
+		expectedToken := tt.expectedToken.String()
+		tok := l.NextToken().String()
+		literal := l.Literal()
 
-		if tok.Type != tt.expectedType {
-			t.Fatalf("tests[%d] - token type wrong for literal=%q. expected=%d, got=%d",
-				i, tok.Literal, tt.expectedType, tok.Type)
+		if tok != expectedToken {
+			t.Fatalf("tests[%d] - token type wrong for literal=%q. expected=%q, got=%q",
+				i, literal, expectedToken, tok)
 		}
 
-		if tok.Literal != tt.expectedLiteral {
+		if literal != tt.expectedLiteral {
 			t.Fatalf("tests[%d] - literal wrong. expected=%q, got=%q",
-				i, tt.expectedLiteral, tok.Literal)
+				i, tt.expectedLiteral, literal)
 		}
 	}
 
 	tok := l.NextToken()
-	if tok.Type != token.EOF || tok.Literal != "" {
-		t.Fatalf("expected EOF got=%q", tok.Literal)
+	literal := l.Literal()
+	if tok != token.EOF || literal != "" {
+		t.Fatalf("expected EOF got=%q", literal)
 	}
 }
