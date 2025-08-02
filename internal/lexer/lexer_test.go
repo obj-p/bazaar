@@ -9,10 +9,9 @@ import (
 
 func TestLexer(t *testing.T) {
 	tokens := `
-	true false
-	"Hello, World!"
+	nil true false 42.0 1337 "Hello, World!" foobar
 	// Some comment
-	foobar
+	=!?&|[](){}
 	`
 
 	tests := []struct {
@@ -20,19 +19,38 @@ func TestLexer(t *testing.T) {
 		expectedValue  string
 	}{
 		{"Whitespace", "\n\t"},
+		{"Nil", "nil"},
+		{"Whitespace", " "},
 		{"Bool", "true"},
 		{"Whitespace", " "},
 		{"Bool", "false"},
-		{"Whitespace", "\n\t"},
+		{"Whitespace", " "},
+		{"Number", "42.0"},
+		{"Whitespace", " "},
+		{"Number", "1337"},
+		{"Whitespace", " "},
 		{"String", "\"Hello, World!\""},
+		{"Whitespace", " "},
+		{"Ident", "foobar"},
 		{"Whitespace", "\n\t"},
 		{"Comment", "// Some comment"},
 		{"Whitespace", "\n\t"},
-		{"Ident", "foobar"},
+		{"Operator", "="},
+		{"Operator", "!"},
+		{"Operator", "?"},
+		{"Operator", "&"},
+		{"Operator", "|"},
+		{"Operator", "["},
+		{"Operator", "]"},
+		{"Operator", "("},
+		{"Operator", ")"},
+		{"Operator", "{"},
+		{"Operator", "}"},
 	}
 
 	symbols := lexer.SymbolsByRune(BazaarLexer)
-	lex, _ := BazaarLexer.LexString("tokens", tokens)
+	lex, err := BazaarLexer.LexString("tokens", tokens)
+	require.NoError(t, err)
 
 	for i, tt := range tests {
 		tok, err := lex.Next()

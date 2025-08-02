@@ -1,0 +1,46 @@
+package main
+
+enum RowAlignment {
+    top, center, bottom
+}
+
+component Row {
+    alignment RowAlignment = .center
+    children []component
+}
+
+component Button {
+    label string
+    onClick? func() = nil
+}
+
+component Text {
+    value string
+}
+
+func add(x int, y int) int
+
+func truncate(x double) int
+
+func print(message string)
+
+// func dismiss(animated bool = false)
+
+data TextAndButtonRowModel {
+    value string = "Hello, world!"
+    label string = "Click, me!"
+    message? string = nil
+}
+
+// template TextAndButtonRow(models []TextAndButtonRowModel) {
+//     for model in models {
+//         Row {
+//             Text(model.value)
+//             Button(model.label) {
+//                 if let message = model.message {
+//                     print(message)
+//                 }
+//             }
+//         }
+//     }
+// }
