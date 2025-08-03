@@ -83,9 +83,16 @@ type Value struct {
 	Symbol  *Symbol  `parser:"| @@"`
 }
 
+type Bool bool
+
+func (b *Bool) Capture(values []string) error {
+	*b = values[0] == "true"
+	return nil
+}
+
 type Literal struct {
 	Nil    bool    `parser:"@Nil"`
-	Bool   *string `parser:"| @Bool"`
+	Bool   *Bool   `parser:"| @('true' | 'false')"`
 	Number *string `parser:"| @Number"`
 	String *string `parser:"| @String"`
 }
