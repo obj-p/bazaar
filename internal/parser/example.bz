@@ -18,9 +18,9 @@ component Text {
     value string
 }
 
-func add(x int, y int) int
+func add(x int, y int) -> int
 
-func truncate(x double) int
+func truncate(x double) -> int
 
 func print(message string)
 

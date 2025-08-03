@@ -46,20 +46,20 @@ type Field struct {
 	Name     string   `parser:"@Ident"`
 	Optional bool     `parser:"@'?'?"`
 	Type     *TypeRef `parser:"@@"`
-	Default  *Value   `parser:"( '=' @@ )?"`
+	Default  *Value   `parser:"('=' @@)?"`
 }
 
 type Function struct {
 	Name       string      `parser:"'func' @Ident"`
 	Arguments  []*Argument `parser:"'(' (@@ (',' @@)*)? ')'"`
-	ReturnType *TypeRef    `parser:"@@?"`
+	ReturnType *TypeRef    `parser:"('-' '>' @@)?"`
 }
 
 type Argument struct {
 	Name     string   `parser:"@Ident"`
 	Optional bool     `parser:"@'?'?"`
 	Type     *TypeRef `parser:"@@"`
-	Default  *Value   `parser:"( '=' @@ )?"`
+	Default  *Value   `parser:"('=' @@)?"`
 }
 
 type TypeRef struct {
@@ -70,7 +70,7 @@ type TypeRef struct {
 
 type FunctionRef struct {
 	Arguments  []*Argument `parser:"'func' '(' (@@ (',' @@)*)? ')'"`
-	ReturnType *TypeRef    `parser:"@@?"`
+	ReturnType *TypeRef    `parser:"('-' '>' @@)?"`
 }
 
 type CollectionRef struct {
