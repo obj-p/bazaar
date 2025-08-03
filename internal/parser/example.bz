@@ -24,7 +24,12 @@ func truncate(x double) -> int
 
 func print(message string)
 
-// func dismiss(animated bool = false)
+func dismiss(animated bool = false)
+
+data Point {
+    x double = 0.0
+    y double = 0
+}
 
 data TextAndButtonRowModel {
     value string = "Hello, world!"
