@@ -16,9 +16,17 @@ bootstrap:
 fmt:
 	@go fmt ./...
 
+.PHONY: grammar
+grammar:
+	@go run github.com/obj-p/bazaar/cmd/bazaar grammar
+
 .PHONY: pre-commit
 pre-commit:
 	@$(PRE_COMMIT) run
+
+.PHONY: railroad
+railroad:
+	@go run github.com/alecthomas/participle/v2/cmd/railroad
 
 .PHONY: test
 test:
