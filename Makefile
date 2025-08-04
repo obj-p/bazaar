@@ -16,7 +16,7 @@ $(BIN_PRE_COMMIT): ## Download pre-commit
 .PHONY: bootstrap
 bootstrap: ## Development setup
 	@$(MAKE) $(BIN_PRE_COMMIT)
-	@$(PRE_COMMIT) install
+	@$(PRE_COMMIT) install --hook-type pre-commit --hook-type pre-push
 
 .PHONY: fmt
 fmt: ## go fmt
