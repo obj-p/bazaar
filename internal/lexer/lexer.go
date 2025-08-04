@@ -4,7 +4,6 @@ import "github.com/alecthomas/participle/v2/lexer"
 
 var BazaarLexer = lexer.MustSimple([]lexer.SimpleRule{
 	{Name: "Comment", Pattern: `//.*`},
-	{Name: "Nil", Pattern: `nil`},
 	{Name: "Number", Pattern: `(?:\d*\.)?\d+`},
 	{Name: "String", Pattern: `"(\\"|[^"])*"`},
 	{Name: "Ident", Pattern: `[\w_][\w\d_]*`},
