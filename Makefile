@@ -32,9 +32,9 @@ pre-commit: ## Run pre-commit
 
 .PHONY: railroad
 railroad: ## Visualize the Bazaar grammar
-	@go run github.com/alecthomas/participle/v2/cmd/railroad -h
+	@$(MAKE) grammar | bash scripts/railroad.sh
 
-.PHONY: test
+PHONY: test
 test: ## go test ./...
 	@go test ./...
 
