@@ -19,11 +19,11 @@ func TestLexer(t *testing.T) {
 		expectedValue  string
 	}{
 		{"Whitespace", "\n\t"},
-		{"Nil", "nil"},
+		{"Ident", "nil"}, // The parser has an expression for nil
 		{"Whitespace", " "},
-		{"Bool", "true"},
+		{"Ident", "true"}, // The parser has an expression for Bool
 		{"Whitespace", " "},
-		{"Bool", "false"},
+		{"Ident", "false"},
 		{"Whitespace", " "},
 		{"Number", "42.0"},
 		{"Whitespace", " "},

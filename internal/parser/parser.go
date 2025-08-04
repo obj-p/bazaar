@@ -91,7 +91,7 @@ func (b *Bool) Capture(values []string) error {
 }
 
 type Literal struct {
-	Nil    bool    `parser:"@Nil"`
+	Nil    bool    `parser:"@'nil'"`
 	Bool   *Bool   `parser:"| @('true' | 'false')"`
 	Number *string `parser:"| @Number"`
 	String *string `parser:"| @String"`
