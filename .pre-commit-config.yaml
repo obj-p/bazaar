@@ -14,3 +14,10 @@ repos:
         language: system
         types: [go]
         pass_filenames: false
+      - id: make test
+        stages: [pre-push]
+        name: make test
+        entry: "make test"
+        language: system
+        types: [go]
+        pass_filenames: false
