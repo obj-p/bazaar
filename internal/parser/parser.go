@@ -21,6 +21,8 @@ type Statement struct {
 	Component *Component `parser:"| @@"`
 	Function  *Function  `parser:"| @@"`
 	Data      *Data      `parser:"| @@"`
+	Template  *Template  `parser:"| @@"`
+	Preview   *Preview   `parser:"| @@"`
 }
 
 type Package struct {
@@ -40,6 +42,15 @@ type Component struct {
 type Data struct {
 	Name   string   `parser:"'data' @Ident"`
 	Fields []*Field `parser:"'{' @@* '}'"`
+}
+
+type Template struct {
+	Name      string      `parser:"'template' @Ident"`
+	Arguments []*Argument `parser:"'(' (@@ (',' @@)*)? ')'"`
+}
+
+type Preview struct {
+	Name string `parser:"'preview' @Ident"`
 }
 
 type Field struct {
