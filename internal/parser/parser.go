@@ -7,7 +7,7 @@ import (
 
 var BazaarParser = participle.MustBuild[Bazaar](
 	participle.Lexer(lexer.BazaarLexer),
-	participle.Elide("Comment", "Whitespace"),
+	participle.Elide("Comment", "StringExprWhitespace", "Whitespace"),
 	participle.UseLookahead(2),
 )
 
@@ -78,15 +78,6 @@ type CollectionRef struct {
 	ValueType *string `parser:"@Ident"`
 }
 
-type Fragment struct {
-	Escaped string `parser:"@Escaped"`
-	Text    string `parser:"| @Char"`
-}
-
-type String struct {
-	Fragments []*Fragment `parser:"\"\\\"\" @@* \"\\\"\""`
-}
-
 type Value struct {
 	Literal *Literal `parser:"@@"`
 	Symbol  *Symbol  `parser:"| @@"`
@@ -97,6 +88,16 @@ type Bool bool
 func (b *Bool) Capture(values []string) error {
 	*b = values[0] == "true"
 	return nil
+}
+
+type StringFragment struct {
+	Esc string `parser:"@StringEsc"`
+	// TODO: expression
+	Text string `parser:"| @StringText"`
+}
+
+type String struct {
+	Fragments []*StringFragment `parser:"\"\\\"\" @@* \"\\\"\""`
 }
 
 type Literal struct {
