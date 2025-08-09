@@ -37,17 +37,17 @@ data TextAndButtonRowModel {
     message? string = nil
 }
 
-template TextAndButtonRow(models []TextAndButtonRowModel) // {
+template TextAndButtonRow(models []TextAndButtonRowModel) {
 //     for model in models {
 //         Row {
 //             Text(model.value)
 //             Button(model.label) {
 //                 if let message = model.message {
-//                     print(message)
+    print(message)
 //                 }
 //             }
 //         }
 //     }
-// }
+}
 
-preview TextAndButtonRowPreview // {}
+preview TextAndButtonRowPreview {}

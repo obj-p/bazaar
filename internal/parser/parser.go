@@ -45,19 +45,21 @@ type Data struct {
 }
 
 type Template struct {
-	Name      string      `parser:"'template' @Ident"`
-	Arguments []*Argument `parser:"'(' (@@ (',' @@)*)? ')'"`
+	Name        string        `parser:"'template' @Ident"`
+	Arguments   []*Argument   `parser:"'(' (@@ (',' @@)*)? ')'"`
+	Expressions []*Expression `parser:"'{' (@@ (',' @@)*)? '}'"`
 }
 
 type Preview struct {
-	Name string `parser:"'preview' @Ident"`
+	Name        string        `parser:"'preview' @Ident"`
+	Expressions []*Expression `parser:"'{' (@@ (',' @@)*)? '}'"`
 }
 
 type Field struct {
-	Name     string   `parser:"@Ident"`
-	Optional bool     `parser:"@'?'?"`
-	Type     *TypeRef `parser:"@@"`
-	Default  *Value   `parser:"('=' @@)?"`
+	Name     string       `parser:"@Ident"`
+	Optional bool         `parser:"@'?'?"`
+	Type     *TypeRef     `parser:"@@"`
+	Default  *StaticValue `parser:"('=' @@)?"`
 }
 
 type Function struct {
@@ -67,10 +69,10 @@ type Function struct {
 }
 
 type Argument struct {
-	Name     string   `parser:"@Ident"`
-	Optional bool     `parser:"@'?'?"`
-	Type     *TypeRef `parser:"@@"`
-	Default  *Value   `parser:"('=' @@)?"`
+	Name     string       `parser:"@Ident"`
+	Optional bool         `parser:"@'?'?"`
+	Type     *TypeRef     `parser:"@@"`
+	Default  *StaticValue `parser:"('=' @@)?"`
 }
 
 type TypeRef struct {
@@ -89,9 +91,9 @@ type CollectionRef struct {
 	ValueType *string `parser:"@Ident"`
 }
 
-type Value struct {
+type StaticValue struct {
 	Literal *Literal `parser:"@@"`
-	Symbol  *Symbol  `parser:"| @@"`
+	Member  *string  `parser:"| '.' @Ident"`
 }
 
 type Bool bool
@@ -119,7 +121,13 @@ type Literal struct {
 	String *String `parser:"| @@"`
 }
 
-type Symbol struct {
-	Implicit bool    `parser:"@'.'?"`
-	Name     *string `parser:"@Ident"`
+type Expression struct {
+	Literal    *Literal    `parser:"@@"`
+	Invocation *Invocation `parser:"| @@"`
+	Identifer  *string     `parser:"| @Ident"`
+}
+
+type Invocation struct {
+	Name      string        `parser:"@Ident"`
+	Arguments []*Expression `parser:"'(' (@@ (',' @@)*)? ')'"`
 }
