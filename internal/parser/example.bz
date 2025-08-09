@@ -37,7 +37,7 @@ data TextAndButtonRowModel {
     message? string = nil
 }
 
-// template TextAndButtonRow(models []TextAndButtonRowModel) {
+template TextAndButtonRow(models []TextAndButtonRowModel) // {
 //     for model in models {
 //         Row {
 //             Text(model.value)
@@ -50,4 +50,4 @@ data TextAndButtonRowModel {
 //     }
 // }
 
-// preview TextAndButtonRowPreview {}
+preview TextAndButtonRowPreview // {}
