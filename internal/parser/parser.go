@@ -78,6 +78,15 @@ type CollectionRef struct {
 	ValueType *string `parser:"@Ident"`
 }
 
+type Fragment struct {
+	Escaped string `parser:"@Escaped"`
+	Text    string `parser:"| @Char"`
+}
+
+type String struct {
+	Fragments []*Fragment `parser:"\"\\\"\" @@* \"\\\"\""`
+}
+
 type Value struct {
 	Literal *Literal `parser:"@@"`
 	Symbol  *Symbol  `parser:"| @@"`
@@ -95,7 +104,7 @@ type Literal struct {
 	Bool   *Bool   `parser:"| @('true' | 'false')"`
 	Float  *string `parser:"| @Float"`
 	Int    *string `parser:"| @Int"`
-	String *string `parser:"| @String"`
+	String *String `parser:"| @@"`
 }
 
 type Symbol struct {
