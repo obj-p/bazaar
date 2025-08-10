@@ -1,0 +1,7 @@
+package arrays
+
+data ArrayFields {
+        empty []int = []
+        singleValue []string = ["hello, value!"]
+        trailingComma []bool = [true,]
+}

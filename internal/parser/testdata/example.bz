@@ -1,4 +1,4 @@
-package main
+package example
 
 import layout
 
@@ -42,6 +42,7 @@ data TextAndButtonRowModel {
 
 template TextAndButtonRow(models []TextAndButtonRowModel) {
 //     for model in models {
+//         @Modifiers(...)
 //         Row {
 //             Text(model.value)
 //             Button(model.label) {
@@ -54,3 +55,7 @@ template TextAndButtonRow(models []TextAndButtonRowModel) {
 }
 
 preview TextAndButtonRowPreview {}
+
+data Arrays {
+    empty []string = []
+}
