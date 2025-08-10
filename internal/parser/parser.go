@@ -53,18 +53,18 @@ type FunctionDecl struct {
 	Name       string       `parser:"'func' @Ident"`
 	Parameters []*Parameter `parser:"'(' (@@ (',' @@)*)? ')'"`
 	Return     *TypeExpr    `parser:"('-' '>' @@)?"`
-	// TODO: body
+	Block      *Block       `parser:"('{' @@? '}')?"`
 }
 
 type TemplateDecl struct {
 	Name       string       `parser:"'template' @Ident"`
 	Parameters []*Parameter `parser:"'(' (@@ (',' @@)*)? ')'"`
-	Statements []*BlockStmt `parser:"'{' (@@ (',' @@)*)? '}'"`
+	Block      *Block       `parser:"('{' @@? '}')?"`
 }
 
 type PreviewDecl struct {
-	Name        string      `parser:"'preview' @Ident"`
-	Expressions []*ExprStmt `parser:"'{' (@@ (',' @@)*)? '}'"`
+	Name  string  `parser:"'preview' @Ident"`
+	Exprs []*Expr `parser:"'{' (@@ (',' @@)*)? '}'"`
 }
 
 type Field struct {
@@ -109,9 +109,9 @@ func (b *Bool) Capture(values []string) error {
 }
 
 type StringFragment struct {
-	Esc  *string   `parser:"@StringEsc"`
-	Expr *ExprStmt `parser:"| '${' @@ '}'"`
-	Text *string   `parser:"| @StringText"`
+	Esc  *string `parser:"@StringEsc"`
+	Expr *Expr   `parser:"| '${' @@ '}'"`
+	Text *string `parser:"| @StringText"`
 }
 
 type String struct {
@@ -147,30 +147,31 @@ type TypeExpr struct {
 }
 
 type CallableExpr struct {
-	Name      string      `parser:"@Ident"`
-	Arguments []*ExprStmt `parser:"'(' (@@ (',' @@)* ','?)? ')'"`
+	Name      string  `parser:"@Ident"`
+	Arguments []*Expr `parser:"'(' (@@ (',' @@)* ','?)? ')'"`
 }
 
 type KeyPathExpr struct {
-	Implicit bool      `parser:"@'.'?"`
-	Path     []*string `parser:"@Ident ('.' @Ident)*"`
+	Implicit bool `parser:"@'.'?"`
+	// Receiver *string   `parser:"@"`
+	// Next
+	Path []*string `parser:"@Ident ('.' @Ident)*"`
 }
 
-type UnaryExpr struct {
+type PrimaryExpr struct {
 	Callable *CallableExpr `parser:"@@"`
 	Literal  *Literal      `parser:"| @@"`
 	KeyPath  *KeyPathExpr  `parser:"| @@"`
 }
 
 type Expr struct {
-	Unary *UnaryExpr `parser:"@@"`
+	Primary *PrimaryExpr `parser:"@@"`
 }
 
-type ExprStmt struct {
-	Literal *Literal     `parser:"@@"`
-	KeyPath *KeyPathExpr `parser:"| @@"`
-}
-
-type BlockStmt struct {
+type Stmt struct {
 	Callable *CallableExpr `parser:"@@"`
+}
+
+type Block struct {
+	Stmts []*Stmt `parser:"@@*"`
 }
