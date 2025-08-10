@@ -68,17 +68,15 @@ type PreviewDecl struct {
 }
 
 type Field struct {
-	Name     string   `parser:"@Ident"`
-	Optional bool     `parser:"@'?'?"`
-	Type     *TypeRef `parser:"@@"`
-	Default  *Expr    `parser:"('=' @@)?"`
+	Name    string   `parser:"@Ident"`
+	Type    *TypeRef `parser:"@@"`
+	Default *Expr    `parser:"('=' @@)?"`
 }
 
 type Parameter struct {
-	Name     string   `parser:"@Ident"`
-	Optional bool     `parser:"@'?'?"`
-	Type     *TypeRef `parser:"@@"`
-	Default  *Expr    `parser:"('=' @@)?"`
+	Name    string   `parser:"@Ident"`
+	Type    *TypeRef `parser:"@@"`
+	Default *Expr    `parser:"('=' @@)?"`
 }
 
 type TypeRef struct {
@@ -86,6 +84,7 @@ type TypeRef struct {
 	ArrayType    *ArrayRef    `parser:"| @@"`
 	MapType      *MapRef      `parser:"| @@"`
 	ValueType    *string      `parser:"| @Ident"`
+	Optional     bool         `parser:"@'?'?"`
 }
 
 type FunctionRef struct {
@@ -94,12 +93,12 @@ type FunctionRef struct {
 }
 
 type ArrayRef struct {
-	ValueType TypeRef `parser:"'[' ']' @@"`
+	ValueType TypeRef `parser:"'[' @@ ']'"`
 }
 
 type MapRef struct {
-	KeyType   TypeRef `parser:"('[' @@ ']')"`
-	ValueType TypeRef `parser:"@@"`
+	KeyType   TypeRef `parser:"('{' @@)"`
+	ValueType TypeRef `parser:"':' @@ '}'"`
 }
 
 type Bool bool
@@ -120,7 +119,7 @@ type String struct {
 }
 
 type Literal struct {
-	Nil    bool          `parser:"@'nil'"`
+	Null   bool          `parser:"@'null'"`
 	Bool   *Bool         `parser:"| @('true' | 'false')"`
 	Float  *string       `parser:"| @Float"`
 	Int    *string       `parser:"| @Int"`
@@ -139,7 +138,7 @@ type MapEntry struct {
 }
 
 type MapLiteral struct {
-	Entries []*MapEntry `parser:"'[' (':' | (@@ (',' @@)* ','?)) ']'"`
+	Entries []*MapEntry `parser:"'{' (':' | (@@ (',' @@)* ','?)) '}'"`
 }
 
 type CallableExpr struct {

@@ -8,12 +8,12 @@ enum RowAlignment {
 
 component Row {
     alignment RowAlignment = .center
-    children []component
+    children [component]
 }
 
 component Button {
     label string
-    onClick? func() = nil
+    onClick func() // ? = null
 }
 
 component Text {
@@ -37,10 +37,10 @@ data TextAndButtonRowModel {
     // Likely should distinguish between static and dynamic string
     value string = "Hello, world!"
     label string = "Click, me!"
-    message? string = nil
+    message string? = null
 }
 
-template TextAndButtonRow(models []TextAndButtonRowModel) {
+template TextAndButtonRow(models [TextAndButtonRowModel]) {
 //     for model in models {
 //         @Modifiers(...)
 //         Row {
@@ -55,7 +55,3 @@ template TextAndButtonRow(models []TextAndButtonRowModel) {
 }
 
 preview TextAndButtonRowPreview {}
-
-data Arrays {
-    empty []string = []
-}
