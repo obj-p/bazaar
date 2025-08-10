@@ -52,7 +52,7 @@ type DataDecl struct {
 type FunctionDecl struct {
 	Name       string       `parser:"'func' @Ident"`
 	Parameters []*Parameter `parser:"'(' (@@ (',' @@)*)? ')'"`
-	ReturnType *TypeRef     `parser:"('-' '>' @@)?"`
+	Return     *TypeExpr    `parser:"('-' '>' @@)?"`
 	// TODO: body
 }
 
@@ -68,37 +68,37 @@ type PreviewDecl struct {
 }
 
 type Field struct {
-	Name    string   `parser:"@Ident"`
-	Type    *TypeRef `parser:"@@"`
-	Default *Expr    `parser:"('=' @@)?"`
+	Name    string    `parser:"@Ident"`
+	Type    *TypeExpr `parser:"@@"`
+	Default *Expr     `parser:"('=' @@)?"`
 }
 
 type Parameter struct {
-	Name    string   `parser:"@Ident"`
-	Type    *TypeRef `parser:"@@"`
-	Default *Expr    `parser:"('=' @@)?"`
+	Name    string    `parser:"@Ident"`
+	Type    *TypeExpr `parser:"@@"`
+	Default *Expr     `parser:"('=' @@)?"`
 }
 
-type TypeRef struct {
-	FunctionType *FunctionRef `parser:"(@@"`
-	ArrayType    *ArrayRef    `parser:"| @@"`
-	MapType      *MapRef      `parser:"| @@"`
-	ValueType    *string      `parser:"| @Ident)"`
-	Optional     bool         `parser:"@'?'?"`
+type TypeDecl struct {
+	Function *FunctionTypeDecl `parser:"@@"`
+	Array    *ArrayTypeDecl    `parser:"| @@"`
+	Map      *MapTypeDecl      `parser:"| @@"`
+	Expr     *TypeExpr         `parser:"| '(' @@ ')'"`
+	Value    *string           `parser:"| @Ident"`
 }
 
-type FunctionRef struct {
-	ParameterTypes []*TypeRef `parser:"'func' '(' (@@ (',' @@)* ','?)? ')'"`
-	ReturnType     *TypeRef   `parser:"('-' '>' @@)?"`
+type FunctionTypeDecl struct {
+	Parameters []*TypeExpr `parser:"'func' '(' (@@ (',' @@)* ','?)? ')'"`
+	Return     *TypeExpr   `parser:"('-' '>' @@)?"`
 }
 
-type ArrayRef struct {
-	ValueType TypeRef `parser:"'[' @@ ']'"`
+type ArrayTypeDecl struct {
+	Value TypeExpr `parser:"'[' @@ ']'"`
 }
 
-type MapRef struct {
-	KeyType   TypeRef `parser:"('{' @@)"`
-	ValueType TypeRef `parser:"':' @@ '}'"`
+type MapTypeDecl struct {
+	Key   TypeExpr `parser:"('{' @@)"`
+	Value TypeExpr `parser:"':' @@ '}'"`
 }
 
 type Bool bool
@@ -139,6 +139,11 @@ type MapEntry struct {
 
 type MapLiteral struct {
 	Entries []*MapEntry `parser:"'{' (':' | (@@ (',' @@)* ','?)) '}'"`
+}
+
+type TypeExpr struct {
+	Decl     TypeDecl `parser:"@@"`
+	Optional bool     `parser:"@'?'?"`
 }
 
 type CallableExpr struct {
