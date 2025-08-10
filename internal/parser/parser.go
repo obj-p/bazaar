@@ -12,12 +12,12 @@ var BazaarParser = participle.MustBuild[Bazaar](
 )
 
 type Bazaar struct {
-	Statement []*Statement `parser:"@@*"`
+	Package    *Package             `parser:"@@"`
+	Statements []*TopLevelStatement `parser:"@@*"`
 }
 
-type Statement struct {
-	Package   *Package   `parser:"@@"`
-	Enum      *Enum      `parser:"| @@"`
+type TopLevelStatement struct {
+	Enum      *Enum      `parser:"@@"`
 	Component *Component `parser:"| @@"`
 	Function  *Function  `parser:"| @@"`
 	Data      *Data      `parser:"| @@"`
@@ -45,9 +45,9 @@ type Data struct {
 }
 
 type Template struct {
-	Name        string        `parser:"'template' @Ident"`
-	Arguments   []*Argument   `parser:"'(' (@@ (',' @@)*)? ')'"`
-	Expressions []*Expression `parser:"'{' (@@ (',' @@)*)? '}'"`
+	Name       string            `parser:"'template' @Ident"`
+	Parameters []*Parameter      `parser:"'(' (@@ (',' @@)*)? ')'"`
+	Statements []*BlockStatement `parser:"'{' (@@ (',' @@)*)? '}'"`
 }
 
 type Preview struct {
@@ -63,12 +63,12 @@ type Field struct {
 }
 
 type Function struct {
-	Name       string      `parser:"'func' @Ident"`
-	Arguments  []*Argument `parser:"'(' (@@ (',' @@)*)? ')'"`
-	ReturnType *TypeRef    `parser:"('-' '>' @@)?"`
+	Name       string       `parser:"'func' @Ident"`
+	Parameters []*Parameter `parser:"'(' (@@ (',' @@)*)? ')'"`
+	ReturnType *TypeRef     `parser:"('-' '>' @@)?"`
 }
 
-type Argument struct {
+type Parameter struct {
 	Name     string       `parser:"@Ident"`
 	Optional bool         `parser:"@'?'?"`
 	Type     *TypeRef     `parser:"@@"`
@@ -82,8 +82,8 @@ type TypeRef struct {
 }
 
 type FunctionRef struct {
-	Arguments  []*Argument `parser:"'func' '(' (@@ (',' @@)*)? ')'"`
-	ReturnType *TypeRef    `parser:"('-' '>' @@)?"`
+	Parameters []*Parameter `parser:"'func' '(' (@@ (',' @@)*)? ')'"`
+	ReturnType *TypeRef     `parser:"('-' '>' @@)?"`
 }
 
 type CollectionRef struct {
@@ -104,9 +104,9 @@ func (b *Bool) Capture(values []string) error {
 }
 
 type StringFragment struct {
-	Esc string `parser:"@StringEsc"`
-	// TODO: expression
-	Text string `parser:"| @StringText"`
+	Esc  *string     `parser:"@StringEsc"`
+	Expr *Expression `parser:"| '${' @@ '}'"`
+	Text *string     `parser:"| @StringText"`
 }
 
 type String struct {
@@ -121,13 +121,18 @@ type Literal struct {
 	String *String `parser:"| @@"`
 }
 
-type Expression struct {
-	Literal    *Literal    `parser:"@@"`
-	Invocation *Invocation `parser:"| @@"`
-	Identifer  *string     `parser:"| @Ident"`
+type BlockStatement struct {
+	Invocation *Invocation `parser:"@@"`
 }
 
 type Invocation struct {
 	Name      string        `parser:"@Ident"`
 	Arguments []*Expression `parser:"'(' (@@ (',' @@)*)? ')'"`
+}
+
+type Loop struct{}
+
+type Expression struct {
+	Literal   *Literal `parser:"@@"`
+	Identifer *string  `parser:"| @Ident"`
 }

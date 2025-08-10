@@ -32,6 +32,7 @@ data Point {
 }
 
 data TextAndButtonRowModel {
+    // Likely should distinguish between static and dynamic string
     value string = "Hello, world!"
     label string = "Click, me!"
     message? string = nil
