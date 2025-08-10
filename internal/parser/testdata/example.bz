@@ -13,20 +13,20 @@ component Row {
 
 component Button {
     label string
-    onClick func() // ? = null
+    onClick func()? = null
 }
 
 component Text {
     value string
 }
 
-func add(x int, y int) -> int
+func Add(x int, y int) -> int
 
-func truncate(x double) -> int
+func Truncate(x double) -> int
 
-func print(message string)
+func Print(message string)
 
-func dismiss(animated bool = false)
+func Dismiss(animated bool = false)
 
 data Point {
     x double = 0.0
@@ -47,7 +47,7 @@ template TextAndButtonRow(models [TextAndButtonRowModel]) {
 //             Text(model.value)
 //             Button(model.label) {
 //                 if let message = model.message {
-    print(message)
+    Print(message)
 //                 }
 //             }
 //         }
