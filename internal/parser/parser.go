@@ -63,20 +63,20 @@ type TemplateDecl struct {
 }
 
 type PreviewDecl struct {
-	Name  string  `parser:"'preview' @Ident"`
-	Exprs []*Expr `parser:"'{' (@@ (',' @@)*)? '}'"`
+	Name  string     `parser:"'preview' @Ident"`
+	Exprs []*ExprOld `parser:"'{' (@@ (',' @@)*)? '}'"`
 }
 
 type Field struct {
 	Name    string    `parser:"@Ident"`
 	Type    *TypeExpr `parser:"@@"`
-	Default *Expr     `parser:"('=' @@)?"`
+	Default *ExprOld  `parser:"('=' @@)?"`
 }
 
 type Parameter struct {
 	Name    string    `parser:"@Ident"`
 	Type    *TypeExpr `parser:"@@"`
-	Default *Expr     `parser:"('=' @@)?"`
+	Default *ExprOld  `parser:"('=' @@)?"`
 }
 
 type TypeDecl struct {
@@ -109,9 +109,9 @@ func (b *Bool) Capture(values []string) error {
 }
 
 type StringFragment struct {
-	Esc  *string `parser:"@StringEsc"`
-	Expr *Expr   `parser:"| '${' @@ '}'"`
-	Text *string `parser:"| @StringText"`
+	Esc  *string  `parser:"@StringEsc"`
+	Expr *ExprOld `parser:"| '${' @@ '}'"`
+	Text *string  `parser:"| @StringText"`
 }
 
 type String struct {
@@ -129,12 +129,12 @@ type Literal struct {
 }
 
 type ArrayLiteral struct {
-	Values []*Expr `parser:"'[' (@@ (',' @@)* ','?)? ']'"`
+	Values []*ExprOld `parser:"'[' (@@ (',' @@)* ','?)? ']'"`
 }
 
 type MapEntry struct {
-	Key   Expr `parser:"@@"`
-	Value Expr `parser:"':' @@"`
+	Key   ExprOld `parser:"@@"`
+	Value ExprOld `parser:"':' @@"`
 }
 
 type MapLiteral struct {
@@ -147,8 +147,8 @@ type TypeExpr struct {
 }
 
 type CallableExpr struct {
-	Name      string  `parser:"@Ident"`
-	Arguments []*Expr `parser:"'(' (@@ (',' @@)* ','?)? ')'"`
+	Name      string     `parser:"@Ident"`
+	Arguments []*ExprOld `parser:"'(' (@@ (',' @@)* ','?)? ')'"`
 }
 
 type KeyPathExpr struct {
@@ -164,7 +164,7 @@ type PrimaryExpr struct {
 	KeyPath  *KeyPathExpr  `parser:"| @@"`
 }
 
-type Expr struct {
+type ExprOld struct {
 	Primary *PrimaryExpr `parser:"@@"`
 }
 
