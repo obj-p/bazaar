@@ -144,7 +144,7 @@ type MapLiteral struct {
 
 type CallableExpr struct {
 	Name      string      `parser:"@Ident"`
-	Arguments []*ExprStmt `parser:"'(' (@@ (',' @@)*)? ')'"`
+	Arguments []*ExprStmt `parser:"'(' (@@ (',' @@)* ',')? ')'"`
 }
 
 type KeyPathExpr struct {
