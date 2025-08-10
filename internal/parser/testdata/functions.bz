@@ -5,4 +5,4 @@ data FunctionFields {
         trailingComma func(int,)
 }
 
-func higherOrderFunction() -> func() -> func()
+func HigherOrderFunction() -> func() -> func()
