@@ -13,14 +13,15 @@ var BazaarParser = participle.MustBuild[Bazaar](
 
 type Bazaar struct {
 	Package *PackageDecl    `parser:"@@"`
+	Imports []*ImportDecl   `parser:"@@*"`
 	Decls   []*TopLevelDecl `parser:"@@*"`
 }
 
 type TopLevelDecl struct {
 	Enum      *EnumDecl      `parser:"@@"`
 	Component *ComponentDecl `parser:"| @@"`
-	Function  *Function      `parser:"| @@"`
 	Data      *DataDecl      `parser:"| @@"`
+	Function  *FunctionDecl  `parser:"| @@"`
 	Template  *TemplateDecl  `parser:"| @@"`
 	Preview   *PreviewDecl   `parser:"| @@"`
 }
@@ -29,9 +30,13 @@ type PackageDecl struct {
 	Name string `parser:"'package' @Ident"`
 }
 
+type ImportDecl struct {
+	Domain []string `parser:"'import' @Ident ('.' @Ident)*"`
+}
+
 type EnumDecl struct {
 	Name  string   `parser:"'enum' @Ident"`
-	Cases []string `parser:"'{' @Ident (',' @Ident)* '}'"`
+	Cases []string `parser:"'{' (@Ident (',' @Ident)*)? '}'"`
 }
 
 type ComponentDecl struct {
@@ -42,6 +47,13 @@ type ComponentDecl struct {
 type DataDecl struct {
 	Name   string   `parser:"'data' @Ident"`
 	Fields []*Field `parser:"'{' @@* '}'"`
+}
+
+type FunctionDecl struct {
+	Name       string       `parser:"'func' @Ident"`
+	Parameters []*Parameter `parser:"'(' (@@ (',' @@)*)? ')'"`
+	ReturnType *TypeRef     `parser:"('-' '>' @@)?"`
+	// TODO: body
 }
 
 type TemplateDecl struct {
@@ -56,23 +68,17 @@ type PreviewDecl struct {
 }
 
 type Field struct {
-	Name     string        `parser:"@Ident"`
-	Optional bool          `parser:"@'?'?"`
-	Type     *TypeRef      `parser:"@@"`
-	Default  *DefaultValue `parser:"('=' @@)?"`
-}
-
-type Function struct {
-	Name       string       `parser:"'func' @Ident"`
-	Parameters []*Parameter `parser:"'(' (@@ (',' @@)*)? ')'"`
-	ReturnType *TypeRef     `parser:"('-' '>' @@)?"`
+	Name     string       `parser:"@Ident"`
+	Optional bool         `parser:"@'?'?"`
+	Type     *TypeRef     `parser:"@@"`
+	Default  *DefaultExpr `parser:"('=' @@)?"`
 }
 
 type Parameter struct {
-	Name     string        `parser:"@Ident"`
-	Optional bool          `parser:"@'?'?"`
-	Type     *TypeRef      `parser:"@@"`
-	Default  *DefaultValue `parser:"('=' @@)?"`
+	Name     string       `parser:"@Ident"`
+	Optional bool         `parser:"@'?'?"`
+	Type     *TypeRef     `parser:"@@"`
+	Default  *DefaultExpr `parser:"('=' @@)?"`
 }
 
 type TypeRef struct {
@@ -118,29 +124,29 @@ type Literal struct {
 
 type CollectionLiteral struct{}
 
-type DefaultValue struct {
-	Literal *Literal `parser:"@@"`
-	KeyPath *KeyPath `parser:"| @@"`
+type DefaultExpr struct {
+	Literal *Literal     `parser:"@@"`
+	KeyPath *KeyPathExpr `parser:"| @@"`
 	// TODO: should this just be an expression?
 }
 
-type KeyPath struct {
+type KeyPathExpr struct {
 	Implicit bool      `parser:"@'.'?"`
 	Path     []*string `parser:"@Ident ('.' @Ident)*"`
 }
 
-type Callable struct {
+type CallableExpr struct {
 	Name      string        `parser:"@Ident"`
 	Arguments []*Expression `parser:"'(' (@@ (',' @@)*)? ')'"`
 }
 
-type Loop struct{}
-
 type Expression struct {
-	Literal *Literal `parser:"@@"`
-	KeyPath *KeyPath `parser:"| @@"`
+	Literal *Literal     `parser:"@@"`
+	KeyPath *KeyPathExpr `parser:"| @@"`
 }
 
+type LoopStatement struct{}
+
 type BlockStatement struct {
-	Callable *Callable `parser:"@@"`
+	Callable *CallableExpr `parser:"@@"`
 }
