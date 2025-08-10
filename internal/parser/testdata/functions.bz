@@ -1,0 +1,8 @@
+package functions
+
+data FunctionExamples {
+        empty func()
+        trailingComma func(int,)
+}
+
+func higherOrderFunction() -> func() -> func()

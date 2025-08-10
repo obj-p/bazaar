@@ -27,7 +27,7 @@ type TopLevelDecl struct {
 }
 
 type PackageDecl struct {
-	Name string `parser:"'package' @Ident"`
+	Domain []string `parser:"'package' @Ident ('.' @Ident)*"`
 }
 
 type ImportDecl struct {
@@ -36,7 +36,7 @@ type ImportDecl struct {
 
 type EnumDecl struct {
 	Name  string   `parser:"'enum' @Ident"`
-	Cases []string `parser:"'{' (@Ident (',' @Ident)*)? '}'"`
+	Cases []string `parser:"'{' (@Ident (',' @Ident)* ','?)? '}'"`
 }
 
 type ComponentDecl struct {
@@ -57,44 +57,49 @@ type FunctionDecl struct {
 }
 
 type TemplateDecl struct {
-	Name       string            `parser:"'template' @Ident"`
-	Parameters []*Parameter      `parser:"'(' (@@ (',' @@)*)? ')'"`
-	Statements []*BlockStatement `parser:"'{' (@@ (',' @@)*)? '}'"`
+	Name       string       `parser:"'template' @Ident"`
+	Parameters []*Parameter `parser:"'(' (@@ (',' @@)*)? ')'"`
+	Statements []*BlockStmt `parser:"'{' (@@ (',' @@)*)? '}'"`
 }
 
 type PreviewDecl struct {
-	Name        string        `parser:"'preview' @Ident"`
-	Expressions []*Expression `parser:"'{' (@@ (',' @@)*)? '}'"`
+	Name        string      `parser:"'preview' @Ident"`
+	Expressions []*ExprStmt `parser:"'{' (@@ (',' @@)*)? '}'"`
 }
 
 type Field struct {
-	Name     string       `parser:"@Ident"`
-	Optional bool         `parser:"@'?'?"`
-	Type     *TypeRef     `parser:"@@"`
-	Default  *DefaultExpr `parser:"('=' @@)?"`
+	Name     string   `parser:"@Ident"`
+	Optional bool     `parser:"@'?'?"`
+	Type     *TypeRef `parser:"@@"`
+	Default  *Expr    `parser:"('=' @@)?"`
 }
 
 type Parameter struct {
-	Name     string       `parser:"@Ident"`
-	Optional bool         `parser:"@'?'?"`
-	Type     *TypeRef     `parser:"@@"`
-	Default  *DefaultExpr `parser:"('=' @@)?"`
+	Name     string   `parser:"@Ident"`
+	Optional bool     `parser:"@'?'?"`
+	Type     *TypeRef `parser:"@@"`
+	Default  *Expr    `parser:"('=' @@)?"`
 }
 
 type TypeRef struct {
-	FunctionType   *FunctionRef   `parser:"@@"`
-	CollectionType *CollectionRef `parser:"| @@"`
-	ValueType      *string        `parser:"| @Ident"`
+	FunctionType *FunctionRef `parser:"@@"`
+	ArrayType    *ArrayRef    `parser:"| @@"`
+	MapType      *MapRef      `parser:"| @@"`
+	ValueType    *string      `parser:"| @Ident"`
 }
 
 type FunctionRef struct {
-	Parameters []*Parameter `parser:"'func' '(' (@@ (',' @@)*)? ')'"`
-	ReturnType *TypeRef     `parser:"('-' '>' @@)?"`
+	ParameterTypes []*TypeRef `parser:"'func' '(' (@@ (',' @@)* ','?)? ')'"`
+	ReturnType     *TypeRef   `parser:"('-' '>' @@)?"`
 }
 
-type CollectionRef struct {
-	KeyType   *string `parser:"('[' @Ident? ']')"`
-	ValueType *string `parser:"@Ident"`
+type ArrayRef struct {
+	ValueType TypeRef `parser:"'[' ']' @@"`
+}
+
+type MapRef struct {
+	KeyType   TypeRef `parser:"('[' @@ ']')"`
+	ValueType TypeRef `parser:"@@"`
 }
 
 type Bool bool
@@ -105,9 +110,9 @@ func (b *Bool) Capture(values []string) error {
 }
 
 type StringFragment struct {
-	Esc  *string     `parser:"@StringEsc"`
-	Expr *Expression `parser:"| '${' @@ '}'"`
-	Text *string     `parser:"| @StringText"`
+	Esc  *string   `parser:"@StringEsc"`
+	Expr *ExprStmt `parser:"| '${' @@ '}'"`
+	Text *string   `parser:"| @StringText"`
 }
 
 type String struct {
@@ -115,19 +120,31 @@ type String struct {
 }
 
 type Literal struct {
-	Nil    bool    `parser:"@'nil'"`
-	Bool   *Bool   `parser:"| @('true' | 'false')"`
-	Float  *string `parser:"| @Float"`
-	Int    *string `parser:"| @Int"`
-	String *String `parser:"| @@"`
+	Nil    bool          `parser:"@'nil'"`
+	Bool   *Bool         `parser:"| @('true' | 'false')"`
+	Float  *string       `parser:"| @Float"`
+	Int    *string       `parser:"| @Int"`
+	String *String       `parser:"| @@"`
+	Array  *ArrayLiteral `parser:"| @@"`
+	Map    *MapLiteral   `parser:"| @@"`
 }
 
-type CollectionLiteral struct{}
+type ArrayLiteral struct {
+	Values []*Expr `parser:"'[' (@@ (',' @@)* ','?)? ']'"`
+}
 
-type DefaultExpr struct {
-	Literal *Literal     `parser:"@@"`
-	KeyPath *KeyPathExpr `parser:"| @@"`
-	// TODO: should this just be an expression?
+type MapEntry struct {
+	Key   Expr `parser:"@@"`
+	Value Expr `parser:"':' @@"`
+}
+
+type MapLiteral struct {
+	Entries []*MapEntry `parser:"'[' (':' | (@@ (',' @@)* ','?)) ']'"`
+}
+
+type CallableExpr struct {
+	Name      string      `parser:"@Ident"`
+	Arguments []*ExprStmt `parser:"'(' (@@ (',' @@)*)? ')'"`
 }
 
 type KeyPathExpr struct {
@@ -135,18 +152,21 @@ type KeyPathExpr struct {
 	Path     []*string `parser:"@Ident ('.' @Ident)*"`
 }
 
-type CallableExpr struct {
-	Name      string        `parser:"@Ident"`
-	Arguments []*Expression `parser:"'(' (@@ (',' @@)*)? ')'"`
+type UnaryExpr struct {
+	Callable *CallableExpr `parser:"@@"`
+	Literal  *Literal      `parser:"| @@"`
+	KeyPath  *KeyPathExpr  `parser:"| @@"`
 }
 
-type Expression struct {
+type Expr struct {
+	Unary *UnaryExpr `parser:"@@"`
+}
+
+type ExprStmt struct {
 	Literal *Literal     `parser:"@@"`
 	KeyPath *KeyPathExpr `parser:"| @@"`
 }
 
-type LoopStatement struct{}
-
-type BlockStatement struct {
+type BlockStmt struct {
 	Callable *CallableExpr `parser:"@@"`
 }
