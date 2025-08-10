@@ -1,6 +1,6 @@
 package functions
 
-data FunctionExamples {
+data FunctionFields {
         empty func()
         trailingComma func(int,)
 }
