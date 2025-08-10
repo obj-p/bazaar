@@ -5,5 +5,5 @@ data ArrayFields {
         singleValue [string] = ["hello, value!"]
         trailingComma [bool] = [true,]
         optionalValue [int?] = [null]
-        optionalArray [int] // ?
+        optionalArray [int]?
 }

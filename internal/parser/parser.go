@@ -80,10 +80,10 @@ type Parameter struct {
 }
 
 type TypeRef struct {
-	FunctionType *FunctionRef `parser:"@@"`
+	FunctionType *FunctionRef `parser:"(@@"`
 	ArrayType    *ArrayRef    `parser:"| @@"`
 	MapType      *MapRef      `parser:"| @@"`
-	ValueType    *string      `parser:"| @Ident"`
+	ValueType    *string      `parser:"| @Ident)"`
 	Optional     bool         `parser:"@'?'?"`
 }
 
