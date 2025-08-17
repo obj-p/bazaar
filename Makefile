@@ -31,7 +31,7 @@ pre-commit: ## Run pre-commit
 	@$(PRE_COMMIT) run
 
 .PHONY: railroad
-railroad: ## Visualize the Bazaar grammar
+railroad: ## Visualize the Bazaar grammar (Unfortunately, the grammar breaks the railroad atm)
 	@$(MAKE) grammar | bash scripts/railroad.sh
 
 PHONY: test

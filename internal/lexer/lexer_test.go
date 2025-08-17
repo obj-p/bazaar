@@ -9,7 +9,7 @@ import (
 
 func TestLexer(t *testing.T) {
 	tokens := `
-	nil true false 42.0 1337 "Hello, ${firstName ", " + (lastName)}!" foobar
+	nil true false 42.0 -1337 "Hello, ${firstName ", " + (lastName)}!" foobar
 	// Some comment
 	=!?&|[](){}
 	`
@@ -25,9 +25,9 @@ func TestLexer(t *testing.T) {
 		{"Whitespace", " "},
 		{"Ident", "false"},
 		{"Whitespace", " "},
-		{"Float", "42.0"},
+		{"Number", "42.0"},
 		{"Whitespace", " "},
-		{"Int", "1337"},
+		{"Number", "-1337"},
 		{"Whitespace", " "},
 		{"String", "\""},
 		{"StringText", "Hello, "},

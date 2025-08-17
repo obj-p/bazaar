@@ -1,14 +1,58 @@
 package parser
 
 import (
-	"github.com/alecthomas/participle/v2/lexer"
+	"github.com/alecthomas/participle/v2"
+	participleLexer "github.com/alecthomas/participle/v2/lexer"
+	"github.com/obj-p/bazaar/internal/lexer"
 )
 
 // Adapted from https://github.com/alecthomas/langx
 
-type Expr struct{}
+type CallExpr struct {
+	Parameters []*Expr `parser:"'(' (@@ (',' @@)* ','?)? ')'"`
+}
 
-func (e *Expr) Parse(lex *lexer.PeekingLexer) error {
+type KeyPathExpr struct {
+	Subscript *Expr          `parser:"('[' @@ ']'"`
+	Reference *ReferenceExpr `parser:"| @@"`
+	Call      *CallExpr      `parser:"| @@)"`
+	Optional  bool           `parser:"'?'?"`
+	Next      *KeyPathExpr   `parser:"('.' @@)?"`
+}
+
+type ReferenceExpr struct {
+	Literal *Literal `parser:"@@"`
+	Ident   *string  `parser:"| @Ident"`
+}
+
+type PrimaryExpr struct {
+	Implicit  bool           `parser:"@'.'?"`
+	Reference *ReferenceExpr `parser:"@@"`
+	KeyPath   *KeyPathExpr   `parser:"@@?"`
+}
+
+type BinaryExpr struct {
+	Left  *Expr
+	Op    Op
+	Right *Expr
+}
+
+type UnaryExpr struct {
+	Op      Op           `parser:"@('!' | '-')?"`
+	Primary *PrimaryExpr `parser:"@@"`
+}
+
+type Expr struct {
+	Unary *UnaryExpr
+	// Binary *BinaryExpr
+}
+
+func (e *Expr) Parse(lex *participleLexer.PeekingLexer) error {
+	ex, err := parseExpr(lex, 0)
+	if err != nil {
+		return err
+	}
+	*e = *ex
 	return nil
 }
 
@@ -23,4 +67,44 @@ var opPrecedence = map[Op]precedence{
 	OpMul: {Priority: 2},
 	OpDiv: {Priority: 2},
 	OpMod: {Priority: 2},
+	// TODO: other Op
+}
+
+var unaryExprParser = participle.MustBuild[UnaryExpr](
+	participle.Lexer(lexer.BazaarLexer),
+	participle.UseLookahead(1),
+)
+
+func parseExpr(lex *participleLexer.PeekingLexer, minPrec int) (*Expr, error) {
+	lhs, err := parseOperand(lex)
+	if err != nil {
+		return nil, err
+	}
+
+	for {
+		token := lex.Peek()
+		if token.EOF() {
+			break
+		}
+		operator, err := parseOperator(lex)
+		if err != nil || operator == nil {
+			break
+		}
+
+		break
+	}
+
+	return lhs, nil
+}
+
+func parseOperand(lex *participleLexer.PeekingLexer) (*Expr, error) {
+	u, err := unaryExprParser.ParseFromLexer(lex, participle.AllowTrailing(true))
+	if err != nil {
+		return nil, err
+	}
+	return &Expr{Unary: u}, nil
+}
+
+func parseOperator(lex *participleLexer.PeekingLexer) (*Op, error) {
+	return nil, nil
 }

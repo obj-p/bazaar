@@ -17,7 +17,7 @@ func TestParser(t *testing.T) {
 			return err
 		}
 
-		if d.IsDir() || !strings.HasSuffix(d.Name(), ".bz") {
+		if d.IsDir() || !strings.HasSuffix(d.Name(), ".bzr") {
 			return nil
 		}
 
