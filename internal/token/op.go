@@ -1,4 +1,4 @@
-package parser
+package token
 
 import "fmt"
 
@@ -36,28 +36,28 @@ const (
 )
 
 var ops = [...]string{
-	OpAdd: "parser.OpAdd",
-	OpSub: "parser.OpSub",
-	OpMul: "parser.OpMul",
-	OpDiv: "parser.OpDiv",
-	OpMod: "parser.OpMod",
+	OpAdd: "token.OpAdd",
+	OpSub: "token.OpSub",
+	OpMul: "token.OpMul",
+	OpDiv: "token.OpDiv",
+	OpMod: "token.OpMod",
 
-	OpAssign:    "parser.OpAssign",
-	OpAddAssign: "parser.OpAddAssign",
-	OpSubAssign: "parser.OpSubAssign",
-	OpMulAssign: "parser.OpMulAssign",
-	OpDivAssign: "parser.OpDivAssign",
-	OpModAssign: "parser.OpModAssign",
+	OpAssign:    "token.OpAssign",
+	OpAddAssign: "token.OpAddAssign",
+	OpSubAssign: "token.OpSubAssign",
+	OpMulAssign: "token.OpMulAssign",
+	OpDivAssign: "token.OpDivAssign",
+	OpModAssign: "token.OpModAssign",
 
-	OpEql:    "parser.OpEql",
-	OpLt:     "parser.OpLt",
-	OpLte:    "parser.OpLte",
-	OpGt:     "parser.OpGt",
-	OpGte:    "parser.OpGte",
-	OpNot:    "parser.OpNot",
-	OpNotEql: "parser.OpNotEql",
-	OpAnd:    "parser.OpAnd",
-	OpOr:     "parser.OpOr",
+	OpEql:    "token.OpEql",
+	OpLt:     "token.OpLt",
+	OpLte:    "token.OpLte",
+	OpGt:     "token.OpGt",
+	OpGte:    "token.OpGte",
+	OpNot:    "token.OpNot",
+	OpNotEql: "token.OpNotEql",
+	OpAnd:    "token.OpAnd",
+	OpOr:     "token.OpOr",
 }
 
 func (o Op) String() string {

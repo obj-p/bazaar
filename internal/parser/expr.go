@@ -4,6 +4,7 @@ import (
 	"github.com/alecthomas/participle/v2"
 	participleLexer "github.com/alecthomas/participle/v2/lexer"
 	"github.com/obj-p/bazaar/internal/lexer"
+	"github.com/obj-p/bazaar/internal/token"
 )
 
 // Adapted from https://github.com/alecthomas/langx
@@ -33,12 +34,12 @@ type PrimaryExpr struct {
 
 type BinaryExpr struct {
 	Left  *Expr
-	Op    Op
+	Op    token.Op
 	Right *Expr
 }
 
 type UnaryExpr struct {
-	Op      Op           `parser:"@('!' | '-')?"`
+	Op      token.Op     `parser:"@('!' | '-')?"`
 	Primary *PrimaryExpr `parser:"@@"`
 }
 
@@ -61,12 +62,12 @@ type precedence struct {
 	Priority         int
 }
 
-var opPrecedence = map[Op]precedence{
-	OpAdd: {Priority: 1},
-	OpSub: {Priority: 1},
-	OpMul: {Priority: 2},
-	OpDiv: {Priority: 2},
-	OpMod: {Priority: 2},
+var opPrecedence = map[token.Op]precedence{
+	token.OpAdd: {Priority: 1},
+	token.OpSub: {Priority: 1},
+	token.OpMul: {Priority: 2},
+	token.OpDiv: {Priority: 2},
+	token.OpMod: {Priority: 2},
 	// TODO: other Op
 }
 
@@ -105,6 +106,6 @@ func parseOperand(lex *participleLexer.PeekingLexer) (*Expr, error) {
 	return &Expr{Unary: u}, nil
 }
 
-func parseOperator(lex *participleLexer.PeekingLexer) (*Op, error) {
+func parseOperator(lex *participleLexer.PeekingLexer) (*token.Op, error) {
 	return nil, nil
 }
