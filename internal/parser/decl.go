@@ -66,8 +66,8 @@ type TypeDecl struct {
 	Function *FunctionTypeDecl `parser:"(@@"`
 	Array    *ArrayTypeDecl    `parser:"| @@"`
 	Map      *MapTypeDecl      `parser:"| @@"`
-	Expr     *Expr             `parser:"| '(' @@ ')'"`
-	Value    *string           `parser:"| @Ident)"`
+	Value    *string           `parser:"| @Ident"`
+	Nested   *TypeDecl         `parser:"| '(' @@ ')')"`
 	Optional bool              `parser:"'?'?"`
 }
 

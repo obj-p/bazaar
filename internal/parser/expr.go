@@ -14,20 +14,20 @@ type CallExpr struct {
 }
 
 type KeyPathExpr struct {
-	Subscript *Expr          `parser:"('[' @@ ']'"`
-	Reference *ReferenceExpr `parser:"| @@"`
-	Call      *CallExpr      `parser:"| @@)"`
-	Optional  bool           `parser:"'?'?"`
-	Next      *KeyPathExpr   `parser:"('.' @@)?"`
+	Subscript *Expr        `parser:"('[' @@ ']'"`
+	Reference *string      `parser:"| ('.' @Ident)"`
+	Call      *CallExpr    `parser:"| @@)"`
+	Optional  bool         `parser:"'?'?"`
+	Next      *KeyPathExpr `parser:"@@?"`
 }
 
 type ReferenceExpr struct {
-	Literal *Literal `parser:"@@"`
-	Ident   *string  `parser:"| @Ident"`
+	Literal  *Literal `parser:"@@"`
+	Implicit bool     `parser:"| (@'.'?"`
+	Ident    *string  `parser:"@Ident)"`
 }
 
 type PrimaryExpr struct {
-	Implicit  bool           `parser:"@'.'?"`
 	Reference *ReferenceExpr `parser:"@@"`
 	KeyPath   *KeyPathExpr   `parser:"@@?"`
 }
