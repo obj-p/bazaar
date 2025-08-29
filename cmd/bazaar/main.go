@@ -9,6 +9,7 @@ var (
 		Version kong.VersionFlag
 
 		Grammar GrammarCmd `cmd:"" help:"Print the Bazaar Grammar"`
+		Parse   ParserCmd  `cmd:"" help:"Print the parsed tokens"`
 	}
 )
 

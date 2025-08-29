@@ -26,6 +26,10 @@ fmt: ## go fmt
 grammar: ## Print the Bazaar grammar
 	@go run github.com/obj-p/bazaar/cmd/bazaar grammar
 
+.PHONY: parse
+parse: ## Print the parsed source
+	@go run github.com/obj-p/bazaar/cmd/bazaar parse $(SOURCE)
+
 .PHONY: pre-commit
 pre-commit: ## Run pre-commit
 	@$(PRE_COMMIT) run
