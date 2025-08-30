@@ -34,7 +34,6 @@ data Point {
 }
 
 data TextAndButtonRowModel {
-    // Likely should distinguish between static and dynamic string
     value string = "Hello, world!"
     label string = "Click, me!"
     message string? = null
@@ -44,13 +43,13 @@ template TextAndButtonRow(models [TextAndButtonRowModel]) {
     for model in models {
 //         @Modifiers(...)
 //         Row {
-//             Text(model.value)
-//             Button(model.label) {
+        Text(model.value)
+        Button(model.label) {
 //                 if let message = model.message {
-    Print(message)
+            Print(message)
 //                 }
 //             }
-//         }
+        }
     }
 }
 

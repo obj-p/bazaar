@@ -11,6 +11,7 @@ import (
 
 type CallExpr struct {
 	Parameters []*Expr `parser:"'(' (@@ (',' @@)* ','?)? ')'"`
+	Block      *Block  `parser:"@@?"`
 }
 
 type KeyPathExpr struct {
