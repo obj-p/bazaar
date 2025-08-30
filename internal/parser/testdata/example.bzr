@@ -41,7 +41,7 @@ data TextAndButtonRowModel {
 }
 
 template TextAndButtonRow(models [TextAndButtonRowModel]) {
-//     for model in models {
+    for model in models {
 //         @Modifiers(...)
 //         Row {
 //             Text(model.value)
@@ -51,7 +51,7 @@ template TextAndButtonRow(models [TextAndButtonRowModel]) {
 //                 }
 //             }
 //         }
-//     }
+    }
 }
 
 preview TextAndButtonRowPreview {}

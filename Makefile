@@ -35,7 +35,8 @@ pre-commit: ## Run pre-commit
 	@$(PRE_COMMIT) run
 
 .PHONY: railroad
-railroad: ## Visualize the Bazaar grammar (Unfortunately, the grammar breaks the railroad atm)
+railroad: ## Visualize the Bazaar grammar
+	# TODO(jason.prasad): https://github.com/alecthomas/participle/issues/444
 	@$(MAKE) grammar | bash scripts/railroad.sh
 
 PHONY: test

@@ -42,12 +42,12 @@ type FunctionDecl struct {
 type TemplateDecl struct {
 	Name       string           `parser:"'template' @Ident"`
 	Parameters []*ParameterDecl `parser:"'(' (@@ (',' @@)* ','?)? ')'"`
-	Block      Block            `parser:"@@"`
+	Block      *Block           `parser:"@@"`
 }
 
 type PreviewDecl struct {
 	Name  string `parser:"'preview' @Ident"`
-	Block Block  `parser:"@@"`
+	Block *Block `parser:"@@"`
 }
 
 type FieldDecl struct {
@@ -83,9 +83,4 @@ type ArrayTypeDecl struct {
 type MapTypeDecl struct {
 	Key   TypeDecl `parser:"('{' @@)"`
 	Value TypeDecl `parser:"':' @@ '}'"`
-}
-
-// TODO(jason.prasad): should this live elsewhere?
-type Block struct {
-	Exprs []*Expr `parser:"'{' @@* '}'"`
 }

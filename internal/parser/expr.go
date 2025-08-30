@@ -3,7 +3,7 @@ package parser
 import (
 	"github.com/alecthomas/participle/v2"
 	participleLexer "github.com/alecthomas/participle/v2/lexer"
-	"github.com/obj-p/bazaar/internal/lexer"
+	bazaarLexer "github.com/obj-p/bazaar/internal/lexer"
 	"github.com/obj-p/bazaar/internal/token"
 )
 
@@ -72,7 +72,7 @@ var opPrecedence = map[token.Op]precedence{
 }
 
 var unaryExprParser = participle.MustBuild[UnaryExpr](
-	participle.Lexer(lexer.BazaarLexer),
+	participle.Lexer(bazaarLexer.BazaarLexer),
 	participle.UseLookahead(1),
 )
 
