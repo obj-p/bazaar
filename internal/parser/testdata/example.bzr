@@ -45,9 +45,13 @@ template TextAndButtonRow(models [TextAndButtonRowModel]) {
 //         Row {
         Text(model.value)
         Button(model.label) {
-//                 if let message = model.message {
-            Print(message)
-//                 }
+            if var message = model.message {
+                Print(message)
+            }
+
+            if message != null {
+                Print(message)
+            }
 //             }
         }
     }
