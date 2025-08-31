@@ -1,6 +1,6 @@
 package ifs
 
-template Ifs(foo bool, bar bool) {
+template Ifs(foo bool, bar bool, baz bool?) {
 	if foo != bar {}
 
 	if foo == bar {}
@@ -9,4 +9,8 @@ template Ifs(foo bool, bar bool) {
 
 	// TODO(jason.prasad): Fix nested expressions
 	// if (foo == bar || (foo != true)) {}
+
+        // TODO(jason.prasad): More complex expressions
+        // if var baz, foo == bar == baz {}
+        // if var baz = baz, foo == bar == baz {}
 }
