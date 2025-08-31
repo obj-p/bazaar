@@ -1,6 +1,7 @@
+PYTHON            ?= python3
 PRE_COMMIT_VERSION = 4.2.0
 BIN_PRE_COMMIT     = bin/pre-commit-$(PRE_COMMIT_VERSION).pyz
-PRE_COMMIT         = python3 $(BIN_PRE_COMMIT)
+PRE_COMMIT         = $(PYTHON) $(BIN_PRE_COMMIT)
 
 .PHONY: help
 help: ## Show this help message
