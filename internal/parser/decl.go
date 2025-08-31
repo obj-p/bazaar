@@ -41,7 +41,7 @@ type FunctionDecl struct {
 
 type TemplateDecl struct {
 	Name       string           `parser:"'template' @Ident"`
-	Parameters []*ParameterDecl `parser:"'(' (@@ (',' @@)* ','?)? ')'"`
+	Parameters []*ParameterDecl `parser:"('(' (@@ (',' @@)* ','?)? ')')?"`
 	Block      *Block           `parser:"@@"`
 }
 

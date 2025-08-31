@@ -69,7 +69,7 @@ var opPrecedence = map[token.Op]precedence{
 	token.OpMul: {Priority: 2},
 	token.OpDiv: {Priority: 2},
 	token.OpMod: {Priority: 2},
-	// TODO: other Op
+	// TODO(jason.prasad): other Op
 }
 
 var unaryExprParser = participle.MustBuild[UnaryExpr](
