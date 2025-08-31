@@ -48,6 +48,16 @@ test: ## go test ./...
 tidy: ## go mod tidy
 	@go mod tidy
 
+.PHONY: todo
+todo: ## List TODO comments with file and line number
+	@grep -rn "TODO" \
+		--include="*.go" \
+		--include="*.md" \
+		--include="*.sh" \
+		--include="*.bzr" \
+		--exclude-dir=".git" \
+		--exclude-dir="bin" . || true
+
 .PHONY: vet
 vet: fmt ## go vet ./...
 	@go vet ./...
