@@ -45,8 +45,8 @@ type UnaryExpr struct {
 }
 
 type Expr struct {
-	Unary *UnaryExpr
-	// Binary *BinaryExpr
+	Unary  *UnaryExpr
+	Binary *BinaryExpr
 }
 
 func (e *Expr) Parse(lex *participleLexer.PeekingLexer) error {
@@ -84,16 +84,39 @@ func parseExpr(lex *participleLexer.PeekingLexer, minPrec int) (*Expr, error) {
 	}
 
 	for {
-		token := lex.Peek()
-		if token.EOF() {
-			break
-		}
-		operator, err := parseOperator(lex)
-		if err != nil || operator == nil {
+		tok := lex.Peek()
+		if tok.EOF() {
 			break
 		}
 
-		break
+		if tok.Type != bazaarLexer.LogicOperatorToken && tok.Type != bazaarLexer.OperatorToken {
+			break
+		}
+
+		binaryExpr := &BinaryExpr{}
+		err = binaryExpr.Op.Capture([]string{tok.Value})
+		if err != nil {
+			return lhs, nil
+		}
+
+		if opPrecedence[binaryExpr.Op].Priority < minPrec {
+			break
+		}
+
+		lex.Next()
+		nextMinPrec := opPrecedence[binaryExpr.Op].Priority
+		if !opPrecedence[binaryExpr.Op].RightAssociative {
+			nextMinPrec++
+		}
+
+		rhs, err := parseExpr(lex, nextMinPrec)
+		if err != nil {
+			return nil, err
+		}
+
+		binaryExpr.Left = lhs
+		binaryExpr.Right = rhs
+		lhs = &Expr{Binary: binaryExpr}
 	}
 
 	return lhs, nil
@@ -105,8 +128,4 @@ func parseOperand(lex *participleLexer.PeekingLexer) (*Expr, error) {
 		return nil, err
 	}
 	return &Expr{Unary: u}, nil
-}
-
-func parseOperator(lex *participleLexer.PeekingLexer) (*token.Op, error) {
-	return nil, nil
 }

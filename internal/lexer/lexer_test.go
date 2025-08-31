@@ -11,7 +11,10 @@ func TestLexer(t *testing.T) {
 	tokens := `
 	nil true false 42.0 -1337 "Hello, ${firstName ", " + (lastName)}!" foobar
 	// Some comment
-	=!?&|[](){}
+	??-+*/%<>^!?.
+	==<=>=!=&&||
+	+=-=*=/=%==
+	[](){}@#$:;,
 	`
 
 	tests := []struct {
@@ -40,9 +43,9 @@ func TestLexer(t *testing.T) {
 		{"StringExprWhitespace", " "},
 		{"Operator", "+"},
 		{"StringExprWhitespace", " "},
-		{"Operator", "("},
+		{"Punct", "("},
 		{"Ident", "lastName"},
-		{"Operator", ")"},
+		{"Punct", ")"},
 		{"StringExprEnd", "}"},
 		{"StringText", "!"},
 		{"StringEnd", "\""},
@@ -51,17 +54,45 @@ func TestLexer(t *testing.T) {
 		{"Whitespace", "\n\t"},
 		{"Comment", "// Some comment"},
 		{"Whitespace", "\n\t"},
-		{"Operator", "="},
+		{"Operator", "??"},
+		{"Operator", "-"},
+		{"Operator", "+"},
+		{"Operator", "*"},
+		{"Operator", "/"},
+		{"Operator", "%"},
+		{"Operator", "<"},
+		{"Operator", ">"},
+		{"Operator", "^"},
 		{"Operator", "!"},
 		{"Operator", "?"},
-		{"Operator", "&"},
-		{"Operator", "|"},
-		{"Operator", "["},
-		{"Operator", "]"},
-		{"Operator", "("},
-		{"Operator", ")"},
-		{"Operator", "{"},
-		{"Operator", "}"},
+		{"Operator", "."},
+		{"Whitespace", "\n\t"},
+		{"LogicOperator", "=="},
+		{"LogicOperator", "<="},
+		{"LogicOperator", ">="},
+		{"LogicOperator", "!="},
+		{"LogicOperator", "&&"},
+		{"LogicOperator", "||"},
+		{"Whitespace", "\n\t"},
+		{"AssignOperator", "+="},
+		{"AssignOperator", "-="},
+		{"AssignOperator", "*="},
+		{"AssignOperator", "/="},
+		{"AssignOperator", "%="},
+		{"AssignOperator", "="},
+		{"Whitespace", "\n\t"},
+		{"Punct", "["},
+		{"Punct", "]"},
+		{"Punct", "("},
+		{"Punct", ")"},
+		{"Punct", "{"},
+		{"Punct", "}"},
+		{"Punct", "@"},
+		{"Punct", "#"},
+		{"Punct", "$"},
+		{"Punct", ":"},
+		{"Punct", ";"},
+		{"Punct", ","},
 	}
 
 	symbols := lexer.SymbolsByRune(BazaarLexer)
