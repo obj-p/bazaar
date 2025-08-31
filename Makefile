@@ -7,7 +7,7 @@ help: ## Show this help message
 	@echo "Usage: make [target]"
 	@echo ""
 	@echo "Targets:"
-	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z_-]+:.*?## / {printf "  %-15s %s\n", $$1, $$2}' $(MAKEFILE_LIST)
+	@bash scripts/help.sh $(MAKEFILE_LIST)
 
 $(BIN_PRE_COMMIT): ## Download pre-commit
 	@curl --create-dirs --output-dir bin -LO \
