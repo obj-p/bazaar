@@ -6,7 +6,7 @@ data FunctionFields {
 	trailingComma func(int,)
 	optional func()?
 	nestedOptional (func() -> string?)?
-	extraNested (((func()?))
+	extraNested ((func()?))
 }
 
 func HigherOrderFunction() -> func() -> func()
