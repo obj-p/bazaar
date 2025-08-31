@@ -1,0 +1,9 @@
+package ifs
+
+template Ifs() {
+  if foo != bar {}
+
+  if foo == bar {}
+
+  if foo == bar && foo != true {}
+}

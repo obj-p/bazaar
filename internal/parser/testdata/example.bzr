@@ -48,11 +48,6 @@ template TextAndButtonRow(models [TextAndButtonRowModel]) {
             if var message = model.message {
                 Print(message)
             }
-
-            if message != null {
-                Print(message)
-            }
-//             }
         }
     }
 }
