@@ -18,9 +18,10 @@ type ForStmt struct {
 }
 
 type Stmt struct {
-	For  *ForStmt `parser:"@@"`
-	If   *IfStmt  `parser:"| @@"`
-	Expr *Expr    `parser:"| @@"`
+	Assign *AssignStmt `parser:"@@"`
+	For    *ForStmt    `parser:"| @@"`
+	If     *IfStmt     `parser:"| @@"`
+	Expr   *Expr       `parser:"| @@"`
 }
 
 type Block struct {

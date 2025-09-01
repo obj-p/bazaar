@@ -1,0 +1,13 @@
+package assigns
+
+template Assigns {
+        var answer = 42
+
+        // TODO(jason.prasad): other assigns
+        // var answer int = 42
+        // answer += 0
+        // answer -= 0
+        // answer %= 128
+        // answer /= 1
+        // answer *= 1
+}
