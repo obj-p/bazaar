@@ -9,9 +9,27 @@ import (
 
 // Adapted from https://github.com/alecthomas/langx
 
+type LambdaParameter struct {
+	Name string    `parser:"@Ident"`
+	Type *TypeDecl `parser:"@@?"`
+}
+
+type LambdaExpr struct {
+	Parameters []*LambdaParameter `parser:"'{' ('(' @@ (',' @@)* ')'"`
+	Return     *TypeDecl          `parser:"('-' '>' @@)?"`
+	Stmts      []*Stmt            `parser:"'in')? @@* '}'"`
+}
+
+type ArgumentExpr struct {
+	Name   *string     `parser:"(@Ident '=')?"`
+	Lambda *LambdaExpr `parser:"@@"`
+	Expr   *Expr       `parser:"| @@"`
+}
+
 type CallExpr struct {
-	Parameters []*Expr `parser:"'(' (@@ (',' @@)* ','?)? ')'"`
-	Block      *Block  `parser:"@@?"`
+	Lambda         *LambdaExpr     `parser:"@@"`
+	Arguments      []*ArgumentExpr `parser:"| ('(' (@@ (',' @@)* ','?)? ')'"`
+	TrailingLambda *LambdaExpr     `parser:"@@?)"`
 }
 
 type KeyPathExpr struct {
