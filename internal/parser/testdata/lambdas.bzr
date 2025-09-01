@@ -1,6 +1,9 @@
 package lambdas
 
 template Lambdas {
+        Foo {}
+        Foo { Bar() }
+        Foo { Bar() { Baz {} } }
         Foo() {}
         Foo() { Bar() }
         Foo() { Bar() { Baz() {} } }
