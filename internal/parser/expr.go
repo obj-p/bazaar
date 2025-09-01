@@ -27,13 +27,13 @@ type TrailingLambdaExpr struct {
 
 type ArgumentExpr struct {
 	Name   *string     `parser:"(@Ident '=')?"`
-	Lambda *LambdaExpr `parser:"@@"`
-	Expr   *Expr       `parser:"| @@"`
+	Lambda *LambdaExpr `parser:"(@@"`
+	Expr   *Expr       `parser:"| @@)"`
 }
 
 type CallExpr struct {
-	Arguments      []*ArgumentExpr `parser:"('(' (@@ (',' @@)* ','?)? ')'"`
-	TrailingLambda *LambdaExpr     `parser:"@@?)"`
+	Arguments      []*ArgumentExpr `parser:"'(' (@@ (',' @@)* ','?)? ')'"`
+	TrailingLambda *LambdaExpr     `parser:"@@?"`
 }
 
 type KeyPathExpr struct {
