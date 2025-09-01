@@ -41,6 +41,7 @@ data TextAndButtonRowModel {
 
 template TextAndButtonRow(models [TextAndButtonRowModel]) {
 	for model in models {
+        // TODO(jason.prasad): annotations
 //		@Modifiers(...)
 //		Row {
 		Text(model.value)
