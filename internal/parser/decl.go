@@ -36,18 +36,18 @@ type FunctionDecl struct {
 	Name       string           `parser:"'func' @Ident"`
 	Parameters []*ParameterDecl `parser:"'(' (@@ (',' @@)* ','?)? ')'"`
 	Return     *TypeDecl        `parser:"('-' '>' @@)?"`
-	Block      *Block           `parser:"@@?"`
+	Block      []*Stmt          `parser:"('{' @@* '}')?"`
 }
 
 type TemplateDecl struct {
 	Name       string           `parser:"'template' @Ident"`
 	Parameters []*ParameterDecl `parser:"('(' (@@ (',' @@)* ','?)? ')')?"`
-	Block      *Block           `parser:"@@"`
+	Block      []*Stmt          `parser:"('{' @@* '}')"`
 }
 
 type PreviewDecl struct {
-	Name  string `parser:"'preview' @Ident"`
-	Block *Block `parser:"@@"`
+	Name  string  `parser:"'preview' @Ident"`
+	Block []*Stmt `parser:"('{' @@* '}')"`
 }
 
 type FieldDecl struct {
@@ -68,7 +68,7 @@ type TypeDecl struct {
 	Map      *MapTypeDecl      `parser:"| @@"`
 	Value    *string           `parser:"| (@'component' | @Ident)"`
 	Nested   *TypeDecl         `parser:"| '(' @@ ')')"`
-	Optional bool              `parser:"'?'?"`
+	Optional bool              `parser:"@'?'?"`
 }
 
 type FunctionTypeDecl struct {

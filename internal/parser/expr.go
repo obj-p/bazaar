@@ -9,28 +9,50 @@ import (
 
 // Adapted from https://github.com/alecthomas/langx
 
+type LambdaParameter struct {
+	Name string    `parser:"@Ident"`
+	Type *TypeDecl `parser:"@@?"`
+}
+
+type LambdaExpr struct {
+	Parameters []*LambdaParameter `parser:"'{' ('(' @@ (',' @@)* ')'"`
+	Return     *TypeDecl          `parser:"('-' '>' @@)?"`
+	Stmts      []*Stmt            `parser:"'in')? @@* '}'"`
+}
+
+type TrailingLambdaExpr struct {
+	Ident          *string     `parser:"@Ident"`
+	TrailingLambda *LambdaExpr `parser:"@@"`
+}
+
+type ArgumentExpr struct {
+	Name   *string     `parser:"(@Ident '=')?"`
+	Lambda *LambdaExpr `parser:"@@"`
+	Expr   *Expr       `parser:"| @@"`
+}
+
 type CallExpr struct {
-	Parameters []*Expr `parser:"'(' (@@ (',' @@)* ','?)? ')'"`
-	Block      *Block  `parser:"@@?"`
+	Arguments      []*ArgumentExpr `parser:"('(' (@@ (',' @@)* ','?)? ')'"`
+	TrailingLambda *LambdaExpr     `parser:"@@?)"`
 }
 
 type KeyPathExpr struct {
-	Subscript *Expr        `parser:"('[' @@ ']'"`
-	Reference *string      `parser:"| ('.' @Ident)"`
-	Call      *CallExpr    `parser:"| @@)"`
-	Optional  bool         `parser:"'?'?"`
-	Next      *KeyPathExpr `parser:"@@?"`
+	Optional  bool           `parser:"@'?'?"`
+	Subscript *Expr          `parser:"('[' @@ ']'"`
+	Reference *ReferenceExpr `parser:"| '.' @@"`
+	Call      *CallExpr      `parser:"| @@)"`
+	Next      *KeyPathExpr   `parser:"@@?"`
 }
 
 type ReferenceExpr struct {
-	Literal  *Literal `parser:"@@"`
-	Implicit bool     `parser:"| (@'.'?"`
-	Ident    *string  `parser:"@Ident)"`
+	Ident   *string      `parser:"@Ident"`
+	KeyPath *KeyPathExpr `parser:"@@?"`
 }
 
 type PrimaryExpr struct {
-	Reference *ReferenceExpr `parser:"@@"`
-	KeyPath   *KeyPathExpr   `parser:"@@?"`
+	Literal     *Literal       `parser:"@@"`
+	ImplicitRef *ReferenceExpr `parser:"| '.' @@"`
+	Reference   *ReferenceExpr `parser:"| @@"`
 }
 
 type BinaryExpr struct {

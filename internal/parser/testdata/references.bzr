@@ -1,0 +1,5 @@
+package references
+
+template References {
+        model?[0]?("hello, world!")?.foobar
+}
