@@ -1,0 +1,17 @@
+package calls
+
+template Calls {
+        Print("Hello, world!")
+
+        // TODO(jason.prasad): other call constructs
+
+        // BlockLiteral({})
+
+        // NamedArgs(first = 1337, second = "second")
+
+        // TrailingBlockLiteral {}
+
+        // MutlipleBlockLiterals {
+        // } other = {
+        // }
+}

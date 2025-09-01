@@ -1,0 +1,5 @@
+package maps
+
+data MapFields {
+	empty {string: int} = {:}
+}
