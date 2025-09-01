@@ -43,7 +43,7 @@ template TextAndButtonRow(models [TextAndButtonRowModel]) {
 	for model in models {
                 // TODO(jason.prasad): annotations
                 // @Modifiers(...)
-                Row() {
+                Row {
                         Text(model.value)
                         Button(model.label) {
                                 if var message = model.message {

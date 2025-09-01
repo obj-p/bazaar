@@ -5,25 +5,27 @@ type AssignStmt struct {
 	Expr *Expr   `parser:"@@"`
 }
 
-type IfStmt struct {
-	Assign *AssignStmt `parser:"'if' (@@"`
-	Expr   *Expr       `parser:"| @@)"`
-	Block  *Block      `parser:"@@"`
+type ForInStmt struct {
+	Key    *string `parser:"'for' @Ident"`
+	Source *Expr   `parser:"'in' @@ '{'"`
+	Block  []*Stmt `parser:"@@* '}'"`
 }
 
-type ForStmt struct {
-	Key    *string `parser:"'for' @Ident"`
-	Source *Expr   `parser:"'in' @@"`
-	Block  *Block  `parser:"@@"`
+type IfBindingStmt struct {
+	Assign *AssignStmt `parser:"'if' @@ '{'"`
+	Block  []*Stmt     `parser:"@@* '}'"`
+}
+
+type IfStmt struct {
+	Expr  *Expr   `parser:"'if' @@ '{'"`
+	Block []*Stmt `parser:"@@* '}'"`
 }
 
 type Stmt struct {
-	Assign *AssignStmt `parser:"@@"`
-	For    *ForStmt    `parser:"| @@"`
-	If     *IfStmt     `parser:"| @@"`
-	Expr   *Expr       `parser:"| @@"`
-}
-
-type Block struct {
-	Stmts []*Stmt `parser:"'{' @@* '}'"`
+	Assign         *AssignStmt         `parser:"@@"`
+	ForIn          *ForInStmt          `parser:"| @@"`
+	If             *IfStmt             `parser:"| @@"`
+	IfBinding      *IfBindingStmt      `parser:"| @@"`
+	TrailingLambda *TrailingLambdaExpr `parser:"| @@"`
+	Expr           *Expr               `parser:"| @@"`
 }
