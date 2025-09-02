@@ -1,8 +1,17 @@
 package parser
 
+import "github.com/obj-p/bazaar/internal/token"
+
 type AssignStmt struct {
-	Name *string `parser:"'var' @Ident '='"`
-	Expr *Expr   `parser:"@@"`
+	Name  *string   `parser:"@Ident"`
+	Op    *token.Op `parser:"@AssignOperator"`
+	Value *Expr     `parser:"@@"`
+}
+
+type VarAssignStmt struct {
+	Name *string   `parser:"'var' @Ident"`
+	Type *TypeDecl `parser:"@@?"`
+	Expr *Expr     `parser:"'=' @@"`
 }
 
 type ForInStmt struct {
@@ -12,8 +21,8 @@ type ForInStmt struct {
 }
 
 type IfBindingStmt struct {
-	Assign *AssignStmt `parser:"'if' @@ '{'"`
-	Block  []*Stmt     `parser:"@@* '}'"`
+	Assign *VarAssignStmt `parser:"'if' @@ '{'"`
+	Block  []*Stmt        `parser:"@@* '}'"`
 }
 
 type IfStmt struct {
@@ -22,7 +31,8 @@ type IfStmt struct {
 }
 
 type Stmt struct {
-	Assign         *AssignStmt         `parser:"@@"`
+	VarAssign      *VarAssignStmt      `parser:"@@"`
+	Assign         *AssignStmt         `parser:"| @@"`
 	ForIn          *ForInStmt          `parser:"| @@"`
 	If             *IfStmt             `parser:"| @@"`
 	IfBinding      *IfBindingStmt      `parser:"| @@"`

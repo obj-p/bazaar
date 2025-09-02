@@ -21,7 +21,7 @@ type LambdaExpr struct {
 }
 
 type TrailingLambdaExpr struct {
-	Ident          *string     `parser:"@Ident"`
+	Name           *string     `parser:"@Ident"`
 	TrailingLambda *LambdaExpr `parser:"@@"`
 }
 
@@ -45,7 +45,7 @@ type KeyPathExpr struct {
 }
 
 type ReferenceExpr struct {
-	Ident   *string      `parser:"@Ident"`
+	Name    *string      `parser:"@Ident"`
 	KeyPath *KeyPathExpr `parser:"@@?"`
 }
 

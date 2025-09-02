@@ -4,13 +4,14 @@ template Assigns {
         var answer = 42
         var answer = 42.0
         var answer = "42"
+        var answer int = 42
+
+        answer += 0
+        answer -= 0
+        answer %= 128
+        answer /= 1
+        answer *= 1
 
         // TODO(jason.prasad): other assigns
         // var answer = { return 42 }
-        // var answer int = 42
-        // answer += 0
-        // answer -= 0
-        // answer %= 128
-        // answer /= 1
-        // answer *= 1
 }
