@@ -15,13 +15,13 @@ type LambdaParameter struct {
 }
 
 type LambdaExpr struct {
-	Parameters []*LambdaParameter `parser:"'{' ('(' @@ (',' @@)* ')'"`
+	Parameters []*LambdaParameter `parser:"'{' ('(' (@@ (',' @@)* ','?)? ')'"`
 	Return     *TypeDecl          `parser:"('-' '>' @@)?"`
 	Stmts      []*Stmt            `parser:"'in')? @@* '}'"`
 }
 
 type TrailingLambdaExpr struct {
-	Ident          *string     `parser:"@Ident"`
+	Name           *string     `parser:"@Ident"`
 	TrailingLambda *LambdaExpr `parser:"@@"`
 }
 
@@ -45,12 +45,13 @@ type KeyPathExpr struct {
 }
 
 type ReferenceExpr struct {
-	Ident   *string      `parser:"@Ident"`
+	Name    *string      `parser:"@Ident"`
 	KeyPath *KeyPathExpr `parser:"@@?"`
 }
 
 type PrimaryExpr struct {
 	Literal     *Literal       `parser:"@@"`
+	Lambda      *LambdaExpr    `parser:"| @@"`
 	ImplicitRef *ReferenceExpr `parser:"| '.' @@"`
 	Reference   *ReferenceExpr `parser:"| @@"`
 }
