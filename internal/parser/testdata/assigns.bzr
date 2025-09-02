@@ -5,6 +5,7 @@ template Assigns {
         var answer = 42.0
         var answer = "42"
         var answer int = 42
+        var answer = {}
 
         answer += 0
         answer -= 0
@@ -13,5 +14,4 @@ template Assigns {
         answer *= 1
 
         // TODO(jason.prasad): other assigns
-        // var answer = { return 42 }
 }
