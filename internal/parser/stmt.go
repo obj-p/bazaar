@@ -30,6 +30,10 @@ type IfStmt struct {
 	Block []*Stmt `parser:"@@* '}'"`
 }
 
+type ReturnStmt struct {
+	Value *Expr `parser:"'return' @@?"`
+}
+
 type Stmt struct {
 	VarAssign      *VarAssignStmt      `parser:"@@"`
 	Assign         *AssignStmt         `parser:"| @@"`
@@ -37,5 +41,6 @@ type Stmt struct {
 	If             *IfStmt             `parser:"| @@"`
 	IfBinding      *IfBindingStmt      `parser:"| @@"`
 	TrailingLambda *TrailingLambdaExpr `parser:"| @@"`
+	Return         *ReturnStmt         `parser:"| @@"`
 	Expr           *Expr               `parser:"| @@"`
 }

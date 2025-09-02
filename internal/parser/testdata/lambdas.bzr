@@ -14,4 +14,8 @@ template Lambdas {
         Foo(bar = { Bar() } ) {
                 Baz()
         }
+
+        var foo = { () -> int in return 42 }
+        var foo = { (bar) -> int in return bar }
+        var foo = { (bar int) -> int in return bar }
 }
