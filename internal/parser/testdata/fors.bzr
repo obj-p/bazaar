@@ -3,14 +3,11 @@ package fors
 template Fors(list [string], map {string: int}) {
         for value in list {}
         for entry in map {}
+        for entry in enumerate(map) {}
+        for idx in range(0, 10) {}
+        for (idx, value) in enumerate(list) {}
+        for (key, value) in enumerate(map) {}
 
-        // TODO(jason.prasad): other for loop constructs
-
-        // for idx, value in enumerate list {}
-        // for idx in range(0, 10) {}
-
-        // var idx = 0
-        // for idx < len(list) { idx += 1 }
-
-        // for key, value in enumerate map {}
+        var idx = 0
+        for idx < len(list) { idx += 1 }
 }

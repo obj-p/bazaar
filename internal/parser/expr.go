@@ -20,20 +20,19 @@ type LambdaExpr struct {
 	Stmts      []*Stmt            `parser:"'in')? @@* '}'"`
 }
 
-type TrailingLambdaExpr struct {
-	Name           *string     `parser:"@Ident"`
-	TrailingLambda *LambdaExpr `parser:"@@"`
-}
-
 type ArgumentExpr struct {
 	Name   *string     `parser:"(@Ident '=')?"`
 	Lambda *LambdaExpr `parser:"(@@"`
 	Expr   *Expr       `parser:"| @@)"`
 }
 
+type BuiltInExpr struct {
+	Name      *string         `parser:"@BuiltIn"`
+	Arguments []*ArgumentExpr `parser:"'(' (@@ (',' @@)* ','?)? ')'"`
+}
+
 type CallExpr struct {
-	Arguments      []*ArgumentExpr `parser:"'(' (@@ (',' @@)* ','?)? ')'"`
-	TrailingLambda *LambdaExpr     `parser:"@@?"`
+	Arguments []*ArgumentExpr `parser:"'(' (@@ (',' @@)* ','?)? ')'"`
 }
 
 type KeyPathExpr struct {
@@ -51,6 +50,7 @@ type ReferenceExpr struct {
 
 type PrimaryExpr struct {
 	Lambda      *LambdaExpr    `parser:"@@"`
+	BuiltIn     *BuiltInExpr   `parser:"| @@"`
 	Literal     *Literal       `parser:"| @@"`
 	ImplicitRef *ReferenceExpr `parser:"| '.' @@"`
 	Reference   *ReferenceExpr `parser:"| @@"`
