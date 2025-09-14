@@ -14,10 +14,20 @@ type AssignStmt struct {
 	Value *Expr     `parser:"@@"`
 }
 
+type ForInDest struct {
+	First  *string `parser:"@Ident"`
+	Second *string `parser:"(',' @Ident)?"`
+}
+
+type ForInSource struct {
+	IsEnumerated bool  `parser:"@'enumerate'?"`
+	Source       *Expr `parser:"@@"`
+}
+
 type ForInStmt struct {
-	Key    *string `parser:"'for' @Ident"`
-	Source *Expr   `parser:"'in' @@ '{'"`
-	Block  []*Stmt `parser:"@@* '}'"`
+	Dest   *ForInDest   `parser:"'for' @@"`
+	Source *ForInSource `parser:"'in' @@ '{'"`
+	Block  []*Stmt      `parser:"@@* '}'"`
 }
 
 type IfFragment struct {
