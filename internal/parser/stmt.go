@@ -36,6 +36,21 @@ type IfStmt struct {
 	Block     []*Stmt       `parser:"'{' @@* '}'"`
 }
 
+type SwitchCase struct {
+	Expr  *Expr   `parser:"'case' @@ ':'"`
+	Block []*Expr `parser:"@@*"`
+}
+
+type SwitchBody struct {
+	Cases   *SwitchCase `parser:"@@*"`
+	Default []*Expr     `parser:"('default' ':' @@*)"`
+}
+
+type SwitchStmt struct {
+	Expr *Expr       `parser:"'switch' @@"`
+	Body *SwitchBody `parser:"'{' @@ '}'"`
+}
+
 type ReturnStmt struct {
 	Value *Expr `parser:"'return' @@?"`
 }
@@ -50,6 +65,7 @@ type Stmt struct {
 	Assign *AssignStmt  `parser:"| @@"`
 	For    *ForStmt     `parser:"| @@"`
 	If     *IfStmt      `parser:"| @@"`
+	Switch *SwitchStmt  `parser:"| @@"`
 	Return *ReturnStmt  `parser:"| @@"`
 	Call   *CallStmt    `parser:"| @@"`
 	Expr   *Expr        `parser:"| @@"`

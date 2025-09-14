@@ -1,6 +1,0 @@
-package switch
-
-template Switch {
-        // TODO(jason.prasad): consider switch constructs
-        // switch {}
-}
