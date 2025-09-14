@@ -50,10 +50,11 @@ type ReferenceExpr struct {
 }
 
 type PrimaryExpr struct {
-	Literal     *Literal       `parser:"@@"`
-	Lambda      *LambdaExpr    `parser:"| @@"`
+	Lambda      *LambdaExpr    `parser:"@@"`
+	Literal     *Literal       `parser:"| @@"`
 	ImplicitRef *ReferenceExpr `parser:"| '.' @@"`
 	Reference   *ReferenceExpr `parser:"| @@"`
+	Nested      *Expr          `parser:"| '(' @@ ')'"`
 }
 
 type BinaryExpr struct {
@@ -92,7 +93,6 @@ var opPrecedence = map[token.Op]precedence{
 	token.OpMul: {Priority: 2},
 	token.OpDiv: {Priority: 2},
 	token.OpMod: {Priority: 2},
-	// TODO(jason.prasad): other Op
 }
 
 var unaryExprParser = participle.MustBuild[UnaryExpr](

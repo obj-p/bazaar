@@ -2,16 +2,16 @@ package parser
 
 import "github.com/obj-p/bazaar/internal/token"
 
+type VarDeclStmt struct {
+	Name *string   `parser:"'var' @Ident"`
+	Type *TypeDecl `parser:"@@?"`
+	Expr *Expr     `parser:"'=' @@"`
+}
+
 type AssignStmt struct {
 	Name  *string   `parser:"@Ident"`
 	Op    *token.Op `parser:"@AssignOperator"`
 	Value *Expr     `parser:"@@"`
-}
-
-type VarAssignStmt struct {
-	Name *string   `parser:"'var' @Ident"`
-	Type *TypeDecl `parser:"@@?"`
-	Expr *Expr     `parser:"'=' @@"`
 }
 
 type ForInStmt struct {
@@ -20,14 +20,15 @@ type ForInStmt struct {
 	Block  []*Stmt `parser:"@@* '}'"`
 }
 
-type IfBindingStmt struct {
-	Assign *VarAssignStmt `parser:"'if' @@ '{'"`
-	Block  []*Stmt        `parser:"@@* '}'"`
+type IfFragment struct {
+	Var         *VarDeclStmt `parser:"@@"`
+	ImplicitVar *string      `parser:"| 'var' @Ident"`
+	Expr        *Expr        `parser:"| @@"`
 }
 
 type IfStmt struct {
-	Expr  *Expr   `parser:"'if' @@ '{'"`
-	Block []*Stmt `parser:"@@* '}'"`
+	Fragments []*IfFragment `parser:"'if' (@@ (',' @@)* ','?) '{'"`
+	Block     []*Stmt       `parser:"@@* '}'"`
 }
 
 type ReturnStmt struct {
@@ -35,11 +36,10 @@ type ReturnStmt struct {
 }
 
 type Stmt struct {
-	VarAssign      *VarAssignStmt      `parser:"@@"`
+	Var            *VarDeclStmt        `parser:"@@"`
 	Assign         *AssignStmt         `parser:"| @@"`
 	ForIn          *ForInStmt          `parser:"| @@"`
 	If             *IfStmt             `parser:"| @@"`
-	IfBinding      *IfBindingStmt      `parser:"| @@"`
 	TrailingLambda *TrailingLambdaExpr `parser:"| @@"`
 	Return         *ReturnStmt         `parser:"| @@"`
 	Expr           *Expr               `parser:"| @@"`

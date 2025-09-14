@@ -12,6 +12,4 @@ template Assigns {
         answer %= 128
         answer /= 1
         answer *= 1
-
-        // TODO(jason.prasad): other assigns
 }
