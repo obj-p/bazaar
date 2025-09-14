@@ -9,6 +9,15 @@ import (
 
 // Adapted from https://github.com/alecthomas/langx
 
+type AnnotationExpr struct {
+	Name *string   `parser:"'@' @Ident"`
+	Call *CallExpr `parser:"@@?"`
+}
+
+type DestructuringExpr struct {
+	Names []*string `parser:"@Ident | '(' @Ident (',' @Ident)? ','? ')'"`
+}
+
 type LambdaParameter struct {
 	Name string    `parser:"@Ident"`
 	Type *TypeDecl `parser:"@@?"`
@@ -32,7 +41,8 @@ type BuiltInExpr struct {
 }
 
 type CallExpr struct {
-	Arguments []*ArgumentExpr `parser:"'(' (@@ (',' @@)* ','?)? ')'"`
+	Annotation *AnnotationExpr `parser:"@@?"`
+	Arguments  []*ArgumentExpr `parser:"'(' (@@ (',' @@)* ','?)? ')'"`
 }
 
 type KeyPathExpr struct {
