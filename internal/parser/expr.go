@@ -50,8 +50,8 @@ type ReferenceExpr struct {
 }
 
 type PrimaryExpr struct {
-	Literal     *Literal       `parser:"@@"`
-	Lambda      *LambdaExpr    `parser:"| @@"`
+	Lambda      *LambdaExpr    `parser:"@@"`
+	Literal     *Literal       `parser:"| @@"`
 	ImplicitRef *ReferenceExpr `parser:"| '.' @@"`
 	Reference   *ReferenceExpr `parser:"| @@"`
 	Nested      *Expr          `parser:"| '(' @@ ')'"`
