@@ -19,15 +19,10 @@ type ForInDest struct {
 	Second *string `parser:"(',' @Ident)?"`
 }
 
-type ForInSource struct {
-	IsEnumerated bool  `parser:"@'enumerate'?"`
-	Source       *Expr `parser:"@@"`
-}
-
 type ForInStmt struct {
-	Dest   *ForInDest   `parser:"'for' @@"`
-	Source *ForInSource `parser:"'in' @@ '{'"`
-	Block  []*Stmt      `parser:"@@* '}'"`
+	Dest   *ForInDest `parser:"'for' @@"`
+	Source *Expr      `parser:"'in' @@ '{'"`
+	Block  []*Stmt    `parser:"@@* '}'"`
 }
 
 type IfFragment struct {
@@ -45,12 +40,17 @@ type ReturnStmt struct {
 	Value *Expr `parser:"'return' @@?"`
 }
 
+type CallStmt struct {
+	Call           *CallExpr   `parser:"@@"`
+	TrailingLambda *LambdaExpr `parser:"@@?"`
+}
+
 type Stmt struct {
-	Var            *VarDeclStmt        `parser:"@@"`
-	Assign         *AssignStmt         `parser:"| @@"`
-	ForIn          *ForInStmt          `parser:"| @@"`
-	If             *IfStmt             `parser:"| @@"`
-	TrailingLambda *TrailingLambdaExpr `parser:"| @@"`
-	Return         *ReturnStmt         `parser:"| @@"`
-	Expr           *Expr               `parser:"| @@"`
+	Var    *VarDeclStmt `parser:"@@"`
+	Assign *AssignStmt  `parser:"| @@"`
+	ForIn  *ForInStmt   `parser:"| @@"`
+	If     *IfStmt      `parser:"| @@"`
+	Return *ReturnStmt  `parser:"| @@"`
+	Call   *CallStmt    `parser:"| @@"`
+	Expr   *Expr        `parser:"| @@"`
 }
