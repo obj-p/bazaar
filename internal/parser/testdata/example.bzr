@@ -40,18 +40,20 @@ data TextAndButtonRowModel {
 }
 
 template TextAndButtonRow(models [TextAndButtonRowModel]) {
-	for model in models {
-                // TODO(jason.prasad): annotations
-                // @Modifiers(...)
+        @State var count = 0
+
+        for model in models {
+                @Modifier(Padding(12.0))
                 Row {
                         Text(model.value)
                         Button(model.label) {
+                                count += 1
                                 if var message = model.message {
                                         Print(message)
                                 }
                         }
-		}
-	}
+                }
+        }
 }
 
 preview TextAndButtonRowPreview {}
