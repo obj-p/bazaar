@@ -42,7 +42,7 @@ data TextAndButtonRowModel {
 template TextAndButtonRow(models [TextAndButtonRowModel]) {
         @State var count = 0
 
-	for model in models {
+        for model in models {
                 @Modifier(Padding(12.0))
                 Row {
                         Text(model.value)
@@ -52,8 +52,8 @@ template TextAndButtonRow(models [TextAndButtonRowModel]) {
                                         Print(message)
                                 }
                         }
-		}
-	}
+                }
+        }
 }
 
 preview TextAndButtonRowPreview {}
