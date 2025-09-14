@@ -54,6 +54,7 @@ type PrimaryExpr struct {
 	Lambda      *LambdaExpr    `parser:"| @@"`
 	ImplicitRef *ReferenceExpr `parser:"| '.' @@"`
 	Reference   *ReferenceExpr `parser:"| @@"`
+	Nested      *Expr          `parser:"| '(' @@ ')'"`
 }
 
 type BinaryExpr struct {

@@ -7,8 +7,11 @@ template Ifs(foo bool, bar bool, baz bool?) {
 
 	if foo == bar && foo != true {}
 
-	// TODO(jason.prasad): Fix nested expressions
-	// if (foo == bar || (foo != true)) {}
+	if (foo == bar || (foo != true)) {}
+
+	if true || (!(false) && true) {}
+
+	if (foo && bar) || (baz == true) {}
 
         // TODO(jason.prasad): More complex expressions
         // if var baz, foo == bar == baz {}
