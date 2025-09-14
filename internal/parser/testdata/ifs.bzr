@@ -2,18 +2,11 @@ package ifs
 
 template Ifs(foo bool, bar bool, baz bool?) {
 	if foo != bar {}
-
 	if foo == bar {}
-
 	if foo == bar && foo != true {}
-
 	if (foo == bar || (foo != true)) {}
-
 	if true || (!(false) && true) {}
-
 	if (foo && bar) || (baz == true) {}
-
-        // TODO(jason.prasad): More complex expressions
-        // if var baz, foo == bar == baz {}
-        // if var baz = baz, foo == bar == baz {}
+	if var baz, baz == bar {}
+	if var baz = baz, foo == bar == baz {}
 }
