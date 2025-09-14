@@ -42,12 +42,12 @@ type FunctionDecl struct {
 type TemplateDecl struct {
 	Name       string           `parser:"'template' @Ident"`
 	Parameters []*ParameterDecl `parser:"('(' (@@ (',' @@)* ','?)? ')')?"`
-	Block      []*Stmt          `parser:"('{' @@* '}')"`
+	Block      []*Stmt          `parser:"'{' @@* '}'"`
 }
 
 type PreviewDecl struct {
 	Name  string  `parser:"'preview' @Ident"`
-	Block []*Stmt `parser:"('{' @@* '}')"`
+	Block []*Stmt `parser:"'{' @@* '}'"`
 }
 
 type FieldDecl struct {

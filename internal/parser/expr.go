@@ -26,6 +26,11 @@ type ArgumentExpr struct {
 	Expr   *Expr       `parser:"| @@)"`
 }
 
+type BuiltInExpr struct {
+	Name      *string         `parser:"@BuiltIn"`
+	Arguments []*ArgumentExpr `parser:"'(' (@@ (',' @@)* ','?)? ')'"`
+}
+
 type CallExpr struct {
 	Arguments []*ArgumentExpr `parser:"'(' (@@ (',' @@)* ','?)? ')'"`
 }
@@ -45,6 +50,7 @@ type ReferenceExpr struct {
 
 type PrimaryExpr struct {
 	Lambda      *LambdaExpr    `parser:"@@"`
+	BuiltIn     *BuiltInExpr   `parser:"| @@"`
 	Literal     *Literal       `parser:"| @@"`
 	ImplicitRef *ReferenceExpr `parser:"| '.' @@"`
 	Reference   *ReferenceExpr `parser:"| @@"`

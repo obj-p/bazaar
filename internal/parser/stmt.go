@@ -2,10 +2,14 @@ package parser
 
 import "github.com/obj-p/bazaar/internal/token"
 
+type Destructuring struct {
+	Names []*string `parser:"@Ident | '(' @Ident (',' @Ident)? ','? ')'"`
+}
+
 type VarDeclStmt struct {
-	Name *string   `parser:"'var' @Ident"`
-	Type *TypeDecl `parser:"@@?"`
-	Expr *Expr     `parser:"'=' @@"`
+	Dest   *Destructuring `parser:"'var' @@"`
+	Type   *TypeDecl      `parser:"@@?"`
+	Source *Expr          `parser:"'=' @@"`
 }
 
 type AssignStmt struct {
@@ -14,15 +18,11 @@ type AssignStmt struct {
 	Value *Expr     `parser:"@@"`
 }
 
-type ForInDest struct {
-	First  *string `parser:"@Ident"`
-	Second *string `parser:"(',' @Ident)?"`
-}
-
-type ForInStmt struct {
-	Dest   *ForInDest `parser:"'for' @@"`
-	Source *Expr      `parser:"'in' @@ '{'"`
-	Block  []*Stmt    `parser:"@@* '}'"`
+type ForStmt struct {
+	Dest   *Destructuring `parser:"'for' ((@@"`
+	Source *Expr          `parser:"'in' @@)"`
+	Expr   *Expr          `parser:"| @@)"`
+	Block  []*Stmt        `parser:"'{' @@* '}'"`
 }
 
 type IfFragment struct {
@@ -32,8 +32,8 @@ type IfFragment struct {
 }
 
 type IfStmt struct {
-	Fragments []*IfFragment `parser:"'if' (@@ (',' @@)* ','?) '{'"`
-	Block     []*Stmt       `parser:"@@* '}'"`
+	Fragments []*IfFragment `parser:"'if' (@@ (',' @@)* ','?)"`
+	Block     []*Stmt       `parser:"'{' @@* '}'"`
 }
 
 type ReturnStmt struct {
@@ -48,7 +48,7 @@ type CallStmt struct {
 type Stmt struct {
 	Var    *VarDeclStmt `parser:"@@"`
 	Assign *AssignStmt  `parser:"| @@"`
-	ForIn  *ForInStmt   `parser:"| @@"`
+	For    *ForStmt     `parser:"| @@"`
 	If     *IfStmt      `parser:"| @@"`
 	Return *ReturnStmt  `parser:"| @@"`
 	Call   *CallStmt    `parser:"| @@"`
