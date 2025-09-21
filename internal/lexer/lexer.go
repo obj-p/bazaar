@@ -8,7 +8,7 @@ var (
 			{Name: "Number", Pattern: `[-+]?(\d*\.)?\d+`},
 			{Name: "String", Pattern: `"`, Action: lexer.Push("String")},
 			{Name: "BuiltIn", Pattern: `\b(enumerate|len|range)\b`, Action: nil},
-			{Name: "Keyword", Pattern: `\b(case|component|data|default|enum|for|if|import|in|package|return|switch|var)\b`, Action: nil},
+			{Name: "Keyword", Pattern: `\b(case|component|data|default|enum|for|if|import|in|modifier|package|return|switch|var)\b`, Action: nil},
 			{Name: "Ident", Pattern: `[\w_][\w\d_]*`, Action: nil},
 			{Name: "LogicOperator", Pattern: `==|<=|>=|!=|&&|\|\|`, Action: nil},
 			{Name: "AssignOperator", Pattern: `\+=|-=|\*=|/=|%=|=`, Action: nil},
