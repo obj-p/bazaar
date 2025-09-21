@@ -15,7 +15,7 @@ type AnnotationExpr struct {
 }
 
 type DestructuringExpr struct {
-	Names []*string `parser:"'(' @Ident (',' @Ident)* ','? ')'"`
+	Names []string `parser:"'(' @Ident (',' @Ident)* ','? ')'"`
 }
 
 type VariableExpr struct {

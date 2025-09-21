@@ -139,6 +139,10 @@
             For: &parser.ForStmt{
               Dest: &parser.VariableExpr{
                 Destructuring: &parser.DestructuringExpr{
+                  Names: []string{
+                    "idx",
+                    "value",
+                  },
                 },
               },
               Source: &parser.Expr{
@@ -169,6 +173,10 @@
             For: &parser.ForStmt{
               Dest: &parser.VariableExpr{
                 Destructuring: &parser.DestructuringExpr{
+                  Names: []string{
+                    "key",
+                    "value",
+                  },
                 },
               },
               Source: &parser.Expr{

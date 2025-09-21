@@ -453,6 +453,10 @@
                   Var: &parser.VarDeclStmt{
                     Dest: &parser.VariableExpr{
                       Destructuring: &parser.DestructuringExpr{
+                        Names: []string{
+                          "bar",
+                          "baz",
+                        },
                       },
                     },
                     Source: &parser.Expr{
