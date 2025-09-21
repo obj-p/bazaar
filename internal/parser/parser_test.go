@@ -33,7 +33,7 @@ func TestParser(t *testing.T) {
 		ast, err := BazaarParser.ParseBytes(d.Name(), source)
 		require.NoError(t, err)
 
-		actual := repr.String(ast)
+		actual := repr.String(ast, repr.Indent("  "))
 
 		goldenPath := path + ".ast.golden"
 

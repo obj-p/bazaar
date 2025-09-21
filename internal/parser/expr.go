@@ -15,7 +15,12 @@ type AnnotationExpr struct {
 }
 
 type DestructuringExpr struct {
-	Names []*string `parser:"@Ident | '(' @Ident (',' @Ident)? ','? ')'"`
+	Names []*string `parser:"'(' @Ident (',' @Ident)* ','? ')'"`
+}
+
+type VariableExpr struct {
+	Name          *string            `parser:"@Ident"`
+	Destructuring *DestructuringExpr `parser:"| @@"`
 }
 
 type LambdaParameter struct {
