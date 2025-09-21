@@ -39,8 +39,8 @@ type SwitchCase struct {
 }
 
 type SwitchBody struct {
-	Cases   *SwitchCase `parser:"@@*"`
-	Default []*Stmt     `parser:"('default' ':' @@*)"`
+	Cases   []*SwitchCase `parser:"@@*"`
+	Default []*Stmt       `parser:"('default' ':' @@*)"`
 }
 
 type SwitchStmt struct {
