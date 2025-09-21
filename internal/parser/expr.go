@@ -63,11 +63,11 @@ type ReferenceExpr struct {
 }
 
 type PrimaryExpr struct {
-	Lambda      *LambdaExpr    `parser:"@@"`
+	Literal     *Literal       `parser:"@@"`
 	BuiltIn     *BuiltInExpr   `parser:"| @@"`
-	Literal     *Literal       `parser:"| @@"`
 	ImplicitRef *ReferenceExpr `parser:"| '.' @@"`
 	Reference   *ReferenceExpr `parser:"| @@"`
+	Lambda      *LambdaExpr    `parser:"| @@"`
 	Nested      *Expr          `parser:"| '(' @@ ')'"`
 }
 
@@ -111,7 +111,7 @@ var opPrecedence = map[token.Op]precedence{
 
 var unaryExprParser = participle.MustBuild[UnaryExpr](
 	participle.Lexer(bazaarLexer.BazaarLexer),
-	participle.UseLookahead(4),
+	participle.UseLookahead(1),
 )
 
 func parseExpr(lex *participleLexer.PeekingLexer, minPrec int) (*Expr, error) {
