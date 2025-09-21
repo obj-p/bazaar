@@ -112,7 +112,7 @@ var opPrecedence = map[token.Op]precedence{
 
 var unaryExprParser = participle.MustBuild[UnaryExpr](
 	participle.Lexer(bazaarLexer.BazaarLexer),
-	participle.UseLookahead(1),
+	participle.UseLookahead(4),
 )
 
 func parseExpr(lex *participleLexer.PeekingLexer, minPrec int) (*Expr, error) {

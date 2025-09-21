@@ -1,0 +1,53 @@
+package edgecases
+
+enum EmptyEnum {}
+
+component EmptyComponent {}
+
+data EmptyData {}
+
+template EmptyTemplate {}
+
+template EdgeCases {
+    // Empty containers
+    var emptyArray = []
+    var emptyMap = {:}
+
+    // Complex trailing commas
+    call(
+        first,
+        second,
+    )
+
+    var array = [1, 2, 3,]
+
+    // Map literals with content (lookahead=4 fixes both identifier and string keys!)
+    var map = {a: 1, b: 2,}
+    var map2 = {"a": 1, "b": 2}
+
+    // Single annotation
+    @State var count = 0
+
+    // TODO: Multiple annotations on single construct - grammar only supports one
+    // @State @Modifier(padding = 8) var count = 0
+    // TODO: Revisit allowing multiple annotations on single statements
+
+    // Complex lambda parameters with types
+    call { (x int, y string) -> bool in
+        return x > 0
+    }
+
+    call { () -> string in
+        return "result"
+    }
+
+    call { (a, b, c) in
+        // inferred types
+        return a
+    }
+
+    // Complex optional chaining
+    var result = obj?.method()?.property
+    var indexed = array?[0]?.field
+    var called = func?(param)?.result
+}

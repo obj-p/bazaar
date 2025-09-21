@@ -1,0 +1,29 @@
+package optionalchaining
+
+template OptionalChaining {
+    // Basic optional chaining
+    var result = obj?.property
+    var method = obj?.method()
+    var nested = obj?.nested?.property
+
+    // Optional chaining with array access
+    var indexed = array?[0]
+    var deepIndexed = array?[0]?.field
+
+    // Optional chaining with method calls
+    var called = func?(param)
+    var chainedCall = obj?.method()?.result
+
+    // Optional chaining in expressions
+    if obj?.property {}
+    var conditional = obj?.value > 0
+
+    // TODO: Complex optional chaining combinations - seem to have parsing issues
+    // var complex = obj?.arr?[idx]?.call()
+    // var mixedChain = data?.items?[0]?.name
+    // var deepChain = root?.child?.grandchild?.value
+    // TODO: Reconsider making 'data' a keyword - causes parsing issues with 'data?.items'
+
+    // TODO: Null coalescing not implemented in token system
+    // var arithmetic = (obj?.count ?? 0) + 1
+}

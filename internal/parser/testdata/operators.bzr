@@ -1,0 +1,49 @@
+package operators
+
+template Operators {
+    // Comparison operators (testing <= and >= which are implemented)
+    if x <= y {}
+    if x >= z {}
+    if a <= b && c >= d {}
+
+    // Unary operators
+    var negative = -42
+    var negativeFloat = -3.14
+    var notValue = !true
+    var complexNot = !(x && y)
+
+    // All arithmetic operators together
+    var arithmetic = a + b - c * d / e % f
+
+    // All comparison operators together
+    if a < b && b <= c && c == d && d != e && e >= f && f > g {}
+
+    // Complex operator precedence
+    var grouped = (a + b) * (c - d)
+    var unaryPrecedence = -a + b
+    var precedenceTest = a + b * c - d / e % f
+    var mixedPrecedence = !flag && x < y || z >= w
+
+    // Unary minus with different types
+    var negInt = -123
+    var negFloat = -45.67
+    var negVar = -someValue
+
+    // Logical operators in complex expressions
+    var logicalComplex = (a && b) || (c && d)
+    if !(x || y) && z {}
+
+    // TODO: Null coalescing operator - defined in lexer but not in token system
+    // var result = value ?? "default"
+    // var chained = a ?? b ?? c
+
+    // TODO: Exponentiation operator - not yet implemented
+    // var power = base ** exponent
+    // var rightAssociative = 2 ** 3 ** 2  // Should be 2 ** (3 ** 2) = 512
+    // var precedence = 2 + 3 ** 2 * 4     // Should be 2 + (3 ** 2) * 4 = 38
+
+    // TODO: Scientific notation 'e' operator - not yet implemented
+    // var scientific = 1.5e10
+    // var negative = 2.3e-5
+    // var mixed = 1e3 + 2e2
+}
