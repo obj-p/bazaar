@@ -23,19 +23,29 @@ type EnumDecl struct {
 	Cases []string `parser:"'{' (@Ident (',' @Ident)* ','?)? '}'"`
 }
 
+type ConstructorDecl struct {
+	Parameters []*ParameterDecl `parser:"'constructor' '(' (@@ (',' @@)* ','?)? ')'"`
+	Expression *Expr            `parser:"'=' @@"`
+}
+
+type MemberDecl struct {
+	Field       *FieldDecl       `parser:"@@"`
+	Constructor *ConstructorDecl `parser:"| @@"`
+}
+
 type ComponentDecl struct {
-	Name   string       `parser:"'component' @Ident"`
-	Fields []*FieldDecl `parser:"'{' @@* '}'"`
+	Name    string        `parser:"'component' @Ident"`
+	Members []*MemberDecl `parser:"'{' @@* '}'"`
 }
 
 type DataDecl struct {
-	Name   string       `parser:"'data' @Ident"`
-	Fields []*FieldDecl `parser:"'{' @@* '}'"`
+	Name    string        `parser:"'data' @Ident"`
+	Members []*MemberDecl `parser:"'{' @@* '}'"`
 }
 
 type ModifierDecl struct {
-	Name   string       `parser:"'modifier' @Ident"`
-	Fields []*FieldDecl `parser:"'{' @@* '}'"`
+	Name    string        `parser:"'modifier' @Ident"`
+	Members []*MemberDecl `parser:"'{' @@* '}'"`
 }
 
 type FunctionDecl struct {
