@@ -304,11 +304,17 @@
               Arguments: []*parser.ArgumentExpr{
                 {
                   Name: &"bar",
-                  Lambda: &parser.LambdaExpr{
-                    Stmts: []*parser.Stmt{
-                      {
-                        Call: &parser.CallStmt{
-                          Name: &"Bar",
+                  Expr: &parser.Expr{
+                    Unary: &parser.UnaryExpr{
+                      Primary: &parser.PrimaryExpr{
+                        Lambda: &parser.LambdaExpr{
+                          Stmts: []*parser.Stmt{
+                            {
+                              Call: &parser.CallStmt{
+                                Name: &"Bar",
+                              },
+                            },
+                          },
                         },
                       },
                     },

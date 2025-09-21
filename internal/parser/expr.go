@@ -35,9 +35,8 @@ type LambdaExpr struct {
 }
 
 type ArgumentExpr struct {
-	Name   *string     `parser:"(@Ident '=')?"`
-	Lambda *LambdaExpr `parser:"(@@"`
-	Expr   *Expr       `parser:"| @@)"`
+	Name *string `parser:"(@Ident '=')?"`
+	Expr *Expr   `parser:"@@"`
 }
 
 type BuiltInExpr struct {

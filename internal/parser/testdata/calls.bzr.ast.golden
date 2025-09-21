@@ -38,7 +38,13 @@
               Name: &"BlockLiteral",
               Arguments: []*parser.ArgumentExpr{
                 {
-                  Lambda: &parser.LambdaExpr{
+                  Expr: &parser.Expr{
+                    Unary: &parser.UnaryExpr{
+                      Primary: &parser.PrimaryExpr{
+                        Lambda: &parser.LambdaExpr{
+                        },
+                      },
+                    },
                   },
                 },
               },
