@@ -20,6 +20,13 @@ component Text {
 	value string
 }
 
+modifier Padding {
+        top double = 0
+        leading double = 0
+        bottom double = 0
+        trailing double = 0
+}
+
 func Add(x int, y int) -> int
 
 func Truncate(x double) -> int

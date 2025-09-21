@@ -4,6 +4,7 @@ type TopLevelDecl struct {
 	Enum      *EnumDecl      `parser:"@@"`
 	Component *ComponentDecl `parser:"| @@"`
 	Data      *DataDecl      `parser:"| @@"`
+	Modifier  *ModifierDecl  `parser:"| @@"`
 	Function  *FunctionDecl  `parser:"| @@"`
 	Template  *TemplateDecl  `parser:"| @@"`
 	Preview   *PreviewDecl   `parser:"| @@"`
@@ -29,6 +30,11 @@ type ComponentDecl struct {
 
 type DataDecl struct {
 	Name   string       `parser:"'data' @Ident"`
+	Fields []*FieldDecl `parser:"'{' @@* '}'"`
+}
+
+type ModifierDecl struct {
+	Name   string       `parser:"'modifier' @Ident"`
 	Fields []*FieldDecl `parser:"'{' @@* '}'"`
 }
 
