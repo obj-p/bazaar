@@ -1,5 +1,49 @@
 package arithmetic
 
 func Arithmetic() {
+    // Basic precedence test (existing)
     var answer = 42*1 + 1 - 1
+
+    // Multiplication and division precedence (same level, left-to-right)
+    var mulDiv = 12 / 3 * 4
+    var divMul = 12 * 3 / 4
+
+    // Multiplication and modulo precedence (same level, left-to-right)
+    var mulMod = 10 * 3 % 7
+    var modMul = 10 % 3 * 7
+
+    // Division and modulo precedence (same level, left-to-right)
+    var divMod = 20 / 4 % 3
+    var modDiv = 20 % 6 / 2
+
+    // Mixed arithmetic precedence (*, /, % before +, -)
+    var complex1 = 2 + 3 * 4 - 5
+    var complex2 = 10 - 6 / 2 + 1
+    var complex3 = 15 + 8 % 3 * 2
+    var complex4 = 20 / 4 + 3 * 2 - 1
+
+    // All arithmetic operators together
+    var allOps = 100 + 50 - 20 * 2 / 4 % 3
+
+    // Unary minus precedence (higher than binary operators)
+    var unaryMinus1 = -5 + 3
+    var unaryMinus2 = 2 * -3
+    var unaryMinus3 = -10 / 2
+    var unaryMinus4 = -4 % 3
+
+    // Parentheses override precedence
+    var grouped1 = (2 + 3) * 4
+    var grouped2 = 2 * (3 + 4)
+    var grouped3 = (10 - 2) / (3 + 1)
+    var grouped4 = -(2 + 3) * 4
+
+    // Nested parentheses
+    var nested1 = ((2 + 3) * 4) - 1
+    var nested2 = 2 * ((10 - 6) / 2)
+    var nested3 = (5 + (3 * 2)) - (8 / 4)
+
+    // Edge cases with mixed types (integers and floats)
+    var mixedTypes1 = 10 + 3.5 * 2
+    var mixedTypes2 = 15.0 / 3 - 1
+    var mixedTypes3 = -2.5 + 5 * 2
 }
