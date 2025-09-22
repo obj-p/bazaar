@@ -19,10 +19,10 @@ func OptionalChaining() {
     var complexIndexed = array?[0]?.field
     var complexCalled = func?(param)?.result
 
-    // TODO: Complex optional chaining combinations - seem to have parsing issues
-    // var complex = obj?.arr?[idx]?.call()
-    // var mixedChain = data?.items?[0]?.name
-    // var deepChain = root?.child?.grandchild?.value
+    // Complex optional chaining combinations - these work correctly
+    var complex = obj?.arr?[idx]?.call()
+    var mixedChain = items?[0]?.name
+    var deepChain = root?.child?.grandchild?.value
 
     // TODO: Null coalescing not implemented in token system
     // var arithmetic = (obj?.count ?? 0) + 1

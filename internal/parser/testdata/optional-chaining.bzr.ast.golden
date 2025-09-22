@@ -378,6 +378,118 @@
               },
             },
           },
+          {
+            Var: &parser.VarDeclStmt{
+              Dest: &parser.VariableExpr{
+                Name: &"complex",
+              },
+              Source: &parser.Expr{
+                Unary: &parser.UnaryExpr{
+                  Primary: &parser.PrimaryExpr{
+                    Reference: &parser.ReferenceExpr{
+                      Name: &"obj",
+                      KeyPath: &parser.KeyPathExpr{
+                        Optional: true,
+                        Reference: &parser.ReferenceExpr{
+                          Name: &"arr",
+                          KeyPath: &parser.KeyPathExpr{
+                            Optional: true,
+                            Subscript: &parser.Expr{
+                              Unary: &parser.UnaryExpr{
+                                Primary: &parser.PrimaryExpr{
+                                  Reference: &parser.ReferenceExpr{
+                                    Name: &"idx",
+                                  },
+                                },
+                              },
+                            },
+                            Next: &parser.KeyPathExpr{
+                              Optional: true,
+                              Reference: &parser.ReferenceExpr{
+                                Name: &"call",
+                                KeyPath: &parser.KeyPathExpr{
+                                  Call: &parser.CallExpr{
+                                  },
+                                },
+                              },
+                            },
+                          },
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+          {
+            Var: &parser.VarDeclStmt{
+              Dest: &parser.VariableExpr{
+                Name: &"mixedChain",
+              },
+              Source: &parser.Expr{
+                Unary: &parser.UnaryExpr{
+                  Primary: &parser.PrimaryExpr{
+                    Reference: &parser.ReferenceExpr{
+                      Name: &"items",
+                      KeyPath: &parser.KeyPathExpr{
+                        Optional: true,
+                        Subscript: &parser.Expr{
+                          Unary: &parser.UnaryExpr{
+                            Primary: &parser.PrimaryExpr{
+                              Literal: &parser.Literal{
+                                Number: &"0",
+                              },
+                            },
+                          },
+                        },
+                        Next: &parser.KeyPathExpr{
+                          Optional: true,
+                          Reference: &parser.ReferenceExpr{
+                            Name: &"name",
+                          },
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+          {
+            Var: &parser.VarDeclStmt{
+              Dest: &parser.VariableExpr{
+                Name: &"deepChain",
+              },
+              Source: &parser.Expr{
+                Unary: &parser.UnaryExpr{
+                  Primary: &parser.PrimaryExpr{
+                    Reference: &parser.ReferenceExpr{
+                      Name: &"root",
+                      KeyPath: &parser.KeyPathExpr{
+                        Optional: true,
+                        Reference: &parser.ReferenceExpr{
+                          Name: &"child",
+                          KeyPath: &parser.KeyPathExpr{
+                            Optional: true,
+                            Reference: &parser.ReferenceExpr{
+                              Name: &"grandchild",
+                              KeyPath: &parser.KeyPathExpr{
+                                Optional: true,
+                                Reference: &parser.ReferenceExpr{
+                                  Name: &"value",
+                                },
+                              },
+                            },
+                          },
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
         },
       },
     },
