@@ -14,6 +14,7 @@ const (
 	OpMul // *
 	OpDiv // /
 	OpMod // %
+	OpPow // **
 
 	OpAssign    // =
 	OpAddAssign // +=
@@ -43,6 +44,7 @@ var ops = [...]string{
 	OpMul: "token.OpMul",
 	OpDiv: "token.OpDiv",
 	OpMod: "token.OpMod",
+	OpPow: "token.OpPow",
 
 	OpAssign:    "token.OpAssign",
 	OpAddAssign: "token.OpAddAssign",
@@ -51,15 +53,16 @@ var ops = [...]string{
 	OpDivAssign: "token.OpDivAssign",
 	OpModAssign: "token.OpModAssign",
 
-	OpEql:      "token.OpEql",
-	OpLt:       "token.OpLt",
-	OpLte:      "token.OpLte",
-	OpGt:       "token.OpGt",
-	OpGte:      "token.OpGte",
-	OpNot:      "token.OpNot",
-	OpNotEql:   "token.OpNotEql",
-	OpAnd:      "token.OpAnd",
-	OpOr:       "token.OpOr",
+	OpEql:    "token.OpEql",
+	OpLt:     "token.OpLt",
+	OpLte:    "token.OpLte",
+	OpGt:     "token.OpGt",
+	OpGte:    "token.OpGte",
+	OpNot:    "token.OpNot",
+	OpNotEql: "token.OpNotEql",
+	OpAnd:    "token.OpAnd",
+	OpOr:     "token.OpOr",
+
 	OpCoalesce: "token.OpCoalesce",
 }
 
@@ -78,6 +81,8 @@ func (o *Op) Capture(values []string) error {
 		*o = OpSub
 	case "*":
 		*o = OpMul
+	case "**":
+		*o = OpPow
 	case "/":
 		*o = OpDiv
 	case "%":

@@ -12,7 +12,7 @@ var (
 			{Name: "Ident", Pattern: `[\w_][\w\d_]*`, Action: nil},
 			{Name: "LogicOperator", Pattern: `==|<=|>=|!=|&&|\|\|`, Action: nil},
 			{Name: "AssignOperator", Pattern: `\+=|-=|\*=|/=|%=|=`, Action: nil},
-			{Name: "Operator", Pattern: `\?\?|[-+*/%<>^!?.]`, Action: nil},
+			{Name: "Operator", Pattern: `\*\*|\?\?|[-+*/%<>^!?.]`, Action: nil},
 			{Name: "Punct", Pattern: `[\[\](){}@#$:;,]`, Action: nil},
 		},
 		"Root": {

@@ -38,10 +38,13 @@ func Operators() {
     var chained = a ?? b ?? c
     var complex = (obj?.count ?? 0) + 1
 
-    // TODO: Exponentiation operator - not yet implemented
-    // var power = base ** exponent
-    // var rightAssociative = 2 ** 3 ** 2  // Should be 2 ** (3 ** 2) = 512
-    // var precedence = 2 + 3 ** 2 * 4     // Should be 2 + (3 ** 2) * 4 = 38
+    // Exponentiation operator (highest precedence, right-associative)
+    var power = base ** exponent
+    var rightAssociative = 2 ** 3 ** 2
+    var precedenceTest = 2 + 3 ** 2 * 4
+    var unaryInteraction = -2 ** 2
+    var parentheses = (2 + 3) ** 2
+    var floatingPoint = 2.5 ** 3
 
     // TODO: Scientific notation 'e' operator - not yet implemented
     // var scientific = 1.5e10

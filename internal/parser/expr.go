@@ -107,6 +107,7 @@ var opPrecedence = map[token.Op]precedence{
 	token.OpMul:      {Priority: 2},
 	token.OpDiv:      {Priority: 2},
 	token.OpMod:      {Priority: 2},
+	token.OpPow:      {Priority: 3, RightAssociative: true},
 }
 
 var unaryExprParser = participle.MustBuild[UnaryExpr](
