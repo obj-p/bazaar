@@ -76,22 +76,21 @@ func (m *MapLiteral) Parse(lex *participleLexer.PeekingLexer) error {
 		return participle.Errorf(tok.Pos, "%s \"%s\"", err.Error(), tok.Value)
 	}
 
-	mapLiteral := MapLiteral{Entries: []*MapEntry{}}
-	mapLiteral.Entries = append(mapLiteral.Entries, entry)
+	mapLiteral := MapLiteral{Entries: []*MapEntry{entry}}
 
 	for {
 		if tok := lex.Peek(); tok.Value == "," {
 			lex.Next()
 		}
 
-		if tok = lex.Peek(); tok.Value == "}" {
+		if tok := lex.Peek(); tok.Value == "}" {
 			lex.Next()
 			break
 		}
 
 		entry, err := parseMapEntry(lex)
 		if err != nil {
-			tok = lex.Peek()
+			tok := lex.Peek()
 			return participle.Errorf(tok.Pos, "%s \"%s\"", err.Error(), tok.Value)
 		}
 
