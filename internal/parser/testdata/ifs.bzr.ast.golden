@@ -492,15 +492,19 @@
                       Right: &parser.Expr{
                         Unary: &parser.UnaryExpr{
                           Primary: &parser.PrimaryExpr{
-                            BuiltIn: &parser.BuiltInExpr{
+                            Reference: &parser.ReferenceExpr{
                               Name: &"len",
-                              Arguments: []*parser.ArgumentExpr{
-                                {
-                                  Expr: &parser.Expr{
-                                    Unary: &parser.UnaryExpr{
-                                      Primary: &parser.PrimaryExpr{
-                                        Reference: &parser.ReferenceExpr{
-                                          Name: &"something",
+                              KeyPath: &parser.KeyPathExpr{
+                                Call: &parser.CallExpr{
+                                  Arguments: []*parser.ArgumentExpr{
+                                    {
+                                      Expr: &parser.Expr{
+                                        Unary: &parser.UnaryExpr{
+                                          Primary: &parser.PrimaryExpr{
+                                            Reference: &parser.ReferenceExpr{
+                                              Name: &"something",
+                                            },
+                                          },
                                         },
                                       },
                                     },
