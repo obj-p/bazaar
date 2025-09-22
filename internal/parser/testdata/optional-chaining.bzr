@@ -24,6 +24,7 @@ func OptionalChaining() {
     var mixedChain = items?[0]?.name
     var deepChain = root?.child?.grandchild?.value
 
-    // TODO: Null coalescing not implemented in token system
-    // var arithmetic = (obj?.count ?? 0) + 1
+    // Null coalescing with optional chaining
+    var arithmetic = (obj?.count ?? 0) + 1
+    var chained = obj?.value ?? other?.value ?? "default"
 }

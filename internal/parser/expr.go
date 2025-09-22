@@ -101,11 +101,12 @@ type precedence struct {
 }
 
 var opPrecedence = map[token.Op]precedence{
-	token.OpAdd: {Priority: 1},
-	token.OpSub: {Priority: 1},
-	token.OpMul: {Priority: 2},
-	token.OpDiv: {Priority: 2},
-	token.OpMod: {Priority: 2},
+	token.OpCoalesce: {Priority: 0, RightAssociative: true},
+	token.OpAdd:      {Priority: 1},
+	token.OpSub:      {Priority: 1},
+	token.OpMul:      {Priority: 2},
+	token.OpDiv:      {Priority: 2},
+	token.OpMod:      {Priority: 2},
 }
 
 var unaryExprParser = participle.MustBuild[UnaryExpr](

@@ -33,9 +33,10 @@ func Operators() {
     var logicalComplex = (a && b) || (c && d)
     if !(x || y) && z {}
 
-    // TODO: Null coalescing operator - defined in lexer but not in token system
-    // var result = value ?? "default"
-    // var chained = a ?? b ?? c
+    // Null coalescing operator
+    var result = value ?? "default"
+    var chained = a ?? b ?? c
+    var complex = (obj?.count ?? 0) + 1
 
     // TODO: Exponentiation operator - not yet implemented
     // var power = base ** exponent
