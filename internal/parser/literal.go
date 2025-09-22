@@ -67,7 +67,7 @@ func (m *MapLiteral) Parse(lex *participleLexer.PeekingLexer) error {
 	}
 
 	entry, err := parseMapEntry(lex)
-	if errors.Is(err, unableToParseMapKey) || errors.Is(err, missingMapSeparator) {
+	if errors.Is(err, unableToParseMapKey) || errors.Is(err, missingKeyValueDelimiter) {
 		lex.LoadCheckpoint(checkpoint)
 		return participle.NextMatch
 	}
@@ -102,9 +102,9 @@ func (m *MapLiteral) Parse(lex *participleLexer.PeekingLexer) error {
 }
 
 var (
-	missingMapSeparator   = errors.New("missing map separator")
-	unableToParseMapKey   = errors.New("unable to parse map key")
-	unableToParseMapValue = errors.New("unable to parse map value")
+	missingKeyValueDelimiter = errors.New("missing key/value delimiter")
+	unableToParseMapKey      = errors.New("unable to parse map key")
+	unableToParseMapValue    = errors.New("unable to parse map value")
 )
 
 func parseMapEntry(lex *participleLexer.PeekingLexer) (*MapEntry, error) {
@@ -115,7 +115,7 @@ func parseMapEntry(lex *participleLexer.PeekingLexer) (*MapEntry, error) {
 
 	tok := lex.Peek()
 	if tok.Value != ":" {
-		return nil, missingMapSeparator
+		return nil, missingKeyValueDelimiter
 	}
 
 	lex.Next()
