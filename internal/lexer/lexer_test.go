@@ -9,11 +9,11 @@ import (
 
 func TestLexer(t *testing.T) {
 	tokens := `
-	nil true false 42.0 -1337 "Hello, ${firstName ", " + (lastName)}!" foobar
+	nil true false 42.0 -1337 1.5e10 2.3e-5 1E3 5.e3 "Hello, ${firstName ", " + (lastName)}!" foobar
 	// Some comment
 	enumerate len range
 	case component data default enum for if import in modifier package return switch var
-	??-+*/%<>^!?.
+	**??-+*/%<>^!?.
 	==<=>=!=&&||
 	+=-=*=/=%==
 	[](){}@#$:;,
@@ -33,6 +33,14 @@ func TestLexer(t *testing.T) {
 		{"Number", "42.0"},
 		{"Whitespace", " "},
 		{"Number", "-1337"},
+		{"Whitespace", " "},
+		{"Number", "1.5e10"},
+		{"Whitespace", " "},
+		{"Number", "2.3e-5"},
+		{"Whitespace", " "},
+		{"Number", "1E3"},
+		{"Whitespace", " "},
+		{"Number", "5.e3"},
 		{"Whitespace", " "},
 		{"String", "\""},
 		{"StringText", "Hello, "},
@@ -90,6 +98,7 @@ func TestLexer(t *testing.T) {
 		{"Whitespace", " "},
 		{"Keyword", "var"},
 		{"Whitespace", "\n\t"},
+		{"Operator", "**"},
 		{"Operator", "??"},
 		{"Operator", "-"},
 		{"Operator", "+"},

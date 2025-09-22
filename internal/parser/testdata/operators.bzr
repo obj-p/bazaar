@@ -46,8 +46,16 @@ func Operators() {
     var parentheses = (2 + 3) ** 2
     var floatingPoint = 2.5 ** 3
 
-    // TODO: Scientific notation 'e' operator - not yet implemented
-    // var scientific = 1.5e10
-    // var negative = 2.3e-5
-    // var mixed = 1e3 + 2e2
+    // Scientific notation (lexer-level, not an operator)
+    var scientific = 1.5e10
+    var negative = 2.3e-5
+    var uppercase = 1E3
+    var zeroExponent = 3.14e0
+    var explicitPlus = 1e+5
+
+    // Scientific notation in expressions
+    var mixed = 1e3 + 2e2
+    var complex = 2.5e2 * 3e-1
+    var precedence = 1e2 ** 2
+    var floating = 1.25e-2 / 5e-3
 }

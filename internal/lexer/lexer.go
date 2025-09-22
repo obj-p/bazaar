@@ -5,7 +5,7 @@ import "github.com/alecthomas/participle/v2/lexer"
 var (
 	BazaarLexer = lexer.MustStateful(lexer.Rules{
 		"Common": {
-			{Name: "Number", Pattern: `[-+]?(\d*\.)?\d+`},
+			{Name: "Number", Pattern: `[-+]?(\d+\.?\d*|\d*\.\d+)([eE][-+]?\d+)?`},
 			{Name: "String", Pattern: `"`, Action: lexer.Push("String")},
 			{Name: "BuiltIn", Pattern: `\b(enumerate|len|range)\b`, Action: nil},
 			{Name: "Keyword", Pattern: `\b(case|default|enum|for|if|import|in|return|switch|var)\b`, Action: nil},

@@ -1282,6 +1282,206 @@
               },
             },
           },
+          {
+            Var: &parser.VarDeclStmt{
+              Dest: &parser.VariableExpr{
+                Name: &"scientific",
+              },
+              Source: &parser.Expr{
+                Unary: &parser.UnaryExpr{
+                  Primary: &parser.PrimaryExpr{
+                    Literal: &parser.Literal{
+                      Number: &"1.5e10",
+                    },
+                  },
+                },
+              },
+            },
+          },
+          {
+            Var: &parser.VarDeclStmt{
+              Dest: &parser.VariableExpr{
+                Name: &"negative",
+              },
+              Source: &parser.Expr{
+                Unary: &parser.UnaryExpr{
+                  Primary: &parser.PrimaryExpr{
+                    Literal: &parser.Literal{
+                      Number: &"2.3e-5",
+                    },
+                  },
+                },
+              },
+            },
+          },
+          {
+            Var: &parser.VarDeclStmt{
+              Dest: &parser.VariableExpr{
+                Name: &"uppercase",
+              },
+              Source: &parser.Expr{
+                Unary: &parser.UnaryExpr{
+                  Primary: &parser.PrimaryExpr{
+                    Literal: &parser.Literal{
+                      Number: &"1E3",
+                    },
+                  },
+                },
+              },
+            },
+          },
+          {
+            Var: &parser.VarDeclStmt{
+              Dest: &parser.VariableExpr{
+                Name: &"zeroExponent",
+              },
+              Source: &parser.Expr{
+                Unary: &parser.UnaryExpr{
+                  Primary: &parser.PrimaryExpr{
+                    Literal: &parser.Literal{
+                      Number: &"3.14e0",
+                    },
+                  },
+                },
+              },
+            },
+          },
+          {
+            Var: &parser.VarDeclStmt{
+              Dest: &parser.VariableExpr{
+                Name: &"explicitPlus",
+              },
+              Source: &parser.Expr{
+                Unary: &parser.UnaryExpr{
+                  Primary: &parser.PrimaryExpr{
+                    Literal: &parser.Literal{
+                      Number: &"1e+5",
+                    },
+                  },
+                },
+              },
+            },
+          },
+          {
+            Var: &parser.VarDeclStmt{
+              Dest: &parser.VariableExpr{
+                Name: &"mixed",
+              },
+              Source: &parser.Expr{
+                Binary: &parser.BinaryExpr{
+                  Left: &parser.Expr{
+                    Unary: &parser.UnaryExpr{
+                      Primary: &parser.PrimaryExpr{
+                        Literal: &parser.Literal{
+                          Number: &"1e3",
+                        },
+                      },
+                    },
+                  },
+                  Op: token.Op(token.OpAdd),
+                  Right: &parser.Expr{
+                    Unary: &parser.UnaryExpr{
+                      Primary: &parser.PrimaryExpr{
+                        Literal: &parser.Literal{
+                          Number: &"2e2",
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+          {
+            Var: &parser.VarDeclStmt{
+              Dest: &parser.VariableExpr{
+                Name: &"complex",
+              },
+              Source: &parser.Expr{
+                Binary: &parser.BinaryExpr{
+                  Left: &parser.Expr{
+                    Unary: &parser.UnaryExpr{
+                      Primary: &parser.PrimaryExpr{
+                        Literal: &parser.Literal{
+                          Number: &"2.5e2",
+                        },
+                      },
+                    },
+                  },
+                  Op: token.Op(token.OpMul),
+                  Right: &parser.Expr{
+                    Unary: &parser.UnaryExpr{
+                      Primary: &parser.PrimaryExpr{
+                        Literal: &parser.Literal{
+                          Number: &"3e-1",
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+          {
+            Var: &parser.VarDeclStmt{
+              Dest: &parser.VariableExpr{
+                Name: &"precedence",
+              },
+              Source: &parser.Expr{
+                Binary: &parser.BinaryExpr{
+                  Left: &parser.Expr{
+                    Unary: &parser.UnaryExpr{
+                      Primary: &parser.PrimaryExpr{
+                        Literal: &parser.Literal{
+                          Number: &"1e2",
+                        },
+                      },
+                    },
+                  },
+                  Op: token.Op(token.OpPow),
+                  Right: &parser.Expr{
+                    Unary: &parser.UnaryExpr{
+                      Primary: &parser.PrimaryExpr{
+                        Literal: &parser.Literal{
+                          Number: &"2",
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+          {
+            Var: &parser.VarDeclStmt{
+              Dest: &parser.VariableExpr{
+                Name: &"floating",
+              },
+              Source: &parser.Expr{
+                Binary: &parser.BinaryExpr{
+                  Left: &parser.Expr{
+                    Unary: &parser.UnaryExpr{
+                      Primary: &parser.PrimaryExpr{
+                        Literal: &parser.Literal{
+                          Number: &"1.25e-2",
+                        },
+                      },
+                    },
+                  },
+                  Op: token.Op(token.OpDiv),
+                  Right: &parser.Expr{
+                    Unary: &parser.UnaryExpr{
+                      Primary: &parser.PrimaryExpr{
+                        Literal: &parser.Literal{
+                          Number: &"5e-3",
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
         },
       },
     },
