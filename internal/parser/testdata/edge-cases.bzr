@@ -25,6 +25,11 @@ template EdgeCases {
     var map = {a: 1, b: 2,}
     var map = {"a": 1, "b": 2}
 
+    var component = "foo"
+    var data = "bar"
+    var modifier = "baz"
+    var package = "qux"
+
     // Single annotation
     @State var count = 0
 

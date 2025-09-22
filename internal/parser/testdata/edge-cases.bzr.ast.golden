@@ -309,6 +309,94 @@
           },
           {
             Var: &parser.VarDeclStmt{
+              Dest: &parser.VariableExpr{
+                Name: &"component",
+              },
+              Source: &parser.Expr{
+                Unary: &parser.UnaryExpr{
+                  Primary: &parser.PrimaryExpr{
+                    Literal: &parser.Literal{
+                      String: &parser.String{
+                        Fragments: []*parser.StringFragment{
+                          {
+                            Text: &"foo",
+                          },
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+          {
+            Var: &parser.VarDeclStmt{
+              Dest: &parser.VariableExpr{
+                Name: &"data",
+              },
+              Source: &parser.Expr{
+                Unary: &parser.UnaryExpr{
+                  Primary: &parser.PrimaryExpr{
+                    Literal: &parser.Literal{
+                      String: &parser.String{
+                        Fragments: []*parser.StringFragment{
+                          {
+                            Text: &"bar",
+                          },
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+          {
+            Var: &parser.VarDeclStmt{
+              Dest: &parser.VariableExpr{
+                Name: &"modifier",
+              },
+              Source: &parser.Expr{
+                Unary: &parser.UnaryExpr{
+                  Primary: &parser.PrimaryExpr{
+                    Literal: &parser.Literal{
+                      String: &parser.String{
+                        Fragments: []*parser.StringFragment{
+                          {
+                            Text: &"baz",
+                          },
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+          {
+            Var: &parser.VarDeclStmt{
+              Dest: &parser.VariableExpr{
+                Name: &"package",
+              },
+              Source: &parser.Expr{
+                Unary: &parser.UnaryExpr{
+                  Primary: &parser.PrimaryExpr{
+                    Literal: &parser.Literal{
+                      String: &parser.String{
+                        Fragments: []*parser.StringFragment{
+                          {
+                            Text: &"qux",
+                          },
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+          {
+            Var: &parser.VarDeclStmt{
               Annotation: &parser.AnnotationExpr{
                 Name: &"State",
               },
