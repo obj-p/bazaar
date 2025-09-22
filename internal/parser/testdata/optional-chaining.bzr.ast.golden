@@ -272,6 +272,112 @@
               },
             },
           },
+          {
+            Var: &parser.VarDeclStmt{
+              Dest: &parser.VariableExpr{
+                Name: &"complexResult",
+              },
+              Source: &parser.Expr{
+                Unary: &parser.UnaryExpr{
+                  Primary: &parser.PrimaryExpr{
+                    Reference: &parser.ReferenceExpr{
+                      Name: &"obj",
+                      KeyPath: &parser.KeyPathExpr{
+                        Optional: true,
+                        Reference: &parser.ReferenceExpr{
+                          Name: &"method",
+                          KeyPath: &parser.KeyPathExpr{
+                            Call: &parser.CallExpr{
+                            },
+                            Next: &parser.KeyPathExpr{
+                              Optional: true,
+                              Reference: &parser.ReferenceExpr{
+                                Name: &"property",
+                              },
+                            },
+                          },
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+          {
+            Var: &parser.VarDeclStmt{
+              Dest: &parser.VariableExpr{
+                Name: &"complexIndexed",
+              },
+              Source: &parser.Expr{
+                Unary: &parser.UnaryExpr{
+                  Primary: &parser.PrimaryExpr{
+                    Reference: &parser.ReferenceExpr{
+                      Name: &"array",
+                      KeyPath: &parser.KeyPathExpr{
+                        Optional: true,
+                        Subscript: &parser.Expr{
+                          Unary: &parser.UnaryExpr{
+                            Primary: &parser.PrimaryExpr{
+                              Literal: &parser.Literal{
+                                Number: &"0",
+                              },
+                            },
+                          },
+                        },
+                        Next: &parser.KeyPathExpr{
+                          Optional: true,
+                          Reference: &parser.ReferenceExpr{
+                            Name: &"field",
+                          },
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+          {
+            Var: &parser.VarDeclStmt{
+              Dest: &parser.VariableExpr{
+                Name: &"complexCalled",
+              },
+              Source: &parser.Expr{
+                Unary: &parser.UnaryExpr{
+                  Primary: &parser.PrimaryExpr{
+                    Reference: &parser.ReferenceExpr{
+                      Name: &"func",
+                      KeyPath: &parser.KeyPathExpr{
+                        Optional: true,
+                        Call: &parser.CallExpr{
+                          Arguments: []*parser.ArgumentExpr{
+                            {
+                              Expr: &parser.Expr{
+                                Unary: &parser.UnaryExpr{
+                                  Primary: &parser.PrimaryExpr{
+                                    Reference: &parser.ReferenceExpr{
+                                      Name: &"param",
+                                    },
+                                  },
+                                },
+                              },
+                            },
+                          },
+                        },
+                        Next: &parser.KeyPathExpr{
+                          Optional: true,
+                          Reference: &parser.ReferenceExpr{
+                            Name: &"result",
+                          },
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
         },
       },
     },

@@ -11,13 +11,6 @@ template EmptyTemplate {}
 func EdgeCases() {
     // Empty containers
 
-    // Complex trailing commas
-    call(
-        first,
-        second,
-    )
-
-
     // TODO: move some of these to maps
 
     var component = "foo"
@@ -31,23 +24,4 @@ func EdgeCases() {
     // TODO: Multiple annotations on single construct - grammar only supports one
     // @State @Modifier(padding = 8) var count = 0
     // TODO: Revisit allowing multiple annotations on single statements
-
-    // Complex lambda parameters with types
-    call { (x int, y string) -> bool in
-        return x > 0
-    }
-
-    call { () -> string in
-        return "result"
-    }
-
-    call { (a, b, c) in
-        // inferred types
-        return a
-    }
-
-    // Complex optional chaining
-    var result = obj?.method()?.property
-    var indexed = array?[0]?.field
-    var called = func?(param)?.result
 }

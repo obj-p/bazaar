@@ -5,4 +5,10 @@ func Calls() {
     BlockLiteral({})
     NamedArgs(first = 1337, second = "second")
     TrailingBlockLiteral {}
+
+    // Complex trailing commas from edge-cases.bzr
+    call(
+        first,
+        second,
+    )
 }

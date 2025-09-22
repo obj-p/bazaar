@@ -14,6 +14,11 @@ func OptionalChaining() {
     if obj?.property {}
     var conditional = obj?.value > 0
 
+    // Complex optional chaining from edge-cases.bzr
+    var complexResult = obj?.method()?.property
+    var complexIndexed = array?[0]?.field
+    var complexCalled = func?(param)?.result
+
     // TODO: Complex optional chaining combinations - seem to have parsing issues
     // var complex = obj?.arr?[idx]?.call()
     // var mixedChain = data?.items?[0]?.name
