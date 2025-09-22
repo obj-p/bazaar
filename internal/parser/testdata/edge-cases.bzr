@@ -9,10 +9,6 @@ data EmptyData {}
 template EmptyTemplate {}
 
 func EdgeCases() {
-    // Empty containers
-
-    // TODO: move some of these to maps
-
     var component = "foo"
     var data = "bar"
     var modifier = "baz"

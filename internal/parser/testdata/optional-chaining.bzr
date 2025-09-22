@@ -23,7 +23,6 @@ func OptionalChaining() {
     // var complex = obj?.arr?[idx]?.call()
     // var mixedChain = data?.items?[0]?.name
     // var deepChain = root?.child?.grandchild?.value
-    // TODO: Reconsider making 'data' a keyword - causes parsing issues with 'data?.items'
 
     // TODO: Null coalescing not implemented in token system
     // var arithmetic = (obj?.count ?? 0) + 1
