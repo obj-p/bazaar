@@ -8,7 +8,7 @@ data EmptyData {}
 
 template EmptyTemplate {}
 
-template EdgeCases {
+func EdgeCases() {
     // Empty containers
     var emptyArray = []
     var emptyMap = {:}
