@@ -1,0 +1,279 @@
+&parser.Bazaar{
+  Package: &parser.PackageDecl{
+    Domain: []string{
+      "optionalchaining",
+    },
+  },
+  Decls: []*parser.TopLevelDecl{
+    {
+      Template: &parser.TemplateDecl{
+        Name: "OptionalChaining",
+        Block: []*parser.Stmt{
+          {
+            Var: &parser.VarDeclStmt{
+              Dest: &parser.VariableExpr{
+                Name: &"result",
+              },
+              Source: &parser.Expr{
+                Unary: &parser.UnaryExpr{
+                  Primary: &parser.PrimaryExpr{
+                    Reference: &parser.ReferenceExpr{
+                      Name: &"obj",
+                      KeyPath: &parser.KeyPathExpr{
+                        Optional: true,
+                        Reference: &parser.ReferenceExpr{
+                          Name: &"property",
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+          {
+            Var: &parser.VarDeclStmt{
+              Dest: &parser.VariableExpr{
+                Name: &"method",
+              },
+              Source: &parser.Expr{
+                Unary: &parser.UnaryExpr{
+                  Primary: &parser.PrimaryExpr{
+                    Reference: &parser.ReferenceExpr{
+                      Name: &"obj",
+                      KeyPath: &parser.KeyPathExpr{
+                        Optional: true,
+                        Reference: &parser.ReferenceExpr{
+                          Name: &"method",
+                          KeyPath: &parser.KeyPathExpr{
+                            Call: &parser.CallExpr{
+                            },
+                          },
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+          {
+            Var: &parser.VarDeclStmt{
+              Dest: &parser.VariableExpr{
+                Name: &"nested",
+              },
+              Source: &parser.Expr{
+                Unary: &parser.UnaryExpr{
+                  Primary: &parser.PrimaryExpr{
+                    Reference: &parser.ReferenceExpr{
+                      Name: &"obj",
+                      KeyPath: &parser.KeyPathExpr{
+                        Optional: true,
+                        Reference: &parser.ReferenceExpr{
+                          Name: &"nested",
+                          KeyPath: &parser.KeyPathExpr{
+                            Optional: true,
+                            Reference: &parser.ReferenceExpr{
+                              Name: &"property",
+                            },
+                          },
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+          {
+            Var: &parser.VarDeclStmt{
+              Dest: &parser.VariableExpr{
+                Name: &"indexed",
+              },
+              Source: &parser.Expr{
+                Unary: &parser.UnaryExpr{
+                  Primary: &parser.PrimaryExpr{
+                    Reference: &parser.ReferenceExpr{
+                      Name: &"array",
+                      KeyPath: &parser.KeyPathExpr{
+                        Optional: true,
+                        Subscript: &parser.Expr{
+                          Unary: &parser.UnaryExpr{
+                            Primary: &parser.PrimaryExpr{
+                              Literal: &parser.Literal{
+                                Number: &"0",
+                              },
+                            },
+                          },
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+          {
+            Var: &parser.VarDeclStmt{
+              Dest: &parser.VariableExpr{
+                Name: &"deepIndexed",
+              },
+              Source: &parser.Expr{
+                Unary: &parser.UnaryExpr{
+                  Primary: &parser.PrimaryExpr{
+                    Reference: &parser.ReferenceExpr{
+                      Name: &"array",
+                      KeyPath: &parser.KeyPathExpr{
+                        Optional: true,
+                        Subscript: &parser.Expr{
+                          Unary: &parser.UnaryExpr{
+                            Primary: &parser.PrimaryExpr{
+                              Literal: &parser.Literal{
+                                Number: &"0",
+                              },
+                            },
+                          },
+                        },
+                        Next: &parser.KeyPathExpr{
+                          Optional: true,
+                          Reference: &parser.ReferenceExpr{
+                            Name: &"field",
+                          },
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+          {
+            Var: &parser.VarDeclStmt{
+              Dest: &parser.VariableExpr{
+                Name: &"called",
+              },
+              Source: &parser.Expr{
+                Unary: &parser.UnaryExpr{
+                  Primary: &parser.PrimaryExpr{
+                    Reference: &parser.ReferenceExpr{
+                      Name: &"func",
+                      KeyPath: &parser.KeyPathExpr{
+                        Optional: true,
+                        Call: &parser.CallExpr{
+                          Arguments: []*parser.ArgumentExpr{
+                            {
+                              Expr: &parser.Expr{
+                                Unary: &parser.UnaryExpr{
+                                  Primary: &parser.PrimaryExpr{
+                                    Reference: &parser.ReferenceExpr{
+                                      Name: &"param",
+                                    },
+                                  },
+                                },
+                              },
+                            },
+                          },
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+          {
+            Var: &parser.VarDeclStmt{
+              Dest: &parser.VariableExpr{
+                Name: &"chainedCall",
+              },
+              Source: &parser.Expr{
+                Unary: &parser.UnaryExpr{
+                  Primary: &parser.PrimaryExpr{
+                    Reference: &parser.ReferenceExpr{
+                      Name: &"obj",
+                      KeyPath: &parser.KeyPathExpr{
+                        Optional: true,
+                        Reference: &parser.ReferenceExpr{
+                          Name: &"method",
+                          KeyPath: &parser.KeyPathExpr{
+                            Call: &parser.CallExpr{
+                            },
+                            Next: &parser.KeyPathExpr{
+                              Optional: true,
+                              Reference: &parser.ReferenceExpr{
+                                Name: &"result",
+                              },
+                            },
+                          },
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+          {
+            If: &parser.IfStmt{
+              Fragments: []*parser.IfFragment{
+                {
+                  Expr: &parser.Expr{
+                    Unary: &parser.UnaryExpr{
+                      Primary: &parser.PrimaryExpr{
+                        Reference: &parser.ReferenceExpr{
+                          Name: &"obj",
+                          KeyPath: &parser.KeyPathExpr{
+                            Optional: true,
+                            Reference: &parser.ReferenceExpr{
+                              Name: &"property",
+                            },
+                          },
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+          {
+            Var: &parser.VarDeclStmt{
+              Dest: &parser.VariableExpr{
+                Name: &"conditional",
+              },
+              Source: &parser.Expr{
+                Binary: &parser.BinaryExpr{
+                  Left: &parser.Expr{
+                    Unary: &parser.UnaryExpr{
+                      Primary: &parser.PrimaryExpr{
+                        Reference: &parser.ReferenceExpr{
+                          Name: &"obj",
+                          KeyPath: &parser.KeyPathExpr{
+                            Optional: true,
+                            Reference: &parser.ReferenceExpr{
+                              Name: &"value",
+                            },
+                          },
+                        },
+                      },
+                    },
+                  },
+                  Op: token.Op(token.OpGt),
+                  Right: &parser.Expr{
+                    Unary: &parser.UnaryExpr{
+                      Primary: &parser.PrimaryExpr{
+                        Literal: &parser.Literal{
+                          Number: &"0",
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+  },
+}

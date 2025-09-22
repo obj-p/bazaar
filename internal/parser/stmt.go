@@ -3,10 +3,10 @@ package parser
 import "github.com/obj-p/bazaar/internal/token"
 
 type VarDeclStmt struct {
-	Annotation *AnnotationExpr    `parser:"@@?"`
-	Dest       *DestructuringExpr `parser:"'var' @@"`
-	Type       *TypeDecl          `parser:"@@?"`
-	Source     *Expr              `parser:"'=' @@"`
+	Annotation *AnnotationExpr `parser:"@@?"`
+	Dest       *VariableExpr   `parser:"'var' @@"`
+	Type       *TypeDecl       `parser:"@@?"`
+	Source     *Expr           `parser:"'=' @@"`
 }
 
 type AssignStmt struct {
@@ -16,10 +16,10 @@ type AssignStmt struct {
 }
 
 type ForStmt struct {
-	Dest   *DestructuringExpr `parser:"'for' ((@@"`
-	Source *Expr              `parser:"'in' @@)"`
-	Expr   *Expr              `parser:"| @@)"`
-	Block  []*Stmt            `parser:"'{' @@* '}'"`
+	Dest   *VariableExpr `parser:"'for' ((@@"`
+	Source *Expr         `parser:"'in' @@)"`
+	Expr   *Expr         `parser:"| @@)"`
+	Block  []*Stmt       `parser:"'{' @@* '}'"`
 }
 
 type IfFragment struct {
@@ -39,8 +39,8 @@ type SwitchCase struct {
 }
 
 type SwitchBody struct {
-	Cases   *SwitchCase `parser:"@@*"`
-	Default []*Stmt     `parser:"('default' ':' @@*)"`
+	Cases   []*SwitchCase `parser:"@@*"`
+	Default []*Stmt       `parser:"('default' ':' @@*)"`
 }
 
 type SwitchStmt struct {

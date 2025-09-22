@@ -20,6 +20,16 @@ component Text {
 	value string
 }
 
+modifier Padding {
+        top double = 0
+        leading double = 0
+        bottom double = 0
+        trailing double = 0
+
+        constructor(all double) = Padding(all, all, all, all)
+        constructor(vertical double, horizontal double) = Padding(vertical, horizontal, vertical, horizontal)
+}
+
 func Add(x int, y int) -> int
 
 func Truncate(x double) -> int
@@ -43,7 +53,7 @@ template TextAndButtonRow(models [TextAndButtonRowModel]) {
         @State var count = 0
 
         for model in models {
-                @Modifier(Padding(12.0))
+                @Modifier(Padding(all = 12.0))
                 Row {
                         Text(model.value)
                         Button(model.label) {

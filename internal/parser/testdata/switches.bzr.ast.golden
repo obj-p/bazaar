@@ -1,0 +1,114 @@
+&parser.Bazaar{
+  Package: &parser.PackageDecl{
+    Domain: []string{
+      "switches",
+    },
+  },
+  Decls: []*parser.TopLevelDecl{
+    {
+      Template: &parser.TemplateDecl{
+        Name: "Switches",
+        Block: []*parser.Stmt{
+          {
+            Switch: &parser.SwitchStmt{
+              Expr: &parser.Expr{
+                Unary: &parser.UnaryExpr{
+                  Primary: &parser.PrimaryExpr{
+                    Reference: &parser.ReferenceExpr{
+                      Name: &"expression",
+                    },
+                  },
+                },
+              },
+              Body: &parser.SwitchBody{
+                Cases: []*parser.SwitchCase{
+                  {
+                    Expr: &parser.Expr{
+                      Unary: &parser.UnaryExpr{
+                        Primary: &parser.PrimaryExpr{
+                          Reference: &parser.ReferenceExpr{
+                            Name: &"expr1",
+                          },
+                        },
+                      },
+                    },
+                  },
+                  {
+                    Expr: &parser.Expr{
+                      Unary: &parser.UnaryExpr{
+                        Primary: &parser.PrimaryExpr{
+                          Reference: &parser.ReferenceExpr{
+                            Name: &"value1",
+                          },
+                        },
+                      },
+                    },
+                    Block: []*parser.Stmt{
+                      {
+                        Expr: &parser.Expr{
+                          Binary: &parser.BinaryExpr{
+                            Left: &parser.Expr{
+                              Unary: &parser.UnaryExpr{
+                                Primary: &parser.PrimaryExpr{
+                                  Literal: &parser.Literal{
+                                    Number: &"2",
+                                  },
+                                },
+                              },
+                            },
+                            Op: token.Op(token.OpAdd),
+                            Right: &parser.Expr{
+                              Unary: &parser.UnaryExpr{
+                                Primary: &parser.PrimaryExpr{
+                                  Literal: &parser.Literal{
+                                    Number: &"2",
+                                  },
+                                },
+                              },
+                            },
+                          },
+                        },
+                      },
+                      {
+                        Call: &parser.CallStmt{
+                          Name: &"foo",
+                        },
+                      },
+                    },
+                  },
+                },
+                Default: []*parser.Stmt{
+                  {
+                    Expr: &parser.Expr{
+                      Binary: &parser.BinaryExpr{
+                        Left: &parser.Expr{
+                          Unary: &parser.UnaryExpr{
+                            Primary: &parser.PrimaryExpr{
+                              Literal: &parser.Literal{
+                                Number: &"1",
+                              },
+                            },
+                          },
+                        },
+                        Op: token.Op(token.OpAdd),
+                        Right: &parser.Expr{
+                          Unary: &parser.UnaryExpr{
+                            Primary: &parser.PrimaryExpr{
+                              Literal: &parser.Literal{
+                                Number: &"1",
+                              },
+                            },
+                          },
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+  },
+}

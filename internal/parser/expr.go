@@ -15,7 +15,12 @@ type AnnotationExpr struct {
 }
 
 type DestructuringExpr struct {
-	Names []*string `parser:"@Ident | '(' @Ident (',' @Ident)? ','? ')'"`
+	Names []string `parser:"'(' @Ident (',' @Ident)* ','? ')'"`
+}
+
+type VariableExpr struct {
+	Name          *string            `parser:"@Ident"`
+	Destructuring *DestructuringExpr `parser:"| @@"`
 }
 
 type LambdaParameter struct {
@@ -30,9 +35,8 @@ type LambdaExpr struct {
 }
 
 type ArgumentExpr struct {
-	Name   *string     `parser:"(@Ident '=')?"`
-	Lambda *LambdaExpr `parser:"(@@"`
-	Expr   *Expr       `parser:"| @@)"`
+	Name *string `parser:"(@Ident '=')?"`
+	Expr *Expr   `parser:"@@"`
 }
 
 type BuiltInExpr struct {
@@ -59,11 +63,11 @@ type ReferenceExpr struct {
 }
 
 type PrimaryExpr struct {
-	Lambda      *LambdaExpr    `parser:"@@"`
+	Literal     *Literal       `parser:"@@"`
 	BuiltIn     *BuiltInExpr   `parser:"| @@"`
-	Literal     *Literal       `parser:"| @@"`
 	ImplicitRef *ReferenceExpr `parser:"| '.' @@"`
 	Reference   *ReferenceExpr `parser:"| @@"`
+	Lambda      *LambdaExpr    `parser:"| @@"`
 	Nested      *Expr          `parser:"| '(' @@ ')'"`
 }
 

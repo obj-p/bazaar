@@ -1,0 +1,524 @@
+&parser.Bazaar{
+  Package: &parser.PackageDecl{
+    Domain: []string{
+      "ifs",
+    },
+  },
+  Decls: []*parser.TopLevelDecl{
+    {
+      Template: &parser.TemplateDecl{
+        Name: "Ifs",
+        Parameters: []*parser.ParameterDecl{
+          {
+            Name: "foo",
+            Type: &parser.TypeDecl{
+              Value: &"bool",
+            },
+          },
+          {
+            Name: "bar",
+            Type: &parser.TypeDecl{
+              Value: &"bool",
+            },
+          },
+          {
+            Name: "baz",
+            Type: &parser.TypeDecl{
+              Value: &"bool",
+              Optional: true,
+            },
+          },
+        },
+        Block: []*parser.Stmt{
+          {
+            If: &parser.IfStmt{
+              Fragments: []*parser.IfFragment{
+                {
+                  Expr: &parser.Expr{
+                    Binary: &parser.BinaryExpr{
+                      Left: &parser.Expr{
+                        Unary: &parser.UnaryExpr{
+                          Primary: &parser.PrimaryExpr{
+                            Reference: &parser.ReferenceExpr{
+                              Name: &"foo",
+                            },
+                          },
+                        },
+                      },
+                      Op: token.Op(token.OpNotEql),
+                      Right: &parser.Expr{
+                        Unary: &parser.UnaryExpr{
+                          Primary: &parser.PrimaryExpr{
+                            Reference: &parser.ReferenceExpr{
+                              Name: &"bar",
+                            },
+                          },
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+          {
+            If: &parser.IfStmt{
+              Fragments: []*parser.IfFragment{
+                {
+                  Expr: &parser.Expr{
+                    Binary: &parser.BinaryExpr{
+                      Left: &parser.Expr{
+                        Unary: &parser.UnaryExpr{
+                          Primary: &parser.PrimaryExpr{
+                            Reference: &parser.ReferenceExpr{
+                              Name: &"foo",
+                            },
+                          },
+                        },
+                      },
+                      Op: token.Op(token.OpEql),
+                      Right: &parser.Expr{
+                        Unary: &parser.UnaryExpr{
+                          Primary: &parser.PrimaryExpr{
+                            Reference: &parser.ReferenceExpr{
+                              Name: &"bar",
+                            },
+                          },
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+          {
+            If: &parser.IfStmt{
+              Fragments: []*parser.IfFragment{
+                {
+                  Expr: &parser.Expr{
+                    Binary: &parser.BinaryExpr{
+                      Left: &parser.Expr{
+                        Binary: &parser.BinaryExpr{
+                          Left: &parser.Expr{
+                            Binary: &parser.BinaryExpr{
+                              Left: &parser.Expr{
+                                Unary: &parser.UnaryExpr{
+                                  Primary: &parser.PrimaryExpr{
+                                    Reference: &parser.ReferenceExpr{
+                                      Name: &"foo",
+                                    },
+                                  },
+                                },
+                              },
+                              Op: token.Op(token.OpEql),
+                              Right: &parser.Expr{
+                                Unary: &parser.UnaryExpr{
+                                  Primary: &parser.PrimaryExpr{
+                                    Reference: &parser.ReferenceExpr{
+                                      Name: &"bar",
+                                    },
+                                  },
+                                },
+                              },
+                            },
+                          },
+                          Op: token.Op(token.OpAnd),
+                          Right: &parser.Expr{
+                            Unary: &parser.UnaryExpr{
+                              Primary: &parser.PrimaryExpr{
+                                Reference: &parser.ReferenceExpr{
+                                  Name: &"foo",
+                                },
+                              },
+                            },
+                          },
+                        },
+                      },
+                      Op: token.Op(token.OpNotEql),
+                      Right: &parser.Expr{
+                        Unary: &parser.UnaryExpr{
+                          Primary: &parser.PrimaryExpr{
+                            Literal: &parser.Literal{
+                              Bool: &parser.Bool(true),
+                            },
+                          },
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+          {
+            If: &parser.IfStmt{
+              Fragments: []*parser.IfFragment{
+                {
+                  Expr: &parser.Expr{
+                    Unary: &parser.UnaryExpr{
+                      Primary: &parser.PrimaryExpr{
+                        Nested: &parser.Expr{
+                          Binary: &parser.BinaryExpr{
+                            Left: &parser.Expr{
+                              Binary: &parser.BinaryExpr{
+                                Left: &parser.Expr{
+                                  Unary: &parser.UnaryExpr{
+                                    Primary: &parser.PrimaryExpr{
+                                      Reference: &parser.ReferenceExpr{
+                                        Name: &"foo",
+                                      },
+                                    },
+                                  },
+                                },
+                                Op: token.Op(token.OpEql),
+                                Right: &parser.Expr{
+                                  Unary: &parser.UnaryExpr{
+                                    Primary: &parser.PrimaryExpr{
+                                      Reference: &parser.ReferenceExpr{
+                                        Name: &"bar",
+                                      },
+                                    },
+                                  },
+                                },
+                              },
+                            },
+                            Op: token.Op(token.OpOr),
+                            Right: &parser.Expr{
+                              Unary: &parser.UnaryExpr{
+                                Primary: &parser.PrimaryExpr{
+                                  Nested: &parser.Expr{
+                                    Binary: &parser.BinaryExpr{
+                                      Left: &parser.Expr{
+                                        Unary: &parser.UnaryExpr{
+                                          Primary: &parser.PrimaryExpr{
+                                            Reference: &parser.ReferenceExpr{
+                                              Name: &"foo",
+                                            },
+                                          },
+                                        },
+                                      },
+                                      Op: token.Op(token.OpNotEql),
+                                      Right: &parser.Expr{
+                                        Unary: &parser.UnaryExpr{
+                                          Primary: &parser.PrimaryExpr{
+                                            Literal: &parser.Literal{
+                                              Bool: &parser.Bool(true),
+                                            },
+                                          },
+                                        },
+                                      },
+                                    },
+                                  },
+                                },
+                              },
+                            },
+                          },
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+          {
+            If: &parser.IfStmt{
+              Fragments: []*parser.IfFragment{
+                {
+                  Expr: &parser.Expr{
+                    Binary: &parser.BinaryExpr{
+                      Left: &parser.Expr{
+                        Unary: &parser.UnaryExpr{
+                          Primary: &parser.PrimaryExpr{
+                            Literal: &parser.Literal{
+                              Bool: &parser.Bool(true),
+                            },
+                          },
+                        },
+                      },
+                      Op: token.Op(token.OpOr),
+                      Right: &parser.Expr{
+                        Unary: &parser.UnaryExpr{
+                          Primary: &parser.PrimaryExpr{
+                            Nested: &parser.Expr{
+                              Binary: &parser.BinaryExpr{
+                                Left: &parser.Expr{
+                                  Unary: &parser.UnaryExpr{
+                                    Op: token.Op(token.OpNot),
+                                    Primary: &parser.PrimaryExpr{
+                                      Nested: &parser.Expr{
+                                        Unary: &parser.UnaryExpr{
+                                          Primary: &parser.PrimaryExpr{
+                                            Literal: &parser.Literal{
+                                              Bool: &parser.Bool(false),
+                                            },
+                                          },
+                                        },
+                                      },
+                                    },
+                                  },
+                                },
+                                Op: token.Op(token.OpAnd),
+                                Right: &parser.Expr{
+                                  Unary: &parser.UnaryExpr{
+                                    Primary: &parser.PrimaryExpr{
+                                      Literal: &parser.Literal{
+                                        Bool: &parser.Bool(true),
+                                      },
+                                    },
+                                  },
+                                },
+                              },
+                            },
+                          },
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+          {
+            If: &parser.IfStmt{
+              Fragments: []*parser.IfFragment{
+                {
+                  Expr: &parser.Expr{
+                    Binary: &parser.BinaryExpr{
+                      Left: &parser.Expr{
+                        Unary: &parser.UnaryExpr{
+                          Primary: &parser.PrimaryExpr{
+                            Nested: &parser.Expr{
+                              Binary: &parser.BinaryExpr{
+                                Left: &parser.Expr{
+                                  Unary: &parser.UnaryExpr{
+                                    Primary: &parser.PrimaryExpr{
+                                      Reference: &parser.ReferenceExpr{
+                                        Name: &"foo",
+                                      },
+                                    },
+                                  },
+                                },
+                                Op: token.Op(token.OpAnd),
+                                Right: &parser.Expr{
+                                  Unary: &parser.UnaryExpr{
+                                    Primary: &parser.PrimaryExpr{
+                                      Reference: &parser.ReferenceExpr{
+                                        Name: &"bar",
+                                      },
+                                    },
+                                  },
+                                },
+                              },
+                            },
+                          },
+                        },
+                      },
+                      Op: token.Op(token.OpOr),
+                      Right: &parser.Expr{
+                        Unary: &parser.UnaryExpr{
+                          Primary: &parser.PrimaryExpr{
+                            Nested: &parser.Expr{
+                              Binary: &parser.BinaryExpr{
+                                Left: &parser.Expr{
+                                  Unary: &parser.UnaryExpr{
+                                    Primary: &parser.PrimaryExpr{
+                                      Reference: &parser.ReferenceExpr{
+                                        Name: &"baz",
+                                      },
+                                    },
+                                  },
+                                },
+                                Op: token.Op(token.OpEql),
+                                Right: &parser.Expr{
+                                  Unary: &parser.UnaryExpr{
+                                    Primary: &parser.PrimaryExpr{
+                                      Literal: &parser.Literal{
+                                        Bool: &parser.Bool(true),
+                                      },
+                                    },
+                                  },
+                                },
+                              },
+                            },
+                          },
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+          {
+            If: &parser.IfStmt{
+              Fragments: []*parser.IfFragment{
+                {
+                  ImplicitVar: &"baz",
+                },
+                {
+                  Expr: &parser.Expr{
+                    Binary: &parser.BinaryExpr{
+                      Left: &parser.Expr{
+                        Unary: &parser.UnaryExpr{
+                          Primary: &parser.PrimaryExpr{
+                            Reference: &parser.ReferenceExpr{
+                              Name: &"baz",
+                            },
+                          },
+                        },
+                      },
+                      Op: token.Op(token.OpEql),
+                      Right: &parser.Expr{
+                        Unary: &parser.UnaryExpr{
+                          Primary: &parser.PrimaryExpr{
+                            Reference: &parser.ReferenceExpr{
+                              Name: &"bar",
+                            },
+                          },
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+          {
+            If: &parser.IfStmt{
+              Fragments: []*parser.IfFragment{
+                {
+                  Var: &parser.VarDeclStmt{
+                    Dest: &parser.VariableExpr{
+                      Name: &"baz",
+                    },
+                    Source: &parser.Expr{
+                      Unary: &parser.UnaryExpr{
+                        Primary: &parser.PrimaryExpr{
+                          Reference: &parser.ReferenceExpr{
+                            Name: &"baz",
+                          },
+                        },
+                      },
+                    },
+                  },
+                },
+                {
+                  Expr: &parser.Expr{
+                    Binary: &parser.BinaryExpr{
+                      Left: &parser.Expr{
+                        Binary: &parser.BinaryExpr{
+                          Left: &parser.Expr{
+                            Unary: &parser.UnaryExpr{
+                              Primary: &parser.PrimaryExpr{
+                                Reference: &parser.ReferenceExpr{
+                                  Name: &"foo",
+                                },
+                              },
+                            },
+                          },
+                          Op: token.Op(token.OpEql),
+                          Right: &parser.Expr{
+                            Unary: &parser.UnaryExpr{
+                              Primary: &parser.PrimaryExpr{
+                                Reference: &parser.ReferenceExpr{
+                                  Name: &"bar",
+                                },
+                              },
+                            },
+                          },
+                        },
+                      },
+                      Op: token.Op(token.OpEql),
+                      Right: &parser.Expr{
+                        Unary: &parser.UnaryExpr{
+                          Primary: &parser.PrimaryExpr{
+                            Reference: &parser.ReferenceExpr{
+                              Name: &"baz",
+                            },
+                          },
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+          {
+            If: &parser.IfStmt{
+              Fragments: []*parser.IfFragment{
+                {
+                  Var: &parser.VarDeclStmt{
+                    Dest: &parser.VariableExpr{
+                      Destructuring: &parser.DestructuringExpr{
+                        Names: []string{
+                          "bar",
+                          "baz",
+                        },
+                      },
+                    },
+                    Source: &parser.Expr{
+                      Unary: &parser.UnaryExpr{
+                        Primary: &parser.PrimaryExpr{
+                          Reference: &parser.ReferenceExpr{
+                            Name: &"foo",
+                          },
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+          {
+            If: &parser.IfStmt{
+              Fragments: []*parser.IfFragment{
+                {
+                  Expr: &parser.Expr{
+                    Binary: &parser.BinaryExpr{
+                      Left: &parser.Expr{
+                        Unary: &parser.UnaryExpr{
+                          Primary: &parser.PrimaryExpr{
+                            Literal: &parser.Literal{
+                              Number: &"10",
+                            },
+                          },
+                        },
+                      },
+                      Op: token.Op(token.OpGt),
+                      Right: &parser.Expr{
+                        Unary: &parser.UnaryExpr{
+                          Primary: &parser.PrimaryExpr{
+                            BuiltIn: &parser.BuiltInExpr{
+                              Name: &"len",
+                              Arguments: []*parser.ArgumentExpr{
+                                {
+                                  Expr: &parser.Expr{
+                                    Unary: &parser.UnaryExpr{
+                                      Primary: &parser.PrimaryExpr{
+                                        Reference: &parser.ReferenceExpr{
+                                          Name: &"something",
+                                        },
+                                      },
+                                    },
+                                  },
+                                },
+                              },
+                            },
+                          },
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+  },
+}

@@ -11,6 +11,8 @@ func TestLexer(t *testing.T) {
 	tokens := `
 	nil true false 42.0 -1337 "Hello, ${firstName ", " + (lastName)}!" foobar
 	// Some comment
+	enumerate len range
+	case component data default enum for if import in modifier package return switch var
 	??-+*/%<>^!?.
 	==<=>=!=&&||
 	+=-=*=/=%==
@@ -53,6 +55,40 @@ func TestLexer(t *testing.T) {
 		{"Ident", "foobar"},
 		{"Whitespace", "\n\t"},
 		{"Comment", "// Some comment"},
+		{"Whitespace", "\n\t"},
+		{"BuiltIn", "enumerate"},
+		{"Whitespace", " "},
+		{"BuiltIn", "len"},
+		{"Whitespace", " "},
+		{"BuiltIn", "range"},
+		{"Whitespace", "\n\t"},
+		{"Keyword", "case"},
+		{"Whitespace", " "},
+		{"Ident", "component"},
+		{"Whitespace", " "},
+		{"Ident", "data"},
+		{"Whitespace", " "},
+		{"Keyword", "default"},
+		{"Whitespace", " "},
+		{"Keyword", "enum"},
+		{"Whitespace", " "},
+		{"Keyword", "for"},
+		{"Whitespace", " "},
+		{"Keyword", "if"},
+		{"Whitespace", " "},
+		{"Keyword", "import"},
+		{"Whitespace", " "},
+		{"Keyword", "in"},
+		{"Whitespace", " "},
+		{"Ident", "modifier"},
+		{"Whitespace", " "},
+		{"Ident", "package"},
+		{"Whitespace", " "},
+		{"Keyword", "return"},
+		{"Whitespace", " "},
+		{"Keyword", "switch"},
+		{"Whitespace", " "},
+		{"Keyword", "var"},
 		{"Whitespace", "\n\t"},
 		{"Operator", "??"},
 		{"Operator", "-"},
