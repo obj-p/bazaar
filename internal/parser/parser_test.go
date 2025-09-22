@@ -15,7 +15,6 @@ import (
 var record = flag.Bool("record", false, "record new golden files")
 
 func TestParser(t *testing.T) {
-
 	err := filepath.WalkDir("testdata", func(path string, d fs.DirEntry, err error) error {
 		if err != nil {
 			return err

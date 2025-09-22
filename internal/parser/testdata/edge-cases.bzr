@@ -21,9 +21,9 @@ template EdgeCases {
 
     var array = [1, 2, 3,]
 
-    // Map literals with content (lookahead=4 fixes both identifier and string keys!)
-    // var map = {a: 1, b: 2,}
-    // var map2 = {"a": 1, "b": 2}
+    var map = {a: 1}
+    var map = {a: 1, b: 2,}
+    var map = {"a": 1, "b": 2}
 
     // Single annotation
     @State var count = 0

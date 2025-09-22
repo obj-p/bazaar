@@ -1,14 +1,10 @@
 package parser
 
 import (
+	"errors"
+
 	"github.com/alecthomas/participle/v2"
 	participleLexer "github.com/alecthomas/participle/v2/lexer"
-	bazaarLexer "github.com/obj-p/bazaar/internal/lexer"
-)
-
-var mapEntryParser = participle.MustBuild[MapEntry](
-	participle.Lexer(bazaarLexer.BazaarLexer),
-	participle.Elide("Comment", "StringExprWhitespace", "Whitespace"),
 )
 
 type Bool bool
@@ -42,12 +38,12 @@ type ArrayLiteral struct {
 }
 
 type MapEntry struct {
-	Key   Expr `parser:"@@"`
-	Value Expr `parser:"':' @@"`
+	Key   *Expr
+	Value *Expr
 }
 
 type MapLiteral struct {
-	Entries []*MapEntry // `parser:"'{' (':' | (@@ (',' @@)* ','?)) '}'"`
+	Entries []*MapEntry
 }
 
 func (m *MapLiteral) Parse(lex *participleLexer.PeekingLexer) error {
@@ -62,13 +58,73 @@ func (m *MapLiteral) Parse(lex *participleLexer.PeekingLexer) error {
 	if tok = lex.Peek(); tok.Value == ":" {
 		lex.Next()
 		if tok = lex.Peek(); tok.Value != "}" {
-			return participle.Errorf(tok.Pos, "expected a '}' for empty map but got %s", tok.Value)
+			return participle.Errorf(tok.Pos, "unexpected token \"%s\" (expected \"}\")", tok.Value)
 		}
 
 		lex.Next()
+		*m = MapLiteral{}
 		return nil
 	}
 
-	lex.LoadCheckpoint(checkpoint)
-	return participle.NextMatch
+	entry, err := parseMapEntry(lex)
+	if errors.Is(err, unableToParseMapKey) || errors.Is(err, missingMapSeparator) {
+		lex.LoadCheckpoint(checkpoint)
+		return participle.NextMatch
+	}
+
+	if err != nil {
+		return participle.Errorf(tok.Pos, "%s \"%s\"", err.Error(), tok.Value)
+	}
+
+	mapLiteral := MapLiteral{Entries: []*MapEntry{}}
+	mapLiteral.Entries = append(mapLiteral.Entries, entry)
+
+	for {
+		if tok := lex.Peek(); tok.Value == "," {
+			lex.Next()
+		}
+
+		if tok = lex.Peek(); tok.Value == "}" {
+			lex.Next()
+			break
+		}
+
+		entry, err := parseMapEntry(lex)
+		if err != nil {
+			tok = lex.Peek()
+			return participle.Errorf(tok.Pos, "%s \"%s\"", err.Error(), tok.Value)
+		}
+
+		mapLiteral.Entries = append(mapLiteral.Entries, entry)
+	}
+
+	*m = mapLiteral
+	return nil
+}
+
+var (
+	missingMapSeparator   = errors.New("missing map separator")
+	unableToParseMapKey   = errors.New("unable to parse map key")
+	unableToParseMapValue = errors.New("unable to parse map value")
+)
+
+func parseMapEntry(lex *participleLexer.PeekingLexer) (*MapEntry, error) {
+	key, err := parseExpr(lex, 0)
+	if err != nil {
+		return nil, unableToParseMapKey
+	}
+
+	tok := lex.Peek()
+	if tok.Value != ":" {
+		return nil, missingMapSeparator
+	}
+
+	lex.Next()
+	value, err := parseExpr(lex, 0)
+	if err != nil {
+		return nil, unableToParseMapValue
+	}
+
+	mapEntry := &MapEntry{Key: key, Value: value}
+	return mapEntry, nil
 }
