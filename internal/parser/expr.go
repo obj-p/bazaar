@@ -63,12 +63,11 @@ type ReferenceExpr struct {
 }
 
 type PrimaryExpr struct {
-	Literal     *Literal       `parser:"@@"`
-	BuiltIn     *BuiltInExpr   `parser:"| @@"`
-	ImplicitRef *ReferenceExpr `parser:"| '.' @@"`
-	Reference   *ReferenceExpr `parser:"| @@"`
-	Lambda      *LambdaExpr    `parser:"| @@"`
-	Nested      *Expr          `parser:"| '(' @@ ')'"`
+	Literal   *Literal       `parser:"@@"`
+	BuiltIn   *BuiltInExpr   `parser:"| @@"`
+	Reference *ReferenceExpr `parser:"| @@"`
+	Lambda    *LambdaExpr    `parser:"| @@"`
+	Nested    *Expr          `parser:"| '(' @@ ')'"`
 }
 
 type BinaryExpr struct {

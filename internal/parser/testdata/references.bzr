@@ -38,14 +38,6 @@ func References() {
     var calculated1 = grid[x * width + y]
     var calculated2 = buffer[offset + size]
 
-    // Implicit references (dot-prefixed)
-    var implicit1 = .implicitProperty
-    var implicit2 = .method()
-    var implicit3 = .nested.property
-    var implicit4 = .getData().value
-
-    // Mixed implicit and explicit
-    var mixed = obj.getData().items[.currentIndex]
 
     // Preserved original complex optional pattern for comparison
     var originalPattern = model?[0]?("hello, world!")?.foobar

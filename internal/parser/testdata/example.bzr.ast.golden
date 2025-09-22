@@ -35,8 +35,13 @@
               Default: &parser.Expr{
                 Unary: &parser.UnaryExpr{
                   Primary: &parser.PrimaryExpr{
-                    ImplicitRef: &parser.ReferenceExpr{
-                      Name: &"center",
+                    Reference: &parser.ReferenceExpr{
+                      Name: &"RowAlignment",
+                      KeyPath: &parser.KeyPathExpr{
+                        Reference: &parser.ReferenceExpr{
+                          Name: &"center",
+                        },
+                      },
                     },
                   },
                 },

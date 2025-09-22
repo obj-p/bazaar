@@ -7,7 +7,7 @@ enum RowAlignment {
 }
 
 component Row {
-    alignment RowAlignment = .center
+    alignment RowAlignment = RowAlignment.center
     children [component]
 }
 
