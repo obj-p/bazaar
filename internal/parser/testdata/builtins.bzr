@@ -1,7 +1,5 @@
 package builtins
 
-// TODO: Revisit whether built-ins (range, enumerate, len) should be reserved keywords
-// or allow shadowing with user-defined variables/functions
 func BuiltinFunctions(list [string], items [int]) {
     for i in range(0, 10) {}
     for (idx, val) in enumerate(list) {}

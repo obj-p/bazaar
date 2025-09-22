@@ -13,11 +13,7 @@ func EdgeCases() {
     var data = "bar"
     var modifier = "baz"
     var package = "qux"
-
-    // Single annotation
-    @State var count = 0
-
-    // TODO: Multiple annotations on single construct - grammar only supports one
-    // @State @Modifier(padding = 8) var count = 0
-    // TODO: Revisit allowing multiple annotations on single statements
+    var len = "foo"
+    var enumerate = "bar"
+    var range = "baz"
 }

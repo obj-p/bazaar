@@ -3,10 +3,10 @@ package parser
 import "github.com/obj-p/bazaar/internal/token"
 
 type VarDeclStmt struct {
-	Annotation *AnnotationExpr `parser:"@@?"`
-	Dest       *VariableExpr   `parser:"'var' @@"`
-	Type       *TypeDecl       `parser:"@@?"`
-	Source     *Expr           `parser:"'=' @@"`
+	Annotations []*AnnotationExpr `parser:"@@*"`
+	Dest        *VariableExpr     `parser:"'var' @@"`
+	Type        *TypeDecl         `parser:"@@?"`
+	Source      *Expr             `parser:"'=' @@"`
 }
 
 type AssignStmt struct {
@@ -53,11 +53,11 @@ type ReturnStmt struct {
 }
 
 type CallStmt struct {
-	Annotation     *AnnotationExpr `parser:"@@?"`
-	Name           *string         `parser:"@Ident"`
-	Arguments      []*ArgumentExpr `parser:"(('(' (@@ (',' @@)* ','?)? ')'"`
-	TrailingLambda *LambdaExpr     `parser:"@@?)"`
-	LambdaOnly     *LambdaExpr     `parser:"| @@)"`
+	Annotations    []*AnnotationExpr `parser:"@@*"`
+	Name           *string           `parser:"@Ident"`
+	Arguments      []*ArgumentExpr   `parser:"(('(' (@@ (',' @@)* ','?)? ')'"`
+	TrailingLambda *LambdaExpr       `parser:"@@?)"`
+	LambdaOnly     *LambdaExpr       `parser:"| @@)"`
 }
 
 type Stmt struct {

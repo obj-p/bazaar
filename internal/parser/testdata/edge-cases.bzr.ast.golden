@@ -119,17 +119,64 @@
           },
           {
             Var: &parser.VarDeclStmt{
-              Annotation: &parser.AnnotationExpr{
-                Name: &"State",
-              },
               Dest: &parser.VariableExpr{
-                Name: &"count",
+                Name: &"len",
               },
               Source: &parser.Expr{
                 Unary: &parser.UnaryExpr{
                   Primary: &parser.PrimaryExpr{
                     Literal: &parser.Literal{
-                      Number: &"0",
+                      String: &parser.String{
+                        Fragments: []*parser.StringFragment{
+                          {
+                            Text: &"foo",
+                          },
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+          {
+            Var: &parser.VarDeclStmt{
+              Dest: &parser.VariableExpr{
+                Name: &"enumerate",
+              },
+              Source: &parser.Expr{
+                Unary: &parser.UnaryExpr{
+                  Primary: &parser.PrimaryExpr{
+                    Literal: &parser.Literal{
+                      String: &parser.String{
+                        Fragments: []*parser.StringFragment{
+                          {
+                            Text: &"bar",
+                          },
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+          {
+            Var: &parser.VarDeclStmt{
+              Dest: &parser.VariableExpr{
+                Name: &"range",
+              },
+              Source: &parser.Expr{
+                Unary: &parser.UnaryExpr{
+                  Primary: &parser.PrimaryExpr{
+                    Literal: &parser.Literal{
+                      String: &parser.String{
+                        Fragments: []*parser.StringFragment{
+                          {
+                            Text: &"baz",
+                          },
+                        },
+                      },
                     },
                   },
                 },

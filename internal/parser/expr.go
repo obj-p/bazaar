@@ -40,8 +40,7 @@ type ArgumentExpr struct {
 }
 
 type CallExpr struct {
-	Annotation *AnnotationExpr `parser:"@@?"`
-	Arguments  []*ArgumentExpr `parser:"'(' (@@ (',' @@)* ','?)? ')'"`
+	Arguments []*ArgumentExpr `parser:"'(' (@@ (',' @@)* ','?)? ')'"`
 }
 
 type KeyPathExpr struct {
