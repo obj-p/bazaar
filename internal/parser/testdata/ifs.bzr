@@ -1,14 +1,14 @@
 package ifs
 
 func Ifs(foo bool, bar bool, baz bool?) {
-        if foo != bar {}
-        if foo == bar {}
-        if foo == bar && foo != true {}
-        if (foo == bar || (foo != true)) {}
-        if true || (!(false) && true) {}
-        if (foo && bar) || (baz == true) {}
-        if var baz, baz == bar {}
-        if var baz = baz, foo == bar == baz {}
-        if var (bar, baz) = foo {}
-        if 10 > len(something) {}
+    if foo != bar {}
+    if foo == bar {}
+    if foo == bar && foo != true {}
+    if (foo == bar || (foo != true)) {}
+    if true || (!(false) && true) {}
+    if (foo && bar) || (baz == true) {}
+    if var baz, baz == bar {}
+    if var baz = baz, foo == bar == baz {}
+    if var (bar, baz) = foo {}
+    if 10 > len(something) {}
 }

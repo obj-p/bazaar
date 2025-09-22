@@ -1,0 +1,74 @@
+&parser.Bazaar{
+  Package: &parser.PackageDecl{
+    Domain: []string{
+      "arithmetic",
+    },
+  },
+  Decls: []*parser.TopLevelDecl{
+    {
+      Function: &parser.FunctionDecl{
+        Name: "Arithmetic",
+        Block: []*parser.Stmt{
+          {
+            Var: &parser.VarDeclStmt{
+              Dest: &parser.VariableExpr{
+                Name: &"answer",
+              },
+              Source: &parser.Expr{
+                Binary: &parser.BinaryExpr{
+                  Left: &parser.Expr{
+                    Binary: &parser.BinaryExpr{
+                      Left: &parser.Expr{
+                        Binary: &parser.BinaryExpr{
+                          Left: &parser.Expr{
+                            Unary: &parser.UnaryExpr{
+                              Primary: &parser.PrimaryExpr{
+                                Literal: &parser.Literal{
+                                  Number: &"42",
+                                },
+                              },
+                            },
+                          },
+                          Op: token.Op(token.OpMul),
+                          Right: &parser.Expr{
+                            Unary: &parser.UnaryExpr{
+                              Primary: &parser.PrimaryExpr{
+                                Literal: &parser.Literal{
+                                  Number: &"1",
+                                },
+                              },
+                            },
+                          },
+                        },
+                      },
+                      Op: token.Op(token.OpAdd),
+                      Right: &parser.Expr{
+                        Unary: &parser.UnaryExpr{
+                          Primary: &parser.PrimaryExpr{
+                            Literal: &parser.Literal{
+                              Number: &"1",
+                            },
+                          },
+                        },
+                      },
+                    },
+                  },
+                  Op: token.Op(token.OpSub),
+                  Right: &parser.Expr{
+                    Unary: &parser.UnaryExpr{
+                      Primary: &parser.PrimaryExpr{
+                        Literal: &parser.Literal{
+                          Number: &"1",
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+  },
+}

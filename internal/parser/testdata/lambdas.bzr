@@ -1,21 +1,21 @@
 package lambdas
 
 func Lambdas() {
-        Foo {}
-        Foo { Bar() }
-        Foo { Bar() { Baz {} } }
-        Foo() {}
-        Foo() { Bar() }
-        Foo() { Bar() { Baz() {} } }
-        Foo(bar) { (bar) in Bar() }
-        Foo(bar) { (bar) -> int in Bar() }
-        Foo(bar) { (bar string) -> int in Bar(bar) }
-        Foo(bar) { (bar string, baz string) -> int in Bar(bar) { Baz(baz) } }
-        Foo(bar = { Bar() } ) {
-                Baz()
-        }
+    Foo {}
+    Foo { Bar() }
+    Foo { Bar() { Baz {} } }
+    Foo() {}
+    Foo() { Bar() }
+    Foo() { Bar() { Baz() {} } }
+    Foo(bar) { (bar) in Bar() }
+    Foo(bar) { (bar) -> int in Bar() }
+    Foo(bar) { (bar string) -> int in Bar(bar) }
+    Foo(bar) { (bar string, baz string) -> int in Bar(bar) { Baz(baz) } }
+    Foo(bar = { Bar() } ) {
+        Baz()
+    }
 
-        var foo = { () -> int in return 42 }
-        var foo = { (bar) -> int in return bar }
-        var foo = { (bar int) -> int in return bar }
+    var foo = { () -> int in return 42 }
+    var foo = { (bar) -> int in return bar }
+    var foo = { (bar int) -> int in return bar }
 }

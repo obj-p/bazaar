@@ -1,8 +1,8 @@
 package calls
 
 func Calls() {
-        Print("Hello, world!")
-        BlockLiteral({})
-        NamedArgs(first = 1337, second = "second")
-        TrailingBlockLiteral {}
+    Print("Hello, world!")
+    BlockLiteral({})
+    NamedArgs(first = 1337, second = "second")
+    TrailingBlockLiteral {}
 }

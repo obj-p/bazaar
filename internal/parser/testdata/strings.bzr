@@ -1,8 +1,8 @@
 package strings
 
 data Messages {
-        answer string = "The answer is ${42}"
-        escaped string = "\""
+    answer string = "The answer is ${42}"
+    escaped string = "\""
 }
 
 func Strings() {}

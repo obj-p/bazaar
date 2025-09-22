@@ -1,5 +1,5 @@
 package references
 
 func References() {
-        model?[0]?("hello, world!")?.foobar
+    model?[0]?("hello, world!")?.foobar
 }
