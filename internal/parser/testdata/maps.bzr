@@ -2,4 +2,14 @@ package maps
 
 data MapFields {
 	empty {string: int} = {:}
+        singleValue {string: int} = {"key": 42}
+        trailingComma {string: int} = {"key": 42,}
+        optionalValue {string: int?} = {"key": null}
+        optionalMap {string: int}?
+}
+
+func Maps() {
+        var map = {a: 1}
+        var map = {a: 1, b: 2,}
+        var map = {"a": 1, "b": 2}
 }

@@ -34,6 +34,358 @@
               },
             },
           },
+          {
+            Field: &parser.FieldDecl{
+              Name: "singleValue",
+              Type: &parser.TypeDecl{
+                Map: &parser.MapTypeDecl{
+                  Key: parser.TypeDecl{
+                    Value: &"string",
+                  },
+                  Value: parser.TypeDecl{
+                    Value: &"int",
+                  },
+                },
+              },
+              Default: &parser.Expr{
+                Unary: &parser.UnaryExpr{
+                  Primary: &parser.PrimaryExpr{
+                    Literal: &parser.Literal{
+                      Map: &parser.MapLiteral{
+                        Entries: []*parser.MapEntry{
+                          {
+                            Key: &parser.Expr{
+                              Unary: &parser.UnaryExpr{
+                                Primary: &parser.PrimaryExpr{
+                                  Literal: &parser.Literal{
+                                    String: &parser.String{
+                                      Fragments: []*parser.StringFragment{
+                                        {
+                                          Text: &"key",
+                                        },
+                                      },
+                                    },
+                                  },
+                                },
+                              },
+                            },
+                            Value: &parser.Expr{
+                              Unary: &parser.UnaryExpr{
+                                Primary: &parser.PrimaryExpr{
+                                  Literal: &parser.Literal{
+                                    Number: &"42",
+                                  },
+                                },
+                              },
+                            },
+                          },
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+          {
+            Field: &parser.FieldDecl{
+              Name: "trailingComma",
+              Type: &parser.TypeDecl{
+                Map: &parser.MapTypeDecl{
+                  Key: parser.TypeDecl{
+                    Value: &"string",
+                  },
+                  Value: parser.TypeDecl{
+                    Value: &"int",
+                  },
+                },
+              },
+              Default: &parser.Expr{
+                Unary: &parser.UnaryExpr{
+                  Primary: &parser.PrimaryExpr{
+                    Literal: &parser.Literal{
+                      Map: &parser.MapLiteral{
+                        Entries: []*parser.MapEntry{
+                          {
+                            Key: &parser.Expr{
+                              Unary: &parser.UnaryExpr{
+                                Primary: &parser.PrimaryExpr{
+                                  Literal: &parser.Literal{
+                                    String: &parser.String{
+                                      Fragments: []*parser.StringFragment{
+                                        {
+                                          Text: &"key",
+                                        },
+                                      },
+                                    },
+                                  },
+                                },
+                              },
+                            },
+                            Value: &parser.Expr{
+                              Unary: &parser.UnaryExpr{
+                                Primary: &parser.PrimaryExpr{
+                                  Literal: &parser.Literal{
+                                    Number: &"42",
+                                  },
+                                },
+                              },
+                            },
+                          },
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+          {
+            Field: &parser.FieldDecl{
+              Name: "optionalValue",
+              Type: &parser.TypeDecl{
+                Map: &parser.MapTypeDecl{
+                  Key: parser.TypeDecl{
+                    Value: &"string",
+                  },
+                  Value: parser.TypeDecl{
+                    Value: &"int",
+                    Optional: true,
+                  },
+                },
+              },
+              Default: &parser.Expr{
+                Unary: &parser.UnaryExpr{
+                  Primary: &parser.PrimaryExpr{
+                    Literal: &parser.Literal{
+                      Map: &parser.MapLiteral{
+                        Entries: []*parser.MapEntry{
+                          {
+                            Key: &parser.Expr{
+                              Unary: &parser.UnaryExpr{
+                                Primary: &parser.PrimaryExpr{
+                                  Literal: &parser.Literal{
+                                    String: &parser.String{
+                                      Fragments: []*parser.StringFragment{
+                                        {
+                                          Text: &"key",
+                                        },
+                                      },
+                                    },
+                                  },
+                                },
+                              },
+                            },
+                            Value: &parser.Expr{
+                              Unary: &parser.UnaryExpr{
+                                Primary: &parser.PrimaryExpr{
+                                  Literal: &parser.Literal{
+                                    Null: true,
+                                  },
+                                },
+                              },
+                            },
+                          },
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+          {
+            Field: &parser.FieldDecl{
+              Name: "optionalMap",
+              Type: &parser.TypeDecl{
+                Map: &parser.MapTypeDecl{
+                  Key: parser.TypeDecl{
+                    Value: &"string",
+                  },
+                  Value: parser.TypeDecl{
+                    Value: &"int",
+                  },
+                },
+                Optional: true,
+              },
+            },
+          },
+        },
+      },
+    },
+    {
+      Function: &parser.FunctionDecl{
+        Name: "Maps",
+        Block: []*parser.Stmt{
+          {
+            Var: &parser.VarDeclStmt{
+              Dest: &parser.VariableExpr{
+                Name: &"map",
+              },
+              Source: &parser.Expr{
+                Unary: &parser.UnaryExpr{
+                  Primary: &parser.PrimaryExpr{
+                    Literal: &parser.Literal{
+                      Map: &parser.MapLiteral{
+                        Entries: []*parser.MapEntry{
+                          {
+                            Key: &parser.Expr{
+                              Unary: &parser.UnaryExpr{
+                                Primary: &parser.PrimaryExpr{
+                                  Reference: &parser.ReferenceExpr{
+                                    Name: &"a",
+                                  },
+                                },
+                              },
+                            },
+                            Value: &parser.Expr{
+                              Unary: &parser.UnaryExpr{
+                                Primary: &parser.PrimaryExpr{
+                                  Literal: &parser.Literal{
+                                    Number: &"1",
+                                  },
+                                },
+                              },
+                            },
+                          },
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+          {
+            Var: &parser.VarDeclStmt{
+              Dest: &parser.VariableExpr{
+                Name: &"map",
+              },
+              Source: &parser.Expr{
+                Unary: &parser.UnaryExpr{
+                  Primary: &parser.PrimaryExpr{
+                    Literal: &parser.Literal{
+                      Map: &parser.MapLiteral{
+                        Entries: []*parser.MapEntry{
+                          {
+                            Key: &parser.Expr{
+                              Unary: &parser.UnaryExpr{
+                                Primary: &parser.PrimaryExpr{
+                                  Reference: &parser.ReferenceExpr{
+                                    Name: &"a",
+                                  },
+                                },
+                              },
+                            },
+                            Value: &parser.Expr{
+                              Unary: &parser.UnaryExpr{
+                                Primary: &parser.PrimaryExpr{
+                                  Literal: &parser.Literal{
+                                    Number: &"1",
+                                  },
+                                },
+                              },
+                            },
+                          },
+                          {
+                            Key: &parser.Expr{
+                              Unary: &parser.UnaryExpr{
+                                Primary: &parser.PrimaryExpr{
+                                  Reference: &parser.ReferenceExpr{
+                                    Name: &"b",
+                                  },
+                                },
+                              },
+                            },
+                            Value: &parser.Expr{
+                              Unary: &parser.UnaryExpr{
+                                Primary: &parser.PrimaryExpr{
+                                  Literal: &parser.Literal{
+                                    Number: &"2",
+                                  },
+                                },
+                              },
+                            },
+                          },
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+          {
+            Var: &parser.VarDeclStmt{
+              Dest: &parser.VariableExpr{
+                Name: &"map",
+              },
+              Source: &parser.Expr{
+                Unary: &parser.UnaryExpr{
+                  Primary: &parser.PrimaryExpr{
+                    Literal: &parser.Literal{
+                      Map: &parser.MapLiteral{
+                        Entries: []*parser.MapEntry{
+                          {
+                            Key: &parser.Expr{
+                              Unary: &parser.UnaryExpr{
+                                Primary: &parser.PrimaryExpr{
+                                  Literal: &parser.Literal{
+                                    String: &parser.String{
+                                      Fragments: []*parser.StringFragment{
+                                        {
+                                          Text: &"a",
+                                        },
+                                      },
+                                    },
+                                  },
+                                },
+                              },
+                            },
+                            Value: &parser.Expr{
+                              Unary: &parser.UnaryExpr{
+                                Primary: &parser.PrimaryExpr{
+                                  Literal: &parser.Literal{
+                                    Number: &"1",
+                                  },
+                                },
+                              },
+                            },
+                          },
+                          {
+                            Key: &parser.Expr{
+                              Unary: &parser.UnaryExpr{
+                                Primary: &parser.PrimaryExpr{
+                                  Literal: &parser.Literal{
+                                    String: &parser.String{
+                                      Fragments: []*parser.StringFragment{
+                                        {
+                                          Text: &"b",
+                                        },
+                                      },
+                                    },
+                                  },
+                                },
+                              },
+                            },
+                            Value: &parser.Expr{
+                              Unary: &parser.UnaryExpr{
+                                Primary: &parser.PrimaryExpr{
+                                  Literal: &parser.Literal{
+                                    Number: &"2",
+                                  },
+                                },
+                              },
+                            },
+                          },
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
         },
       },
     },

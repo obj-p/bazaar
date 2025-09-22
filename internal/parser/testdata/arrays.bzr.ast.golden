@@ -153,5 +153,75 @@
         },
       },
     },
+    {
+      Function: &parser.FunctionDecl{
+        Name: "Arrays",
+        Block: []*parser.Stmt{
+          {
+            Var: &parser.VarDeclStmt{
+              Dest: &parser.VariableExpr{
+                Name: &"emptyArray",
+              },
+              Source: &parser.Expr{
+                Unary: &parser.UnaryExpr{
+                  Primary: &parser.PrimaryExpr{
+                    Literal: &parser.Literal{
+                      Array: &parser.ArrayLiteral{
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+          {
+            Var: &parser.VarDeclStmt{
+              Dest: &parser.VariableExpr{
+                Name: &"array",
+              },
+              Source: &parser.Expr{
+                Unary: &parser.UnaryExpr{
+                  Primary: &parser.PrimaryExpr{
+                    Literal: &parser.Literal{
+                      Array: &parser.ArrayLiteral{
+                        Values: []*parser.Expr{
+                          {
+                            Unary: &parser.UnaryExpr{
+                              Primary: &parser.PrimaryExpr{
+                                Literal: &parser.Literal{
+                                  Number: &"1",
+                                },
+                              },
+                            },
+                          },
+                          {
+                            Unary: &parser.UnaryExpr{
+                              Primary: &parser.PrimaryExpr{
+                                Literal: &parser.Literal{
+                                  Number: &"2",
+                                },
+                              },
+                            },
+                          },
+                          {
+                            Unary: &parser.UnaryExpr{
+                              Primary: &parser.PrimaryExpr{
+                                Literal: &parser.Literal{
+                                  Number: &"3",
+                                },
+                              },
+                            },
+                          },
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    },
   },
 }
