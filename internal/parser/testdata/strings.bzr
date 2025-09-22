@@ -5,4 +5,4 @@ data Messages {
         escaped string = "\""
 }
 
-template Strings {}
+func Strings() {}

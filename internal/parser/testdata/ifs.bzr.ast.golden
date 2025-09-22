@@ -6,7 +6,7 @@
   },
   Decls: []*parser.TopLevelDecl{
     {
-      Template: &parser.TemplateDecl{
+      Function: &parser.FunctionDecl{
         Name: "Ifs",
         Parameters: []*parser.ParameterDecl{
           {

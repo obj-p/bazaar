@@ -1,5 +1,5 @@
 package references
 
-template References {
+func References() {
         model?[0]?("hello, world!")?.foobar
 }

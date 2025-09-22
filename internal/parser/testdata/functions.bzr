@@ -9,8 +9,8 @@ data FunctionFields {
 	extraNested ((func()?))
 }
 
-// func DefinedBody() -> int {
-//         return 42
-// }
+func DefinedBody() -> int {
+        return 42
+}
 
 func HigherOrderFunction() -> func() -> func()

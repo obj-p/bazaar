@@ -731,6 +731,42 @@
     {
       Preview: &parser.PreviewDecl{
         Name: "TextAndButtonRowPreview",
+        Block: []*parser.Stmt{
+          {
+            Call: &parser.CallStmt{
+              Name: &"TextAndButtonRow",
+              Arguments: []*parser.ArgumentExpr{
+                {
+                  Expr: &parser.Expr{
+                    Unary: &parser.UnaryExpr{
+                      Primary: &parser.PrimaryExpr{
+                        Literal: &parser.Literal{
+                          Array: &parser.ArrayLiteral{
+                            Values: []*parser.Expr{
+                              {
+                                Unary: &parser.UnaryExpr{
+                                  Primary: &parser.PrimaryExpr{
+                                    Reference: &parser.ReferenceExpr{
+                                      Name: &"TextAndButtonRowModel",
+                                      KeyPath: &parser.KeyPathExpr{
+                                        Call: &parser.CallExpr{
+                                        },
+                                      },
+                                    },
+                                  },
+                                },
+                              },
+                            },
+                          },
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
       },
     },
   },

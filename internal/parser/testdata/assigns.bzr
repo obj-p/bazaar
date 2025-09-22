@@ -1,6 +1,6 @@
 package assigns
 
-template Assigns {
+func Assigns() {
         var answer = 42
         var answer = 42.0
         var answer = "42"

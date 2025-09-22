@@ -1,6 +1,6 @@
 package fors
 
-template Fors(list [string], map {string: int}) {
+func Fors(list [string], map {string: int}) {
         for value in list {}
         for entry in map {}
         for entry in enumerate(map) {}

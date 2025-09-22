@@ -1,5 +1,5 @@
 package arithmetic
 
-template Arithmetic {
+func Arithmetic() {
 	var answer = 42 * 1 + 1 - 1
 }

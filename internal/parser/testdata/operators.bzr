@@ -1,6 +1,6 @@
 package operators
 
-template Operators {
+func Operators() {
     // Comparison operators (testing <= and >= which are implemented)
     if x <= y {}
     if x >= z {}

@@ -66,4 +66,6 @@ template TextAndButtonRow(models [TextAndButtonRowModel]) {
         }
 }
 
-preview TextAndButtonRowPreview {}
+preview TextAndButtonRowPreview {
+        TextAndButtonRow([TextAndButtonRowModel()])
+}

@@ -1,20 +1,16 @@
 package optionalchaining
 
-template OptionalChaining {
-    // Basic optional chaining
+func OptionalChaining() {
     var result = obj?.property
     var method = obj?.method()
     var nested = obj?.nested?.property
 
-    // Optional chaining with array access
     var indexed = array?[0]
     var deepIndexed = array?[0]?.field
 
-    // Optional chaining with method calls
     var called = func?(param)
     var chainedCall = obj?.method()?.result
 
-    // Optional chaining in expressions
     if obj?.property {}
     var conditional = obj?.value > 0
 

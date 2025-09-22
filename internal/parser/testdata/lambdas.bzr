@@ -1,6 +1,6 @@
 package lambdas
 
-template Lambdas {
+func Lambdas() {
         Foo {}
         Foo { Bar() }
         Foo { Bar() { Baz {} } }

@@ -1,6 +1,6 @@
 package calls
 
-template Calls {
+func Calls() {
         Print("Hello, world!")
         BlockLiteral({})
         NamedArgs(first = 1337, second = "second")

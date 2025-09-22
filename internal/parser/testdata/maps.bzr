@@ -9,6 +9,7 @@ data MapFields {
 }
 
 func Maps() {
+        var map = {:}
         var map = {a: 1}
         var map = {a: 1, b: 2,}
         var map = {"a": 1, "b": 2}

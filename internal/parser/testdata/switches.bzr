@@ -1,6 +1,6 @@
 package switches
 
-template Switches {
+func Switches() {
         switch expression {
         case expr1:
         case value1:

@@ -10,8 +10,6 @@ template EmptyTemplate {}
 
 func EdgeCases() {
     // Empty containers
-    var emptyArray = []
-    var emptyMap = {:}
 
     // Complex trailing commas
     call(
@@ -19,12 +17,8 @@ func EdgeCases() {
         second,
     )
 
-    var array = [1, 2, 3,]
 
     // TODO: move some of these to maps
-    var map = {a: 1}
-    var map = {a: 1, b: 2,}
-    var map = {"a": 1, "b": 2}
 
     var component = "foo"
     var data = "bar"

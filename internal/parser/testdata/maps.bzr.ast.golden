@@ -227,6 +227,23 @@
                   Primary: &parser.PrimaryExpr{
                     Literal: &parser.Literal{
                       Map: &parser.MapLiteral{
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+          {
+            Var: &parser.VarDeclStmt{
+              Dest: &parser.VariableExpr{
+                Name: &"map",
+              },
+              Source: &parser.Expr{
+                Unary: &parser.UnaryExpr{
+                  Primary: &parser.PrimaryExpr{
+                    Literal: &parser.Literal{
+                      Map: &parser.MapLiteral{
                         Entries: []*parser.MapEntry{
                           {
                             Key: &parser.Expr{
