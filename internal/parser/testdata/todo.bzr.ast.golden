@@ -6,33 +6,33 @@
   },
   Decls: []*parser.TopLevelDecl{
     {
-      Data: &parser.DataDecl{
+      Function: &parser.FunctionDecl{
         Name: "UnsupportedNumericLiterals",
       },
     },
     {
-      Data: &parser.DataDecl{
+      Function: &parser.FunctionDecl{
         Name: "UnsupportedStringEscapes",
       },
     },
     {
-      Data: &parser.DataDecl{
+      Function: &parser.FunctionDecl{
         Name: "UnsupportedOperators",
       },
     },
     {
-      Data: &parser.DataDecl{
+      Function: &parser.FunctionDecl{
         Name: "UnsupportedControlFlow",
       },
     },
     {
-      Data: &parser.DataDecl{
+      Function: &parser.FunctionDecl{
         Name: "UnsupportedDataStructures",
       },
     },
     {
       Function: &parser.FunctionDecl{
-        Name: "UnsupportedFeatureExamples",
+        Name: "UnsupportedAdvancedFeatures",
       },
     },
   },

@@ -1,7 +1,5 @@
 package strings
 
-// TODO: multiline strings
-
 data Messages {
     answer string = "The answer is ${42}"
     escaped string = "\""
@@ -61,8 +59,6 @@ data NestedInterpolation {
     // Test nested string interpolation scenarios
     nestedBasic string = "Outer: ${getInner("Inner: ${x}")}"
     nestedFunction string = "Result: ${format("Value: ${getValue()}")}"
-    // TODO: Consider adding ternary operator support (? :) - useful for string interpolation
-    // nestedConditional string = "Status: ${isActive ? "Active: ${level}" : "Inactive"}"
     nestedConditionalSimple string = "Status: ${getStatus(isActive, level)}"
     nestedArithmetic string = "Calc: ${compute("Base: ${base} + ${offset}")}"
     deepNesting string = "L1: ${level1("L2: ${level2("L3: ${level3}")}")}"
@@ -84,8 +80,6 @@ data BoundaryConditions {
 
 data ComplexExpressionInterpolation {
     // Test complex expressions within interpolations
-    // TODO: Ternary operator would be very useful in string interpolation contexts
-    // ternaryOperator string = "Status: ${isActive ? "active" : "inactive"}"
     conditionalFunction string = "Status: ${getActiveStatus(isActive)}"
     functionWithArgs string = "Result: ${func(a, b, c)}"
     methodChaining string = "Value: ${obj.method1().method2().value}"
@@ -101,8 +95,6 @@ data ComplexExpressionInterpolation {
     lambdaInString string = "Mapped: ${items.map({ (x) -> int in x * 2 })}"
     lambdaInString string = "Mapped: ${items.map({:})}"
     mappedItems string = "Mapped: ${mapDoubled(items)}"
-    // TODO: Nested ternary operators would enable complex conditional string formatting
-    // conditionalChain string = "Chain: ${a ? b ? c : d : e}"
     conditionalNested string = "Chain: ${getChainedValue(a, b, c, d, e)}"
 }
 
