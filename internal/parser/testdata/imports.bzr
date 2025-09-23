@@ -1,0 +1,6 @@
+package imports
+
+import foo.bar.baz
+import foo.bar.baz.Qux
+// TODO: support alias
+// import bar.baz.Qux as Foo

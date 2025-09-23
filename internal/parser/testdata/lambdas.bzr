@@ -18,6 +18,9 @@ func Lambdas() {
     var foo = { () -> int in return 42 }
     var foo = { (bar) -> int in return bar }
     var foo = { (bar int) -> int in return bar }
+    var foo = {}
+    // TODO: support immediately invoking a lambda
+    // var foo = {}()
 
     // Complex lambda parameters from edge-cases.bzr
     call { (x int, y string) -> bool in

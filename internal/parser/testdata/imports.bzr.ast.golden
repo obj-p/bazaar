@@ -1,0 +1,24 @@
+&parser.Bazaar{
+  Package: &parser.PackageDecl{
+    Domain: []string{
+      "imports",
+    },
+  },
+  Imports: []*parser.ImportDecl{
+    {
+      Domain: []string{
+        "foo",
+        "bar",
+        "baz",
+      },
+    },
+    {
+      Domain: []string{
+        "foo",
+        "bar",
+        "baz",
+        "Qux",
+      },
+    },
+  },
+}

@@ -445,6 +445,21 @@
             },
           },
           {
+            Var: &parser.VarDeclStmt{
+              Dest: &parser.VariableExpr{
+                Name: &"foo",
+              },
+              Source: &parser.Expr{
+                Unary: &parser.UnaryExpr{
+                  Primary: &parser.PrimaryExpr{
+                    Lambda: &parser.LambdaExpr{
+                    },
+                  },
+                },
+              },
+            },
+          },
+          {
             Call: &parser.CallStmt{
               Name: &"call",
               LambdaOnly: &parser.LambdaExpr{
