@@ -22,15 +22,21 @@ type ForStmt struct {
 	Block  []*Stmt       `parser:"'{' @@* '}'"`
 }
 
-type IfFragment struct {
+type ConditionalFragment struct {
 	Var         *VarDeclStmt `parser:"@@"`
 	ImplicitVar *string      `parser:"| 'var' @Ident"`
 	Expr        *Expr        `parser:"| @@"`
 }
 
+type ConditionalBlock struct {
+	Fragments []*ConditionalFragment `parser:"(@@ (',' @@)* ','?)"`
+	Block     []*Stmt                `parser:"'{' @@* '}'"`
+}
+
 type IfStmt struct {
-	Fragments []*IfFragment `parser:"'if' (@@ (',' @@)* ','?)"`
-	Block     []*Stmt       `parser:"'{' @@* '}'"`
+	If      *ConditionalBlock   `parser:"'if' @@"`
+	ElseIfs []*ConditionalBlock `parser:"('else' 'if' @@)*"`
+	Else    []*Stmt             `parser:"('else' '{' @@* '}')?"`
 }
 
 type SwitchCase struct {

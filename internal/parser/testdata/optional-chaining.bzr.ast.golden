@@ -215,17 +215,19 @@
           },
           {
             If: &parser.IfStmt{
-              Fragments: []*parser.IfFragment{
-                {
-                  Expr: &parser.Expr{
-                    Unary: &parser.UnaryExpr{
-                      Primary: &parser.PrimaryExpr{
-                        Reference: &parser.ReferenceExpr{
-                          Name: &"obj",
-                          KeyPath: &parser.KeyPathExpr{
-                            Optional: true,
-                            Reference: &parser.ReferenceExpr{
-                              Name: &"property",
+              If: &parser.ConditionalBlock{
+                Fragments: []*parser.ConditionalFragment{
+                  {
+                    Expr: &parser.Expr{
+                      Unary: &parser.UnaryExpr{
+                        Primary: &parser.PrimaryExpr{
+                          Reference: &parser.ReferenceExpr{
+                            Name: &"obj",
+                            KeyPath: &parser.KeyPathExpr{
+                              Optional: true,
+                              Reference: &parser.ReferenceExpr{
+                                Name: &"property",
+                              },
                             },
                           },
                         },

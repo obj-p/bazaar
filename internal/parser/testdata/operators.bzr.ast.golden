@@ -11,25 +11,27 @@
         Block: []*parser.Stmt{
           {
             If: &parser.IfStmt{
-              Fragments: []*parser.IfFragment{
-                {
-                  Expr: &parser.Expr{
-                    Binary: &parser.BinaryExpr{
-                      Left: &parser.Expr{
-                        Unary: &parser.UnaryExpr{
-                          Primary: &parser.PrimaryExpr{
-                            Reference: &parser.ReferenceExpr{
-                              Name: &"x",
+              If: &parser.ConditionalBlock{
+                Fragments: []*parser.ConditionalFragment{
+                  {
+                    Expr: &parser.Expr{
+                      Binary: &parser.BinaryExpr{
+                        Left: &parser.Expr{
+                          Unary: &parser.UnaryExpr{
+                            Primary: &parser.PrimaryExpr{
+                              Reference: &parser.ReferenceExpr{
+                                Name: &"x",
+                              },
                             },
                           },
                         },
-                      },
-                      Op: token.Op(token.OpLte),
-                      Right: &parser.Expr{
-                        Unary: &parser.UnaryExpr{
-                          Primary: &parser.PrimaryExpr{
-                            Reference: &parser.ReferenceExpr{
-                              Name: &"y",
+                        Op: token.Op(token.OpLte),
+                        Right: &parser.Expr{
+                          Unary: &parser.UnaryExpr{
+                            Primary: &parser.PrimaryExpr{
+                              Reference: &parser.ReferenceExpr{
+                                Name: &"y",
+                              },
                             },
                           },
                         },
@@ -42,25 +44,27 @@
           },
           {
             If: &parser.IfStmt{
-              Fragments: []*parser.IfFragment{
-                {
-                  Expr: &parser.Expr{
-                    Binary: &parser.BinaryExpr{
-                      Left: &parser.Expr{
-                        Unary: &parser.UnaryExpr{
-                          Primary: &parser.PrimaryExpr{
-                            Reference: &parser.ReferenceExpr{
-                              Name: &"x",
+              If: &parser.ConditionalBlock{
+                Fragments: []*parser.ConditionalFragment{
+                  {
+                    Expr: &parser.Expr{
+                      Binary: &parser.BinaryExpr{
+                        Left: &parser.Expr{
+                          Unary: &parser.UnaryExpr{
+                            Primary: &parser.PrimaryExpr{
+                              Reference: &parser.ReferenceExpr{
+                                Name: &"x",
+                              },
                             },
                           },
                         },
-                      },
-                      Op: token.Op(token.OpGte),
-                      Right: &parser.Expr{
-                        Unary: &parser.UnaryExpr{
-                          Primary: &parser.PrimaryExpr{
-                            Reference: &parser.ReferenceExpr{
-                              Name: &"z",
+                        Op: token.Op(token.OpGte),
+                        Right: &parser.Expr{
+                          Unary: &parser.UnaryExpr{
+                            Primary: &parser.PrimaryExpr{
+                              Reference: &parser.ReferenceExpr{
+                                Name: &"z",
+                              },
                             },
                           },
                         },
@@ -73,53 +77,55 @@
           },
           {
             If: &parser.IfStmt{
-              Fragments: []*parser.IfFragment{
-                {
-                  Expr: &parser.Expr{
-                    Binary: &parser.BinaryExpr{
-                      Left: &parser.Expr{
-                        Binary: &parser.BinaryExpr{
-                          Left: &parser.Expr{
-                            Binary: &parser.BinaryExpr{
-                              Left: &parser.Expr{
-                                Unary: &parser.UnaryExpr{
-                                  Primary: &parser.PrimaryExpr{
-                                    Reference: &parser.ReferenceExpr{
-                                      Name: &"a",
+              If: &parser.ConditionalBlock{
+                Fragments: []*parser.ConditionalFragment{
+                  {
+                    Expr: &parser.Expr{
+                      Binary: &parser.BinaryExpr{
+                        Left: &parser.Expr{
+                          Binary: &parser.BinaryExpr{
+                            Left: &parser.Expr{
+                              Binary: &parser.BinaryExpr{
+                                Left: &parser.Expr{
+                                  Unary: &parser.UnaryExpr{
+                                    Primary: &parser.PrimaryExpr{
+                                      Reference: &parser.ReferenceExpr{
+                                        Name: &"a",
+                                      },
                                     },
                                   },
                                 },
-                              },
-                              Op: token.Op(token.OpLte),
-                              Right: &parser.Expr{
-                                Unary: &parser.UnaryExpr{
-                                  Primary: &parser.PrimaryExpr{
-                                    Reference: &parser.ReferenceExpr{
-                                      Name: &"b",
+                                Op: token.Op(token.OpLte),
+                                Right: &parser.Expr{
+                                  Unary: &parser.UnaryExpr{
+                                    Primary: &parser.PrimaryExpr{
+                                      Reference: &parser.ReferenceExpr{
+                                        Name: &"b",
+                                      },
                                     },
                                   },
                                 },
                               },
                             },
-                          },
-                          Op: token.Op(token.OpAnd),
-                          Right: &parser.Expr{
-                            Unary: &parser.UnaryExpr{
-                              Primary: &parser.PrimaryExpr{
-                                Reference: &parser.ReferenceExpr{
-                                  Name: &"c",
+                            Op: token.Op(token.OpAnd),
+                            Right: &parser.Expr{
+                              Unary: &parser.UnaryExpr{
+                                Primary: &parser.PrimaryExpr{
+                                  Reference: &parser.ReferenceExpr{
+                                    Name: &"c",
+                                  },
                                 },
                               },
                             },
                           },
                         },
-                      },
-                      Op: token.Op(token.OpGte),
-                      Right: &parser.Expr{
-                        Unary: &parser.UnaryExpr{
-                          Primary: &parser.PrimaryExpr{
-                            Reference: &parser.ReferenceExpr{
-                              Name: &"d",
+                        Op: token.Op(token.OpGte),
+                        Right: &parser.Expr{
+                          Unary: &parser.UnaryExpr{
+                            Primary: &parser.PrimaryExpr{
+                              Reference: &parser.ReferenceExpr{
+                                Name: &"d",
+                              },
                             },
                           },
                         },
@@ -304,165 +310,167 @@
           },
           {
             If: &parser.IfStmt{
-              Fragments: []*parser.IfFragment{
-                {
-                  Expr: &parser.Expr{
-                    Binary: &parser.BinaryExpr{
-                      Left: &parser.Expr{
-                        Binary: &parser.BinaryExpr{
-                          Left: &parser.Expr{
-                            Binary: &parser.BinaryExpr{
-                              Left: &parser.Expr{
-                                Binary: &parser.BinaryExpr{
-                                  Left: &parser.Expr{
-                                    Binary: &parser.BinaryExpr{
-                                      Left: &parser.Expr{
-                                        Binary: &parser.BinaryExpr{
-                                          Left: &parser.Expr{
-                                            Binary: &parser.BinaryExpr{
-                                              Left: &parser.Expr{
-                                                Binary: &parser.BinaryExpr{
-                                                  Left: &parser.Expr{
-                                                    Binary: &parser.BinaryExpr{
-                                                      Left: &parser.Expr{
-                                                        Binary: &parser.BinaryExpr{
-                                                          Left: &parser.Expr{
-                                                            Binary: &parser.BinaryExpr{
-                                                              Left: &parser.Expr{
-                                                                Unary: &parser.UnaryExpr{
-                                                                  Primary: &parser.PrimaryExpr{
-                                                                    Reference: &parser.ReferenceExpr{
-                                                                      Name: &"a",
+              If: &parser.ConditionalBlock{
+                Fragments: []*parser.ConditionalFragment{
+                  {
+                    Expr: &parser.Expr{
+                      Binary: &parser.BinaryExpr{
+                        Left: &parser.Expr{
+                          Binary: &parser.BinaryExpr{
+                            Left: &parser.Expr{
+                              Binary: &parser.BinaryExpr{
+                                Left: &parser.Expr{
+                                  Binary: &parser.BinaryExpr{
+                                    Left: &parser.Expr{
+                                      Binary: &parser.BinaryExpr{
+                                        Left: &parser.Expr{
+                                          Binary: &parser.BinaryExpr{
+                                            Left: &parser.Expr{
+                                              Binary: &parser.BinaryExpr{
+                                                Left: &parser.Expr{
+                                                  Binary: &parser.BinaryExpr{
+                                                    Left: &parser.Expr{
+                                                      Binary: &parser.BinaryExpr{
+                                                        Left: &parser.Expr{
+                                                          Binary: &parser.BinaryExpr{
+                                                            Left: &parser.Expr{
+                                                              Binary: &parser.BinaryExpr{
+                                                                Left: &parser.Expr{
+                                                                  Unary: &parser.UnaryExpr{
+                                                                    Primary: &parser.PrimaryExpr{
+                                                                      Reference: &parser.ReferenceExpr{
+                                                                        Name: &"a",
+                                                                      },
                                                                     },
                                                                   },
                                                                 },
-                                                              },
-                                                              Op: token.Op(token.OpLt),
-                                                              Right: &parser.Expr{
-                                                                Unary: &parser.UnaryExpr{
-                                                                  Primary: &parser.PrimaryExpr{
-                                                                    Reference: &parser.ReferenceExpr{
-                                                                      Name: &"b",
+                                                                Op: token.Op(token.OpLt),
+                                                                Right: &parser.Expr{
+                                                                  Unary: &parser.UnaryExpr{
+                                                                    Primary: &parser.PrimaryExpr{
+                                                                      Reference: &parser.ReferenceExpr{
+                                                                        Name: &"b",
+                                                                      },
                                                                     },
                                                                   },
                                                                 },
                                                               },
                                                             },
-                                                          },
-                                                          Op: token.Op(token.OpAnd),
-                                                          Right: &parser.Expr{
-                                                            Unary: &parser.UnaryExpr{
-                                                              Primary: &parser.PrimaryExpr{
-                                                                Reference: &parser.ReferenceExpr{
-                                                                  Name: &"b",
+                                                            Op: token.Op(token.OpAnd),
+                                                            Right: &parser.Expr{
+                                                              Unary: &parser.UnaryExpr{
+                                                                Primary: &parser.PrimaryExpr{
+                                                                  Reference: &parser.ReferenceExpr{
+                                                                    Name: &"b",
+                                                                  },
                                                                 },
                                                               },
                                                             },
                                                           },
                                                         },
-                                                      },
-                                                      Op: token.Op(token.OpLte),
-                                                      Right: &parser.Expr{
-                                                        Unary: &parser.UnaryExpr{
-                                                          Primary: &parser.PrimaryExpr{
-                                                            Reference: &parser.ReferenceExpr{
-                                                              Name: &"c",
+                                                        Op: token.Op(token.OpLte),
+                                                        Right: &parser.Expr{
+                                                          Unary: &parser.UnaryExpr{
+                                                            Primary: &parser.PrimaryExpr{
+                                                              Reference: &parser.ReferenceExpr{
+                                                                Name: &"c",
+                                                              },
                                                             },
                                                           },
                                                         },
                                                       },
                                                     },
-                                                  },
-                                                  Op: token.Op(token.OpAnd),
-                                                  Right: &parser.Expr{
-                                                    Unary: &parser.UnaryExpr{
-                                                      Primary: &parser.PrimaryExpr{
-                                                        Reference: &parser.ReferenceExpr{
-                                                          Name: &"c",
+                                                    Op: token.Op(token.OpAnd),
+                                                    Right: &parser.Expr{
+                                                      Unary: &parser.UnaryExpr{
+                                                        Primary: &parser.PrimaryExpr{
+                                                          Reference: &parser.ReferenceExpr{
+                                                            Name: &"c",
+                                                          },
                                                         },
                                                       },
                                                     },
                                                   },
                                                 },
-                                              },
-                                              Op: token.Op(token.OpEql),
-                                              Right: &parser.Expr{
-                                                Unary: &parser.UnaryExpr{
-                                                  Primary: &parser.PrimaryExpr{
-                                                    Reference: &parser.ReferenceExpr{
-                                                      Name: &"d",
+                                                Op: token.Op(token.OpEql),
+                                                Right: &parser.Expr{
+                                                  Unary: &parser.UnaryExpr{
+                                                    Primary: &parser.PrimaryExpr{
+                                                      Reference: &parser.ReferenceExpr{
+                                                        Name: &"d",
+                                                      },
                                                     },
                                                   },
                                                 },
                                               },
                                             },
-                                          },
-                                          Op: token.Op(token.OpAnd),
-                                          Right: &parser.Expr{
-                                            Unary: &parser.UnaryExpr{
-                                              Primary: &parser.PrimaryExpr{
-                                                Reference: &parser.ReferenceExpr{
-                                                  Name: &"d",
+                                            Op: token.Op(token.OpAnd),
+                                            Right: &parser.Expr{
+                                              Unary: &parser.UnaryExpr{
+                                                Primary: &parser.PrimaryExpr{
+                                                  Reference: &parser.ReferenceExpr{
+                                                    Name: &"d",
+                                                  },
                                                 },
                                               },
                                             },
                                           },
                                         },
-                                      },
-                                      Op: token.Op(token.OpNotEql),
-                                      Right: &parser.Expr{
-                                        Unary: &parser.UnaryExpr{
-                                          Primary: &parser.PrimaryExpr{
-                                            Reference: &parser.ReferenceExpr{
-                                              Name: &"e",
+                                        Op: token.Op(token.OpNotEql),
+                                        Right: &parser.Expr{
+                                          Unary: &parser.UnaryExpr{
+                                            Primary: &parser.PrimaryExpr{
+                                              Reference: &parser.ReferenceExpr{
+                                                Name: &"e",
+                                              },
                                             },
                                           },
                                         },
                                       },
                                     },
-                                  },
-                                  Op: token.Op(token.OpAnd),
-                                  Right: &parser.Expr{
-                                    Unary: &parser.UnaryExpr{
-                                      Primary: &parser.PrimaryExpr{
-                                        Reference: &parser.ReferenceExpr{
-                                          Name: &"e",
+                                    Op: token.Op(token.OpAnd),
+                                    Right: &parser.Expr{
+                                      Unary: &parser.UnaryExpr{
+                                        Primary: &parser.PrimaryExpr{
+                                          Reference: &parser.ReferenceExpr{
+                                            Name: &"e",
+                                          },
                                         },
                                       },
                                     },
                                   },
                                 },
-                              },
-                              Op: token.Op(token.OpGte),
-                              Right: &parser.Expr{
-                                Unary: &parser.UnaryExpr{
-                                  Primary: &parser.PrimaryExpr{
-                                    Reference: &parser.ReferenceExpr{
-                                      Name: &"f",
+                                Op: token.Op(token.OpGte),
+                                Right: &parser.Expr{
+                                  Unary: &parser.UnaryExpr{
+                                    Primary: &parser.PrimaryExpr{
+                                      Reference: &parser.ReferenceExpr{
+                                        Name: &"f",
+                                      },
                                     },
                                   },
                                 },
                               },
                             },
-                          },
-                          Op: token.Op(token.OpAnd),
-                          Right: &parser.Expr{
-                            Unary: &parser.UnaryExpr{
-                              Primary: &parser.PrimaryExpr{
-                                Reference: &parser.ReferenceExpr{
-                                  Name: &"f",
+                            Op: token.Op(token.OpAnd),
+                            Right: &parser.Expr{
+                              Unary: &parser.UnaryExpr{
+                                Primary: &parser.PrimaryExpr{
+                                  Reference: &parser.ReferenceExpr{
+                                    Name: &"f",
+                                  },
                                 },
                               },
                             },
                           },
                         },
-                      },
-                      Op: token.Op(token.OpGt),
-                      Right: &parser.Expr{
-                        Unary: &parser.UnaryExpr{
-                          Primary: &parser.PrimaryExpr{
-                            Reference: &parser.ReferenceExpr{
-                              Name: &"g",
+                        Op: token.Op(token.OpGt),
+                        Right: &parser.Expr{
+                          Unary: &parser.UnaryExpr{
+                            Primary: &parser.PrimaryExpr{
+                              Reference: &parser.ReferenceExpr{
+                                Name: &"g",
+                              },
                             },
                           },
                         },
@@ -854,31 +862,33 @@
           },
           {
             If: &parser.IfStmt{
-              Fragments: []*parser.IfFragment{
-                {
-                  Expr: &parser.Expr{
-                    Binary: &parser.BinaryExpr{
-                      Left: &parser.Expr{
-                        Unary: &parser.UnaryExpr{
-                          Op: token.Op(token.OpNot),
-                          Primary: &parser.PrimaryExpr{
-                            Nested: &parser.Expr{
-                              Binary: &parser.BinaryExpr{
-                                Left: &parser.Expr{
-                                  Unary: &parser.UnaryExpr{
-                                    Primary: &parser.PrimaryExpr{
-                                      Reference: &parser.ReferenceExpr{
-                                        Name: &"x",
+              If: &parser.ConditionalBlock{
+                Fragments: []*parser.ConditionalFragment{
+                  {
+                    Expr: &parser.Expr{
+                      Binary: &parser.BinaryExpr{
+                        Left: &parser.Expr{
+                          Unary: &parser.UnaryExpr{
+                            Op: token.Op(token.OpNot),
+                            Primary: &parser.PrimaryExpr{
+                              Nested: &parser.Expr{
+                                Binary: &parser.BinaryExpr{
+                                  Left: &parser.Expr{
+                                    Unary: &parser.UnaryExpr{
+                                      Primary: &parser.PrimaryExpr{
+                                        Reference: &parser.ReferenceExpr{
+                                          Name: &"x",
+                                        },
                                       },
                                     },
                                   },
-                                },
-                                Op: token.Op(token.OpOr),
-                                Right: &parser.Expr{
-                                  Unary: &parser.UnaryExpr{
-                                    Primary: &parser.PrimaryExpr{
-                                      Reference: &parser.ReferenceExpr{
-                                        Name: &"y",
+                                  Op: token.Op(token.OpOr),
+                                  Right: &parser.Expr{
+                                    Unary: &parser.UnaryExpr{
+                                      Primary: &parser.PrimaryExpr{
+                                        Reference: &parser.ReferenceExpr{
+                                          Name: &"y",
+                                        },
                                       },
                                     },
                                   },
@@ -887,13 +897,13 @@
                             },
                           },
                         },
-                      },
-                      Op: token.Op(token.OpAnd),
-                      Right: &parser.Expr{
-                        Unary: &parser.UnaryExpr{
-                          Primary: &parser.PrimaryExpr{
-                            Reference: &parser.ReferenceExpr{
-                              Name: &"z",
+                        Op: token.Op(token.OpAnd),
+                        Right: &parser.Expr{
+                          Unary: &parser.UnaryExpr{
+                            Primary: &parser.PrimaryExpr{
+                              Reference: &parser.ReferenceExpr{
+                                Name: &"z",
+                              },
                             },
                           },
                         },

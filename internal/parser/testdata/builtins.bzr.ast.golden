@@ -148,24 +148,26 @@
           },
           {
             If: &parser.IfStmt{
-              Fragments: []*parser.IfFragment{
-                {
-                  Expr: &parser.Expr{
-                    Binary: &parser.BinaryExpr{
-                      Left: &parser.Expr{
-                        Unary: &parser.UnaryExpr{
-                          Primary: &parser.PrimaryExpr{
-                            Reference: &parser.ReferenceExpr{
-                              Name: &"len",
-                              KeyPath: &parser.KeyPathExpr{
-                                Call: &parser.CallExpr{
-                                  Arguments: []*parser.ArgumentExpr{
-                                    {
-                                      Expr: &parser.Expr{
-                                        Unary: &parser.UnaryExpr{
-                                          Primary: &parser.PrimaryExpr{
-                                            Reference: &parser.ReferenceExpr{
-                                              Name: &"items",
+              If: &parser.ConditionalBlock{
+                Fragments: []*parser.ConditionalFragment{
+                  {
+                    Expr: &parser.Expr{
+                      Binary: &parser.BinaryExpr{
+                        Left: &parser.Expr{
+                          Unary: &parser.UnaryExpr{
+                            Primary: &parser.PrimaryExpr{
+                              Reference: &parser.ReferenceExpr{
+                                Name: &"len",
+                                KeyPath: &parser.KeyPathExpr{
+                                  Call: &parser.CallExpr{
+                                    Arguments: []*parser.ArgumentExpr{
+                                      {
+                                        Expr: &parser.Expr{
+                                          Unary: &parser.UnaryExpr{
+                                            Primary: &parser.PrimaryExpr{
+                                              Reference: &parser.ReferenceExpr{
+                                                Name: &"items",
+                                              },
                                             },
                                           },
                                         },
@@ -177,13 +179,13 @@
                             },
                           },
                         },
-                      },
-                      Op: token.Op(token.OpGt),
-                      Right: &parser.Expr{
-                        Unary: &parser.UnaryExpr{
-                          Primary: &parser.PrimaryExpr{
-                            Literal: &parser.Literal{
-                              Number: &"0",
+                        Op: token.Op(token.OpGt),
+                        Right: &parser.Expr{
+                          Unary: &parser.UnaryExpr{
+                            Primary: &parser.PrimaryExpr{
+                              Literal: &parser.Literal{
+                                Number: &"0",
+                              },
                             },
                           },
                         },

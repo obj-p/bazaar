@@ -678,20 +678,22 @@
                                 },
                                 {
                                   If: &parser.IfStmt{
-                                    Fragments: []*parser.IfFragment{
-                                      {
-                                        Var: &parser.VarDeclStmt{
-                                          Dest: &parser.VariableExpr{
-                                            Name: &"message",
-                                          },
-                                          Source: &parser.Expr{
-                                            Unary: &parser.UnaryExpr{
-                                              Primary: &parser.PrimaryExpr{
-                                                Reference: &parser.ReferenceExpr{
-                                                  Name: &"model",
-                                                  KeyPath: &parser.KeyPathExpr{
-                                                    Reference: &parser.ReferenceExpr{
-                                                      Name: &"message",
+                                    If: &parser.ConditionalBlock{
+                                      Fragments: []*parser.ConditionalFragment{
+                                        {
+                                          Var: &parser.VarDeclStmt{
+                                            Dest: &parser.VariableExpr{
+                                              Name: &"message",
+                                            },
+                                            Source: &parser.Expr{
+                                              Unary: &parser.UnaryExpr{
+                                                Primary: &parser.PrimaryExpr{
+                                                  Reference: &parser.ReferenceExpr{
+                                                    Name: &"model",
+                                                    KeyPath: &parser.KeyPathExpr{
+                                                      Reference: &parser.ReferenceExpr{
+                                                        Name: &"message",
+                                                      },
                                                     },
                                                   },
                                                 },
@@ -700,18 +702,18 @@
                                           },
                                         },
                                       },
-                                    },
-                                    Block: []*parser.Stmt{
-                                      {
-                                        Call: &parser.CallStmt{
-                                          Name: &"Print",
-                                          Arguments: []*parser.ArgumentExpr{
-                                            {
-                                              Expr: &parser.Expr{
-                                                Unary: &parser.UnaryExpr{
-                                                  Primary: &parser.PrimaryExpr{
-                                                    Reference: &parser.ReferenceExpr{
-                                                      Name: &"message",
+                                      Block: []*parser.Stmt{
+                                        {
+                                          Call: &parser.CallStmt{
+                                            Name: &"Print",
+                                            Arguments: []*parser.ArgumentExpr{
+                                              {
+                                                Expr: &parser.Expr{
+                                                  Unary: &parser.UnaryExpr{
+                                                    Primary: &parser.PrimaryExpr{
+                                                      Reference: &parser.ReferenceExpr{
+                                                        Name: &"message",
+                                                      },
                                                     },
                                                   },
                                                 },
