@@ -1,21 +1,35 @@
 package lambdas
 
-template Lambdas {
-        Foo {}
-        Foo { Bar() }
-        Foo { Bar() { Baz {} } }
-        Foo() {}
-        Foo() { Bar() }
-        Foo() { Bar() { Baz() {} } }
-        Foo(bar) { (bar) in Bar() }
-        Foo(bar) { (bar) -> int in Bar() }
-        Foo(bar) { (bar string) -> int in Bar(bar) }
-        Foo(bar) { (bar string, baz string) -> int in Bar(bar) { Baz(baz) } }
-        Foo(bar = { Bar() } ) {
-                Baz()
-        }
+func Lambdas() {
+    Foo {}
+    Foo { Bar() }
+    Foo { Bar() { Baz {} } }
+    Foo() {}
+    Foo() { Bar() }
+    Foo() { Bar() { Baz() {} } }
+    Foo(bar) { (bar) in Bar() }
+    Foo(bar) { (bar) -> int in Bar() }
+    Foo(bar) { (bar string) -> int in Bar(bar) }
+    Foo(bar) { (bar string, baz string) -> int in Bar(bar) { Baz(baz) } }
+    Foo(bar = { Bar() } ) {
+        Baz()
+    }
 
-        var foo = { () -> int in return 42 }
-        var foo = { (bar) -> int in return bar }
-        var foo = { (bar int) -> int in return bar }
+    var foo = { () -> int in return 42 }
+    var foo = { (bar) -> int in return bar }
+    var foo = { (bar int) -> int in return bar }
+
+    // Complex lambda parameters from edge-cases.bzr
+    call { (x int, y string) -> bool in
+        return x > 0
+    }
+
+    call { () -> string in
+        return "result"
+    }
+
+    call { (a, b, c) in
+        // inferred types
+        return a
+    }
 }

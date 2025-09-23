@@ -39,14 +39,8 @@ type ArgumentExpr struct {
 	Expr *Expr   `parser:"@@"`
 }
 
-type BuiltInExpr struct {
-	Name      *string         `parser:"@BuiltIn"`
-	Arguments []*ArgumentExpr `parser:"'(' (@@ (',' @@)* ','?)? ')'"`
-}
-
 type CallExpr struct {
-	Annotation *AnnotationExpr `parser:"@@?"`
-	Arguments  []*ArgumentExpr `parser:"'(' (@@ (',' @@)* ','?)? ')'"`
+	Arguments []*ArgumentExpr `parser:"'(' (@@ (',' @@)* ','?)? ')'"`
 }
 
 type KeyPathExpr struct {
@@ -63,12 +57,10 @@ type ReferenceExpr struct {
 }
 
 type PrimaryExpr struct {
-	Literal     *Literal       `parser:"@@"`
-	BuiltIn     *BuiltInExpr   `parser:"| @@"`
-	ImplicitRef *ReferenceExpr `parser:"| '.' @@"`
-	Reference   *ReferenceExpr `parser:"| @@"`
-	Lambda      *LambdaExpr    `parser:"| @@"`
-	Nested      *Expr          `parser:"| '(' @@ ')'"`
+	Literal   *Literal       `parser:"@@"`
+	Reference *ReferenceExpr `parser:"| @@"`
+	Lambda    *LambdaExpr    `parser:"| @@"`
+	Nested    *Expr          `parser:"| '(' @@ ')'"`
 }
 
 type BinaryExpr struct {
@@ -102,11 +94,13 @@ type precedence struct {
 }
 
 var opPrecedence = map[token.Op]precedence{
-	token.OpAdd: {Priority: 1},
-	token.OpSub: {Priority: 1},
-	token.OpMul: {Priority: 2},
-	token.OpDiv: {Priority: 2},
-	token.OpMod: {Priority: 2},
+	token.OpCoalesce: {Priority: 0, RightAssociative: true},
+	token.OpAdd:      {Priority: 1},
+	token.OpSub:      {Priority: 1},
+	token.OpMul:      {Priority: 2},
+	token.OpDiv:      {Priority: 2},
+	token.OpMod:      {Priority: 2},
+	token.OpPow:      {Priority: 3, RightAssociative: true},
 }
 
 var unaryExprParser = participle.MustBuild[UnaryExpr](

@@ -1,15 +1,15 @@
 package assigns
 
-template Assigns {
-        var answer = 42
-        var answer = 42.0
-        var answer = "42"
-        var answer int = 42
-        var answer = { return 42 }
+func Assigns() {
+    var answer = 42
+    var answer = 42.0
+    var answer = "42"
+    var answer int = 42
+    var answer = { return 42 }
 
-        answer += 0
-        answer -= 0
-        answer %= 128
-        answer /= 1
-        answer *= 1
+    answer += 0
+    answer -= 0
+    answer %= 128
+    answer /= 1
+    answer *= 1
 }

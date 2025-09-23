@@ -97,6 +97,29 @@
     },
     {
       Function: &parser.FunctionDecl{
+        Name: "DefinedBody",
+        Return: &parser.TypeDecl{
+          Value: &"int",
+        },
+        Block: []*parser.Stmt{
+          {
+            Return: &parser.ReturnStmt{
+              Value: &parser.Expr{
+                Unary: &parser.UnaryExpr{
+                  Primary: &parser.PrimaryExpr{
+                    Literal: &parser.Literal{
+                      Number: &"42",
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+    {
+      Function: &parser.FunctionDecl{
         Name: "HigherOrderFunction",
         Return: &parser.TypeDecl{
           Function: &parser.FunctionTypeDecl{

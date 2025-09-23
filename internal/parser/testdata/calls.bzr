@@ -1,8 +1,14 @@
 package calls
 
-template Calls {
-        Print("Hello, world!")
-        BlockLiteral({})
-        NamedArgs(first = 1337, second = "second")
-        TrailingBlockLiteral {}
+func Calls() {
+    Print("Hello, world!")
+    BlockLiteral({})
+    NamedArgs(first = 1337, second = "second")
+    TrailingBlockLiteral {}
+
+    // Complex trailing commas from edge-cases.bzr
+    call(
+        first,
+        second,
+    )
 }

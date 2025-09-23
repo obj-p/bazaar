@@ -6,7 +6,7 @@
   },
   Decls: []*parser.TopLevelDecl{
     {
-      Template: &parser.TemplateDecl{
+      Function: &parser.FunctionDecl{
         Name: "BuiltinFunctions",
         Parameters: []*parser.ParameterDecl{
           {
@@ -39,26 +39,30 @@
               Source: &parser.Expr{
                 Unary: &parser.UnaryExpr{
                   Primary: &parser.PrimaryExpr{
-                    BuiltIn: &parser.BuiltInExpr{
+                    Reference: &parser.ReferenceExpr{
                       Name: &"range",
-                      Arguments: []*parser.ArgumentExpr{
-                        {
-                          Expr: &parser.Expr{
-                            Unary: &parser.UnaryExpr{
-                              Primary: &parser.PrimaryExpr{
-                                Literal: &parser.Literal{
-                                  Number: &"0",
+                      KeyPath: &parser.KeyPathExpr{
+                        Call: &parser.CallExpr{
+                          Arguments: []*parser.ArgumentExpr{
+                            {
+                              Expr: &parser.Expr{
+                                Unary: &parser.UnaryExpr{
+                                  Primary: &parser.PrimaryExpr{
+                                    Literal: &parser.Literal{
+                                      Number: &"0",
+                                    },
+                                  },
                                 },
                               },
                             },
-                          },
-                        },
-                        {
-                          Expr: &parser.Expr{
-                            Unary: &parser.UnaryExpr{
-                              Primary: &parser.PrimaryExpr{
-                                Literal: &parser.Literal{
-                                  Number: &"10",
+                            {
+                              Expr: &parser.Expr{
+                                Unary: &parser.UnaryExpr{
+                                  Primary: &parser.PrimaryExpr{
+                                    Literal: &parser.Literal{
+                                      Number: &"10",
+                                    },
+                                  },
                                 },
                               },
                             },
@@ -84,15 +88,19 @@
               Source: &parser.Expr{
                 Unary: &parser.UnaryExpr{
                   Primary: &parser.PrimaryExpr{
-                    BuiltIn: &parser.BuiltInExpr{
+                    Reference: &parser.ReferenceExpr{
                       Name: &"enumerate",
-                      Arguments: []*parser.ArgumentExpr{
-                        {
-                          Expr: &parser.Expr{
-                            Unary: &parser.UnaryExpr{
-                              Primary: &parser.PrimaryExpr{
-                                Reference: &parser.ReferenceExpr{
-                                  Name: &"list",
+                      KeyPath: &parser.KeyPathExpr{
+                        Call: &parser.CallExpr{
+                          Arguments: []*parser.ArgumentExpr{
+                            {
+                              Expr: &parser.Expr{
+                                Unary: &parser.UnaryExpr{
+                                  Primary: &parser.PrimaryExpr{
+                                    Reference: &parser.ReferenceExpr{
+                                      Name: &"list",
+                                    },
+                                  },
                                 },
                               },
                             },
@@ -113,15 +121,19 @@
               Source: &parser.Expr{
                 Unary: &parser.UnaryExpr{
                   Primary: &parser.PrimaryExpr{
-                    BuiltIn: &parser.BuiltInExpr{
+                    Reference: &parser.ReferenceExpr{
                       Name: &"len",
-                      Arguments: []*parser.ArgumentExpr{
-                        {
-                          Expr: &parser.Expr{
-                            Unary: &parser.UnaryExpr{
-                              Primary: &parser.PrimaryExpr{
-                                Reference: &parser.ReferenceExpr{
-                                  Name: &"items",
+                      KeyPath: &parser.KeyPathExpr{
+                        Call: &parser.CallExpr{
+                          Arguments: []*parser.ArgumentExpr{
+                            {
+                              Expr: &parser.Expr{
+                                Unary: &parser.UnaryExpr{
+                                  Primary: &parser.PrimaryExpr{
+                                    Reference: &parser.ReferenceExpr{
+                                      Name: &"items",
+                                    },
+                                  },
                                 },
                               },
                             },
@@ -143,15 +155,19 @@
                       Left: &parser.Expr{
                         Unary: &parser.UnaryExpr{
                           Primary: &parser.PrimaryExpr{
-                            BuiltIn: &parser.BuiltInExpr{
+                            Reference: &parser.ReferenceExpr{
                               Name: &"len",
-                              Arguments: []*parser.ArgumentExpr{
-                                {
-                                  Expr: &parser.Expr{
-                                    Unary: &parser.UnaryExpr{
-                                      Primary: &parser.PrimaryExpr{
-                                        Reference: &parser.ReferenceExpr{
-                                          Name: &"items",
+                              KeyPath: &parser.KeyPathExpr{
+                                Call: &parser.CallExpr{
+                                  Arguments: []*parser.ArgumentExpr{
+                                    {
+                                      Expr: &parser.Expr{
+                                        Unary: &parser.UnaryExpr{
+                                          Primary: &parser.PrimaryExpr{
+                                            Reference: &parser.ReferenceExpr{
+                                              Name: &"items",
+                                            },
+                                          },
                                         },
                                       },
                                     },
@@ -186,33 +202,41 @@
               Source: &parser.Expr{
                 Unary: &parser.UnaryExpr{
                   Primary: &parser.PrimaryExpr{
-                    BuiltIn: &parser.BuiltInExpr{
+                    Reference: &parser.ReferenceExpr{
                       Name: &"range",
-                      Arguments: []*parser.ArgumentExpr{
-                        {
-                          Expr: &parser.Expr{
-                            Unary: &parser.UnaryExpr{
-                              Primary: &parser.PrimaryExpr{
-                                Literal: &parser.Literal{
-                                  Number: &"0",
+                      KeyPath: &parser.KeyPathExpr{
+                        Call: &parser.CallExpr{
+                          Arguments: []*parser.ArgumentExpr{
+                            {
+                              Expr: &parser.Expr{
+                                Unary: &parser.UnaryExpr{
+                                  Primary: &parser.PrimaryExpr{
+                                    Literal: &parser.Literal{
+                                      Number: &"0",
+                                    },
+                                  },
                                 },
                               },
                             },
-                          },
-                        },
-                        {
-                          Expr: &parser.Expr{
-                            Unary: &parser.UnaryExpr{
-                              Primary: &parser.PrimaryExpr{
-                                BuiltIn: &parser.BuiltInExpr{
-                                  Name: &"len",
-                                  Arguments: []*parser.ArgumentExpr{
-                                    {
-                                      Expr: &parser.Expr{
-                                        Unary: &parser.UnaryExpr{
-                                          Primary: &parser.PrimaryExpr{
-                                            Reference: &parser.ReferenceExpr{
-                                              Name: &"list",
+                            {
+                              Expr: &parser.Expr{
+                                Unary: &parser.UnaryExpr{
+                                  Primary: &parser.PrimaryExpr{
+                                    Reference: &parser.ReferenceExpr{
+                                      Name: &"len",
+                                      KeyPath: &parser.KeyPathExpr{
+                                        Call: &parser.CallExpr{
+                                          Arguments: []*parser.ArgumentExpr{
+                                            {
+                                              Expr: &parser.Expr{
+                                                Unary: &parser.UnaryExpr{
+                                                  Primary: &parser.PrimaryExpr{
+                                                    Reference: &parser.ReferenceExpr{
+                                                      Name: &"list",
+                                                    },
+                                                  },
+                                                },
+                                              },
                                             },
                                           },
                                         },
@@ -239,26 +263,30 @@
               Source: &parser.Expr{
                 Unary: &parser.UnaryExpr{
                   Primary: &parser.PrimaryExpr{
-                    BuiltIn: &parser.BuiltInExpr{
+                    Reference: &parser.ReferenceExpr{
                       Name: &"range",
-                      Arguments: []*parser.ArgumentExpr{
-                        {
-                          Expr: &parser.Expr{
-                            Unary: &parser.UnaryExpr{
-                              Primary: &parser.PrimaryExpr{
-                                Literal: &parser.Literal{
-                                  Number: &"1",
+                      KeyPath: &parser.KeyPathExpr{
+                        Call: &parser.CallExpr{
+                          Arguments: []*parser.ArgumentExpr{
+                            {
+                              Expr: &parser.Expr{
+                                Unary: &parser.UnaryExpr{
+                                  Primary: &parser.PrimaryExpr{
+                                    Literal: &parser.Literal{
+                                      Number: &"1",
+                                    },
+                                  },
                                 },
                               },
                             },
-                          },
-                        },
-                        {
-                          Expr: &parser.Expr{
-                            Unary: &parser.UnaryExpr{
-                              Primary: &parser.PrimaryExpr{
-                                Literal: &parser.Literal{
-                                  Number: &"5",
+                            {
+                              Expr: &parser.Expr{
+                                Unary: &parser.UnaryExpr{
+                                  Primary: &parser.PrimaryExpr{
+                                    Literal: &parser.Literal{
+                                      Number: &"5",
+                                    },
+                                  },
                                 },
                               },
                             },
@@ -279,15 +307,19 @@
               Source: &parser.Expr{
                 Unary: &parser.UnaryExpr{
                   Primary: &parser.PrimaryExpr{
-                    BuiltIn: &parser.BuiltInExpr{
+                    Reference: &parser.ReferenceExpr{
                       Name: &"enumerate",
-                      Arguments: []*parser.ArgumentExpr{
-                        {
-                          Expr: &parser.Expr{
-                            Unary: &parser.UnaryExpr{
-                              Primary: &parser.PrimaryExpr{
-                                Reference: &parser.ReferenceExpr{
-                                  Name: &"items",
+                      KeyPath: &parser.KeyPathExpr{
+                        Call: &parser.CallExpr{
+                          Arguments: []*parser.ArgumentExpr{
+                            {
+                              Expr: &parser.Expr{
+                                Unary: &parser.UnaryExpr{
+                                  Primary: &parser.PrimaryExpr{
+                                    Reference: &parser.ReferenceExpr{
+                                      Name: &"items",
+                                    },
+                                  },
                                 },
                               },
                             },
@@ -310,15 +342,19 @@
                   Left: &parser.Expr{
                     Unary: &parser.UnaryExpr{
                       Primary: &parser.PrimaryExpr{
-                        BuiltIn: &parser.BuiltInExpr{
+                        Reference: &parser.ReferenceExpr{
                           Name: &"len",
-                          Arguments: []*parser.ArgumentExpr{
-                            {
-                              Expr: &parser.Expr{
-                                Unary: &parser.UnaryExpr{
-                                  Primary: &parser.PrimaryExpr{
-                                    Reference: &parser.ReferenceExpr{
-                                      Name: &"list",
+                          KeyPath: &parser.KeyPathExpr{
+                            Call: &parser.CallExpr{
+                              Arguments: []*parser.ArgumentExpr{
+                                {
+                                  Expr: &parser.Expr{
+                                    Unary: &parser.UnaryExpr{
+                                      Primary: &parser.PrimaryExpr{
+                                        Reference: &parser.ReferenceExpr{
+                                          Name: &"list",
+                                        },
+                                      },
                                     },
                                   },
                                 },
@@ -333,15 +369,19 @@
                   Right: &parser.Expr{
                     Unary: &parser.UnaryExpr{
                       Primary: &parser.PrimaryExpr{
-                        BuiltIn: &parser.BuiltInExpr{
+                        Reference: &parser.ReferenceExpr{
                           Name: &"len",
-                          Arguments: []*parser.ArgumentExpr{
-                            {
-                              Expr: &parser.Expr{
-                                Unary: &parser.UnaryExpr{
-                                  Primary: &parser.PrimaryExpr{
-                                    Reference: &parser.ReferenceExpr{
-                                      Name: &"items",
+                          KeyPath: &parser.KeyPathExpr{
+                            Call: &parser.CallExpr{
+                              Arguments: []*parser.ArgumentExpr{
+                                {
+                                  Expr: &parser.Expr{
+                                    Unary: &parser.UnaryExpr{
+                                      Primary: &parser.PrimaryExpr{
+                                        Reference: &parser.ReferenceExpr{
+                                          Name: &"items",
+                                        },
+                                      },
                                     },
                                   },
                                 },
@@ -369,40 +409,52 @@
               Source: &parser.Expr{
                 Unary: &parser.UnaryExpr{
                   Primary: &parser.PrimaryExpr{
-                    BuiltIn: &parser.BuiltInExpr{
+                    Reference: &parser.ReferenceExpr{
                       Name: &"enumerate",
-                      Arguments: []*parser.ArgumentExpr{
-                        {
-                          Expr: &parser.Expr{
-                            Unary: &parser.UnaryExpr{
-                              Primary: &parser.PrimaryExpr{
-                                BuiltIn: &parser.BuiltInExpr{
-                                  Name: &"range",
-                                  Arguments: []*parser.ArgumentExpr{
-                                    {
-                                      Expr: &parser.Expr{
-                                        Unary: &parser.UnaryExpr{
-                                          Primary: &parser.PrimaryExpr{
-                                            Literal: &parser.Literal{
-                                              Number: &"0",
+                      KeyPath: &parser.KeyPathExpr{
+                        Call: &parser.CallExpr{
+                          Arguments: []*parser.ArgumentExpr{
+                            {
+                              Expr: &parser.Expr{
+                                Unary: &parser.UnaryExpr{
+                                  Primary: &parser.PrimaryExpr{
+                                    Reference: &parser.ReferenceExpr{
+                                      Name: &"range",
+                                      KeyPath: &parser.KeyPathExpr{
+                                        Call: &parser.CallExpr{
+                                          Arguments: []*parser.ArgumentExpr{
+                                            {
+                                              Expr: &parser.Expr{
+                                                Unary: &parser.UnaryExpr{
+                                                  Primary: &parser.PrimaryExpr{
+                                                    Literal: &parser.Literal{
+                                                      Number: &"0",
+                                                    },
+                                                  },
+                                                },
+                                              },
                                             },
-                                          },
-                                        },
-                                      },
-                                    },
-                                    {
-                                      Expr: &parser.Expr{
-                                        Unary: &parser.UnaryExpr{
-                                          Primary: &parser.PrimaryExpr{
-                                            BuiltIn: &parser.BuiltInExpr{
-                                              Name: &"len",
-                                              Arguments: []*parser.ArgumentExpr{
-                                                {
-                                                  Expr: &parser.Expr{
-                                                    Unary: &parser.UnaryExpr{
-                                                      Primary: &parser.PrimaryExpr{
-                                                        Reference: &parser.ReferenceExpr{
-                                                          Name: &"list",
+                                            {
+                                              Expr: &parser.Expr{
+                                                Unary: &parser.UnaryExpr{
+                                                  Primary: &parser.PrimaryExpr{
+                                                    Reference: &parser.ReferenceExpr{
+                                                      Name: &"len",
+                                                      KeyPath: &parser.KeyPathExpr{
+                                                        Call: &parser.CallExpr{
+                                                          Arguments: []*parser.ArgumentExpr{
+                                                            {
+                                                              Expr: &parser.Expr{
+                                                                Unary: &parser.UnaryExpr{
+                                                                  Primary: &parser.PrimaryExpr{
+                                                                    Reference: &parser.ReferenceExpr{
+                                                                      Name: &"list",
+                                                                    },
+                                                                  },
+                                                                },
+                                                              },
+                                                            },
+                                                          },
                                                         },
                                                       },
                                                     },
@@ -435,15 +487,19 @@
               Source: &parser.Expr{
                 Unary: &parser.UnaryExpr{
                   Primary: &parser.PrimaryExpr{
-                    BuiltIn: &parser.BuiltInExpr{
+                    Reference: &parser.ReferenceExpr{
                       Name: &"enumerate",
-                      Arguments: []*parser.ArgumentExpr{
-                        {
-                          Expr: &parser.Expr{
-                            Unary: &parser.UnaryExpr{
-                              Primary: &parser.PrimaryExpr{
-                                Reference: &parser.ReferenceExpr{
-                                  Name: &"list",
+                      KeyPath: &parser.KeyPathExpr{
+                        Call: &parser.CallExpr{
+                          Arguments: []*parser.ArgumentExpr{
+                            {
+                              Expr: &parser.Expr{
+                                Unary: &parser.UnaryExpr{
+                                  Primary: &parser.PrimaryExpr{
+                                    Reference: &parser.ReferenceExpr{
+                                      Name: &"list",
+                                    },
+                                  },
                                 },
                               },
                             },
@@ -464,48 +520,28 @@
               Source: &parser.Expr{
                 Unary: &parser.UnaryExpr{
                   Primary: &parser.PrimaryExpr{
-                    BuiltIn: &parser.BuiltInExpr{
+                    Reference: &parser.ReferenceExpr{
                       Name: &"range",
-                      Arguments: []*parser.ArgumentExpr{
-                        {
-                          Expr: &parser.Expr{
-                            Unary: &parser.UnaryExpr{
-                              Primary: &parser.PrimaryExpr{
-                                BuiltIn: &parser.BuiltInExpr{
-                                  Name: &"len",
-                                  Arguments: []*parser.ArgumentExpr{
-                                    {
-                                      Expr: &parser.Expr{
-                                        Unary: &parser.UnaryExpr{
-                                          Primary: &parser.PrimaryExpr{
-                                            Reference: &parser.ReferenceExpr{
-                                              Name: &"items",
-                                            },
-                                          },
-                                        },
-                                      },
-                                    },
-                                  },
-                                },
-                              },
-                            },
-                          },
-                        },
-                        {
-                          Expr: &parser.Expr{
-                            Binary: &parser.BinaryExpr{
-                              Left: &parser.Expr{
+                      KeyPath: &parser.KeyPathExpr{
+                        Call: &parser.CallExpr{
+                          Arguments: []*parser.ArgumentExpr{
+                            {
+                              Expr: &parser.Expr{
                                 Unary: &parser.UnaryExpr{
                                   Primary: &parser.PrimaryExpr{
-                                    BuiltIn: &parser.BuiltInExpr{
+                                    Reference: &parser.ReferenceExpr{
                                       Name: &"len",
-                                      Arguments: []*parser.ArgumentExpr{
-                                        {
-                                          Expr: &parser.Expr{
-                                            Unary: &parser.UnaryExpr{
-                                              Primary: &parser.PrimaryExpr{
-                                                Reference: &parser.ReferenceExpr{
-                                                  Name: &"items",
+                                      KeyPath: &parser.KeyPathExpr{
+                                        Call: &parser.CallExpr{
+                                          Arguments: []*parser.ArgumentExpr{
+                                            {
+                                              Expr: &parser.Expr{
+                                                Unary: &parser.UnaryExpr{
+                                                  Primary: &parser.PrimaryExpr{
+                                                    Reference: &parser.ReferenceExpr{
+                                                      Name: &"items",
+                                                    },
+                                                  },
                                                 },
                                               },
                                             },
@@ -516,12 +552,44 @@
                                   },
                                 },
                               },
-                              Op: token.Op(token.OpAdd),
-                              Right: &parser.Expr{
-                                Unary: &parser.UnaryExpr{
-                                  Primary: &parser.PrimaryExpr{
-                                    Literal: &parser.Literal{
-                                      Number: &"10",
+                            },
+                            {
+                              Expr: &parser.Expr{
+                                Binary: &parser.BinaryExpr{
+                                  Left: &parser.Expr{
+                                    Unary: &parser.UnaryExpr{
+                                      Primary: &parser.PrimaryExpr{
+                                        Reference: &parser.ReferenceExpr{
+                                          Name: &"len",
+                                          KeyPath: &parser.KeyPathExpr{
+                                            Call: &parser.CallExpr{
+                                              Arguments: []*parser.ArgumentExpr{
+                                                {
+                                                  Expr: &parser.Expr{
+                                                    Unary: &parser.UnaryExpr{
+                                                      Primary: &parser.PrimaryExpr{
+                                                        Reference: &parser.ReferenceExpr{
+                                                          Name: &"items",
+                                                        },
+                                                      },
+                                                    },
+                                                  },
+                                                },
+                                              },
+                                            },
+                                          },
+                                        },
+                                      },
+                                    },
+                                  },
+                                  Op: token.Op(token.OpAdd),
+                                  Right: &parser.Expr{
+                                    Unary: &parser.UnaryExpr{
+                                      Primary: &parser.PrimaryExpr{
+                                        Literal: &parser.Literal{
+                                          Number: &"10",
+                                        },
+                                      },
                                     },
                                   },
                                 },

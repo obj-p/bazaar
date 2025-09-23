@@ -6,7 +6,7 @@
   },
   Decls: []*parser.TopLevelDecl{
     {
-      Template: &parser.TemplateDecl{
+      Function: &parser.FunctionDecl{
         Name: "Calls",
         Block: []*parser.Stmt{
           {
@@ -91,6 +91,35 @@
             Call: &parser.CallStmt{
               Name: &"TrailingBlockLiteral",
               LambdaOnly: &parser.LambdaExpr{
+              },
+            },
+          },
+          {
+            Call: &parser.CallStmt{
+              Name: &"call",
+              Arguments: []*parser.ArgumentExpr{
+                {
+                  Expr: &parser.Expr{
+                    Unary: &parser.UnaryExpr{
+                      Primary: &parser.PrimaryExpr{
+                        Reference: &parser.ReferenceExpr{
+                          Name: &"first",
+                        },
+                      },
+                    },
+                  },
+                },
+                {
+                  Expr: &parser.Expr{
+                    Unary: &parser.UnaryExpr{
+                      Primary: &parser.PrimaryExpr{
+                        Reference: &parser.ReferenceExpr{
+                          Name: &"second",
+                        },
+                      },
+                    },
+                  },
+                },
               },
             },
           },

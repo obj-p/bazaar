@@ -14,6 +14,7 @@ const (
 	OpMul // *
 	OpDiv // /
 	OpMod // %
+	OpPow // **
 
 	OpAssign    // =
 	OpAddAssign // +=
@@ -32,6 +33,8 @@ const (
 	OpAnd    // &&
 	OpOr     // ||
 
+	OpCoalesce // ??
+
 	OpEnd
 )
 
@@ -41,6 +44,7 @@ var ops = [...]string{
 	OpMul: "token.OpMul",
 	OpDiv: "token.OpDiv",
 	OpMod: "token.OpMod",
+	OpPow: "token.OpPow",
 
 	OpAssign:    "token.OpAssign",
 	OpAddAssign: "token.OpAddAssign",
@@ -58,6 +62,8 @@ var ops = [...]string{
 	OpNotEql: "token.OpNotEql",
 	OpAnd:    "token.OpAnd",
 	OpOr:     "token.OpOr",
+
+	OpCoalesce: "token.OpCoalesce",
 }
 
 func (o Op) String() string {
@@ -75,6 +81,8 @@ func (o *Op) Capture(values []string) error {
 		*o = OpSub
 	case "*":
 		*o = OpMul
+	case "**":
+		*o = OpPow
 	case "/":
 		*o = OpDiv
 	case "%":
@@ -109,6 +117,8 @@ func (o *Op) Capture(values []string) error {
 		*o = OpAnd
 	case "||":
 		*o = OpOr
+	case "??":
+		*o = OpCoalesce
 	default:
 		return fmt.Errorf("invalid operator %q", values[0])
 	}

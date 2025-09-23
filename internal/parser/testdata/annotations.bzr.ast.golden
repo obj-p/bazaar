@@ -1,0 +1,143 @@
+&parser.Bazaar{
+  Package: &parser.PackageDecl{
+    Domain: []string{
+      "annotations",
+    },
+  },
+  Decls: []*parser.TopLevelDecl{
+    {
+      Function: &parser.FunctionDecl{
+        Name: "MultipleAnnotations",
+        Block: []*parser.Stmt{
+          {
+            Call: &parser.CallStmt{
+              Annotations: []*parser.AnnotationExpr{
+                {
+                  Name: &"State",
+                },
+                {
+                  Name: &"Modifier",
+                  Call: &parser.CallExpr{
+                    Arguments: []*parser.ArgumentExpr{
+                      {
+                        Expr: &parser.Expr{
+                          Unary: &parser.UnaryExpr{
+                            Primary: &parser.PrimaryExpr{
+                              Reference: &parser.ReferenceExpr{
+                                Name: &"Padding",
+                                KeyPath: &parser.KeyPathExpr{
+                                  Call: &parser.CallExpr{
+                                    Arguments: []*parser.ArgumentExpr{
+                                      {
+                                        Name: &"all",
+                                        Expr: &parser.Expr{
+                                          Unary: &parser.UnaryExpr{
+                                            Primary: &parser.PrimaryExpr{
+                                              Literal: &parser.Literal{
+                                                Number: &"42",
+                                              },
+                                            },
+                                          },
+                                        },
+                                      },
+                                    },
+                                  },
+                                },
+                              },
+                            },
+                          },
+                        },
+                      },
+                    },
+                  },
+                },
+                {
+                  Name: &"Custom",
+                },
+              },
+              Name: &"SomeFunction",
+            },
+          },
+          {
+            Call: &parser.CallStmt{
+              Annotations: []*parser.AnnotationExpr{
+                {
+                  Name: &"State",
+                },
+              },
+              Name: &"AnotherFunction",
+            },
+          },
+          {
+            Var: &parser.VarDeclStmt{
+              Annotations: []*parser.AnnotationExpr{
+                {
+                  Name: &"State",
+                },
+              },
+              Dest: &parser.VariableExpr{
+                Name: &"singleVar",
+              },
+              Source: &parser.Expr{
+                Unary: &parser.UnaryExpr{
+                  Primary: &parser.PrimaryExpr{
+                    Literal: &parser.Literal{
+                      Number: &"1",
+                    },
+                  },
+                },
+              },
+            },
+          },
+          {
+            Call: &parser.CallStmt{
+              Annotations: []*parser.AnnotationExpr{
+                {
+                  Name: &"Logger",
+                },
+                {
+                  Name: &"Async",
+                },
+                {
+                  Name: &"Retry",
+                },
+              },
+              Name: &"ProcessData",
+              Arguments: []*parser.ArgumentExpr{
+                {
+                  Expr: &parser.Expr{
+                    Unary: &parser.UnaryExpr{
+                      Primary: &parser.PrimaryExpr{
+                        Literal: &parser.Literal{
+                          String: &parser.String{
+                            Fragments: []*parser.StringFragment{
+                              {
+                                Text: &"input",
+                              },
+                            },
+                          },
+                        },
+                      },
+                    },
+                  },
+                },
+                {
+                  Name: &"param2",
+                  Expr: &parser.Expr{
+                    Unary: &parser.UnaryExpr{
+                      Primary: &parser.PrimaryExpr{
+                        Literal: &parser.Literal{
+                          Number: &"42",
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+  },
+}
