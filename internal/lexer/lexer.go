@@ -7,7 +7,7 @@ var (
 		"Common": {
 			{Name: "Number", Pattern: `[-+]?(\d+\.?\d*|\d*\.\d+)([eE][-+]?\d+)?`},
 			{Name: "String", Pattern: `"`, Action: lexer.Push("String")},
-			{Name: "Keyword", Pattern: `\b(case|default|else|enum|for|if|import|in|return|switch|var)\b`, Action: nil},
+			{Name: "Keyword", Pattern: `\b(as|case|default|else|enum|for|if|import|in|return|switch|var)\b`, Action: nil},
 			{Name: "Ident", Pattern: `[\w_][\w\d_]*`, Action: nil},
 			{Name: "LogicOperator", Pattern: `==|<=|>=|!=|&&|\|\|`, Action: nil},
 			{Name: "AssignOperator", Pattern: `\+=|-=|\*=|/=|%=|=`, Action: nil},
