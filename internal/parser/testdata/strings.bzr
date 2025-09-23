@@ -1,8 +1,189 @@
 package strings
 
+// TODO: multiline strings
+
 data Messages {
     answer string = "The answer is ${42}"
     escaped string = "\""
 }
 
-func Strings() {}
+data ComplexInterpolation {
+    arithmetic string = "Result: ${x + y * 2}"
+    functionCall string = "Hello ${getName()}"
+    variableRef string = "User: ${user.name}"
+    multiple string = "${first} and ${second}"
+    methodCall string = "Length: ${text.length()}"
+}
+
+data EscapeSequences {
+    newline string = "Line 1\nLine 2"
+    tab string = "Col1\tCol2"
+    backslash string = "Path\\to\\file"
+    mixed string = "Quote: \" Newline: \n Tab: \t Backslash: \\"
+    unicodeEscape string = "Unicode: \u0041\u0042"
+}
+
+data EdgeCases {
+    empty string = ""
+    whitespace string = "   "
+    specialChars string = "@#$%^&*()"
+    dollarSign string = "Cost: $5"
+    trailingBackslash string = "path\\"
+    multipleSpaces string = "word1    word2"
+    onlyNumbers string = "12345"
+}
+
+data ComplexScenarios {
+    arithmeticExpr string = "Result: ${(a + b) * c}"
+    booleanExpr string = "Status: ${isActive && isValid}"
+    chainedAccess string = "Data: ${obj.field.subfield}"
+    arrayAccess string = "Item: ${items[0]}"
+    powerOperator string = "Power: ${x ** 2}"
+    nullCoalescing string = "Value: ${value ?? defaultValue}"
+}
+
+data RealWorldUsage {
+    url string = "https://example.com/api/users/${userId}"
+    filePath string = "/home/user/documents/${filename}.txt"
+    sqlLike string = "SELECT * FROM users WHERE id = ${id}"
+    templateLike string = "Dear ${name}, welcome to ${appName}!"
+    logMessage string = "[${timestamp}] ${level}: ${message}"
+    cssClass string = "class-${type}-${variant}"
+}
+
+data StringConcatenation {
+    simpleConcat string = "Hello" + " " + "World"
+    mixedConcat string = "Count: " + "${count}"
+    multipleOps string = "A" + "B" + "C" + "${suffix}"
+}
+
+data NestedInterpolation {
+    // Test nested string interpolation scenarios
+    nestedBasic string = "Outer: ${getInner("Inner: ${x}")}"
+    nestedFunction string = "Result: ${format("Value: ${getValue()}")}"
+    // TODO: Consider adding ternary operator support (? :) - useful for string interpolation
+    // nestedConditional string = "Status: ${isActive ? "Active: ${level}" : "Inactive"}"
+    nestedConditionalSimple string = "Status: ${getStatus(isActive, level)}"
+    nestedArithmetic string = "Calc: ${compute("Base: ${base} + ${offset}")}"
+    deepNesting string = "L1: ${level1("L2: ${level2("L3: ${level3}")}")}"
+}
+
+data BoundaryConditions {
+    // Test interpolation at string boundaries and empty cases
+    startingWithInterpolation string = "${greeting} world!"
+    endingWithInterpolation string = "Hello ${name}"
+    onlyInterpolation string = "${value}"
+    emptyStringLiteral string = ""
+    whitespaceOnly string = "   "
+    consecutiveInterpolations string = "${first}${second}${third}"
+    interpolationWithSpaces string = "${start} middle ${end}"
+    multipleSeparated string = "${a} and ${b} and ${c}"
+    interpolationInMiddle string = "start ${middle} end"
+    // TODO: Determine if empty interpolation ${} should be supported
+    // emptyInterpolation string = "Value: ${}"
+}
+
+data ComplexExpressionInterpolation {
+    // Test complex expressions within interpolations
+    // TODO: Ternary operator would be very useful in string interpolation contexts
+    // ternaryOperator string = "Status: ${isActive ? "active" : "inactive"}"
+    conditionalFunction string = "Status: ${getActiveStatus(isActive)}"
+    functionWithArgs string = "Result: ${func(a, b, c)}"
+    methodChaining string = "Value: ${obj.method1().method2().value}"
+    arrayAccessing string = "Item: ${items[index]}"
+    mapAccessing string = "Value: ${data["key"]}"
+    arithmeticInInterpolation string = "Sum: ${(a + b) * (c - d)}"
+    logicalOperations string = "Valid: ${flag1 && flag2 || flag3}"
+    comparisonOperations string = "Compare: ${x >= y && z <= w}"
+    nullCoalescingInString string = "Default: ${value ?? fallback ?? "none"}"
+    powerOperation string = "Power: ${base ** exponent}"
+    modOperation string = "Remainder: ${dividend % divisor}"
+    complexNested string = "Data: ${getData(user.id).process(options[0]).result}"
+    // TODO: Test if lambdas can be used within string interpolation expressions
+    // lambdaInString string = "Mapped: ${items.map({ (x) -> int in x * 2 })}"
+    mappedItems string = "Mapped: ${mapDoubled(items)}"
+    // TODO: Nested ternary operators would enable complex conditional string formatting
+    // conditionalChain string = "Chain: ${a ? b ? c : d : e}"
+    conditionalNested string = "Chain: ${getChainedValue(a, b, c, d, e)}"
+}
+
+data RawDollarEdgeCases {
+    // Test raw dollar signs without interpolation
+    simpleDollar string = "Price: $5.99"
+    multipleDollars string = "Costs: $10, $20, $30"
+    dollarInMiddle string = "The $amount was paid"
+    dollarAtEnd string = "Total cost: $"
+    dollarAtStart string = "$variable assignment"
+    escapedDollar string = "Literal \\$dollar sign"
+    dollarWithoutBrace string = "Not interpolation: $variable"
+    dollarBeforeNumber string = "Amount: $123.45"
+    dollarInPath string = "Path: /home/$USER/documents"
+    dollarInUrl string = "URL: https://api.com/v1/$resource"
+    multipleRawDollars string = "$ $ $ multiple dollars"
+    dollarWithPunctuation string = "Cost: $1,234.56!"
+}
+
+data AdditionalEscapeSequences {
+    // Test additional escape sequences that might be supported
+    carriageReturn string = "Line 1\rLine 2"
+    formFeed string = "Page 1\fPage 2"
+    verticalTab string = "Col 1\vCol 2"
+    nullChar string = "Text\x00End"
+    bellChar string = "Alert\x07Sound"
+    // TODO: Add support for hex escape sequences (\x41, \x42, etc.)
+    // hexEscape string = "Hex: \x41\x42\x43"
+    // TODO: Add support for octal escape sequences (\101, \102, etc.)
+    // octalEscape string = "Octal: \101\102\103"
+
+    // TODO: Add support for Unicode escape sequences (\u0041, \U00000041)
+    // unicodeShort string = "Unicode: \u0041"
+    // unicodeLong string = "Unicode: \U00000041"
+}
+
+data PotentiallyProblematicCases {
+    // These cases might cause parsing issues - all commented out for safety
+
+    // TODO: Test empty interpolation behavior - should this be an error or empty string?
+    // emptyInterpolation string = "Value: ${}"
+
+    // TODO: Test error recovery for unclosed strings
+    // unclosedString string = "This string never ends
+
+    // TODO: Test error recovery for unclosed interpolation expressions
+    // unclosedInterpolation string = "Value: ${unclosed"
+
+    // TODO: Test error handling for invalid escape sequences
+    // invalidEscape string = "Bad escape: \q"
+    // invalidEscape2 string = "Another bad: \z"
+
+    // TODO: Test error handling for malformed interpolation syntax
+    // malformedInterpolation string = "Bad: $unclosed"
+    // extraCloseBrace string = "Extra: ${value}}"
+    // extraOpenBrace string = "Extra: ${{value}"
+
+    // Very long strings - for performance testing
+    veryLongString string = "This is a very long string that contains many characters to test the parser's ability to handle large string literals without any issues or performance degradation during the parsing phase of the Bazaar templating language processing pipeline"
+
+    // Strings with many interpolations - performance test
+    manyInterpolations string = "${a}${b}${c}${d}${e}${f}${g}${h}${i}${j}${k}${l}${m}${n}${o}${p}${q}${r}${s}${t}${u}${v}${w}${x}${y}${z}"
+
+    // Deeply nested expressions - complexity test
+    deeplyNestedExpressions string = "Result: ${obj.level1.level2.level3.level4.level5.getValue()}"
+}
+
+func StringOperations() {
+    var greeting = "Hello, ${name}!"
+    var path = "/api/v1/users/${userId}/profile"
+    var message = "Error ${code}: ${description}"
+
+    var complex = "Processing ${items.length} items"
+    var multiline = "First line\nSecond line\nThird line"
+    var escaped = "He said: \"Hello, world!\""
+
+    // Additional string operation tests
+    var interpolatedConcat = "Part1: ${part1}" + " Part2: ${part2}"
+    var mixedTypes = "Number: ${42} Boolean: ${true} Null: ${null}"
+    var nestedQuotes = "Outer \"Inner ${value} String\" End"
+    var pathLike = "/path/to/${resource}/${id}.${extension}"
+    var templateEngine = "{{${variable}}}"
+}
