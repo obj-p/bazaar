@@ -16,6 +16,7 @@ type PackageDecl struct {
 
 type ImportDecl struct {
 	Domain []string `parser:"'import' @Ident ('.' @Ident)*"`
+	Alias  *string  `parser:"('as' @Ident)?"`
 }
 
 type EnumDecl struct {

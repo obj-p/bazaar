@@ -15,9 +15,10 @@ func (b *Bool) Capture(values []string) error {
 }
 
 type StringFragment struct {
-	Esc  *string `parser:"@StringEsc"`
-	Expr *Expr   `parser:"| '${' @@ '}'"`
-	Text *string `parser:"| @StringText"`
+	UnicodeEsc *string `parser:"@UnicodeShortEscape | @UnicodeLongEscape"`
+	Esc        *string `parser:"| @StringEsc"`
+	Expr       *Expr   `parser:"| '${' @@? '}'"`
+	Text       *string `parser:"| @StringText"`
 }
 
 type String struct {

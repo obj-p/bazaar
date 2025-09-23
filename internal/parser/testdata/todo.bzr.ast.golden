@@ -1,0 +1,39 @@
+&parser.Bazaar{
+  Package: &parser.PackageDecl{
+    Domain: []string{
+      "todo",
+    },
+  },
+  Decls: []*parser.TopLevelDecl{
+    {
+      Function: &parser.FunctionDecl{
+        Name: "UnsupportedNumericLiterals",
+      },
+    },
+    {
+      Function: &parser.FunctionDecl{
+        Name: "UnsupportedStringEscapes",
+      },
+    },
+    {
+      Function: &parser.FunctionDecl{
+        Name: "UnsupportedOperators",
+      },
+    },
+    {
+      Function: &parser.FunctionDecl{
+        Name: "UnsupportedControlFlow",
+      },
+    },
+    {
+      Function: &parser.FunctionDecl{
+        Name: "UnsupportedDataStructures",
+      },
+    },
+    {
+      Function: &parser.FunctionDecl{
+        Name: "UnsupportedAdvancedFeatures",
+      },
+    },
+  },
+}
