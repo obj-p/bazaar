@@ -79,7 +79,6 @@ data BoundaryConditions {
     interpolationWithSpaces string = "${start} middle ${end}"
     multipleSeparated string = "${a} and ${b} and ${c}"
     interpolationInMiddle string = "start ${middle} end"
-    // TODO: Determine if empty interpolation ${} should be supported
     emptyInterpolation string = "Value: ${}"
 }
 
@@ -108,6 +107,7 @@ data ComplexExpressionInterpolation {
 }
 
 data RawDollarEdgeCases {
+    // TODO: dollar signs are parsed fragmented
     // Test raw dollar signs without interpolation
     simpleDollar string = "Price: $5.99"
     multipleDollars string = "Costs: $10, $20, $30"
@@ -128,38 +128,20 @@ data AdditionalEscapeSequences {
     carriageReturn string = "Line 1\rLine 2"
     formFeed string = "Page 1\fPage 2"
     verticalTab string = "Col 1\vCol 2"
+    // TODO: consider if any special handling is needed for hex, octal, etc.
     nullChar string = "Text\x00End"
     bellChar string = "Alert\x07Sound"
-    // TODO: Add support for hex escape sequences (\x41, \x42, etc.)
-    // hexEscape string = "Hex: \x41\x42\x43"
-    // TODO: Add support for octal escape sequences (\101, \102, etc.)
-    // octalEscape string = "Octal: \101\102\103"
-
-    // TODO: Add support for Unicode escape sequences (\u0041, \U00000041)
-    // unicodeShort string = "Unicode: \u0041"
-    // unicodeLong string = "Unicode: \U00000041"
+    hexEscape string = "Hex: \x41\x42\x43"
+    octalEscape string = "Octal: \101\102\103"
+    unicodeShort string = "Unicode: \u0041"
+    unicodeLong string = "Unicode: \U00000041"
 }
 
 data PotentiallyProblematicCases {
     // These cases might cause parsing issues - all commented out for safety
-
-    // TODO: Test empty interpolation behavior - should this be an error or empty string?
-    // emptyInterpolation string = "Value: ${}"
-
-    // TODO: Test error recovery for unclosed strings
-    // unclosedString string = "This string never ends
-
-    // TODO: Test error recovery for unclosed interpolation expressions
-    // unclosedInterpolation string = "Value: ${unclosed"
-
-    // TODO: Test error handling for invalid escape sequences
-    // invalidEscape string = "Bad escape: \q"
-    // invalidEscape2 string = "Another bad: \z"
-
-    // TODO: Test error handling for malformed interpolation syntax
-    // malformedInterpolation string = "Bad: $unclosed"
-    // extraCloseBrace string = "Extra: ${value}}"
-    // extraOpenBrace string = "Extra: ${{value}"
+    invalidEscape string = "Bad escape: \q"
+    malformedInterpolation string = "Bad: $unclosed"
+    extraCloseBrace string = "Extra: ${value}}"
 
     // Very long strings - for performance testing
     veryLongString string = "This is a very long string that contains many characters to test the parser's ability to handle large string literals without any issues or performance degradation during the parsing phase of the Bazaar templating language processing pipeline"

@@ -11,4 +11,6 @@ func Ifs(foo bool, bar bool, baz bool?) {
     if var baz = baz, foo == bar == baz {}
     if var (bar, baz) = foo {}
     if 10 > len(something) {}
+    // TODO: if/else
+    // if true {} else if true {} else true {}
 }
