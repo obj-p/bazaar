@@ -2,6 +2,10 @@ package edgecases
 
 enum EmptyEnum {}
 
+enum TrailingCommaEnum {
+    a, b, c,
+}
+
 component EmptyComponent {}
 
 data EmptyData {}
@@ -16,4 +20,9 @@ func EdgeCases() {
     var len = "foo"
     var enumerate = "bar"
     var range = "baz"
+
+    // Trailing comma tests
+    var arrayWithTrailing = [1, 2, 3,]
+    var mapWithTrailing = {a: 1, b: 2,}
+    for (a, b,) in something {}
 }

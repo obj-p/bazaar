@@ -11,6 +11,16 @@
       },
     },
     {
+      Enum: &parser.EnumDecl{
+        Name: "TrailingCommaEnum",
+        Cases: []string{
+          "a",
+          "b",
+          "c",
+        },
+      },
+    },
+    {
       Component: &parser.ComponentDecl{
         Name: "EmptyComponent",
       },
@@ -177,6 +187,132 @@
                           },
                         },
                       },
+                    },
+                  },
+                },
+              },
+            },
+          },
+          {
+            Var: &parser.VarDeclStmt{
+              Dest: &parser.VariableExpr{
+                Name: &"arrayWithTrailing",
+              },
+              Source: &parser.Expr{
+                Unary: &parser.UnaryExpr{
+                  Primary: &parser.PrimaryExpr{
+                    Literal: &parser.Literal{
+                      Array: &parser.ArrayLiteral{
+                        Values: []*parser.Expr{
+                          {
+                            Unary: &parser.UnaryExpr{
+                              Primary: &parser.PrimaryExpr{
+                                Literal: &parser.Literal{
+                                  Number: &"1",
+                                },
+                              },
+                            },
+                          },
+                          {
+                            Unary: &parser.UnaryExpr{
+                              Primary: &parser.PrimaryExpr{
+                                Literal: &parser.Literal{
+                                  Number: &"2",
+                                },
+                              },
+                            },
+                          },
+                          {
+                            Unary: &parser.UnaryExpr{
+                              Primary: &parser.PrimaryExpr{
+                                Literal: &parser.Literal{
+                                  Number: &"3",
+                                },
+                              },
+                            },
+                          },
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+          {
+            Var: &parser.VarDeclStmt{
+              Dest: &parser.VariableExpr{
+                Name: &"mapWithTrailing",
+              },
+              Source: &parser.Expr{
+                Unary: &parser.UnaryExpr{
+                  Primary: &parser.PrimaryExpr{
+                    Literal: &parser.Literal{
+                      Map: &parser.MapLiteral{
+                        Entries: []*parser.MapEntry{
+                          {
+                            Key: &parser.Expr{
+                              Unary: &parser.UnaryExpr{
+                                Primary: &parser.PrimaryExpr{
+                                  Reference: &parser.ReferenceExpr{
+                                    Name: &"a",
+                                  },
+                                },
+                              },
+                            },
+                            Value: &parser.Expr{
+                              Unary: &parser.UnaryExpr{
+                                Primary: &parser.PrimaryExpr{
+                                  Literal: &parser.Literal{
+                                    Number: &"1",
+                                  },
+                                },
+                              },
+                            },
+                          },
+                          {
+                            Key: &parser.Expr{
+                              Unary: &parser.UnaryExpr{
+                                Primary: &parser.PrimaryExpr{
+                                  Reference: &parser.ReferenceExpr{
+                                    Name: &"b",
+                                  },
+                                },
+                              },
+                            },
+                            Value: &parser.Expr{
+                              Unary: &parser.UnaryExpr{
+                                Primary: &parser.PrimaryExpr{
+                                  Literal: &parser.Literal{
+                                    Number: &"2",
+                                  },
+                                },
+                              },
+                            },
+                          },
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+          {
+            For: &parser.ForStmt{
+              Dest: &parser.VariableExpr{
+                Destructuring: &parser.DestructuringExpr{
+                  Names: []string{
+                    "a",
+                    "b",
+                  },
+                },
+              },
+              Source: &parser.Expr{
+                Unary: &parser.UnaryExpr{
+                  Primary: &parser.PrimaryExpr{
+                    Reference: &parser.ReferenceExpr{
+                      Name: &"something",
                     },
                   },
                 },
