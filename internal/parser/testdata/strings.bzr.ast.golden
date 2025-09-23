@@ -2979,6 +2979,153 @@
           },
           {
             Field: &parser.FieldDecl{
+              Name: "lambdaInString",
+              Type: &parser.TypeDecl{
+                Value: &"string",
+              },
+              Default: &parser.Expr{
+                Unary: &parser.UnaryExpr{
+                  Primary: &parser.PrimaryExpr{
+                    Literal: &parser.Literal{
+                      String: &parser.String{
+                        Fragments: []*parser.StringFragment{
+                          {
+                            Text: &"Mapped: ",
+                          },
+                          {
+                            Expr: &parser.Expr{
+                              Unary: &parser.UnaryExpr{
+                                Primary: &parser.PrimaryExpr{
+                                  Reference: &parser.ReferenceExpr{
+                                    Name: &"items",
+                                    KeyPath: &parser.KeyPathExpr{
+                                      Reference: &parser.ReferenceExpr{
+                                        Name: &"map",
+                                        KeyPath: &parser.KeyPathExpr{
+                                          Call: &parser.CallExpr{
+                                            Arguments: []*parser.ArgumentExpr{
+                                              {
+                                                Expr: &parser.Expr{
+                                                  Unary: &parser.UnaryExpr{
+                                                    Primary: &parser.PrimaryExpr{
+                                                      Lambda: &parser.LambdaExpr{
+                                                        Parameters: []*parser.LambdaParameter{
+                                                          {
+                                                            Name: "x",
+                                                          },
+                                                        },
+                                                        Return: &parser.TypeDecl{
+                                                          Value: &"int",
+                                                        },
+                                                        Stmts: []*parser.Stmt{
+                                                          {
+                                                            Expr: &parser.Expr{
+                                                              Binary: &parser.BinaryExpr{
+                                                                Left: &parser.Expr{
+                                                                  Unary: &parser.UnaryExpr{
+                                                                    Primary: &parser.PrimaryExpr{
+                                                                      Reference: &parser.ReferenceExpr{
+                                                                        Name: &"x",
+                                                                      },
+                                                                    },
+                                                                  },
+                                                                },
+                                                                Op: token.Op(token.OpMul),
+                                                                Right: &parser.Expr{
+                                                                  Unary: &parser.UnaryExpr{
+                                                                    Primary: &parser.PrimaryExpr{
+                                                                      Literal: &parser.Literal{
+                                                                        Number: &"2",
+                                                                      },
+                                                                    },
+                                                                  },
+                                                                },
+                                                              },
+                                                            },
+                                                          },
+                                                        },
+                                                      },
+                                                    },
+                                                  },
+                                                },
+                                              },
+                                            },
+                                          },
+                                        },
+                                      },
+                                    },
+                                  },
+                                },
+                              },
+                            },
+                          },
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+          {
+            Field: &parser.FieldDecl{
+              Name: "lambdaInString",
+              Type: &parser.TypeDecl{
+                Value: &"string",
+              },
+              Default: &parser.Expr{
+                Unary: &parser.UnaryExpr{
+                  Primary: &parser.PrimaryExpr{
+                    Literal: &parser.Literal{
+                      String: &parser.String{
+                        Fragments: []*parser.StringFragment{
+                          {
+                            Text: &"Mapped: ",
+                          },
+                          {
+                            Expr: &parser.Expr{
+                              Unary: &parser.UnaryExpr{
+                                Primary: &parser.PrimaryExpr{
+                                  Reference: &parser.ReferenceExpr{
+                                    Name: &"items",
+                                    KeyPath: &parser.KeyPathExpr{
+                                      Reference: &parser.ReferenceExpr{
+                                        Name: &"map",
+                                        KeyPath: &parser.KeyPathExpr{
+                                          Call: &parser.CallExpr{
+                                            Arguments: []*parser.ArgumentExpr{
+                                              {
+                                                Expr: &parser.Expr{
+                                                  Unary: &parser.UnaryExpr{
+                                                    Primary: &parser.PrimaryExpr{
+                                                      Literal: &parser.Literal{
+                                                        Map: &parser.MapLiteral{
+                                                        },
+                                                      },
+                                                    },
+                                                  },
+                                                },
+                                              },
+                                            },
+                                          },
+                                        },
+                                      },
+                                    },
+                                  },
+                                },
+                              },
+                            },
+                          },
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+          {
+            Field: &parser.FieldDecl{
               Name: "mappedItems",
               Type: &parser.TypeDecl{
                 Value: &"string",

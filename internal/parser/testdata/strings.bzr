@@ -98,8 +98,8 @@ data ComplexExpressionInterpolation {
     powerOperation string = "Power: ${base ** exponent}"
     modOperation string = "Remainder: ${dividend % divisor}"
     complexNested string = "Data: ${getData(user.id).process(options[0]).result}"
-    // TODO: Test if lambdas can be used within string interpolation expressions
-    // lambdaInString string = "Mapped: ${items.map({ (x) -> int in x * 2 })}"
+    lambdaInString string = "Mapped: ${items.map({ (x) -> int in x * 2 })}"
+    lambdaInString string = "Mapped: ${items.map({:})}"
     mappedItems string = "Mapped: ${mapDoubled(items)}"
     // TODO: Nested ternary operators would enable complex conditional string formatting
     // conditionalChain string = "Chain: ${a ? b ? c : d : e}"
@@ -107,7 +107,6 @@ data ComplexExpressionInterpolation {
 }
 
 data RawDollarEdgeCases {
-    // TODO: dollar signs are parsed fragmented
     // Test raw dollar signs without interpolation
     simpleDollar string = "Price: $5.99"
     multipleDollars string = "Costs: $10, $20, $30"

@@ -12,11 +12,11 @@ var (
 			{Name: "LogicOperator", Pattern: `==|<=|>=|!=|&&|\|\|`, Action: nil},
 			{Name: "AssignOperator", Pattern: `\+=|-=|\*=|/=|%=|=`, Action: nil},
 			{Name: "Operator", Pattern: `\*\*|\?\?|[-+*/%<>^!?.]`, Action: nil},
-			{Name: "Punct", Pattern: `[\[\](){}@#$:;,]`, Action: nil},
 		},
 		"Root": {
 			{Name: "Comment", Pattern: `//.*`, Action: nil},
 			lexer.Include("Common"),
+			{Name: "Punct", Pattern: `[\[\](){}@#$:;,]`, Action: nil},
 			{Name: "Whitespace", Pattern: `[ \t\n\r]+`, Action: nil},
 		},
 		"String": {
@@ -25,10 +25,22 @@ var (
 			{Name: "StringExpr", Pattern: `\${`, Action: lexer.Push("StringExpr")},
 			{Name: "StringText", Pattern: `\$|[^$"\\]+`, Action: nil},
 		},
+		"StringExprCommon": {
+			{Name: "StringExprPunct", Pattern: `[\[\]()@#$:;,]`, Action: nil},
+			{Name: "StringExprWhitespace", Pattern: `\s+`, Action: nil},
+		},
 		"StringExpr": {
 			{Name: "StringExprEnd", Pattern: `}`, Action: lexer.Pop()},
 			lexer.Include("Common"),
-			{Name: "StringExprWhitespace", Pattern: `\s+`, Action: nil},
+			{Name: "String", Pattern: `"`, Action: lexer.Push("String")},
+			{Name: "StringExprBlock", Pattern: `{`, Action: lexer.Push("StringExprBlock")},
+			lexer.Include("StringExprCommon"),
+		},
+		"StringExprBlock": {
+			{Name: "StringExprBlockEnd", Pattern: `}`, Action: lexer.Pop()},
+			lexer.Include("Common"),
+			{Name: "StringExprBlock", Pattern: `{`, Action: lexer.Push("StringExprBlock")},
+			lexer.Include("StringExprCommon"),
 		},
 	})
 
