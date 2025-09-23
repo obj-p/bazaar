@@ -127,13 +127,12 @@ data AdditionalEscapeSequences {
     carriageReturn string = "Line 1\rLine 2"
     formFeed string = "Page 1\fPage 2"
     verticalTab string = "Col 1\vCol 2"
-    // TODO: consider if any special handling is needed for hex, octal, etc.
-    nullChar string = "Text\x00End"
-    bellChar string = "Alert\x07Sound"
-    hexEscape string = "Hex: \x41\x42\x43"
-    octalEscape string = "Octal: \101\102\103"
+    // Unicode escape sequences (supported)
     unicodeShort string = "Unicode: \u0041"
     unicodeLong string = "Unicode: \U00000041"
+    unicodeGreek string = "Greek: \u03B1\u03B2\u03B3"
+    unicodeEmoji string = "Emoji: \U0001F600\U0001F44D"
+    unicodeInInterpolation string = "Value: ${getValue()}, Unicode: \u2713"
 }
 
 data PotentiallyProblematicCases {

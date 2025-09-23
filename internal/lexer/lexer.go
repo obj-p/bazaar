@@ -21,6 +21,8 @@ var (
 		},
 		"String": {
 			{Name: "StringEnd", Pattern: `"`, Action: lexer.Pop()},
+			{Name: "UnicodeShortEscape", Pattern: `\\u[0-9a-fA-F]{4}`, Action: nil},
+			{Name: "UnicodeLongEscape", Pattern: `\\U[0-9a-fA-F]{8}`, Action: nil},
 			{Name: "StringEsc", Pattern: `\\.`, Action: nil},
 			{Name: "StringExpr", Pattern: `\${`, Action: lexer.Push("StringExpr")},
 			{Name: "StringText", Pattern: `\$|[^$"\\]+`, Action: nil},

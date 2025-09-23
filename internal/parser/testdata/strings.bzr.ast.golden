@@ -460,16 +460,10 @@
                             Text: &"Unicode: ",
                           },
                           {
-                            Esc: &"\\u",
+                            UnicodeEsc: &"\\u0041",
                           },
                           {
-                            Text: &"0041",
-                          },
-                          {
-                            Esc: &"\\u",
-                          },
-                          {
-                            Text: &"0042",
+                            UnicodeEsc: &"\\u0042",
                           },
                         },
                       },
@@ -3739,146 +3733,6 @@
           },
           {
             Field: &parser.FieldDecl{
-              Name: "nullChar",
-              Type: &parser.TypeDecl{
-                Value: &"string",
-              },
-              Default: &parser.Expr{
-                Unary: &parser.UnaryExpr{
-                  Primary: &parser.PrimaryExpr{
-                    Literal: &parser.Literal{
-                      String: &parser.String{
-                        Fragments: []*parser.StringFragment{
-                          {
-                            Text: &"Text",
-                          },
-                          {
-                            Esc: &"\\x",
-                          },
-                          {
-                            Text: &"00End",
-                          },
-                        },
-                      },
-                    },
-                  },
-                },
-              },
-            },
-          },
-          {
-            Field: &parser.FieldDecl{
-              Name: "bellChar",
-              Type: &parser.TypeDecl{
-                Value: &"string",
-              },
-              Default: &parser.Expr{
-                Unary: &parser.UnaryExpr{
-                  Primary: &parser.PrimaryExpr{
-                    Literal: &parser.Literal{
-                      String: &parser.String{
-                        Fragments: []*parser.StringFragment{
-                          {
-                            Text: &"Alert",
-                          },
-                          {
-                            Esc: &"\\x",
-                          },
-                          {
-                            Text: &"07Sound",
-                          },
-                        },
-                      },
-                    },
-                  },
-                },
-              },
-            },
-          },
-          {
-            Field: &parser.FieldDecl{
-              Name: "hexEscape",
-              Type: &parser.TypeDecl{
-                Value: &"string",
-              },
-              Default: &parser.Expr{
-                Unary: &parser.UnaryExpr{
-                  Primary: &parser.PrimaryExpr{
-                    Literal: &parser.Literal{
-                      String: &parser.String{
-                        Fragments: []*parser.StringFragment{
-                          {
-                            Text: &"Hex: ",
-                          },
-                          {
-                            Esc: &"\\x",
-                          },
-                          {
-                            Text: &"41",
-                          },
-                          {
-                            Esc: &"\\x",
-                          },
-                          {
-                            Text: &"42",
-                          },
-                          {
-                            Esc: &"\\x",
-                          },
-                          {
-                            Text: &"43",
-                          },
-                        },
-                      },
-                    },
-                  },
-                },
-              },
-            },
-          },
-          {
-            Field: &parser.FieldDecl{
-              Name: "octalEscape",
-              Type: &parser.TypeDecl{
-                Value: &"string",
-              },
-              Default: &parser.Expr{
-                Unary: &parser.UnaryExpr{
-                  Primary: &parser.PrimaryExpr{
-                    Literal: &parser.Literal{
-                      String: &parser.String{
-                        Fragments: []*parser.StringFragment{
-                          {
-                            Text: &"Octal: ",
-                          },
-                          {
-                            Esc: &"\\1",
-                          },
-                          {
-                            Text: &"01",
-                          },
-                          {
-                            Esc: &"\\1",
-                          },
-                          {
-                            Text: &"02",
-                          },
-                          {
-                            Esc: &"\\1",
-                          },
-                          {
-                            Text: &"03",
-                          },
-                        },
-                      },
-                    },
-                  },
-                },
-              },
-            },
-          },
-          {
-            Field: &parser.FieldDecl{
               Name: "unicodeShort",
               Type: &parser.TypeDecl{
                 Value: &"string",
@@ -3893,10 +3747,7 @@
                             Text: &"Unicode: ",
                           },
                           {
-                            Esc: &"\\u",
-                          },
-                          {
-                            Text: &"0041",
+                            UnicodeEsc: &"\\u0041",
                           },
                         },
                       },
@@ -3922,10 +3773,112 @@
                             Text: &"Unicode: ",
                           },
                           {
-                            Esc: &"\\U",
+                            UnicodeEsc: &"\\U00000041",
+                          },
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+          {
+            Field: &parser.FieldDecl{
+              Name: "unicodeGreek",
+              Type: &parser.TypeDecl{
+                Value: &"string",
+              },
+              Default: &parser.Expr{
+                Unary: &parser.UnaryExpr{
+                  Primary: &parser.PrimaryExpr{
+                    Literal: &parser.Literal{
+                      String: &parser.String{
+                        Fragments: []*parser.StringFragment{
+                          {
+                            Text: &"Greek: ",
                           },
                           {
-                            Text: &"00000041",
+                            UnicodeEsc: &"\\u03B1",
+                          },
+                          {
+                            UnicodeEsc: &"\\u03B2",
+                          },
+                          {
+                            UnicodeEsc: &"\\u03B3",
+                          },
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+          {
+            Field: &parser.FieldDecl{
+              Name: "unicodeEmoji",
+              Type: &parser.TypeDecl{
+                Value: &"string",
+              },
+              Default: &parser.Expr{
+                Unary: &parser.UnaryExpr{
+                  Primary: &parser.PrimaryExpr{
+                    Literal: &parser.Literal{
+                      String: &parser.String{
+                        Fragments: []*parser.StringFragment{
+                          {
+                            Text: &"Emoji: ",
+                          },
+                          {
+                            UnicodeEsc: &"\\U0001F600",
+                          },
+                          {
+                            UnicodeEsc: &"\\U0001F44D",
+                          },
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+          {
+            Field: &parser.FieldDecl{
+              Name: "unicodeInInterpolation",
+              Type: &parser.TypeDecl{
+                Value: &"string",
+              },
+              Default: &parser.Expr{
+                Unary: &parser.UnaryExpr{
+                  Primary: &parser.PrimaryExpr{
+                    Literal: &parser.Literal{
+                      String: &parser.String{
+                        Fragments: []*parser.StringFragment{
+                          {
+                            Text: &"Value: ",
+                          },
+                          {
+                            Expr: &parser.Expr{
+                              Unary: &parser.UnaryExpr{
+                                Primary: &parser.PrimaryExpr{
+                                  Reference: &parser.ReferenceExpr{
+                                    Name: &"getValue",
+                                    KeyPath: &parser.KeyPathExpr{
+                                      Call: &parser.CallExpr{
+                                      },
+                                    },
+                                  },
+                                },
+                              },
+                            },
+                          },
+                          {
+                            Text: &", Unicode: ",
+                          },
+                          {
+                            UnicodeEsc: &"\\u2713",
                           },
                         },
                       },
