@@ -2184,6 +2184,31 @@
               },
             },
           },
+          {
+            Field: &parser.FieldDecl{
+              Name: "emptyInterpolation",
+              Type: &parser.TypeDecl{
+                Value: &"string",
+              },
+              Default: &parser.Expr{
+                Unary: &parser.UnaryExpr{
+                  Primary: &parser.PrimaryExpr{
+                    Literal: &parser.Literal{
+                      String: &parser.String{
+                        Fragments: []*parser.StringFragment{
+                          {
+                            Text: &"Value: ",
+                          },
+                          {
+                          },
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
         },
       },
     },

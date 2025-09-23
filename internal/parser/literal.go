@@ -16,7 +16,7 @@ func (b *Bool) Capture(values []string) error {
 
 type StringFragment struct {
 	Esc  *string `parser:"@StringEsc"`
-	Expr *Expr   `parser:"| '${' @@ '}'"`
+	Expr *Expr   `parser:"| '${' @@? '}'"`
 	Text *string `parser:"| @StringText"`
 }
 

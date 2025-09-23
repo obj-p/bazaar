@@ -80,7 +80,7 @@ data BoundaryConditions {
     multipleSeparated string = "${a} and ${b} and ${c}"
     interpolationInMiddle string = "start ${middle} end"
     // TODO: Determine if empty interpolation ${} should be supported
-    // emptyInterpolation string = "Value: ${}"
+    emptyInterpolation string = "Value: ${}"
 }
 
 data ComplexExpressionInterpolation {
