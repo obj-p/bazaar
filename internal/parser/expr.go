@@ -32,6 +32,7 @@ type LambdaExpr struct {
 	Parameters []*LambdaParameter `parser:"'{' ('(' (@@ (',' @@)* ','?)? ')'"`
 	Return     *TypeDecl          `parser:"('-' '>' @@)?"`
 	Stmts      []*Stmt            `parser:"'in')? @@* '}'"`
+	Call       *CallExpr          `parser:"@@?"`
 }
 
 type ArgumentExpr struct {
