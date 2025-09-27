@@ -10,7 +10,7 @@
         Name: "MultipleAnnotations",
         Block: []*parser.Stmt{
           {
-            Callable: &parser.CallableStmt{
+            Callable: &parser.CallableExpr{
               Annotations: []*parser.AnnotationExpr{
                 {
                   Name: &"State",
@@ -23,20 +23,16 @@
                         Expr: &parser.Expr{
                           Unary: &parser.UnaryExpr{
                             Primary: &parser.PrimaryExpr{
-                              Reference: &parser.ReferenceExpr{
+                              Callable: &parser.CallableExpr{
                                 Name: &"Padding",
-                                KeyPath: &parser.KeyPathExpr{
-                                  Call: &parser.CallExpr{
-                                    Arguments: []*parser.ArgumentExpr{
-                                      {
-                                        Name: &"all",
-                                        Expr: &parser.Expr{
-                                          Unary: &parser.UnaryExpr{
-                                            Primary: &parser.PrimaryExpr{
-                                              Literal: &parser.Literal{
-                                                Number: &"42",
-                                              },
-                                            },
+                                Arguments: []*parser.ArgumentExpr{
+                                  {
+                                    Name: &"all",
+                                    Expr: &parser.Expr{
+                                      Unary: &parser.UnaryExpr{
+                                        Primary: &parser.PrimaryExpr{
+                                          Literal: &parser.Literal{
+                                            Number: &"42",
                                           },
                                         },
                                       },
@@ -59,7 +55,7 @@
             },
           },
           {
-            Callable: &parser.CallableStmt{
+            Callable: &parser.CallableExpr{
               Annotations: []*parser.AnnotationExpr{
                 {
                   Name: &"State",
@@ -90,7 +86,7 @@
             },
           },
           {
-            Callable: &parser.CallableStmt{
+            Callable: &parser.CallableExpr{
               Annotations: []*parser.AnnotationExpr{
                 {
                   Name: &"Logger",

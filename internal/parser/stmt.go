@@ -58,16 +58,8 @@ type ReturnStmt struct {
 	Value *Expr `parser:"'return' @@?"`
 }
 
-type CallableStmt struct {
-	Annotations    []*AnnotationExpr `parser:"@@*"`
-	Name           *string           `parser:"@Ident"`
-	Arguments      []*ArgumentExpr   `parser:"(('(' (@@ (',' @@)* ','?)? ')'"`
-	TrailingLambda *LambdaExpr       `parser:"@@?)"`
-	LambdaOnly     *LambdaExpr       `parser:"| @@)"`
-}
-
 type Stmt struct {
-	Callable *CallableStmt `parser:"@@"`
+	Callable *CallableExpr `parser:"@@"`
 	Var      *VarDeclStmt  `parser:"| @@"`
 	Assign   *AssignStmt   `parser:"| @@"`
 	For      *ForStmt      `parser:"| @@"`
