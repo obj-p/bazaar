@@ -25,4 +25,10 @@ func EdgeCases() {
     var arrayWithTrailing = [1, 2, 3,]
     var mapWithTrailing = {a: 1, b: 2,}
     for (a, b,) in something {}
+    var callable = SomeCallable() {
+        return 42
+    }
+    var callable = SomeCallable {
+        return 42
+    }
 }
