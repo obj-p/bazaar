@@ -9,6 +9,9 @@ import (
 
 // Adapted from https://github.com/alecthomas/langx
 
+// TODO: likely need to differentiate between a control flow expression (no calls with trailing labmdas)
+// and block level expressions. Perhaps Stmt should be BlockLevelExpr? 
+
 type AnnotationExpr struct {
 	Name *string   `parser:"'@' @Ident"`
 	Call *CallExpr `parser:"@@?"`
@@ -44,6 +47,14 @@ type CallExpr struct {
 	Arguments []*ArgumentExpr `parser:"'(' (@@ (',' @@)* ','?)? ')'"`
 }
 
+type CallableExpr struct {
+	Annotations    []*AnnotationExpr `parser:"@@*"`
+	Name           *string           `parser:"@Ident"`
+	Arguments      []*ArgumentExpr   `parser:"(('(' (@@ (',' @@)* ','?)? ')'"`
+	TrailingLambda *LambdaExpr       `parser:"@@?)"`
+	LambdaOnly     *LambdaExpr       `parser:"| @@)"`
+}
+
 type KeyPathExpr struct {
 	Optional  bool           `parser:"@'?'?"`
 	Subscript *Expr          `parser:"('[' @@ ']'"`
@@ -59,6 +70,7 @@ type ReferenceExpr struct {
 
 type PrimaryExpr struct {
 	Literal   *Literal       `parser:"@@"`
+	Callable  *CallableExpr  `parser:"| @@"`
 	Reference *ReferenceExpr `parser:"| @@"`
 	Lambda    *LambdaExpr    `parser:"| @@"`
 	Nested    *Expr          `parser:"| '(' @@ ')'"`

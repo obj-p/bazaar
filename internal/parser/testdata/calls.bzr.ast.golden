@@ -10,7 +10,7 @@
         Name: "Calls",
         Block: []*parser.Stmt{
           {
-            Call: &parser.CallStmt{
+            Callable: &parser.CallableStmt{
               Name: &"Print",
               Arguments: []*parser.ArgumentExpr{
                 {
@@ -34,7 +34,7 @@
             },
           },
           {
-            Call: &parser.CallStmt{
+            Callable: &parser.CallableStmt{
               Name: &"BlockLiteral",
               Arguments: []*parser.ArgumentExpr{
                 {
@@ -51,7 +51,7 @@
             },
           },
           {
-            Call: &parser.CallStmt{
+            Callable: &parser.CallableStmt{
               Name: &"NamedArgs",
               Arguments: []*parser.ArgumentExpr{
                 {
@@ -88,14 +88,14 @@
             },
           },
           {
-            Call: &parser.CallStmt{
+            Callable: &parser.CallableStmt{
               Name: &"TrailingBlockLiteral",
               LambdaOnly: &parser.LambdaExpr{
               },
             },
           },
           {
-            Call: &parser.CallStmt{
+            Callable: &parser.CallableStmt{
               Name: &"call",
               Arguments: []*parser.ArgumentExpr{
                 {

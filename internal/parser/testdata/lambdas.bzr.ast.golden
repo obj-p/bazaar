@@ -10,19 +10,19 @@
         Name: "Lambdas",
         Block: []*parser.Stmt{
           {
-            Call: &parser.CallStmt{
+            Callable: &parser.CallableStmt{
               Name: &"Foo",
               LambdaOnly: &parser.LambdaExpr{
               },
             },
           },
           {
-            Call: &parser.CallStmt{
+            Callable: &parser.CallableStmt{
               Name: &"Foo",
               LambdaOnly: &parser.LambdaExpr{
                 Stmts: []*parser.Stmt{
                   {
-                    Call: &parser.CallStmt{
+                    Callable: &parser.CallableStmt{
                       Name: &"Bar",
                     },
                   },
@@ -31,17 +31,17 @@
             },
           },
           {
-            Call: &parser.CallStmt{
+            Callable: &parser.CallableStmt{
               Name: &"Foo",
               LambdaOnly: &parser.LambdaExpr{
                 Stmts: []*parser.Stmt{
                   {
-                    Call: &parser.CallStmt{
+                    Callable: &parser.CallableStmt{
                       Name: &"Bar",
                       TrailingLambda: &parser.LambdaExpr{
                         Stmts: []*parser.Stmt{
                           {
-                            Call: &parser.CallStmt{
+                            Callable: &parser.CallableStmt{
                               Name: &"Baz",
                               LambdaOnly: &parser.LambdaExpr{
                               },
@@ -56,19 +56,19 @@
             },
           },
           {
-            Call: &parser.CallStmt{
+            Callable: &parser.CallableStmt{
               Name: &"Foo",
               TrailingLambda: &parser.LambdaExpr{
               },
             },
           },
           {
-            Call: &parser.CallStmt{
+            Callable: &parser.CallableStmt{
               Name: &"Foo",
               TrailingLambda: &parser.LambdaExpr{
                 Stmts: []*parser.Stmt{
                   {
-                    Call: &parser.CallStmt{
+                    Callable: &parser.CallableStmt{
                       Name: &"Bar",
                     },
                   },
@@ -77,17 +77,17 @@
             },
           },
           {
-            Call: &parser.CallStmt{
+            Callable: &parser.CallableStmt{
               Name: &"Foo",
               TrailingLambda: &parser.LambdaExpr{
                 Stmts: []*parser.Stmt{
                   {
-                    Call: &parser.CallStmt{
+                    Callable: &parser.CallableStmt{
                       Name: &"Bar",
                       TrailingLambda: &parser.LambdaExpr{
                         Stmts: []*parser.Stmt{
                           {
-                            Call: &parser.CallStmt{
+                            Callable: &parser.CallableStmt{
                               Name: &"Baz",
                               TrailingLambda: &parser.LambdaExpr{
                               },
@@ -102,7 +102,7 @@
             },
           },
           {
-            Call: &parser.CallStmt{
+            Callable: &parser.CallableStmt{
               Name: &"Foo",
               Arguments: []*parser.ArgumentExpr{
                 {
@@ -125,7 +125,7 @@
                 },
                 Stmts: []*parser.Stmt{
                   {
-                    Call: &parser.CallStmt{
+                    Callable: &parser.CallableStmt{
                       Name: &"Bar",
                     },
                   },
@@ -134,7 +134,7 @@
             },
           },
           {
-            Call: &parser.CallStmt{
+            Callable: &parser.CallableStmt{
               Name: &"Foo",
               Arguments: []*parser.ArgumentExpr{
                 {
@@ -160,7 +160,7 @@
                 },
                 Stmts: []*parser.Stmt{
                   {
-                    Call: &parser.CallStmt{
+                    Callable: &parser.CallableStmt{
                       Name: &"Bar",
                     },
                   },
@@ -169,7 +169,7 @@
             },
           },
           {
-            Call: &parser.CallStmt{
+            Callable: &parser.CallableStmt{
               Name: &"Foo",
               Arguments: []*parser.ArgumentExpr{
                 {
@@ -198,7 +198,7 @@
                 },
                 Stmts: []*parser.Stmt{
                   {
-                    Call: &parser.CallStmt{
+                    Callable: &parser.CallableStmt{
                       Name: &"Bar",
                       Arguments: []*parser.ArgumentExpr{
                         {
@@ -220,7 +220,7 @@
             },
           },
           {
-            Call: &parser.CallStmt{
+            Callable: &parser.CallableStmt{
               Name: &"Foo",
               Arguments: []*parser.ArgumentExpr{
                 {
@@ -255,7 +255,7 @@
                 },
                 Stmts: []*parser.Stmt{
                   {
-                    Call: &parser.CallStmt{
+                    Callable: &parser.CallableStmt{
                       Name: &"Bar",
                       Arguments: []*parser.ArgumentExpr{
                         {
@@ -273,7 +273,7 @@
                       TrailingLambda: &parser.LambdaExpr{
                         Stmts: []*parser.Stmt{
                           {
-                            Call: &parser.CallStmt{
+                            Callable: &parser.CallableStmt{
                               Name: &"Baz",
                               Arguments: []*parser.ArgumentExpr{
                                 {
@@ -299,7 +299,7 @@
             },
           },
           {
-            Call: &parser.CallStmt{
+            Callable: &parser.CallableStmt{
               Name: &"Foo",
               Arguments: []*parser.ArgumentExpr{
                 {
@@ -310,7 +310,7 @@
                         Lambda: &parser.LambdaExpr{
                           Stmts: []*parser.Stmt{
                             {
-                              Call: &parser.CallStmt{
+                              Callable: &parser.CallableStmt{
                                 Name: &"Bar",
                               },
                             },
@@ -324,7 +324,7 @@
               TrailingLambda: &parser.LambdaExpr{
                 Stmts: []*parser.Stmt{
                   {
-                    Call: &parser.CallStmt{
+                    Callable: &parser.CallableStmt{
                       Name: &"Baz",
                     },
                   },
@@ -742,7 +742,7 @@
             },
           },
           {
-            Call: &parser.CallStmt{
+            Callable: &parser.CallableStmt{
               Name: &"call",
               LambdaOnly: &parser.LambdaExpr{
                 Parameters: []*parser.LambdaParameter{
@@ -795,7 +795,7 @@
             },
           },
           {
-            Call: &parser.CallStmt{
+            Callable: &parser.CallableStmt{
               Name: &"call",
               LambdaOnly: &parser.LambdaExpr{
                 Return: &parser.TypeDecl{
@@ -826,7 +826,7 @@
             },
           },
           {
-            Call: &parser.CallStmt{
+            Callable: &parser.CallableStmt{
               Name: &"call",
               LambdaOnly: &parser.LambdaExpr{
                 Parameters: []*parser.LambdaParameter{

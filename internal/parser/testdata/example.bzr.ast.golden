@@ -573,7 +573,7 @@
               },
               Block: []*parser.Stmt{
                 {
-                  Call: &parser.CallStmt{
+                  Callable: &parser.CallableStmt{
                     Annotations: []*parser.AnnotationExpr{
                       {
                         Name: &"Modifier",
@@ -616,7 +616,7 @@
                     LambdaOnly: &parser.LambdaExpr{
                       Stmts: []*parser.Stmt{
                         {
-                          Call: &parser.CallStmt{
+                          Callable: &parser.CallableStmt{
                             Name: &"Text",
                             Arguments: []*parser.ArgumentExpr{
                               {
@@ -639,7 +639,7 @@
                           },
                         },
                         {
-                          Call: &parser.CallStmt{
+                          Callable: &parser.CallableStmt{
                             Name: &"Button",
                             Arguments: []*parser.ArgumentExpr{
                               {
@@ -704,7 +704,7 @@
                                       },
                                       Block: []*parser.Stmt{
                                         {
-                                          Call: &parser.CallStmt{
+                                          Callable: &parser.CallableStmt{
                                             Name: &"Print",
                                             Arguments: []*parser.ArgumentExpr{
                                               {
@@ -744,7 +744,7 @@
         Name: "TextAndButtonRowPreview",
         Block: []*parser.Stmt{
           {
-            Call: &parser.CallStmt{
+            Callable: &parser.CallableStmt{
               Name: &"TextAndButtonRow",
               Arguments: []*parser.ArgumentExpr{
                 {
