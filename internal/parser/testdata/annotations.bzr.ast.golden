@@ -10,7 +10,7 @@
         Name: "MultipleAnnotations",
         Block: []*parser.Stmt{
           {
-            Call: &parser.CallStmt{
+            Callable: &parser.CallableStmt{
               Annotations: []*parser.AnnotationExpr{
                 {
                   Name: &"State",
@@ -59,7 +59,7 @@
             },
           },
           {
-            Call: &parser.CallStmt{
+            Callable: &parser.CallableStmt{
               Annotations: []*parser.AnnotationExpr{
                 {
                   Name: &"State",
@@ -90,7 +90,7 @@
             },
           },
           {
-            Call: &parser.CallStmt{
+            Callable: &parser.CallableStmt{
               Annotations: []*parser.AnnotationExpr{
                 {
                   Name: &"Logger",
