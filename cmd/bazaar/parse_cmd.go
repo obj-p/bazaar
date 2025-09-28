@@ -11,7 +11,7 @@ type ParserCmd struct {
 	Source string `arg:"" name:"source" help:"Source path."`
 }
 
-func (p *ParserCmd) Run(ctx *Context) error {
+func (p *ParserCmd) Run(_ *Context) error {
 	source, err := os.ReadFile(p.Source)
 	if err != nil {
 		return err

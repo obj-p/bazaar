@@ -10,7 +10,7 @@ import (
 // Adapted from https://github.com/alecthomas/langx
 
 // TODO: likely need to differentiate between a control flow expression (no calls with trailing labmdas)
-// and block level expressions. Perhaps Stmt should be BlockLevelExpr? 
+// and block level expressions. Perhaps Stmt should be BlockLevelExpr?
 
 type AnnotationExpr struct {
 	Name *string   `parser:"'@' @Ident"`

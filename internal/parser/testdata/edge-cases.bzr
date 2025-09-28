@@ -21,7 +21,9 @@ func EdgeCases() {
     var enumerate = "bar"
     var range = "baz"
 
-    // Trailing comma tests
+    if something {}
+    if something({}) {}
+    if (something {})
     var arrayWithTrailing = [1, 2, 3,]
     var mapWithTrailing = {a: 1, b: 2,}
     for (a, b,) in something {}

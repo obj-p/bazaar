@@ -8,7 +8,7 @@ import (
 
 type GrammarCmd struct{}
 
-func (g *GrammarCmd) Run(ctx *Context) error {
+func (g *GrammarCmd) Run(_ *Context) error {
 	fmt.Println(parser.BazaarParser.String())
 	return nil
 }

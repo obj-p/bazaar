@@ -32,4 +32,7 @@ func Ifs(foo bool, bar bool, baz bool?) {
     // Variable declarations in else if fragments
     if var a {} else if var b = something {} else {}
     if var (x, y) = coords {} else if var z = fallback {} else {}
+
+    // Lambdas
+    if var someFunction({}) {}
 }

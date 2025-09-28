@@ -3,7 +3,7 @@ package main
 import "github.com/alecthomas/kong"
 
 var (
-	version string = "dev"
+	version = "dev"
 
 	cli struct {
 		Version kong.VersionFlag
