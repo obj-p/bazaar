@@ -3,10 +3,9 @@ package parser
 import "github.com/obj-p/bazaar/internal/token"
 
 type VarDeclStmt struct {
-	Annotations []*AnnotationExpr `parser:"@@*"`
-	Dest        *VariableExpr     `parser:"'var' @@"`
-	Type        *TypeDecl         `parser:"@@?"`
-	Source      *Expr             `parser:"'=' @@"`
+	Dest   *VariableExpr `parser:"'var' @@"`
+	Type   *TypeDecl     `parser:"@@?"`
+	Source *Expr         `parser:"'=' @@"`
 }
 
 type AssignStmt struct {
@@ -17,15 +16,15 @@ type AssignStmt struct {
 
 type ForStmt struct {
 	Dest   *VariableExpr `parser:"'for' ((@@"`
-	Source *Expr         `parser:"'in' @@)"`
-	Expr   *Expr         `parser:"| @@)"`
+	Source *ControlExpr  `parser:"'in' @@)"`
+	Expr   *ControlExpr  `parser:"| @@)"`
 	Block  []*Stmt       `parser:"'{' @@* '}'"`
 }
 
 type ConditionalFragment struct {
 	Var         *VarDeclStmt `parser:"@@"`
 	ImplicitVar *string      `parser:"| 'var' @Ident"`
-	Expr        *Expr        `parser:"| @@"`
+	Expr        *ControlExpr `parser:"| @@"`
 }
 
 type ConditionalBlock struct {
@@ -40,8 +39,8 @@ type IfStmt struct {
 }
 
 type SwitchCase struct {
-	Expr  *Expr   `parser:"'case' @@ ':'"`
-	Block []*Stmt `parser:"@@*"`
+	Expr  *ControlExpr `parser:"'case' @@ ':'"`
+	Block []*Stmt      `parser:"@@*"`
 }
 
 type SwitchBody struct {
@@ -50,8 +49,8 @@ type SwitchBody struct {
 }
 
 type SwitchStmt struct {
-	Expr *Expr       `parser:"'switch' @@"`
-	Body *SwitchBody `parser:"'{' @@ '}'"`
+	Expr *ControlExpr `parser:"'switch' @@"`
+	Body *SwitchBody  `parser:"'{' @@ '}'"`
 }
 
 type ReturnStmt struct {
@@ -59,12 +58,11 @@ type ReturnStmt struct {
 }
 
 type Stmt struct {
-	Callable *CallableExpr `parser:"@@"`
-	Var      *VarDeclStmt  `parser:"| @@"`
-	Assign   *AssignStmt   `parser:"| @@"`
-	For      *ForStmt      `parser:"| @@"`
-	If       *IfStmt       `parser:"| @@"`
-	Switch   *SwitchStmt   `parser:"| @@"`
-	Return   *ReturnStmt   `parser:"| @@"`
-	Expr     *Expr         `parser:"| @@"`
+	Var    *VarDeclStmt `parser:"@@"`
+	Assign *AssignStmt  `parser:"| @@"`
+	For    *ForStmt     `parser:"| @@"`
+	If     *IfStmt      `parser:"| @@"`
+	Switch *SwitchStmt  `parser:"| @@"`
+	Return *ReturnStmt  `parser:"| @@"`
+	Expr   *Expr        `parser:"| @@"`
 }

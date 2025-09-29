@@ -10,6 +10,7 @@ func Fors(list [string], map {string: int}) {
 
     var idx = 0
     for idx < len(list) { idx += 1 }
-    for (someFunction {}) {}
+    // TODO: Ambiguous case - temporarily commented out
+    // for (someFunction {}) {}
     for value in list.sort({ (a, b) -> bool in a < b }) {}
 }

@@ -10,203 +10,52 @@
         Name: "Lambdas",
         Block: []*parser.Stmt{
           {
-            Callable: &parser.CallableStmt{
-              Name: &"Foo",
-              LambdaOnly: &parser.LambdaExpr{
-              },
-            },
-          },
-          {
-            Callable: &parser.CallableStmt{
-              Name: &"Foo",
-              LambdaOnly: &parser.LambdaExpr{
-                Stmts: []*parser.Stmt{
-                  {
-                    Callable: &parser.CallableStmt{
-                      Name: &"Bar",
-                    },
+            Expr: &parser.Expr{
+              Unary: &parser.UnaryExpr{
+                Primary: &parser.PrimaryExpr{
+                  Reference: &parser.ReferenceExpr{
+                    Name: &"Foo",
                   },
                 },
               },
             },
           },
           {
-            Callable: &parser.CallableStmt{
-              Name: &"Foo",
-              LambdaOnly: &parser.LambdaExpr{
-                Stmts: []*parser.Stmt{
-                  {
-                    Callable: &parser.CallableStmt{
-                      Name: &"Bar",
-                      TrailingLambda: &parser.LambdaExpr{
-                        Stmts: []*parser.Stmt{
-                          {
-                            Callable: &parser.CallableStmt{
-                              Name: &"Baz",
-                              LambdaOnly: &parser.LambdaExpr{
-                              },
-                            },
-                          },
-                        },
-                      },
-                    },
+            Expr: &parser.Expr{
+              Unary: &parser.UnaryExpr{
+                Primary: &parser.PrimaryExpr{
+                  Lambda: &parser.LambdaExpr{
                   },
                 },
               },
             },
           },
           {
-            Callable: &parser.CallableStmt{
-              Name: &"Foo",
-              TrailingLambda: &parser.LambdaExpr{
-              },
-            },
-          },
-          {
-            Callable: &parser.CallableStmt{
-              Name: &"Foo",
-              TrailingLambda: &parser.LambdaExpr{
-                Stmts: []*parser.Stmt{
-                  {
-                    Callable: &parser.CallableStmt{
-                      Name: &"Bar",
-                    },
+            Expr: &parser.Expr{
+              Unary: &parser.UnaryExpr{
+                Primary: &parser.PrimaryExpr{
+                  Reference: &parser.ReferenceExpr{
+                    Name: &"Foo",
                   },
                 },
               },
             },
           },
           {
-            Callable: &parser.CallableStmt{
-              Name: &"Foo",
-              TrailingLambda: &parser.LambdaExpr{
-                Stmts: []*parser.Stmt{
-                  {
-                    Callable: &parser.CallableStmt{
-                      Name: &"Bar",
-                      TrailingLambda: &parser.LambdaExpr{
-                        Stmts: []*parser.Stmt{
-                          {
-                            Callable: &parser.CallableStmt{
-                              Name: &"Baz",
-                              TrailingLambda: &parser.LambdaExpr{
-                              },
-                            },
-                          },
-                        },
-                      },
-                    },
-                  },
-                },
-              },
-            },
-          },
-          {
-            Callable: &parser.CallableStmt{
-              Name: &"Foo",
-              Arguments: []*parser.ArgumentExpr{
-                {
-                  Expr: &parser.Expr{
-                    Unary: &parser.UnaryExpr{
-                      Primary: &parser.PrimaryExpr{
-                        Reference: &parser.ReferenceExpr{
-                          Name: &"bar",
-                        },
-                      },
-                    },
-                  },
-                },
-              },
-              TrailingLambda: &parser.LambdaExpr{
-                Parameters: []*parser.LambdaParameter{
-                  {
-                    Name: "bar",
-                  },
-                },
-                Stmts: []*parser.Stmt{
-                  {
-                    Callable: &parser.CallableStmt{
-                      Name: &"Bar",
-                    },
-                  },
-                },
-              },
-            },
-          },
-          {
-            Callable: &parser.CallableStmt{
-              Name: &"Foo",
-              Arguments: []*parser.ArgumentExpr{
-                {
-                  Expr: &parser.Expr{
-                    Unary: &parser.UnaryExpr{
-                      Primary: &parser.PrimaryExpr{
-                        Reference: &parser.ReferenceExpr{
-                          Name: &"bar",
-                        },
-                      },
-                    },
-                  },
-                },
-              },
-              TrailingLambda: &parser.LambdaExpr{
-                Parameters: []*parser.LambdaParameter{
-                  {
-                    Name: "bar",
-                  },
-                },
-                Return: &parser.TypeDecl{
-                  Value: &"int",
-                },
-                Stmts: []*parser.Stmt{
-                  {
-                    Callable: &parser.CallableStmt{
-                      Name: &"Bar",
-                    },
-                  },
-                },
-              },
-            },
-          },
-          {
-            Callable: &parser.CallableStmt{
-              Name: &"Foo",
-              Arguments: []*parser.ArgumentExpr{
-                {
-                  Expr: &parser.Expr{
-                    Unary: &parser.UnaryExpr{
-                      Primary: &parser.PrimaryExpr{
-                        Reference: &parser.ReferenceExpr{
-                          Name: &"bar",
-                        },
-                      },
-                    },
-                  },
-                },
-              },
-              TrailingLambda: &parser.LambdaExpr{
-                Parameters: []*parser.LambdaParameter{
-                  {
-                    Name: "bar",
-                    Type: &parser.TypeDecl{
-                      Value: &"string",
-                    },
-                  },
-                },
-                Return: &parser.TypeDecl{
-                  Value: &"int",
-                },
-                Stmts: []*parser.Stmt{
-                  {
-                    Callable: &parser.CallableStmt{
-                      Name: &"Bar",
-                      Arguments: []*parser.ArgumentExpr{
-                        {
-                          Expr: &parser.Expr{
-                            Unary: &parser.UnaryExpr{
-                              Primary: &parser.PrimaryExpr{
-                                Reference: &parser.ReferenceExpr{
-                                  Name: &"bar",
+            Expr: &parser.Expr{
+              Unary: &parser.UnaryExpr{
+                Primary: &parser.PrimaryExpr{
+                  Lambda: &parser.LambdaExpr{
+                    Stmts: []*parser.Stmt{
+                      {
+                        Expr: &parser.Expr{
+                          Unary: &parser.UnaryExpr{
+                            Primary: &parser.PrimaryExpr{
+                              Reference: &parser.ReferenceExpr{
+                                Name: &"Bar",
+                                KeyPath: &parser.KeyPathExpr{
+                                  Call: &parser.CallExpr{
+                                  },
                                 },
                               },
                             },
@@ -220,68 +69,60 @@
             },
           },
           {
-            Callable: &parser.CallableStmt{
-              Name: &"Foo",
-              Arguments: []*parser.ArgumentExpr{
-                {
-                  Expr: &parser.Expr{
-                    Unary: &parser.UnaryExpr{
-                      Primary: &parser.PrimaryExpr{
-                        Reference: &parser.ReferenceExpr{
-                          Name: &"bar",
-                        },
-                      },
-                    },
+            Expr: &parser.Expr{
+              Unary: &parser.UnaryExpr{
+                Primary: &parser.PrimaryExpr{
+                  Reference: &parser.ReferenceExpr{
+                    Name: &"Foo",
                   },
                 },
               },
-              TrailingLambda: &parser.LambdaExpr{
-                Parameters: []*parser.LambdaParameter{
-                  {
-                    Name: "bar",
-                    Type: &parser.TypeDecl{
-                      Value: &"string",
-                    },
-                  },
-                  {
-                    Name: "baz",
-                    Type: &parser.TypeDecl{
-                      Value: &"string",
-                    },
-                  },
-                },
-                Return: &parser.TypeDecl{
-                  Value: &"int",
-                },
-                Stmts: []*parser.Stmt{
-                  {
-                    Callable: &parser.CallableStmt{
-                      Name: &"Bar",
-                      Arguments: []*parser.ArgumentExpr{
-                        {
-                          Expr: &parser.Expr{
-                            Unary: &parser.UnaryExpr{
-                              Primary: &parser.PrimaryExpr{
-                                Reference: &parser.ReferenceExpr{
-                                  Name: &"bar",
+            },
+          },
+          {
+            Expr: &parser.Expr{
+              Unary: &parser.UnaryExpr{
+                Primary: &parser.PrimaryExpr{
+                  Lambda: &parser.LambdaExpr{
+                    Stmts: []*parser.Stmt{
+                      {
+                        Expr: &parser.Expr{
+                          Unary: &parser.UnaryExpr{
+                            Primary: &parser.PrimaryExpr{
+                              Reference: &parser.ReferenceExpr{
+                                Name: &"Bar",
+                                KeyPath: &parser.KeyPathExpr{
+                                  Call: &parser.CallExpr{
+                                  },
                                 },
                               },
                             },
                           },
                         },
                       },
-                      TrailingLambda: &parser.LambdaExpr{
-                        Stmts: []*parser.Stmt{
-                          {
-                            Callable: &parser.CallableStmt{
-                              Name: &"Baz",
-                              Arguments: []*parser.ArgumentExpr{
-                                {
-                                  Expr: &parser.Expr{
-                                    Unary: &parser.UnaryExpr{
-                                      Primary: &parser.PrimaryExpr{
-                                        Reference: &parser.ReferenceExpr{
-                                          Name: &"baz",
+                      {
+                        Expr: &parser.Expr{
+                          Unary: &parser.UnaryExpr{
+                            Primary: &parser.PrimaryExpr{
+                              Lambda: &parser.LambdaExpr{
+                                Stmts: []*parser.Stmt{
+                                  {
+                                    Expr: &parser.Expr{
+                                      Unary: &parser.UnaryExpr{
+                                        Primary: &parser.PrimaryExpr{
+                                          Reference: &parser.ReferenceExpr{
+                                            Name: &"Baz",
+                                          },
+                                        },
+                                      },
+                                    },
+                                  },
+                                  {
+                                    Expr: &parser.Expr{
+                                      Unary: &parser.UnaryExpr{
+                                        Primary: &parser.PrimaryExpr{
+                                          Lambda: &parser.LambdaExpr{
+                                          },
                                         },
                                       },
                                     },
@@ -299,19 +140,61 @@
             },
           },
           {
-            Callable: &parser.CallableStmt{
-              Name: &"Foo",
-              Arguments: []*parser.ArgumentExpr{
-                {
-                  Name: &"bar",
-                  Expr: &parser.Expr{
-                    Unary: &parser.UnaryExpr{
-                      Primary: &parser.PrimaryExpr{
-                        Lambda: &parser.LambdaExpr{
-                          Stmts: []*parser.Stmt{
-                            {
-                              Callable: &parser.CallableStmt{
+            Expr: &parser.Expr{
+              Unary: &parser.UnaryExpr{
+                Primary: &parser.PrimaryExpr{
+                  Reference: &parser.ReferenceExpr{
+                    Name: &"Foo",
+                    KeyPath: &parser.KeyPathExpr{
+                      Call: &parser.CallExpr{
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+          {
+            Expr: &parser.Expr{
+              Unary: &parser.UnaryExpr{
+                Primary: &parser.PrimaryExpr{
+                  Lambda: &parser.LambdaExpr{
+                  },
+                },
+              },
+            },
+          },
+          {
+            Expr: &parser.Expr{
+              Unary: &parser.UnaryExpr{
+                Primary: &parser.PrimaryExpr{
+                  Reference: &parser.ReferenceExpr{
+                    Name: &"Foo",
+                    KeyPath: &parser.KeyPathExpr{
+                      Call: &parser.CallExpr{
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+          {
+            Expr: &parser.Expr{
+              Unary: &parser.UnaryExpr{
+                Primary: &parser.PrimaryExpr{
+                  Lambda: &parser.LambdaExpr{
+                    Stmts: []*parser.Stmt{
+                      {
+                        Expr: &parser.Expr{
+                          Unary: &parser.UnaryExpr{
+                            Primary: &parser.PrimaryExpr{
+                              Reference: &parser.ReferenceExpr{
                                 Name: &"Bar",
+                                KeyPath: &parser.KeyPathExpr{
+                                  Call: &parser.CallExpr{
+                                  },
+                                },
                               },
                             },
                           },
@@ -321,11 +204,480 @@
                   },
                 },
               },
-              TrailingLambda: &parser.LambdaExpr{
-                Stmts: []*parser.Stmt{
-                  {
-                    Callable: &parser.CallableStmt{
-                      Name: &"Baz",
+            },
+          },
+          {
+            Expr: &parser.Expr{
+              Unary: &parser.UnaryExpr{
+                Primary: &parser.PrimaryExpr{
+                  Reference: &parser.ReferenceExpr{
+                    Name: &"Foo",
+                    KeyPath: &parser.KeyPathExpr{
+                      Call: &parser.CallExpr{
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+          {
+            Expr: &parser.Expr{
+              Unary: &parser.UnaryExpr{
+                Primary: &parser.PrimaryExpr{
+                  Lambda: &parser.LambdaExpr{
+                    Stmts: []*parser.Stmt{
+                      {
+                        Expr: &parser.Expr{
+                          Unary: &parser.UnaryExpr{
+                            Primary: &parser.PrimaryExpr{
+                              Reference: &parser.ReferenceExpr{
+                                Name: &"Bar",
+                                KeyPath: &parser.KeyPathExpr{
+                                  Call: &parser.CallExpr{
+                                  },
+                                },
+                              },
+                            },
+                          },
+                        },
+                      },
+                      {
+                        Expr: &parser.Expr{
+                          Unary: &parser.UnaryExpr{
+                            Primary: &parser.PrimaryExpr{
+                              Lambda: &parser.LambdaExpr{
+                                Stmts: []*parser.Stmt{
+                                  {
+                                    Expr: &parser.Expr{
+                                      Unary: &parser.UnaryExpr{
+                                        Primary: &parser.PrimaryExpr{
+                                          Reference: &parser.ReferenceExpr{
+                                            Name: &"Baz",
+                                            KeyPath: &parser.KeyPathExpr{
+                                              Call: &parser.CallExpr{
+                                              },
+                                            },
+                                          },
+                                        },
+                                      },
+                                    },
+                                  },
+                                  {
+                                    Expr: &parser.Expr{
+                                      Unary: &parser.UnaryExpr{
+                                        Primary: &parser.PrimaryExpr{
+                                          Lambda: &parser.LambdaExpr{
+                                          },
+                                        },
+                                      },
+                                    },
+                                  },
+                                },
+                              },
+                            },
+                          },
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+          {
+            Expr: &parser.Expr{
+              Unary: &parser.UnaryExpr{
+                Primary: &parser.PrimaryExpr{
+                  Reference: &parser.ReferenceExpr{
+                    Name: &"Foo",
+                    KeyPath: &parser.KeyPathExpr{
+                      Call: &parser.CallExpr{
+                        Arguments: []*parser.ArgumentExpr{
+                          {
+                            Expr: &parser.Expr{
+                              Unary: &parser.UnaryExpr{
+                                Primary: &parser.PrimaryExpr{
+                                  Reference: &parser.ReferenceExpr{
+                                    Name: &"bar",
+                                  },
+                                },
+                              },
+                            },
+                          },
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+          {
+            Expr: &parser.Expr{
+              Unary: &parser.UnaryExpr{
+                Primary: &parser.PrimaryExpr{
+                  Lambda: &parser.LambdaExpr{
+                    Parameters: []*parser.LambdaParameter{
+                      {
+                        Name: "bar",
+                      },
+                    },
+                    Stmts: []*parser.Stmt{
+                      {
+                        Expr: &parser.Expr{
+                          Unary: &parser.UnaryExpr{
+                            Primary: &parser.PrimaryExpr{
+                              Reference: &parser.ReferenceExpr{
+                                Name: &"Bar",
+                                KeyPath: &parser.KeyPathExpr{
+                                  Call: &parser.CallExpr{
+                                  },
+                                },
+                              },
+                            },
+                          },
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+          {
+            Expr: &parser.Expr{
+              Unary: &parser.UnaryExpr{
+                Primary: &parser.PrimaryExpr{
+                  Reference: &parser.ReferenceExpr{
+                    Name: &"Foo",
+                    KeyPath: &parser.KeyPathExpr{
+                      Call: &parser.CallExpr{
+                        Arguments: []*parser.ArgumentExpr{
+                          {
+                            Expr: &parser.Expr{
+                              Unary: &parser.UnaryExpr{
+                                Primary: &parser.PrimaryExpr{
+                                  Reference: &parser.ReferenceExpr{
+                                    Name: &"bar",
+                                  },
+                                },
+                              },
+                            },
+                          },
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+          {
+            Expr: &parser.Expr{
+              Unary: &parser.UnaryExpr{
+                Primary: &parser.PrimaryExpr{
+                  Lambda: &parser.LambdaExpr{
+                    Parameters: []*parser.LambdaParameter{
+                      {
+                        Name: "bar",
+                      },
+                    },
+                    Return: &parser.TypeDecl{
+                      Value: &"int",
+                    },
+                    Stmts: []*parser.Stmt{
+                      {
+                        Expr: &parser.Expr{
+                          Unary: &parser.UnaryExpr{
+                            Primary: &parser.PrimaryExpr{
+                              Reference: &parser.ReferenceExpr{
+                                Name: &"Bar",
+                                KeyPath: &parser.KeyPathExpr{
+                                  Call: &parser.CallExpr{
+                                  },
+                                },
+                              },
+                            },
+                          },
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+          {
+            Expr: &parser.Expr{
+              Unary: &parser.UnaryExpr{
+                Primary: &parser.PrimaryExpr{
+                  Reference: &parser.ReferenceExpr{
+                    Name: &"Foo",
+                    KeyPath: &parser.KeyPathExpr{
+                      Call: &parser.CallExpr{
+                        Arguments: []*parser.ArgumentExpr{
+                          {
+                            Expr: &parser.Expr{
+                              Unary: &parser.UnaryExpr{
+                                Primary: &parser.PrimaryExpr{
+                                  Reference: &parser.ReferenceExpr{
+                                    Name: &"bar",
+                                  },
+                                },
+                              },
+                            },
+                          },
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+          {
+            Expr: &parser.Expr{
+              Unary: &parser.UnaryExpr{
+                Primary: &parser.PrimaryExpr{
+                  Lambda: &parser.LambdaExpr{
+                    Parameters: []*parser.LambdaParameter{
+                      {
+                        Name: "bar",
+                        Type: &parser.TypeDecl{
+                          Value: &"string",
+                        },
+                      },
+                    },
+                    Return: &parser.TypeDecl{
+                      Value: &"int",
+                    },
+                    Stmts: []*parser.Stmt{
+                      {
+                        Expr: &parser.Expr{
+                          Unary: &parser.UnaryExpr{
+                            Primary: &parser.PrimaryExpr{
+                              Reference: &parser.ReferenceExpr{
+                                Name: &"Bar",
+                                KeyPath: &parser.KeyPathExpr{
+                                  Call: &parser.CallExpr{
+                                    Arguments: []*parser.ArgumentExpr{
+                                      {
+                                        Expr: &parser.Expr{
+                                          Unary: &parser.UnaryExpr{
+                                            Primary: &parser.PrimaryExpr{
+                                              Reference: &parser.ReferenceExpr{
+                                                Name: &"bar",
+                                              },
+                                            },
+                                          },
+                                        },
+                                      },
+                                    },
+                                  },
+                                },
+                              },
+                            },
+                          },
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+          {
+            Expr: &parser.Expr{
+              Unary: &parser.UnaryExpr{
+                Primary: &parser.PrimaryExpr{
+                  Reference: &parser.ReferenceExpr{
+                    Name: &"Foo",
+                    KeyPath: &parser.KeyPathExpr{
+                      Call: &parser.CallExpr{
+                        Arguments: []*parser.ArgumentExpr{
+                          {
+                            Expr: &parser.Expr{
+                              Unary: &parser.UnaryExpr{
+                                Primary: &parser.PrimaryExpr{
+                                  Reference: &parser.ReferenceExpr{
+                                    Name: &"bar",
+                                  },
+                                },
+                              },
+                            },
+                          },
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+          {
+            Expr: &parser.Expr{
+              Unary: &parser.UnaryExpr{
+                Primary: &parser.PrimaryExpr{
+                  Lambda: &parser.LambdaExpr{
+                    Parameters: []*parser.LambdaParameter{
+                      {
+                        Name: "bar",
+                        Type: &parser.TypeDecl{
+                          Value: &"string",
+                        },
+                      },
+                      {
+                        Name: "baz",
+                        Type: &parser.TypeDecl{
+                          Value: &"string",
+                        },
+                      },
+                    },
+                    Return: &parser.TypeDecl{
+                      Value: &"int",
+                    },
+                    Stmts: []*parser.Stmt{
+                      {
+                        Expr: &parser.Expr{
+                          Unary: &parser.UnaryExpr{
+                            Primary: &parser.PrimaryExpr{
+                              Reference: &parser.ReferenceExpr{
+                                Name: &"Bar",
+                                KeyPath: &parser.KeyPathExpr{
+                                  Call: &parser.CallExpr{
+                                    Arguments: []*parser.ArgumentExpr{
+                                      {
+                                        Expr: &parser.Expr{
+                                          Unary: &parser.UnaryExpr{
+                                            Primary: &parser.PrimaryExpr{
+                                              Reference: &parser.ReferenceExpr{
+                                                Name: &"bar",
+                                              },
+                                            },
+                                          },
+                                        },
+                                      },
+                                    },
+                                  },
+                                },
+                              },
+                            },
+                          },
+                        },
+                      },
+                      {
+                        Expr: &parser.Expr{
+                          Unary: &parser.UnaryExpr{
+                            Primary: &parser.PrimaryExpr{
+                              Lambda: &parser.LambdaExpr{
+                                Stmts: []*parser.Stmt{
+                                  {
+                                    Expr: &parser.Expr{
+                                      Unary: &parser.UnaryExpr{
+                                        Primary: &parser.PrimaryExpr{
+                                          Reference: &parser.ReferenceExpr{
+                                            Name: &"Baz",
+                                            KeyPath: &parser.KeyPathExpr{
+                                              Call: &parser.CallExpr{
+                                                Arguments: []*parser.ArgumentExpr{
+                                                  {
+                                                    Expr: &parser.Expr{
+                                                      Unary: &parser.UnaryExpr{
+                                                        Primary: &parser.PrimaryExpr{
+                                                          Reference: &parser.ReferenceExpr{
+                                                            Name: &"baz",
+                                                          },
+                                                        },
+                                                      },
+                                                    },
+                                                  },
+                                                },
+                                              },
+                                            },
+                                          },
+                                        },
+                                      },
+                                    },
+                                  },
+                                },
+                              },
+                            },
+                          },
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+          {
+            Expr: &parser.Expr{
+              Unary: &parser.UnaryExpr{
+                Primary: &parser.PrimaryExpr{
+                  Reference: &parser.ReferenceExpr{
+                    Name: &"Foo",
+                    KeyPath: &parser.KeyPathExpr{
+                      Call: &parser.CallExpr{
+                        Arguments: []*parser.ArgumentExpr{
+                          {
+                            Name: &"bar",
+                            Expr: &parser.Expr{
+                              Unary: &parser.UnaryExpr{
+                                Primary: &parser.PrimaryExpr{
+                                  Lambda: &parser.LambdaExpr{
+                                    Stmts: []*parser.Stmt{
+                                      {
+                                        Expr: &parser.Expr{
+                                          Unary: &parser.UnaryExpr{
+                                            Primary: &parser.PrimaryExpr{
+                                              Reference: &parser.ReferenceExpr{
+                                                Name: &"Bar",
+                                                KeyPath: &parser.KeyPathExpr{
+                                                  Call: &parser.CallExpr{
+                                                  },
+                                                },
+                                              },
+                                            },
+                                          },
+                                        },
+                                      },
+                                    },
+                                  },
+                                },
+                              },
+                            },
+                          },
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+          {
+            Expr: &parser.Expr{
+              Unary: &parser.UnaryExpr{
+                Primary: &parser.PrimaryExpr{
+                  Lambda: &parser.LambdaExpr{
+                    Stmts: []*parser.Stmt{
+                      {
+                        Expr: &parser.Expr{
+                          Unary: &parser.UnaryExpr{
+                            Primary: &parser.PrimaryExpr{
+                              Reference: &parser.ReferenceExpr{
+                                Name: &"Baz",
+                                KeyPath: &parser.KeyPathExpr{
+                                  Call: &parser.CallExpr{
+                                  },
+                                },
+                              },
+                            },
+                          },
+                        },
+                      },
                     },
                   },
                 },
@@ -742,76 +1094,59 @@
             },
           },
           {
-            Callable: &parser.CallableStmt{
-              Name: &"call",
-              LambdaOnly: &parser.LambdaExpr{
-                Parameters: []*parser.LambdaParameter{
-                  {
-                    Name: "x",
-                    Type: &parser.TypeDecl{
-                      Value: &"int",
-                    },
-                  },
-                  {
-                    Name: "y",
-                    Type: &parser.TypeDecl{
-                      Value: &"string",
-                    },
-                  },
-                },
-                Return: &parser.TypeDecl{
-                  Value: &"bool",
-                },
-                Stmts: []*parser.Stmt{
-                  {
-                    Return: &parser.ReturnStmt{
-                      Value: &parser.Expr{
-                        Binary: &parser.BinaryExpr{
-                          Left: &parser.Expr{
-                            Unary: &parser.UnaryExpr{
-                              Primary: &parser.PrimaryExpr{
-                                Reference: &parser.ReferenceExpr{
-                                  Name: &"x",
-                                },
-                              },
-                            },
-                          },
-                          Op: token.Op(token.OpGt),
-                          Right: &parser.Expr{
-                            Unary: &parser.UnaryExpr{
-                              Primary: &parser.PrimaryExpr{
-                                Literal: &parser.Literal{
-                                  Number: &"0",
-                                },
-                              },
-                            },
-                          },
-                        },
-                      },
-                    },
+            Expr: &parser.Expr{
+              Unary: &parser.UnaryExpr{
+                Primary: &parser.PrimaryExpr{
+                  Reference: &parser.ReferenceExpr{
+                    Name: &"call",
                   },
                 },
               },
             },
           },
           {
-            Callable: &parser.CallableStmt{
-              Name: &"call",
-              LambdaOnly: &parser.LambdaExpr{
-                Return: &parser.TypeDecl{
-                  Value: &"string",
-                },
-                Stmts: []*parser.Stmt{
-                  {
-                    Return: &parser.ReturnStmt{
-                      Value: &parser.Expr{
-                        Unary: &parser.UnaryExpr{
-                          Primary: &parser.PrimaryExpr{
-                            Literal: &parser.Literal{
-                              String: &parser.String{
-                                Fragments: []*parser.StringFragment{
-                                  {
-                                    Text: &"result",
+            Expr: &parser.Expr{
+              Unary: &parser.UnaryExpr{
+                Primary: &parser.PrimaryExpr{
+                  Lambda: &parser.LambdaExpr{
+                    Parameters: []*parser.LambdaParameter{
+                      {
+                        Name: "x",
+                        Type: &parser.TypeDecl{
+                          Value: &"int",
+                        },
+                      },
+                      {
+                        Name: "y",
+                        Type: &parser.TypeDecl{
+                          Value: &"string",
+                        },
+                      },
+                    },
+                    Return: &parser.TypeDecl{
+                      Value: &"bool",
+                    },
+                    Stmts: []*parser.Stmt{
+                      {
+                        Return: &parser.ReturnStmt{
+                          Value: &parser.Expr{
+                            Binary: &parser.BinaryExpr{
+                              Left: &parser.Expr{
+                                Unary: &parser.UnaryExpr{
+                                  Primary: &parser.PrimaryExpr{
+                                    Reference: &parser.ReferenceExpr{
+                                      Name: &"x",
+                                    },
+                                  },
+                                },
+                              },
+                              Op: token.Op(token.OpGt),
+                              Right: &parser.Expr{
+                                Unary: &parser.UnaryExpr{
+                                  Primary: &parser.PrimaryExpr{
+                                    Literal: &parser.Literal{
+                                      Number: &"0",
+                                    },
                                   },
                                 },
                               },
@@ -826,28 +1161,87 @@
             },
           },
           {
-            Callable: &parser.CallableStmt{
-              Name: &"call",
-              LambdaOnly: &parser.LambdaExpr{
-                Parameters: []*parser.LambdaParameter{
-                  {
-                    Name: "a",
-                  },
-                  {
-                    Name: "b",
-                  },
-                  {
-                    Name: "c",
+            Expr: &parser.Expr{
+              Unary: &parser.UnaryExpr{
+                Primary: &parser.PrimaryExpr{
+                  Reference: &parser.ReferenceExpr{
+                    Name: &"call",
                   },
                 },
-                Stmts: []*parser.Stmt{
-                  {
-                    Return: &parser.ReturnStmt{
-                      Value: &parser.Expr{
-                        Unary: &parser.UnaryExpr{
-                          Primary: &parser.PrimaryExpr{
-                            Reference: &parser.ReferenceExpr{
-                              Name: &"a",
+              },
+            },
+          },
+          {
+            Expr: &parser.Expr{
+              Unary: &parser.UnaryExpr{
+                Primary: &parser.PrimaryExpr{
+                  Lambda: &parser.LambdaExpr{
+                    Return: &parser.TypeDecl{
+                      Value: &"string",
+                    },
+                    Stmts: []*parser.Stmt{
+                      {
+                        Return: &parser.ReturnStmt{
+                          Value: &parser.Expr{
+                            Unary: &parser.UnaryExpr{
+                              Primary: &parser.PrimaryExpr{
+                                Literal: &parser.Literal{
+                                  String: &parser.String{
+                                    Fragments: []*parser.StringFragment{
+                                      {
+                                        Text: &"result",
+                                      },
+                                    },
+                                  },
+                                },
+                              },
+                            },
+                          },
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+          {
+            Expr: &parser.Expr{
+              Unary: &parser.UnaryExpr{
+                Primary: &parser.PrimaryExpr{
+                  Reference: &parser.ReferenceExpr{
+                    Name: &"call",
+                  },
+                },
+              },
+            },
+          },
+          {
+            Expr: &parser.Expr{
+              Unary: &parser.UnaryExpr{
+                Primary: &parser.PrimaryExpr{
+                  Lambda: &parser.LambdaExpr{
+                    Parameters: []*parser.LambdaParameter{
+                      {
+                        Name: "a",
+                      },
+                      {
+                        Name: "b",
+                      },
+                      {
+                        Name: "c",
+                      },
+                    },
+                    Stmts: []*parser.Stmt{
+                      {
+                        Return: &parser.ReturnStmt{
+                          Value: &parser.Expr{
+                            Unary: &parser.UnaryExpr{
+                              Primary: &parser.PrimaryExpr{
+                                Reference: &parser.ReferenceExpr{
+                                  Name: &"a",
+                                },
+                              },
                             },
                           },
                         },

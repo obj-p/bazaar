@@ -218,14 +218,14 @@
               If: &parser.ConditionalBlock{
                 Fragments: []*parser.ConditionalFragment{
                   {
-                    Expr: &parser.Expr{
-                      Unary: &parser.UnaryExpr{
-                        Primary: &parser.PrimaryExpr{
-                          Reference: &parser.ReferenceExpr{
+                    Expr: &parser.ControlExpr{
+                      Unary: &parser.ControlUnaryExpr{
+                        Primary: &parser.ControlPrimaryExpr{
+                          Reference: &parser.ControlReferenceExpr{
                             Name: &"obj",
-                            KeyPath: &parser.KeyPathExpr{
+                            KeyPath: &parser.ControlKeyPathExpr{
                               Optional: true,
-                              Reference: &parser.ReferenceExpr{
+                              Reference: &parser.ControlReferenceExpr{
                                 Name: &"property",
                               },
                             },

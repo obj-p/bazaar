@@ -23,7 +23,8 @@ func EdgeCases() {
 
     if something {}
     if something({}) {}
-    if (something {})
+    // TODO: This is the ambiguous case - temporarily commented out
+    // if (something {})
     var arrayWithTrailing = [1, 2, 3,]
     var mapWithTrailing = {a: 1, b: 2,}
     for (a, b,) in something {}

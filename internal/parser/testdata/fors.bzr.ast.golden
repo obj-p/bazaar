@@ -39,10 +39,10 @@
               Dest: &parser.VariableExpr{
                 Name: &"value",
               },
-              Source: &parser.Expr{
-                Unary: &parser.UnaryExpr{
-                  Primary: &parser.PrimaryExpr{
-                    Reference: &parser.ReferenceExpr{
+              Source: &parser.ControlExpr{
+                Unary: &parser.ControlUnaryExpr{
+                  Primary: &parser.ControlPrimaryExpr{
+                    Reference: &parser.ControlReferenceExpr{
                       Name: &"list",
                     },
                   },
@@ -55,10 +55,10 @@
               Dest: &parser.VariableExpr{
                 Name: &"entry",
               },
-              Source: &parser.Expr{
-                Unary: &parser.UnaryExpr{
-                  Primary: &parser.PrimaryExpr{
-                    Reference: &parser.ReferenceExpr{
+              Source: &parser.ControlExpr{
+                Unary: &parser.ControlUnaryExpr{
+                  Primary: &parser.ControlPrimaryExpr{
+                    Reference: &parser.ControlReferenceExpr{
                       Name: &"map",
                     },
                   },
@@ -71,13 +71,13 @@
               Dest: &parser.VariableExpr{
                 Name: &"entry",
               },
-              Source: &parser.Expr{
-                Unary: &parser.UnaryExpr{
-                  Primary: &parser.PrimaryExpr{
-                    Reference: &parser.ReferenceExpr{
+              Source: &parser.ControlExpr{
+                Unary: &parser.ControlUnaryExpr{
+                  Primary: &parser.ControlPrimaryExpr{
+                    Reference: &parser.ControlReferenceExpr{
                       Name: &"enumerate",
-                      KeyPath: &parser.KeyPathExpr{
-                        Call: &parser.CallExpr{
+                      KeyPath: &parser.ControlKeyPathExpr{
+                        Call: &parser.ControlCallExpr{
                           Arguments: []*parser.ArgumentExpr{
                             {
                               Expr: &parser.Expr{
@@ -104,13 +104,13 @@
               Dest: &parser.VariableExpr{
                 Name: &"idx",
               },
-              Source: &parser.Expr{
-                Unary: &parser.UnaryExpr{
-                  Primary: &parser.PrimaryExpr{
-                    Reference: &parser.ReferenceExpr{
+              Source: &parser.ControlExpr{
+                Unary: &parser.ControlUnaryExpr{
+                  Primary: &parser.ControlPrimaryExpr{
+                    Reference: &parser.ControlReferenceExpr{
                       Name: &"range",
-                      KeyPath: &parser.KeyPathExpr{
-                        Call: &parser.CallExpr{
+                      KeyPath: &parser.ControlKeyPathExpr{
+                        Call: &parser.ControlCallExpr{
                           Arguments: []*parser.ArgumentExpr{
                             {
                               Expr: &parser.Expr{
@@ -153,13 +153,13 @@
                   },
                 },
               },
-              Source: &parser.Expr{
-                Unary: &parser.UnaryExpr{
-                  Primary: &parser.PrimaryExpr{
-                    Reference: &parser.ReferenceExpr{
+              Source: &parser.ControlExpr{
+                Unary: &parser.ControlUnaryExpr{
+                  Primary: &parser.ControlPrimaryExpr{
+                    Reference: &parser.ControlReferenceExpr{
                       Name: &"enumerate",
-                      KeyPath: &parser.KeyPathExpr{
-                        Call: &parser.CallExpr{
+                      KeyPath: &parser.ControlKeyPathExpr{
+                        Call: &parser.ControlCallExpr{
                           Arguments: []*parser.ArgumentExpr{
                             {
                               Expr: &parser.Expr{
@@ -191,13 +191,13 @@
                   },
                 },
               },
-              Source: &parser.Expr{
-                Unary: &parser.UnaryExpr{
-                  Primary: &parser.PrimaryExpr{
-                    Reference: &parser.ReferenceExpr{
+              Source: &parser.ControlExpr{
+                Unary: &parser.ControlUnaryExpr{
+                  Primary: &parser.ControlPrimaryExpr{
+                    Reference: &parser.ControlReferenceExpr{
                       Name: &"enumerate",
-                      KeyPath: &parser.KeyPathExpr{
-                        Call: &parser.CallExpr{
+                      KeyPath: &parser.ControlKeyPathExpr{
+                        Call: &parser.ControlCallExpr{
                           Arguments: []*parser.ArgumentExpr{
                             {
                               Expr: &parser.Expr{
@@ -237,25 +237,25 @@
           },
           {
             For: &parser.ForStmt{
-              Expr: &parser.Expr{
-                Binary: &parser.BinaryExpr{
-                  Left: &parser.Expr{
-                    Unary: &parser.UnaryExpr{
-                      Primary: &parser.PrimaryExpr{
-                        Reference: &parser.ReferenceExpr{
+              Expr: &parser.ControlExpr{
+                Binary: &parser.ControlBinaryExpr{
+                  Left: &parser.ControlExpr{
+                    Unary: &parser.ControlUnaryExpr{
+                      Primary: &parser.ControlPrimaryExpr{
+                        Reference: &parser.ControlReferenceExpr{
                           Name: &"idx",
                         },
                       },
                     },
                   },
                   Op: token.Op(token.OpLt),
-                  Right: &parser.Expr{
-                    Unary: &parser.UnaryExpr{
-                      Primary: &parser.PrimaryExpr{
-                        Reference: &parser.ReferenceExpr{
+                  Right: &parser.ControlExpr{
+                    Unary: &parser.ControlUnaryExpr{
+                      Primary: &parser.ControlPrimaryExpr{
+                        Reference: &parser.ControlReferenceExpr{
                           Name: &"len",
-                          KeyPath: &parser.KeyPathExpr{
-                            Call: &parser.CallExpr{
+                          KeyPath: &parser.ControlKeyPathExpr{
+                            Call: &parser.ControlCallExpr{
                               Arguments: []*parser.ArgumentExpr{
                                 {
                                   Expr: &parser.Expr{
@@ -287,6 +287,81 @@
                         Primary: &parser.PrimaryExpr{
                           Literal: &parser.Literal{
                             Number: &"1",
+                          },
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+          {
+            For: &parser.ForStmt{
+              Dest: &parser.VariableExpr{
+                Name: &"value",
+              },
+              Source: &parser.ControlExpr{
+                Unary: &parser.ControlUnaryExpr{
+                  Primary: &parser.ControlPrimaryExpr{
+                    Reference: &parser.ControlReferenceExpr{
+                      Name: &"list",
+                      KeyPath: &parser.ControlKeyPathExpr{
+                        Reference: &parser.ControlReferenceExpr{
+                          Name: &"sort",
+                          KeyPath: &parser.ControlKeyPathExpr{
+                            Call: &parser.ControlCallExpr{
+                              Arguments: []*parser.ArgumentExpr{
+                                {
+                                  Expr: &parser.Expr{
+                                    Unary: &parser.UnaryExpr{
+                                      Primary: &parser.PrimaryExpr{
+                                        Lambda: &parser.LambdaExpr{
+                                          Parameters: []*parser.LambdaParameter{
+                                            {
+                                              Name: "a",
+                                            },
+                                            {
+                                              Name: "b",
+                                            },
+                                          },
+                                          Return: &parser.TypeDecl{
+                                            Value: &"bool",
+                                          },
+                                          Stmts: []*parser.Stmt{
+                                            {
+                                              Expr: &parser.Expr{
+                                                Binary: &parser.BinaryExpr{
+                                                  Left: &parser.Expr{
+                                                    Unary: &parser.UnaryExpr{
+                                                      Primary: &parser.PrimaryExpr{
+                                                        Reference: &parser.ReferenceExpr{
+                                                          Name: &"a",
+                                                        },
+                                                      },
+                                                    },
+                                                  },
+                                                  Op: token.Op(token.OpLt),
+                                                  Right: &parser.Expr{
+                                                    Unary: &parser.UnaryExpr{
+                                                      Primary: &parser.PrimaryExpr{
+                                                        Reference: &parser.ReferenceExpr{
+                                                          Name: &"b",
+                                                        },
+                                                      },
+                                                    },
+                                                  },
+                                                },
+                                              },
+                                            },
+                                          },
+                                        },
+                                      },
+                                    },
+                                  },
+                                },
+                              },
+                            },
                           },
                         },
                       },

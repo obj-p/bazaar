@@ -194,6 +194,60 @@
             },
           },
           {
+            If: &parser.IfStmt{
+              If: &parser.ConditionalBlock{
+                Fragments: []*parser.ConditionalFragment{
+                  {
+                    Expr: &parser.ControlExpr{
+                      Unary: &parser.ControlUnaryExpr{
+                        Primary: &parser.ControlPrimaryExpr{
+                          Reference: &parser.ControlReferenceExpr{
+                            Name: &"something",
+                          },
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+          {
+            If: &parser.IfStmt{
+              If: &parser.ConditionalBlock{
+                Fragments: []*parser.ConditionalFragment{
+                  {
+                    Expr: &parser.ControlExpr{
+                      Unary: &parser.ControlUnaryExpr{
+                        Primary: &parser.ControlPrimaryExpr{
+                          Reference: &parser.ControlReferenceExpr{
+                            Name: &"something",
+                            KeyPath: &parser.ControlKeyPathExpr{
+                              Call: &parser.ControlCallExpr{
+                                Arguments: []*parser.ArgumentExpr{
+                                  {
+                                    Expr: &parser.Expr{
+                                      Unary: &parser.UnaryExpr{
+                                        Primary: &parser.PrimaryExpr{
+                                          Lambda: &parser.LambdaExpr{
+                                          },
+                                        },
+                                      },
+                                    },
+                                  },
+                                },
+                              },
+                            },
+                          },
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+          {
             Var: &parser.VarDeclStmt{
               Dest: &parser.VariableExpr{
                 Name: &"arrayWithTrailing",
@@ -308,11 +362,97 @@
                   },
                 },
               },
+              Source: &parser.ControlExpr{
+                Unary: &parser.ControlUnaryExpr{
+                  Primary: &parser.ControlPrimaryExpr{
+                    Reference: &parser.ControlReferenceExpr{
+                      Name: &"something",
+                    },
+                  },
+                },
+              },
+            },
+          },
+          {
+            Var: &parser.VarDeclStmt{
+              Dest: &parser.VariableExpr{
+                Name: &"callable",
+              },
               Source: &parser.Expr{
                 Unary: &parser.UnaryExpr{
                   Primary: &parser.PrimaryExpr{
                     Reference: &parser.ReferenceExpr{
-                      Name: &"something",
+                      Name: &"SomeCallable",
+                      KeyPath: &parser.KeyPathExpr{
+                        Call: &parser.CallExpr{
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+          {
+            Expr: &parser.Expr{
+              Unary: &parser.UnaryExpr{
+                Primary: &parser.PrimaryExpr{
+                  Lambda: &parser.LambdaExpr{
+                    Stmts: []*parser.Stmt{
+                      {
+                        Return: &parser.ReturnStmt{
+                          Value: &parser.Expr{
+                            Unary: &parser.UnaryExpr{
+                              Primary: &parser.PrimaryExpr{
+                                Literal: &parser.Literal{
+                                  Number: &"42",
+                                },
+                              },
+                            },
+                          },
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+          {
+            Var: &parser.VarDeclStmt{
+              Dest: &parser.VariableExpr{
+                Name: &"callable",
+              },
+              Source: &parser.Expr{
+                Unary: &parser.UnaryExpr{
+                  Primary: &parser.PrimaryExpr{
+                    Reference: &parser.ReferenceExpr{
+                      Name: &"SomeCallable",
+                    },
+                  },
+                },
+              },
+            },
+          },
+          {
+            Expr: &parser.Expr{
+              Unary: &parser.UnaryExpr{
+                Primary: &parser.PrimaryExpr{
+                  Lambda: &parser.LambdaExpr{
+                    Stmts: []*parser.Stmt{
+                      {
+                        Return: &parser.ReturnStmt{
+                          Value: &parser.Expr{
+                            Unary: &parser.UnaryExpr{
+                              Primary: &parser.PrimaryExpr{
+                                Literal: &parser.Literal{
+                                  Number: &"42",
+                                },
+                              },
+                            },
+                          },
+                        },
+                      },
                     },
                   },
                 },

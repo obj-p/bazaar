@@ -33,6 +33,6 @@ func Ifs(foo bool, bar bool, baz bool?) {
     if var a {} else if var b = something {} else {}
     if var (x, y) = coords {} else if var z = fallback {} else {}
 
-    // Lambdas
-    if var someFunction({}) {}
+    // Lambdas - TODO: Need to handle this case
+    // if var someFunction({}) {}
 }

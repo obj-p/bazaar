@@ -11,10 +11,10 @@
         Block: []*parser.Stmt{
           {
             Switch: &parser.SwitchStmt{
-              Expr: &parser.Expr{
-                Unary: &parser.UnaryExpr{
-                  Primary: &parser.PrimaryExpr{
-                    Reference: &parser.ReferenceExpr{
+              Expr: &parser.ControlExpr{
+                Unary: &parser.ControlUnaryExpr{
+                  Primary: &parser.ControlPrimaryExpr{
+                    Reference: &parser.ControlReferenceExpr{
                       Name: &"expression",
                     },
                   },
@@ -23,10 +23,10 @@
               Body: &parser.SwitchBody{
                 Cases: []*parser.SwitchCase{
                   {
-                    Expr: &parser.Expr{
-                      Unary: &parser.UnaryExpr{
-                        Primary: &parser.PrimaryExpr{
-                          Reference: &parser.ReferenceExpr{
+                    Expr: &parser.ControlExpr{
+                      Unary: &parser.ControlUnaryExpr{
+                        Primary: &parser.ControlPrimaryExpr{
+                          Reference: &parser.ControlReferenceExpr{
                             Name: &"expr1",
                           },
                         },
@@ -34,10 +34,10 @@
                     },
                   },
                   {
-                    Expr: &parser.Expr{
-                      Unary: &parser.UnaryExpr{
-                        Primary: &parser.PrimaryExpr{
-                          Reference: &parser.ReferenceExpr{
+                    Expr: &parser.ControlExpr{
+                      Unary: &parser.ControlUnaryExpr{
+                        Primary: &parser.ControlPrimaryExpr{
+                          Reference: &parser.ControlReferenceExpr{
                             Name: &"value1",
                           },
                         },
@@ -70,8 +70,18 @@
                         },
                       },
                       {
-                        Callable: &parser.CallableStmt{
-                          Name: &"foo",
+                        Expr: &parser.Expr{
+                          Unary: &parser.UnaryExpr{
+                            Primary: &parser.PrimaryExpr{
+                              Reference: &parser.ReferenceExpr{
+                                Name: &"foo",
+                                KeyPath: &parser.KeyPathExpr{
+                                  Call: &parser.CallExpr{
+                                  },
+                                },
+                              },
+                            },
+                          },
                         },
                       },
                     },
