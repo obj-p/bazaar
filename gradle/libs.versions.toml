@@ -1,10 +1,13 @@
 [versions]
-kotlin = "2.2.10"
+antlr-kotlin = "1.0.8"
+kotlin = "2.2.20"
 ktlint = "1.7.1"
 
 [plugins]
+antlr-kotlin = { id = "com.strumenta.antlr-kotlin", version.ref = "antlr-kotlin" }
 detekt = { id = "io.gitlab.arturbosch.detekt", version = "1.23.7" }
-kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 spotless = { id = "com.diffplug.spotless", version = "7.2.1" }
 
 [libraries]
+antlr-kotlin-runtime = { module = "com.strumenta:antlr-kotlin-runtime", version.ref = "antlr-kotlin" }
+kotlin-gradle-plugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
