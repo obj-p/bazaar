@@ -21,8 +21,6 @@ val generateKotlinGrammarSource = tasks.register<AntlrKotlinTask>("generateKotli
 }
 
 kotlin {
-        jvm()
-
         sourceSets {
                 commonMain {
                         kotlin {
