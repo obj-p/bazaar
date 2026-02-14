@@ -7,6 +7,8 @@ import org.antlr.v4.kotlinruntime.RecognitionException
 import org.antlr.v4.kotlinruntime.Recognizer
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertIs
+import kotlin.test.assertTrue
 
 class ParserTest {
 
@@ -31,6 +33,28 @@ class ParserTest {
         val tree = parser.bazaarFile()
         assertEquals(emptyList(), errors, "Parse errors")
         return tree
+    }
+
+    private fun parseFails(input: String) {
+        val lexer = BazaarLexer(CharStreams.fromString(input))
+        val tokens = CommonTokenStream(lexer)
+        val parser = BazaarParser(tokens)
+        val errors = mutableListOf<String>()
+        parser.removeErrorListeners()
+        parser.addErrorListener(object : BaseErrorListener() {
+            override fun syntaxError(
+                recognizer: Recognizer<*, *>,
+                offendingSymbol: Any?,
+                line: Int,
+                charPositionInLine: Int,
+                msg: String,
+                e: RecognitionException?,
+            ) {
+                errors.add("$line:$charPositionInLine $msg")
+            }
+        })
+        parser.bazaarFile()
+        assertTrue(errors.isNotEmpty(), "Expected parse errors but got none")
     }
 
     @Test
@@ -287,6 +311,183 @@ class ParserTest {
     }
 
     @Test
+    fun numberExpr() {
+        val tree = parse("component Foo { x int = 42 }")
+        val field = tree.topLevelDecl().single().componentDecl()!!.memberDecl().single().fieldDecl()!!
+        assertIs<BazaarParser.NumberExprContext>(field.expr()!!)
+    }
+
+    @Test
+    fun stringExpr() {
+        val tree = parse("component Foo { x string = \"hello\" }")
+        val field = tree.topLevelDecl().single().componentDecl()!!.memberDecl().single().fieldDecl()!!
+        assertIs<BazaarParser.StringExprContext>(field.expr()!!)
+    }
+
+    @Test
+    fun identExpr() {
+        val tree = parse("component Foo { x int = y }")
+        val field = tree.topLevelDecl().single().componentDecl()!!.memberDecl().single().fieldDecl()!!
+        assertIs<BazaarParser.IdentExprContext>(field.expr()!!)
+    }
+
+    @Test
+    fun parenExpr() {
+        val tree = parse("component Foo { x int = (42) }")
+        val field = tree.topLevelDecl().single().componentDecl()!!.memberDecl().single().fieldDecl()!!
+        assertIs<BazaarParser.ParenExprContext>(field.expr()!!)
+    }
+
+    @Test
+    fun nullLiteral() {
+        val tree = parse("component Foo { x int? = null }")
+        val field = tree.topLevelDecl().single().componentDecl()!!.memberDecl().single().fieldDecl()!!
+        assertIs<BazaarParser.NullExprContext>(field.expr()!!)
+    }
+
+    @Test
+    fun booleanLiterals() {
+        val tree = parse(
+            """
+            component Foo {
+                a bool = true
+                b bool = false
+            }
+            """.trimIndent()
+        )
+        val members = tree.topLevelDecl().single().componentDecl()!!.memberDecl()
+        assertIs<BazaarParser.TrueExprContext>(members[0].fieldDecl()!!.expr()!!)
+        assertIs<BazaarParser.FalseExprContext>(members[1].fieldDecl()!!.expr()!!)
+    }
+
+    @Test
+    fun emptyMapLiteral() {
+        val tree = parse("component Foo { x {string: int} = {:} }")
+        val field = tree.topLevelDecl().single().componentDecl()!!.memberDecl().single().fieldDecl()!!
+        val expr = field.expr()!! as BazaarParser.MapExprContext
+        val map = expr.mapLiteral()!!
+        assertEquals(0, map.mapEntry().size)
+    }
+
+    @Test
+    fun mapLiteralWithEntries() {
+        val tree = parse(
+            """
+            data Foo {
+                x {string: int} = {a: 1, b: 2}
+                y {string: int} = {"key": 42}
+                z {string: int} = {c: 3,}
+            }
+            """.trimIndent()
+        )
+        val members = tree.topLevelDecl().single().dataDecl()!!.memberDecl()
+        val xMap = (members[0].fieldDecl()!!.expr()!! as BazaarParser.MapExprContext).mapLiteral()!!
+        assertEquals(2, xMap.mapEntry().size)
+        val yMap = (members[1].fieldDecl()!!.expr()!! as BazaarParser.MapExprContext).mapLiteral()!!
+        assertEquals(1, yMap.mapEntry().size)
+        val zMap = (members[2].fieldDecl()!!.expr()!! as BazaarParser.MapExprContext).mapLiteral()!!
+        assertEquals(1, zMap.mapEntry().size) // trailing comma
+    }
+
+    @Test
+    fun mapLiteralWithNullValue() {
+        val tree = parse("component Foo { x {string: int?} = {\"key\": null} }")
+        val field = tree.topLevelDecl().single().componentDecl()!!.memberDecl().single().fieldDecl()!!
+        val map = (field.expr()!! as BazaarParser.MapExprContext).mapLiteral()!!
+        assertEquals(1, map.mapEntry().size)
+        assertIs<BazaarParser.NullExprContext>(map.mapEntry().single().expr(1)!!)
+    }
+
+    @Test
+    fun mapInsideArray() {
+        val tree = parse("component Foo { x [{string: int}] = [{:}] }")
+        val field = tree.topLevelDecl().single().componentDecl()!!.memberDecl().single().fieldDecl()!!
+        val arr = field.expr()!! as BazaarParser.ArrayExprContext
+        val inner = arr.argList()!!.arg().single().expr()!! as BazaarParser.MapExprContext
+        assertEquals(0, inner.mapLiteral()!!.mapEntry().size)
+    }
+
+    @Test
+    fun optionalMemberAccess() {
+        val tree = parse("component Foo { x int = a?.b }")
+        val field = tree.topLevelDecl().single().componentDecl()!!.memberDecl().single().fieldDecl()!!
+        assertIs<BazaarParser.OptionalMemberExprContext>(field.expr()!!)
+    }
+
+    @Test
+    fun optionalIndexAccess() {
+        val tree = parse("component Foo { x int = a?[0] }")
+        val field = tree.topLevelDecl().single().componentDecl()!!.memberDecl().single().fieldDecl()!!
+        assertIs<BazaarParser.OptionalIndexExprContext>(field.expr()!!)
+    }
+
+    @Test
+    fun optionalCall() {
+        val tree = parse("component Foo { x int = a?(b) }")
+        val field = tree.topLevelDecl().single().componentDecl()!!.memberDecl().single().fieldDecl()!!
+        assertIs<BazaarParser.OptionalCallExprContext>(field.expr()!!)
+    }
+
+    @Test
+    fun chainedOptionalAccess() {
+        val tree = parse("component Foo { x int = a?.b?.c }")
+        val field = tree.topLevelDecl().single().componentDecl()!!.memberDecl().single().fieldDecl()!!
+        val outer = field.expr()!! as BazaarParser.OptionalMemberExprContext
+        assertIs<BazaarParser.OptionalMemberExprContext>(outer.expr()!!)
+    }
+
+    @Test
+    fun mixedOptionalChain() {
+        val tree = parse("component Foo { x int = a?.b?[0]?.c() }")
+        val field = tree.topLevelDecl().single().componentDecl()!!.memberDecl().single().fieldDecl()!!
+        // Outermost: ?.c() → callExpr wrapping optionalMemberExpr
+        val call = field.expr()!! as BazaarParser.CallExprContext
+        val optMember = call.expr()!! as BazaarParser.OptionalMemberExprContext
+        val optIndex = optMember.expr()!! as BazaarParser.OptionalIndexExprContext
+        assertIs<BazaarParser.OptionalMemberExprContext>(optIndex.expr(0)!!)
+    }
+
+    @Test
+    fun chainedMemberAccess() {
+        val tree = parse("component Foo { x int = a.b.c }")
+        val field = tree.topLevelDecl().single().componentDecl()!!.memberDecl().single().fieldDecl()!!
+        val outer = field.expr()!! as BazaarParser.MemberExprContext
+        assertIs<BazaarParser.MemberExprContext>(outer.expr()!!)
+    }
+
+    @Test
+    fun memberThenCall() {
+        val tree = parse("component Foo { x int = a.b() }")
+        val field = tree.topLevelDecl().single().componentDecl()!!.memberDecl().single().fieldDecl()!!
+        val call = field.expr()!! as BazaarParser.CallExprContext
+        assertIs<BazaarParser.MemberExprContext>(call.expr()!!)
+    }
+
+    @Test
+    fun indexThenMember() {
+        val tree = parse("component Foo { x int = a[0].b }")
+        val field = tree.topLevelDecl().single().componentDecl()!!.memberDecl().single().fieldDecl()!!
+        val member = field.expr()!! as BazaarParser.MemberExprContext
+        assertIs<BazaarParser.IndexExprContext>(member.expr()!!)
+    }
+
+    @Test
+    fun callWithNamedArgs() {
+        val tree = parse(
+            """
+            modifier Padding {
+                top double
+                constructor(all double) = Padding(top = all)
+            }
+            """.trimIndent()
+        )
+        val ctor = tree.topLevelDecl().single().modifierDecl()!!.memberDecl().last().constructorDecl()!!
+        val call = ctor.expr()!! as BazaarParser.CallExprContext
+        val arg = call.argList()!!.arg().single()
+        assertEquals("top", arg.IDENTIFIER()!!.text)
+    }
+
+    @Test
     fun fullFile() {
         val tree = parse(
             """
@@ -321,5 +522,20 @@ class ParserTest {
             """.trimIndent()
         )
         assertEquals(7, tree.topLevelDecl().size)
+    }
+
+    @Test
+    fun mapLiteralMissingColon() {
+        parseFails("component Foo { x int = {a 1} }")
+    }
+
+    @Test
+    fun mapLiteralLeadingComma() {
+        parseFails("component Foo { x int = {, a: 1} }")
+    }
+
+    @Test
+    fun trailingOptionalDot() {
+        parseFails("component Foo { x int = a?. }")
     }
 }

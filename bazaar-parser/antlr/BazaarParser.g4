@@ -58,17 +58,37 @@ typeDecl
 
 typeList: typeDecl (COMMA typeDecl)* COMMA?;
 
-// ── Stub: expr (completed by #22) ────────────────────────────
+// ── Expressions ─────────────────────────────────────────────
+// QUESTION LPAREN / QUESTION LBRACK are parsed as postfix optional-call /
+// optional-index (two tokens each). They bind as left-recursive postfix ops,
+// so they take precedence over any future infix use of QUESTION (#23).
 expr
-    : expr DOT identOrKeyword
-    | expr LPAREN argList? RPAREN
-    | expr LBRACK expr RBRACK
-    | identOrKeyword
-    | NUMBER
-    | stringLiteral
-    | LBRACK argList? RBRACK
-    | LPAREN expr RPAREN
+    : expr DOT identOrKeyword                          # memberExpr
+    | expr QUESTION_DOT identOrKeyword                 # optionalMemberExpr
+    | expr LPAREN argList? RPAREN                      # callExpr
+    | expr QUESTION LPAREN argList? RPAREN             # optionalCallExpr
+    | expr LBRACK expr RBRACK                          # indexExpr
+    | expr QUESTION LBRACK expr RBRACK                 # optionalIndexExpr
+    | NULL                                             # nullExpr
+    | TRUE                                             # trueExpr
+    | FALSE                                            # falseExpr
+    | NUMBER                                           # numberExpr
+    | stringLiteral                                    # stringExpr
+    | LBRACK argList? RBRACK                           # arrayExpr
+    | mapLiteral                                       # mapExpr
+    | identOrKeyword                                   # identExpr
+    | LPAREN expr RPAREN                               # parenExpr
     ;
+
+// Note: when #25 adds expression-statements, LBRACE will be ambiguous between
+// block and mapLiteral. The colon after the first expr disambiguates; verify
+// ANTLR prediction handles this when the stmt stub is replaced.
+mapLiteral
+    : LBRACE COLON RBRACE
+    | LBRACE mapEntry (COMMA mapEntry)* COMMA? RBRACE
+    ;
+
+mapEntry: expr COLON expr;
 
 argList: arg (COMMA arg)* COMMA?;
 arg:     (IDENTIFIER EQUAL)? expr;
