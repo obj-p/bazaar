@@ -5,7 +5,7 @@ options { tokenVocab = BazaarLexer; }
 // Stub entry — replaced by #20.
 bazaar: token* EOF;
 
-token: identOrKeyword | keyword | NUMBER | operator | punctuation;
+token: identOrKeyword | keyword | NUMBER | stringLiteral | operator | punctuation;
 
 // Contextual keywords usable as identifiers (edge-cases.bzr).
 identOrKeyword
@@ -25,3 +25,16 @@ operator
     ;
 
 punctuation: LPAREN | RPAREN | LBRACK | RBRACK | LBRACE | RBRACE | AT | COLON | COMMA;
+
+stringLiteral: STRING_OPEN stringPart* STRING_CLOSE;
+
+stringPart
+    : STRING_TEXT
+    | STRING_DOLLAR
+    | STRING_ESCAPE
+    | UNICODE_SHORT_ESCAPE
+    | UNICODE_LONG_ESCAPE
+    | stringInterp
+    ;
+
+stringInterp: STRING_INTERP_OPEN token* RBRACE;

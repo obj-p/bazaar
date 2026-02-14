@@ -1,5 +1,13 @@
 lexer grammar BazaarLexer;
 
+// antlr-kotlin specific: prevents EmptyStackException on unmatched '}'.
+@members {
+    override fun popMode(): Int {
+        if (_modeStack.isEmpty) return _mode
+        return super.popMode()
+    }
+}
+
 // ── Keywords (23) ──────────────────────────────────────────────
 // Defined before IDENTIFIER so ANTLR gives them priority.
 
@@ -39,6 +47,7 @@ NUMBER
 fragment DIGIT:    [0-9];
 fragment DIGITS:   DIGIT+;
 fragment EXPONENT: [eE] [+\-]? DIGITS;
+fragment HEX:      [0-9a-fA-F];
 
 // ── Identifier ─────────────────────────────────────────────────
 
@@ -79,13 +88,31 @@ LPAREN:  '(';
 RPAREN:  ')';
 LBRACK:  '[';
 RBRACK:  ']';
-LBRACE:  '{';
-RBRACE:  '}';
+LBRACE:  '{' -> pushMode(DEFAULT_MODE);
+RBRACE:  '}' -> popMode;
 AT:      '@';
 COLON:   ':';
 COMMA:   ',';
+
+// ── String literal (open) ─────────────────────────────────────
+
+STRING_OPEN: '"' -> pushMode(StringMode);
 
 // ── Skipped ────────────────────────────────────────────────────
 
 LINE_COMMENT: '//' ~[\r\n]* -> skip;
 WS:           [ \t\r\n]+   -> skip;
+
+// ── String mode ──────────────────────────────────────────────
+
+mode StringMode;
+
+STRING_CLOSE:          '"' -> popMode;
+STRING_INTERP_OPEN:    '${' -> pushMode(DEFAULT_MODE);
+UNICODE_LONG_ESCAPE:   '\\U' HEX HEX HEX HEX HEX HEX HEX HEX;
+UNICODE_SHORT_ESCAPE:  '\\u' HEX HEX HEX HEX;
+STRING_ESCAPE:         '\\' [\\"ntr];
+STRING_TEXT:            (~["\\$\r\n])+;
+STRING_NL:             [\r\n] -> popMode;
+STRING_DOLLAR:         '$';
+STRING_BAD_ESCAPE:     '\\' .;
