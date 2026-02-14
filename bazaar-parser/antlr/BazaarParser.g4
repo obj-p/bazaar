@@ -69,9 +69,9 @@ expr
     | expr QUESTION LPAREN argList? RPAREN                          # optionalCallExpr
     | expr LBRACK expr RBRACK                                       # indexExpr
     | expr QUESTION LBRACK expr RBRACK                              # optionalIndexExpr
-    // Note: when #25 adds expression-statements, trailingLambdaExpr will greedily
-    // attach any following LBRACE block. This will need semantic predicates or
-    // grammar restructuring to prevent unwanted attachment in statement contexts.
+    // Note: trailingLambdaExpr greedily attaches any following LBRACE block.
+    // This is correct for expression statements. Issue #26 (if/else/for) will
+    // need semantic predicates to prevent `if cond { }` from being consumed.
     | expr lambda                                                   # trailingLambdaExpr
     | (BANG | MINUS) expr                                           # unaryExpr
     | <assoc=right> expr STAR_STAR expr                             # powerExpr
@@ -115,8 +115,35 @@ lambdaParam: identOrKeyword typeDecl?;
 argList: arg (COMMA arg)* COMMA?;
 arg:     (IDENTIFIER EQUAL)? expr;
 
-// ── Stub: stmt (completed by #25) ────────────────────────────
-stmt: block | stringLiteral | ~(LBRACE | RBRACE);
+// ── Statements ───────────────────────────────────────────────
+// Note: RETURN expr? is greedy — any expression after `return` is consumed.
+// In this newline-insensitive grammar, `return\nx = 1` parses as `return x`
+// followed by a parse error. Bare `return` (followed by `}`) returns nothing.
+stmt
+    : annotation+ (varDeclStmt | callStmt)                      # annotatedStmt
+    | varDeclStmt                                                # varStmt
+    | RETURN expr?                                               # returnStmt
+    | identOrKeyword assignOp expr                               # assignStmt
+    | expr                                                       # exprStmt
+    ;
+
+varDeclStmt: VAR (identOrKeyword | destructuring) typeDecl? EQUAL expr;
+
+// callStmt is only used inside annotatedStmt. Unannotated calls are exprStmt.
+// Targets are bare identOrKeyword only (e.g., `@State Column { }`).
+// Member-access targets like `@Ann a.b()` are not supported.
+callStmt
+    : identOrKeyword LPAREN argList? RPAREN lambda?
+    | identOrKeyword lambda
+    ;
+
+annotation: AT identOrKeyword (LPAREN argList? RPAREN)?;
+
+destructuring: LPAREN identOrKeyword (COMMA identOrKeyword)* COMMA? RPAREN;
+
+// Assignment targets are bare identOrKeyword only (matching Go reference).
+// Member/index assignment (a.b = c, a[0] = c) is not supported.
+assignOp: EQUAL | PLUS_EQUAL | MINUS_EQUAL | STAR_EQUAL | SLASH_EQUAL | PERCENT_EQUAL;
 
 // ── String literal ───────────────────────────────────────────
 stringLiteral: STRING_OPEN stringPart* STRING_CLOSE;
