@@ -8,6 +8,8 @@ import org.antlr.v4.kotlinruntime.Recognizer
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertIs
+import kotlin.test.assertNotNull
+import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
 class ParserTest {
@@ -33,6 +35,11 @@ class ParserTest {
         val tree = parser.bazaarFile()
         assertEquals(emptyList(), errors, "Parse errors")
         return tree
+    }
+
+    private fun parseExpr(exprText: String): BazaarParser.ExprContext {
+        val tree = parse("component Foo { x int = $exprText }")
+        return tree.topLevelDecl().single().componentDecl()!!.memberDecl().single().fieldDecl()!!.expr()!!
     }
 
     private fun parseFails(input: String) {
@@ -680,17 +687,220 @@ class ParserTest {
     }
 
     @Test
-    fun mapLiteralMissingColon() {
-        parseFails("component Foo { x int = {a 1} }")
+    fun mapLiteralMissingColonParsesAsLambda() {
+        // {a 1} is not a map (no colon), so it parses as a body-only lambda with 2 stmts
+        val expr = parseExpr("{a 1}")
+        val lambda = assertIs<BazaarParser.LambdaExprContext>(expr)
+        assertEquals(2, lambda.lambda()!!.stmt().size)
     }
 
     @Test
-    fun mapLiteralLeadingComma() {
-        parseFails("component Foo { x int = {, a: 1} }")
+    fun mapLiteralLeadingCommaParsesAsLambda() {
+        // {, a: 1} is not a map (leading comma), so it parses as a body-only lambda
+        val expr = parseExpr("{, a: 1}")
+        assertIs<BazaarParser.LambdaExprContext>(expr)
     }
 
     @Test
     fun trailingOptionalDot() {
         parseFails("component Foo { x int = a?. }")
+    }
+
+    // ── Lambda expression tests ──
+
+    @Test
+    fun emptyLambda() {
+        val expr = parseExpr("{}")
+        val lambda = assertIs<BazaarParser.LambdaExprContext>(expr)
+        assertNull(lambda.lambda()!!.lambdaParams())
+        assertEquals(0, lambda.lambda()!!.stmt().size)
+    }
+
+    @Test
+    fun bodyOnlyLambda() {
+        val expr = parseExpr("{ 42 }")
+        val lambda = assertIs<BazaarParser.LambdaExprContext>(expr)
+        assertNull(lambda.lambda()!!.lambdaParams())
+        assertEquals(1, lambda.lambda()!!.stmt().size)
+    }
+
+    @Test
+    fun lambdaWithParams() {
+        val expr = parseExpr("{ (x) in x }")
+        val lambda = assertIs<BazaarParser.LambdaExprContext>(expr)
+        val params = lambda.lambda()!!.lambdaParams()!!
+        assertEquals(1, params.lambdaParam().size)
+        assertEquals("x", params.lambdaParam(0)!!.identOrKeyword()!!.text)
+        assertNull(params.lambdaParam(0)!!.typeDecl())
+    }
+
+    @Test
+    fun lambdaWithTypedParams() {
+        val expr = parseExpr("{ (x int, y string) in x }")
+        val lambda = assertIs<BazaarParser.LambdaExprContext>(expr)
+        val params = lambda.lambda()!!.lambdaParams()!!
+        assertEquals(2, params.lambdaParam().size)
+        assertNotNull(params.lambdaParam(0)!!.typeDecl())
+        assertNotNull(params.lambdaParam(1)!!.typeDecl())
+    }
+
+    @Test
+    fun lambdaWithReturnType() {
+        val expr = parseExpr("{ (x int) -> int in x }")
+        val lambda = assertIs<BazaarParser.LambdaExprContext>(expr)
+        assertNotNull(lambda.lambda()!!.lambdaParams())
+        assertNotNull(lambda.lambda()!!.typeDecl())
+    }
+
+    @Test
+    fun lambdaTrailingCommaInParams() {
+        val expr = parseExpr("{ (a, b,) in a }")
+        val lambda = assertIs<BazaarParser.LambdaExprContext>(expr)
+        assertEquals(2, lambda.lambda()!!.lambdaParams()!!.lambdaParam().size)
+    }
+
+    @Test
+    fun lambdaImmediateInvocation() {
+        val expr = parseExpr("{ (x int) -> int in x }(5)")
+        val call = assertIs<BazaarParser.CallExprContext>(expr)
+        assertIs<BazaarParser.LambdaExprContext>(call.expr()!!)
+        assertEquals(1, call.argList()!!.arg().size)
+    }
+
+    @Test
+    fun callWithTrailingLambda() {
+        val expr = parseExpr("foo(a) { 42 }")
+        val call = assertIs<BazaarParser.CallExprContext>(expr)
+        assertNotNull(call.lambda())
+        assertEquals(1, call.argList()!!.arg().size)
+    }
+
+    @Test
+    fun trailingLambdaOnly() {
+        val expr = parseExpr("foo { 42 }")
+        assertIs<BazaarParser.TrailingLambdaExprContext>(expr)
+    }
+
+    @Test
+    fun callEmptyArgsTrailingLambda() {
+        val expr = parseExpr("foo() { 42 }")
+        val call = assertIs<BazaarParser.CallExprContext>(expr)
+        assertNull(call.argList())
+        assertNotNull(call.lambda())
+    }
+
+    @Test
+    fun trailingLambdaWithParams() {
+        val expr = parseExpr("foo(a) { (x) in x }")
+        val call = assertIs<BazaarParser.CallExprContext>(expr)
+        val lambda = call.lambda()!!
+        assertNotNull(lambda.lambdaParams())
+    }
+
+    @Test
+    fun lambdaVsMapDisambiguation() {
+        // {a: 1} is a map
+        val mapExpr = parseExpr("{a: 1}")
+        assertIs<BazaarParser.MapExprContext>(mapExpr)
+        // {a} is a lambda (no colon)
+        val lambdaExpr = parseExpr("{a}")
+        assertIs<BazaarParser.LambdaExprContext>(lambdaExpr)
+    }
+
+    @Test
+    fun emptyMapVsEmptyLambda() {
+        // {:} is a map
+        val mapExpr = parseExpr("{:}")
+        assertIs<BazaarParser.MapExprContext>(mapExpr)
+        // {} is a lambda
+        val lambdaExpr = parseExpr("{}")
+        assertIs<BazaarParser.LambdaExprContext>(lambdaExpr)
+    }
+
+    @Test
+    fun lambdaParenExprNotParams() {
+        // { (a) } — no IN after ), so it's a body-only lambda
+        val expr = parseExpr("{ (a) }")
+        val lambda = assertIs<BazaarParser.LambdaExprContext>(expr)
+        assertNull(lambda.lambda()!!.lambdaParams())
+    }
+
+    @Test
+    fun lambdaAsNamedArg() {
+        val expr = parseExpr("foo(bar = { 42 })")
+        val call = assertIs<BazaarParser.CallExprContext>(expr)
+        val arg = call.argList()!!.arg().single()
+        assertEquals("bar", arg.IDENTIFIER()!!.text)
+        assertIs<BazaarParser.LambdaExprContext>(arg.expr()!!)
+    }
+
+    @Test
+    fun lambdaInBinaryExpr() {
+        val expr = parseExpr("a + { 42 }")
+        val add = assertIs<BazaarParser.AddExprContext>(expr)
+        assertIs<BazaarParser.IdentExprContext>(add.expr(0)!!)
+        assertIs<BazaarParser.LambdaExprContext>(add.expr(1)!!)
+    }
+
+    @Test
+    fun nestedLambda() {
+        val expr = parseExpr("{ (x) in { (y) in y } }")
+        val outer = assertIs<BazaarParser.LambdaExprContext>(expr)
+        assertNotNull(outer.lambda()!!.lambdaParams())
+        assertEquals(1, outer.lambda()!!.stmt().size)
+    }
+
+    @Test
+    fun chainedTrailingLambdas() {
+        // foo { a } { b } → trailingLambdaExpr(trailingLambdaExpr(foo, {a}), {b})
+        val expr = parseExpr("foo { a } { b }")
+        val outer = assertIs<BazaarParser.TrailingLambdaExprContext>(expr)
+        assertIs<BazaarParser.TrailingLambdaExprContext>(outer.expr()!!)
+    }
+
+    @Test
+    fun memberCallWithTrailingLambda() {
+        val expr = parseExpr("a.foo() { 42 }")
+        val call = assertIs<BazaarParser.CallExprContext>(expr)
+        assertNotNull(call.lambda())
+        assertIs<BazaarParser.MemberExprContext>(call.expr()!!)
+    }
+
+    @Test
+    fun memberTrailingLambdaNoParens() {
+        val expr = parseExpr("a.foo { 42 }")
+        val trailing = assertIs<BazaarParser.TrailingLambdaExprContext>(expr)
+        assertIs<BazaarParser.MemberExprContext>(trailing.expr()!!)
+    }
+
+    @Test
+    fun emptyParamsIsBodyOnlyLambda() {
+        // { () in x } — lambdaParams requires at least one param, so ANTLR
+        // falls through to body-only lambda; (), in, x become stmts
+        val expr = parseExpr("{ () in x }")
+        val lambda = assertIs<BazaarParser.LambdaExprContext>(expr)
+        assertNull(lambda.lambda()!!.lambdaParams())
+        assertTrue(lambda.lambda()!!.stmt().isNotEmpty())
+    }
+
+    @Test
+    fun lambdaSingleTypedParam() {
+        // { (a b) in a } — b is parsed as the type of a, not a second param
+        val expr = parseExpr("{ (a b) in a }")
+        val lambda = assertIs<BazaarParser.LambdaExprContext>(expr)
+        val params = lambda.lambda()!!.lambdaParams()!!
+        assertEquals(1, params.lambdaParam().size)
+        assertEquals("a", params.lambdaParam(0)!!.identOrKeyword()!!.text)
+        assertNotNull(params.lambdaParam(0)!!.typeDecl())
+    }
+
+    @Test
+    fun lambdaInsideArrayLiteral() {
+        val expr = parseExpr("[{ 42 }, { (x) in x }]")
+        val arr = assertIs<BazaarParser.ArrayExprContext>(expr)
+        val args = arr.argList()!!.arg()
+        assertEquals(2, args.size)
+        assertIs<BazaarParser.LambdaExprContext>(args[0].expr()!!)
+        assertIs<BazaarParser.LambdaExprContext>(args[1].expr()!!)
     }
 }
