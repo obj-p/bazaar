@@ -1,8 +1,8 @@
 import com.strumenta.antlrkotlin.gradle.AntlrKotlinTask
 
 plugins {
-        alias(libs.plugins.antlr.kotlin)
         id("com.bazaar.build")
+        alias(libs.plugins.antlr.kotlin)
 }
 
 val generateKotlinGrammarSource = tasks.register<AntlrKotlinTask>("generateKotlinGrammarSource") {

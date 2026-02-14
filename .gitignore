@@ -1,6 +1,5 @@
 .gradle
 .idea
 .DS_Store
-bin
-/build/
-/*/build/
+**/bin/
+**/build/
