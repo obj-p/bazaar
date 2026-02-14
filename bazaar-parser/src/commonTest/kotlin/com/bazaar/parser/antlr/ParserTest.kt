@@ -487,6 +487,161 @@ class ParserTest {
         assertEquals("top", arg.IDENTIFIER()!!.text)
     }
 
+    // ── Operator precedence & associativity tests ──
+
+    @Test
+    fun addAndMulPrecedence() {
+        val tree = parse("component Foo { x int = 1 + 2 * 3 }")
+        val field = tree.topLevelDecl().single().componentDecl()!!.memberDecl().single().fieldDecl()!!
+        val add = assertIs<BazaarParser.AddExprContext>(field.expr()!!)
+        assertIs<BazaarParser.NumberExprContext>(add.expr(0)!!)
+        assertIs<BazaarParser.MulExprContext>(add.expr(1)!!)
+    }
+
+    @Test
+    fun rightAssocPower() {
+        val tree = parse("component Foo { x int = 2 ** 3 ** 4 }")
+        val field = tree.topLevelDecl().single().componentDecl()!!.memberDecl().single().fieldDecl()!!
+        val outer = assertIs<BazaarParser.PowerExprContext>(field.expr()!!)
+        assertIs<BazaarParser.NumberExprContext>(outer.expr(0)!!)
+        assertIs<BazaarParser.PowerExprContext>(outer.expr(1)!!)
+    }
+
+    @Test
+    fun rightAssocCoalesce() {
+        val tree = parse("component Foo { x int = a ?? b ?? c }")
+        val field = tree.topLevelDecl().single().componentDecl()!!.memberDecl().single().fieldDecl()!!
+        val outer = assertIs<BazaarParser.CoalesceExprContext>(field.expr()!!)
+        assertIs<BazaarParser.IdentExprContext>(outer.expr(0)!!)
+        assertIs<BazaarParser.CoalesceExprContext>(outer.expr(1)!!)
+    }
+
+    @Test
+    fun unaryNotPrecedence() {
+        val tree = parse("component Foo { x bool = !a && b }")
+        val field = tree.topLevelDecl().single().componentDecl()!!.memberDecl().single().fieldDecl()!!
+        val and = assertIs<BazaarParser.AndExprContext>(field.expr()!!)
+        assertIs<BazaarParser.UnaryExprContext>(and.expr(0)!!)
+        assertIs<BazaarParser.IdentExprContext>(and.expr(1)!!)
+    }
+
+    @Test
+    fun unaryMinusWithPower() {
+        val tree = parse("component Foo { x int = -a ** 2 }")
+        val field = tree.topLevelDecl().single().componentDecl()!!.memberDecl().single().fieldDecl()!!
+        // unary binds tighter than **: (-a) ** 2
+        val power = assertIs<BazaarParser.PowerExprContext>(field.expr()!!)
+        assertIs<BazaarParser.UnaryExprContext>(power.expr(0)!!)
+        assertIs<BazaarParser.NumberExprContext>(power.expr(1)!!)
+    }
+
+    @Test
+    fun mixedPrecedence() {
+        val tree = parse("component Foo { x bool = a + b * c == d }")
+        val field = tree.topLevelDecl().single().componentDecl()!!.memberDecl().single().fieldDecl()!!
+        // == is lowest here, wrapping (a + b*c) and d
+        val eq = assertIs<BazaarParser.EqualExprContext>(field.expr()!!)
+        assertIs<BazaarParser.AddExprContext>(eq.expr(0)!!)
+        assertIs<BazaarParser.IdentExprContext>(eq.expr(1)!!)
+    }
+
+    @Test
+    fun logicalPrecedence() {
+        val tree = parse("component Foo { x bool = a && b || c }")
+        val field = tree.topLevelDecl().single().componentDecl()!!.memberDecl().single().fieldDecl()!!
+        val or = assertIs<BazaarParser.OrExprContext>(field.expr()!!)
+        assertIs<BazaarParser.AndExprContext>(or.expr(0)!!)
+        assertIs<BazaarParser.IdentExprContext>(or.expr(1)!!)
+    }
+
+    @Test
+    fun comparisonOps() {
+        val tree = parse(
+            """
+            component Foo {
+                a bool = x < y
+                b bool = x >= y
+            }
+            """.trimIndent()
+        )
+        val members = tree.topLevelDecl().single().componentDecl()!!.memberDecl()
+        assertIs<BazaarParser.CompareExprContext>(members[0].fieldDecl()!!.expr()!!)
+        assertIs<BazaarParser.CompareExprContext>(members[1].fieldDecl()!!.expr()!!)
+    }
+
+    @Test
+    fun equalityOps() {
+        val tree = parse(
+            """
+            component Foo {
+                a bool = x == y
+                b bool = x != y
+            }
+            """.trimIndent()
+        )
+        val members = tree.topLevelDecl().single().componentDecl()!!.memberDecl()
+        assertIs<BazaarParser.EqualExprContext>(members[0].fieldDecl()!!.expr()!!)
+        assertIs<BazaarParser.EqualExprContext>(members[1].fieldDecl()!!.expr()!!)
+    }
+
+    @Test
+    fun allArithmeticOps() {
+        // a + b - c * d / e % f → sub(add(a, b), mod(div(mul(c, d), e), f))...
+        // Actually: left-to-right at same precedence. + and - are same level:
+        // (a + b) - (c * d / e % f)... no, it's ((a + b) - ((((c * d) / e) % f)))
+        val tree = parse("component Foo { x int = a + b - c * d / e % f }")
+        val field = tree.topLevelDecl().single().componentDecl()!!.memberDecl().single().fieldDecl()!!
+        // Outermost is addExpr (for the -)
+        val sub = assertIs<BazaarParser.AddExprContext>(field.expr()!!)
+        // Left of - is addExpr (for the +)
+        assertIs<BazaarParser.AddExprContext>(sub.expr(0)!!)
+        // Right of - is mulExpr chain
+        assertIs<BazaarParser.MulExprContext>(sub.expr(1)!!)
+    }
+
+    @Test
+    fun unaryNegation() {
+        val tree = parse("component Foo { x int = -x }")
+        val field = tree.topLevelDecl().single().componentDecl()!!.memberDecl().single().fieldDecl()!!
+        val unary = assertIs<BazaarParser.UnaryExprContext>(field.expr()!!)
+        assertEquals("-", unary.MINUS()!!.text)
+    }
+
+    @Test
+    fun unaryNot() {
+        val tree = parse("component Foo { x bool = !x }")
+        val field = tree.topLevelDecl().single().componentDecl()!!.memberDecl().single().fieldDecl()!!
+        val unary = assertIs<BazaarParser.UnaryExprContext>(field.expr()!!)
+        assertEquals("!", unary.BANG()!!.text)
+    }
+
+    @Test
+    fun postfixBeforeBinary() {
+        val tree = parse("component Foo { x int = a.b + c }")
+        val field = tree.topLevelDecl().single().componentDecl()!!.memberDecl().single().fieldDecl()!!
+        val add = assertIs<BazaarParser.AddExprContext>(field.expr()!!)
+        assertIs<BazaarParser.MemberExprContext>(add.expr(0)!!)
+        assertIs<BazaarParser.IdentExprContext>(add.expr(1)!!)
+    }
+
+    @Test
+    fun coalesceWithOptionalChain() {
+        val tree = parse("component Foo { x int = a?.b ?? c }")
+        val field = tree.topLevelDecl().single().componentDecl()!!.memberDecl().single().fieldDecl()!!
+        val coalesce = assertIs<BazaarParser.CoalesceExprContext>(field.expr()!!)
+        assertIs<BazaarParser.OptionalMemberExprContext>(coalesce.expr(0)!!)
+        assertIs<BazaarParser.IdentExprContext>(coalesce.expr(1)!!)
+    }
+
+    @Test
+    fun parenOverridesPrecedence() {
+        val tree = parse("component Foo { x int = (a + b) * c }")
+        val field = tree.topLevelDecl().single().componentDecl()!!.memberDecl().single().fieldDecl()!!
+        val mul = assertIs<BazaarParser.MulExprContext>(field.expr()!!)
+        assertIs<BazaarParser.ParenExprContext>(mul.expr(0)!!)
+        assertIs<BazaarParser.IdentExprContext>(mul.expr(1)!!)
+    }
+
     @Test
     fun fullFile() {
         val tree = parse(

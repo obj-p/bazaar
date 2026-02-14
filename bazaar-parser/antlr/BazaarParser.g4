@@ -59,25 +59,34 @@ typeDecl
 typeList: typeDecl (COMMA typeDecl)* COMMA?;
 
 // ── Expressions ─────────────────────────────────────────────
-// QUESTION LPAREN / QUESTION LBRACK are parsed as postfix optional-call /
-// optional-index (two tokens each). They bind as left-recursive postfix ops,
-// so they take precedence over any future infix use of QUESTION (#23).
+// Precedence (high→low): postfix, unary(! -), **, */%, +-, < <= > >=, == !=, &&, ||, ??
+// Right-associative: **, ??
+// QUESTION LPAREN / QUESTION LBRACK bind as postfix optional-call / optional-index.
 expr
-    : expr DOT identOrKeyword                          # memberExpr
-    | expr QUESTION_DOT identOrKeyword                 # optionalMemberExpr
-    | expr LPAREN argList? RPAREN                      # callExpr
-    | expr QUESTION LPAREN argList? RPAREN             # optionalCallExpr
-    | expr LBRACK expr RBRACK                          # indexExpr
-    | expr QUESTION LBRACK expr RBRACK                 # optionalIndexExpr
-    | NULL                                             # nullExpr
-    | TRUE                                             # trueExpr
-    | FALSE                                            # falseExpr
-    | NUMBER                                           # numberExpr
-    | stringLiteral                                    # stringExpr
-    | LBRACK argList? RBRACK                           # arrayExpr
-    | mapLiteral                                       # mapExpr
-    | identOrKeyword                                   # identExpr
-    | LPAREN expr RPAREN                               # parenExpr
+    : expr DOT identOrKeyword                                      # memberExpr
+    | expr QUESTION_DOT identOrKeyword                              # optionalMemberExpr
+    | expr LPAREN argList? RPAREN                                   # callExpr
+    | expr QUESTION LPAREN argList? RPAREN                          # optionalCallExpr
+    | expr LBRACK expr RBRACK                                       # indexExpr
+    | expr QUESTION LBRACK expr RBRACK                              # optionalIndexExpr
+    | (BANG | MINUS) expr                                           # unaryExpr
+    | <assoc=right> expr STAR_STAR expr                             # powerExpr
+    | expr (STAR | SLASH | PERCENT) expr                            # mulExpr
+    | expr (PLUS | MINUS) expr                                      # addExpr
+    | expr (LESS | LESS_EQUAL | GREATER | GREATER_EQUAL) expr       # compareExpr
+    | expr (EQUAL_EQUAL | BANG_EQUAL) expr                          # equalExpr
+    | expr AMP_AMP expr                                             # andExpr
+    | expr PIPE_PIPE expr                                           # orExpr
+    | <assoc=right> expr QUESTION_QUESTION expr                     # coalesceExpr
+    | NULL                                                          # nullExpr
+    | TRUE                                                          # trueExpr
+    | FALSE                                                         # falseExpr
+    | NUMBER                                                        # numberExpr
+    | stringLiteral                                                 # stringExpr
+    | LBRACK argList? RBRACK                                        # arrayExpr
+    | mapLiteral                                                    # mapExpr
+    | identOrKeyword                                                # identExpr
+    | LPAREN expr RPAREN                                            # parenExpr
     ;
 
 // Note: when #25 adds expression-statements, LBRACE will be ambiguous between
