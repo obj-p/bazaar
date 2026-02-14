@@ -46,12 +46,13 @@ identOrKeyword
     | FUNC | NULL | PACKAGE | PREVIEW | TEMPLATE | TRUE | FALSE
     ;
 
-// ── Stub: typeDecl (completed by #21) ────────────────────────
+// ── Types ────────────────────────────────────────────────────
 typeDecl
     : IDENTIFIER QUESTION?
     | COMPONENT QUESTION?
     | FUNC LPAREN typeList? RPAREN (ARROW typeDecl)? QUESTION?
     | LBRACK typeDecl RBRACK QUESTION?
+    | LBRACE typeDecl COLON typeDecl RBRACE QUESTION?
     | LPAREN typeDecl RPAREN QUESTION?
     ;
 

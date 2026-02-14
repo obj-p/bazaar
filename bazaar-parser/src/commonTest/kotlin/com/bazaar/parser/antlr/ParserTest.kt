@@ -217,6 +217,76 @@ class ParserTest {
     }
 
     @Test
+    fun mapType() {
+        val tree = parse(
+            """
+            data Lookup {
+                basic {string: int}
+                optionalValue {string: int?}
+                optionalMap {string: int}?
+                nestedArray {string: [int]}
+            }
+            """.trimIndent()
+        )
+        val members = tree.topLevelDecl().single().dataDecl()!!.memberDecl()
+        assertEquals(4, members.size)
+    }
+
+    @Test
+    fun mapReturnTypeWithBody() {
+        val tree = parse("func Build() -> {string: int} { }")
+        val decl = tree.topLevelDecl().single().functionDecl()!!
+        assertEquals("Build", decl.IDENTIFIER()!!.text)
+        assertEquals(0, decl.block()!!.stmt().size)
+    }
+
+    @Test
+    fun nestedMapType() {
+        val tree = parse("data Nested { inner {string: {string: int}} }")
+        val members = tree.topLevelDecl().single().dataDecl()!!.memberDecl()
+        assertEquals(1, members.size)
+    }
+
+    @Test
+    fun mapTypeInFunction() {
+        val tree = parse("func Lookup(table {string: int}) -> {string: [int]}")
+        val decl = tree.topLevelDecl().single().functionDecl()!!
+        assertEquals(1, decl.parameterList()!!.parameterDecl().size)
+    }
+
+    @Test
+    fun functionTypeFields() {
+        val tree = parse(
+            """
+            data Callbacks {
+                a func()
+                b func(int, int) -> int
+                c func(int,)
+                d func()?
+                e (func() -> string?)?
+                f ((func()?))
+            }
+            """.trimIndent()
+        )
+        val members = tree.topLevelDecl().single().dataDecl()!!.memberDecl()
+        assertEquals(6, members.size)
+    }
+
+    @Test
+    fun higherOrderFunctionType() {
+        val tree = parse("func HigherOrder() -> func() -> func()")
+        val decl = tree.topLevelDecl().single().functionDecl()!!
+        assertEquals("HigherOrder", decl.IDENTIFIER()!!.text)
+    }
+
+    @Test
+    fun componentArrayType() {
+        val tree = parse("component Row { children [component] }")
+        val members = tree.topLevelDecl().single().componentDecl()!!.memberDecl()
+        assertEquals(1, members.size)
+    }
+
+    @Test
     fun fullFile() {
         val tree = parse(
             """
