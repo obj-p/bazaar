@@ -1301,6 +1301,569 @@ class ParserTest {
         assertIs<BazaarParser.ReturnStmtContext>(stmts[5])
     }
 
+    // ── If statement tests ──
+
+    @Test
+    fun ifSimple() {
+        val stmt = parseStmt("if true {}")
+        val ifS = assertIs<BazaarParser.IfStatementContext>(stmt)
+        val ifStmt = ifS.ifStmt()!!
+        assertEquals(1, ifStmt.ifFragmentList()!!.ifFragment().size)
+        assertNull(ifStmt.ELSE())
+    }
+
+    @Test
+    fun ifWithExprCondition() {
+        val stmt = parseStmt("if foo == bar {}")
+        val ifS = assertIs<BazaarParser.IfStatementContext>(stmt)
+        val fragment = ifS.ifStmt()!!.ifFragmentList()!!.ifFragment().single()
+        val exprFrag = assertIs<BazaarParser.IfExprFragmentContext>(fragment)
+        assertIs<BazaarParser.CondEqualExprContext>(exprFrag.condExpr()!!)
+    }
+
+    @Test
+    fun ifComparisonWithCall() {
+        val stmt = parseStmt("if 10 > len(something) {}")
+        val ifS = assertIs<BazaarParser.IfStatementContext>(stmt)
+        val fragment = ifS.ifStmt()!!.ifFragmentList()!!.ifFragment().single()
+        val exprFrag = assertIs<BazaarParser.IfExprFragmentContext>(fragment)
+        assertIs<BazaarParser.CondCompareExprContext>(exprFrag.condExpr()!!)
+    }
+
+    @Test
+    fun ifElse() {
+        val stmt = parseStmt("if foo == bar {} else {}")
+        val ifS = assertIs<BazaarParser.IfStatementContext>(stmt)
+        val ifStmt = ifS.ifStmt()!!
+        assertEquals(2, ifStmt.block().size) // if block + else block
+        assertNotNull(ifStmt.ELSE())
+    }
+
+    @Test
+    fun ifElseIf() {
+        val stmt = parseStmt("if foo == 1 {} else if foo == 2 {}")
+        val ifS = assertIs<BazaarParser.IfStatementContext>(stmt)
+        val ifStmt = ifS.ifStmt()!!
+        assertNotNull(ifStmt.ifStmt()) // nested ifStmt for else-if
+    }
+
+    @Test
+    fun ifElseIfElse() {
+        val stmt = parseStmt("if foo == 1 {} else if foo == 2 {} else {}")
+        val ifS = assertIs<BazaarParser.IfStatementContext>(stmt)
+        val inner = ifS.ifStmt()!!.ifStmt()!! // else-if
+        assertNotNull(inner.ELSE())
+        assertEquals(2, inner.block().size) // else-if block + else block
+    }
+
+    @Test
+    fun ifElseIfElseIfElse() {
+        val stmt = parseStmt("if true {} else if false {} else if true {} else {}")
+        val ifS = assertIs<BazaarParser.IfStatementContext>(stmt)
+        val first = ifS.ifStmt()!!
+        val second = first.ifStmt()!!
+        val third = second.ifStmt()!!
+        assertNotNull(third.ELSE())
+        assertNull(third.ifStmt()) // terminal else, not else-if
+    }
+
+    @Test
+    fun ifImplicitVar() {
+        val stmt = parseStmt("if var baz, baz == bar {}")
+        val ifS = assertIs<BazaarParser.IfStatementContext>(stmt)
+        val fragments = ifS.ifStmt()!!.ifFragmentList()!!.ifFragment()
+        assertEquals(2, fragments.size)
+        val varFrag = assertIs<BazaarParser.IfVarFragmentContext>(fragments[0])
+        assertNull(varFrag.EQUAL()) // implicit var, no assignment
+        assertIs<BazaarParser.IfExprFragmentContext>(fragments[1])
+    }
+
+    @Test
+    fun ifVarDeclWithAssign() {
+        val stmt = parseStmt("if var baz = baz, foo == bar == baz {}")
+        val ifS = assertIs<BazaarParser.IfStatementContext>(stmt)
+        val fragments = ifS.ifStmt()!!.ifFragmentList()!!.ifFragment()
+        assertEquals(2, fragments.size)
+        val varFrag = assertIs<BazaarParser.IfVarFragmentContext>(fragments[0])
+        assertNotNull(varFrag.EQUAL())
+    }
+
+    @Test
+    fun ifVarDestructuring() {
+        val stmt = parseStmt("if var (bar, baz) = foo {}")
+        val ifS = assertIs<BazaarParser.IfStatementContext>(stmt)
+        val fragments = ifS.ifStmt()!!.ifFragmentList()!!.ifFragment()
+        assertEquals(1, fragments.size)
+        val varFrag = assertIs<BazaarParser.IfVarFragmentContext>(fragments[0])
+        assertNotNull(varFrag.destructuring())
+        assertEquals(2, varFrag.destructuring()!!.identOrKeyword().size)
+    }
+
+    @Test
+    fun ifVarElseIfVarElse() {
+        val stmt = parseStmt("if var a {} else if var b = something {} else {}")
+        val ifS = assertIs<BazaarParser.IfStatementContext>(stmt)
+        val outerFrags = ifS.ifStmt()!!.ifFragmentList()!!.ifFragment()
+        assertIs<BazaarParser.IfVarFragmentContext>(outerFrags.single())
+        val inner = ifS.ifStmt()!!.ifStmt()!!
+        val innerFrags = inner.ifFragmentList()!!.ifFragment()
+        val varFrag = assertIs<BazaarParser.IfVarFragmentContext>(innerFrags.single())
+        assertNotNull(varFrag.EQUAL())
+    }
+
+    @Test
+    fun ifVarDestructuringElseIf() {
+        val stmt = parseStmt("if var (x, y) = coords {} else if var z = fallback {} else {}")
+        val ifS = assertIs<BazaarParser.IfStatementContext>(stmt)
+        val outerFrag = assertIs<BazaarParser.IfVarFragmentContext>(
+            ifS.ifStmt()!!.ifFragmentList()!!.ifFragment().single()
+        )
+        assertNotNull(outerFrag.destructuring())
+        val inner = ifS.ifStmt()!!.ifStmt()!!
+        assertIs<BazaarParser.IfVarFragmentContext>(inner.ifFragmentList()!!.ifFragment().single())
+    }
+
+    @Test
+    fun ifVarWithCallValue() {
+        val stmt = parseStmt("if var x = getValue(), x > 0 {}")
+        val ifS = assertIs<BazaarParser.IfStatementContext>(stmt)
+        val fragments = ifS.ifStmt()!!.ifFragmentList()!!.ifFragment()
+        assertEquals(2, fragments.size)
+        val varFrag = assertIs<BazaarParser.IfVarFragmentContext>(fragments[0])
+        assertIs<BazaarParser.CondCallExprContext>(varFrag.condExpr()!!)
+        assertIs<BazaarParser.IfExprFragmentContext>(fragments[1])
+    }
+
+    @Test
+    fun ifVarWithType() {
+        val stmt = parseStmt("if var x string = getValue(), x != \"\" {}")
+        val ifS = assertIs<BazaarParser.IfStatementContext>(stmt)
+        val fragments = ifS.ifStmt()!!.ifFragmentList()!!.ifFragment()
+        assertEquals(2, fragments.size)
+        val varFrag = assertIs<BazaarParser.IfVarFragmentContext>(fragments[0])
+        assertNotNull(varFrag.typeDecl())
+        assertNotNull(varFrag.EQUAL())
+    }
+
+    @Test
+    fun ifElseIfNoFinalElse() {
+        val stmt = parseStmt("if foo == 1 {} else if foo == 2 {} else if foo == 3 {}")
+        val ifS = assertIs<BazaarParser.IfStatementContext>(stmt)
+        val second = ifS.ifStmt()!!.ifStmt()!!
+        val third = second.ifStmt()!!
+        assertNull(third.ELSE())
+        assertNull(third.ifStmt())
+    }
+
+    @Test
+    fun ifAndCondition() {
+        val stmt = parseStmt("if foo && bar {}")
+        val ifS = assertIs<BazaarParser.IfStatementContext>(stmt)
+        val fragment = ifS.ifStmt()!!.ifFragmentList()!!.ifFragment().single()
+        val exprFrag = assertIs<BazaarParser.IfExprFragmentContext>(fragment)
+        assertIs<BazaarParser.CondAndExprContext>(exprFrag.condExpr()!!)
+    }
+
+    @Test
+    fun ifComplexOrAnd() {
+        val stmt = parseStmt("if (foo && bar) || (baz == true) {}")
+        val ifS = assertIs<BazaarParser.IfStatementContext>(stmt)
+        val fragment = ifS.ifStmt()!!.ifFragmentList()!!.ifFragment().single()
+        val exprFrag = assertIs<BazaarParser.IfExprFragmentContext>(fragment)
+        assertIs<BazaarParser.CondOrExprContext>(exprFrag.condExpr()!!)
+    }
+
+    @Test
+    fun ifOptionalChainCondition() {
+        val stmt = parseStmt("if a?.b != null {}")
+        val ifS = assertIs<BazaarParser.IfStatementContext>(stmt)
+        val fragment = ifS.ifStmt()!!.ifFragmentList()!!.ifFragment().single()
+        val exprFrag = assertIs<BazaarParser.IfExprFragmentContext>(fragment)
+        assertIs<BazaarParser.CondEqualExprContext>(exprFrag.condExpr()!!)
+    }
+
+    @Test
+    fun ifCoalesceCondition() {
+        val stmt = parseStmt("if a ?? b {}")
+        val ifS = assertIs<BazaarParser.IfStatementContext>(stmt)
+        val fragment = ifS.ifStmt()!!.ifFragmentList()!!.ifFragment().single()
+        val exprFrag = assertIs<BazaarParser.IfExprFragmentContext>(fragment)
+        assertIs<BazaarParser.CondCoalesceExprContext>(exprFrag.condExpr()!!)
+    }
+
+    @Test
+    fun ifTrailingCommaInFragmentList() {
+        val stmt = parseStmt("if var x, {}")
+        val ifS = assertIs<BazaarParser.IfStatementContext>(stmt)
+        val fragments = ifS.ifStmt()!!.ifFragmentList()!!.ifFragment()
+        assertEquals(1, fragments.size)
+        assertIs<BazaarParser.IfVarFragmentContext>(fragments.single())
+    }
+
+    @Test
+    fun ifElseIfWithBodies() {
+        val stmts = parseStmts("if x { a = 1 } else if y { b = 2 } else { c = 3 }")
+        assertEquals(1, stmts.size)
+        val ifS = assertIs<BazaarParser.IfStatementContext>(stmts.single())
+        val outer = ifS.ifStmt()!!
+        assertEquals(1, outer.block(0)!!.stmt().size)
+        val inner = outer.ifStmt()!!
+        assertEquals(1, inner.block(0)!!.stmt().size)
+        assertEquals(1, inner.block(1)!!.stmt().size)
+    }
+
+    // ── For statement tests ──
+
+    @Test
+    fun forInSimple() {
+        val stmt = parseStmt("for value in list {}")
+        val forS = assertIs<BazaarParser.ForStatementContext>(stmt)
+        assertIs<BazaarParser.ForInStmtContext>(forS.forStmt()!!)
+    }
+
+    @Test
+    fun forInCall() {
+        val stmt = parseStmt("for entry in enumerate(map) {}")
+        val forS = assertIs<BazaarParser.ForStatementContext>(stmt)
+        val forIn = assertIs<BazaarParser.ForInStmtContext>(forS.forStmt()!!)
+        assertIs<BazaarParser.CondCallExprContext>(forIn.condExpr()!!)
+    }
+
+    @Test
+    fun forInRange() {
+        val stmt = parseStmt("for idx in range(0, 10) {}")
+        val forS = assertIs<BazaarParser.ForStatementContext>(stmt)
+        val forIn = assertIs<BazaarParser.ForInStmtContext>(forS.forStmt()!!)
+        assertIs<BazaarParser.CondCallExprContext>(forIn.condExpr()!!)
+    }
+
+    @Test
+    fun forInDestructuring() {
+        val stmt = parseStmt("for (idx, value) in enumerate(list) {}")
+        val forS = assertIs<BazaarParser.ForStatementContext>(stmt)
+        val forIn = assertIs<BazaarParser.ForInStmtContext>(forS.forStmt()!!)
+        assertNotNull(forIn.destructuring())
+        assertEquals(2, forIn.destructuring()!!.identOrKeyword().size)
+    }
+
+    @Test
+    fun forInDestructuringTrailingComma() {
+        val stmt = parseStmt("for (a, b,) in something {}")
+        val forS = assertIs<BazaarParser.ForStatementContext>(stmt)
+        val forIn = assertIs<BazaarParser.ForInStmtContext>(forS.forStmt()!!)
+        assertEquals(2, forIn.destructuring()!!.identOrKeyword().size)
+    }
+
+    @Test
+    fun forInWithBody() {
+        val stmt = parseStmt("for value in list { Print(value) }")
+        val forS = assertIs<BazaarParser.ForStatementContext>(stmt)
+        val forIn = assertIs<BazaarParser.ForInStmtContext>(forS.forStmt()!!)
+        assertEquals(1, forIn.block()!!.stmt().size)
+    }
+
+    @Test
+    fun forCondition() {
+        val stmt = parseStmt("for idx < len(list) { idx += 1 }")
+        val forS = assertIs<BazaarParser.ForStatementContext>(stmt)
+        val forCond = assertIs<BazaarParser.ForCondStmtContext>(forS.forStmt()!!)
+        assertIs<BazaarParser.CondCompareExprContext>(forCond.condExpr()!!)
+        assertEquals(1, forCond.block()!!.stmt().size)
+    }
+
+    @Test
+    fun forInfiniteLoop() {
+        val stmt = parseStmt("for true { step() }")
+        val forS = assertIs<BazaarParser.ForStatementContext>(stmt)
+        val forCond = assertIs<BazaarParser.ForCondStmtContext>(forS.forStmt()!!)
+        assertIs<BazaarParser.CondTrueExprContext>(forCond.condExpr()!!)
+        assertEquals(1, forCond.block()!!.stmt().size)
+    }
+
+    @Test
+    fun forMemberCallCondition() {
+        val stmt = parseStmt("for list.hasNext() { list.next() }")
+        val forS = assertIs<BazaarParser.ForStatementContext>(stmt)
+        val forCond = assertIs<BazaarParser.ForCondStmtContext>(forS.forStmt()!!)
+        assertIs<BazaarParser.CondCallExprContext>(forCond.condExpr()!!)
+        assertEquals(1, forCond.block()!!.stmt().size)
+    }
+
+    // ── Switch statement tests ──
+
+    @Test
+    fun switchBasic() {
+        val stmt = parseStmt("""
+            switch expression {
+            case expr1:
+            case value1:
+                2 + 2
+                foo()
+            default:
+                1 + 1
+            }
+        """.trimIndent())
+        val switchS = assertIs<BazaarParser.SwitchStatementContext>(stmt)
+        val sw = switchS.switchStmt()!!
+        assertEquals(2, sw.switchCase().size)
+        assertEquals(0, sw.switchCase(0)!!.stmt().size)
+        assertEquals(2, sw.switchCase(1)!!.stmt().size)
+        assertNotNull(sw.switchDefault())
+        assertEquals(1, sw.switchDefault()!!.stmt().size)
+    }
+
+    @Test
+    fun switchNoDefault() {
+        val stmt = parseStmt("switch x { case 1: foo() case 2: bar() }")
+        val switchS = assertIs<BazaarParser.SwitchStatementContext>(stmt)
+        val sw = switchS.switchStmt()!!
+        assertEquals(2, sw.switchCase().size)
+        assertNull(sw.switchDefault())
+    }
+
+    @Test
+    fun switchDefaultOnly() {
+        val stmt = parseStmt("switch x { default: foo() }")
+        val switchS = assertIs<BazaarParser.SwitchStatementContext>(stmt)
+        val sw = switchS.switchStmt()!!
+        assertEquals(0, sw.switchCase().size)
+        assertNotNull(sw.switchDefault())
+    }
+
+    @Test
+    fun switchExprCondition() {
+        val stmt = parseStmt("switch a + b { case 1: x }")
+        val switchS = assertIs<BazaarParser.SwitchStatementContext>(stmt)
+        val sw = switchS.switchStmt()!!
+        assertIs<BazaarParser.CondAddExprContext>(sw.condExpr()!!)
+    }
+
+    @Test
+    fun switchComplexCaseExpr() {
+        val stmt = parseStmt("switch x { case a + b: foo() case c * d: bar() }")
+        val switchS = assertIs<BazaarParser.SwitchStatementContext>(stmt)
+        val sw = switchS.switchStmt()!!
+        assertEquals(2, sw.switchCase().size)
+        assertIs<BazaarParser.CondAddExprContext>(sw.switchCase(0)!!.condExpr()!!)
+        assertIs<BazaarParser.CondMulExprContext>(sw.switchCase(1)!!.condExpr()!!)
+    }
+
+    @Test
+    fun switchEmpty() {
+        val stmt = parseStmt("switch x {}")
+        val switchS = assertIs<BazaarParser.SwitchStatementContext>(stmt)
+        val sw = switchS.switchStmt()!!
+        assertEquals(0, sw.switchCase().size)
+        assertNull(sw.switchDefault())
+    }
+
+    @Test
+    fun switchCallCondition() {
+        val stmt = parseStmt("switch getValue() { case 1: foo() }")
+        val switchS = assertIs<BazaarParser.SwitchStatementContext>(stmt)
+        assertIs<BazaarParser.CondCallExprContext>(switchS.switchStmt()!!.condExpr()!!)
+    }
+
+    @Test
+    fun switchStringCondition() {
+        val stmt = parseStmt("""switch "hello" { case "world": foo() default: bar() }""")
+        val switchS = assertIs<BazaarParser.SwitchStatementContext>(stmt)
+        assertIs<BazaarParser.CondStringExprContext>(switchS.switchStmt()!!.condExpr()!!)
+    }
+
+    @Test
+    fun switchCaseWithControlFlow() {
+        val stmt = parseStmt("""
+            switch x {
+            case 1:
+                if y { return 0 }
+                for i in items { Print(i) }
+            default:
+                var z = 42
+            }
+        """.trimIndent())
+        val switchS = assertIs<BazaarParser.SwitchStatementContext>(stmt)
+        val sw = switchS.switchStmt()!!
+        assertEquals(1, sw.switchCase().size)
+        assertEquals(2, sw.switchCase(0)!!.stmt().size)
+        assertIs<BazaarParser.IfStatementContext>(sw.switchCase(0)!!.stmt(0)!!)
+        assertIs<BazaarParser.ForStatementContext>(sw.switchCase(0)!!.stmt(1)!!)
+        assertEquals(1, sw.switchDefault()!!.stmt().size)
+        assertIs<BazaarParser.VarStmtContext>(sw.switchDefault()!!.stmt(0)!!)
+    }
+
+    // ── Disambiguation tests ──
+
+    @Test
+    fun ifDoesNotConsumeBlockAsLambda() {
+        val stmt = parseStmt("if x { y }")
+        val ifS = assertIs<BazaarParser.IfStatementContext>(stmt)
+        val fragment = ifS.ifStmt()!!.ifFragmentList()!!.ifFragment().single()
+        val exprFrag = assertIs<BazaarParser.IfExprFragmentContext>(fragment)
+        assertIs<BazaarParser.CondIdentExprContext>(exprFrag.condExpr()!!)
+        assertEquals(1, ifS.ifStmt()!!.block(0)!!.stmt().size)
+    }
+
+    @Test
+    fun ifCondWithCallDoesNotConsumeBlock() {
+        val stmt = parseStmt("if foo() { bar }")
+        val ifS = assertIs<BazaarParser.IfStatementContext>(stmt)
+        val fragment = ifS.ifStmt()!!.ifFragmentList()!!.ifFragment().single()
+        val exprFrag = assertIs<BazaarParser.IfExprFragmentContext>(fragment)
+        assertIs<BazaarParser.CondCallExprContext>(exprFrag.condExpr()!!)
+        assertEquals(1, ifS.ifStmt()!!.block(0)!!.stmt().size)
+    }
+
+    @Test
+    fun forDoesNotConsumeBlockAsLambda() {
+        val stmt = parseStmt("for x in list { y }")
+        val forS = assertIs<BazaarParser.ForStatementContext>(stmt)
+        val forIn = assertIs<BazaarParser.ForInStmtContext>(forS.forStmt()!!)
+        assertIs<BazaarParser.CondIdentExprContext>(forIn.condExpr()!!)
+        assertEquals(1, forIn.block()!!.stmt().size)
+    }
+
+    @Test
+    fun forCondDoesNotConsumeBlockAsLambda() {
+        val stmt = parseStmt("for running { step() }")
+        val forS = assertIs<BazaarParser.ForStatementContext>(stmt)
+        val forCond = assertIs<BazaarParser.ForCondStmtContext>(forS.forStmt()!!)
+        assertIs<BazaarParser.CondIdentExprContext>(forCond.condExpr()!!)
+        assertEquals(1, forCond.block()!!.stmt().size)
+    }
+
+    @Test
+    fun switchDoesNotConsumeBlockAsLambda() {
+        val stmt = parseStmt("switch x { default: y }")
+        val switchS = assertIs<BazaarParser.SwitchStatementContext>(stmt)
+        assertIs<BazaarParser.CondIdentExprContext>(switchS.switchStmt()!!.condExpr()!!)
+        assertNotNull(switchS.switchStmt()!!.switchDefault())
+    }
+
+    @Test
+    fun trailingLambdaStillWorksInExprStmt() {
+        val stmt = parseStmt("foo { bar }")
+        val es = assertIs<BazaarParser.ExprStmtContext>(stmt)
+        assertIs<BazaarParser.TrailingLambdaExprContext>(es.expr()!!)
+    }
+
+    @Test
+    fun ifFollowedByExprStmt() {
+        val stmts = parseStmts("if true { } foo()")
+        assertEquals(2, stmts.size)
+        assertIs<BazaarParser.IfStatementContext>(stmts[0])
+        assertIs<BazaarParser.ExprStmtContext>(stmts[1])
+    }
+
+    // ── Control flow integration tests ──
+
+    @Test
+    fun ifsBzr() {
+        val stmts = parseStmts("""
+            if foo != bar {}
+            if foo == bar {}
+            if foo == bar && foo != true {}
+            if (foo == bar || (foo != true)) {}
+            if true || (!(false) && true) {}
+            if (foo && bar) || (baz == true) {}
+            if var baz, baz == bar {}
+            if var baz = baz, foo == bar == baz {}
+            if var (bar, baz) = foo {}
+            if 10 > len(something) {}
+        """.trimIndent())
+        assertEquals(10, stmts.size)
+        stmts.forEach { assertIs<BazaarParser.IfStatementContext>(it) }
+    }
+
+    @Test
+    fun ifsWithElse() {
+        val stmts = parseStmts("""
+            if true {} else {}
+            if foo == bar {} else {}
+            if foo == 1 {} else if foo == 2 {}
+            if true {} else if false {} else {}
+            if foo == 1 {} else if foo == 2 {} else if foo == 3 {} else {}
+            if foo && bar {} else if (foo || bar) && baz {} else {}
+            if var x = getValue(), x > 0 {} else if var y = getOther(), y < 0 {} else {}
+        """.trimIndent())
+        assertEquals(7, stmts.size)
+        stmts.forEach { assertIs<BazaarParser.IfStatementContext>(it) }
+    }
+
+    @Test
+    fun forsBzr() {
+        val stmts = parseStmts("""
+            for value in list {}
+            for entry in map {}
+            for entry in enumerate(map) {}
+            for idx in range(0, 10) {}
+            for (idx, value) in enumerate(list) {}
+            for (key, value) in enumerate(map) {}
+        """.trimIndent())
+        assertEquals(6, stmts.size)
+        stmts.forEach { assertIs<BazaarParser.ForStatementContext>(it) }
+    }
+
+    @Test
+    fun forConditionBzr() {
+        val stmts = parseStmts("""
+            var idx = 0
+            for idx < len(list) { idx += 1 }
+        """.trimIndent())
+        assertEquals(2, stmts.size)
+        assertIs<BazaarParser.VarStmtContext>(stmts[0])
+        assertIs<BazaarParser.ForStatementContext>(stmts[1])
+    }
+
+    @Test
+    fun switchesBzr() {
+        val stmt = parseStmt("""
+            switch expression {
+            case expr1:
+            case value1:
+                2 + 2
+                foo()
+            default:
+                1 + 1
+            }
+        """.trimIndent())
+        assertIs<BazaarParser.SwitchStatementContext>(stmt)
+    }
+
+    @Test
+    fun mixedControlFlow() {
+        val stmts = parseStmts("""
+            var x = 1
+            if x == 1 { x = 2 }
+            for i in range(0, 10) { Print(i) }
+            switch x { case 1: foo() default: bar() }
+            return x
+        """.trimIndent())
+        assertEquals(5, stmts.size)
+        assertIs<BazaarParser.VarStmtContext>(stmts[0])
+        assertIs<BazaarParser.IfStatementContext>(stmts[1])
+        assertIs<BazaarParser.ForStatementContext>(stmts[2])
+        assertIs<BazaarParser.SwitchStatementContext>(stmts[3])
+        assertIs<BazaarParser.ReturnStmtContext>(stmts[4])
+    }
+
+    @Test
+    fun nestedControlFlow() {
+        val stmt = parseStmt("""
+            if true {
+                for i in items {
+                    if i == 0 {
+                        switch i {
+                        case 0: Print(i)
+                        default: bar()
+                        }
+                    }
+                }
+            }
+        """.trimIndent())
+        assertIs<BazaarParser.IfStatementContext>(stmt)
+    }
+
     // ── Negative tests ──
 
     @Test
@@ -1316,5 +1879,45 @@ class ParserTest {
     @Test
     fun annotationOnExpr() {
         parseFails("func F() { @Ann 42 }")
+    }
+
+    @Test
+    fun ifMissingBlock() {
+        parseFails("func F() { if true }")
+    }
+
+    @Test
+    fun ifMissingCondition() {
+        parseFails("func F() { if {} }")
+    }
+
+    @Test
+    fun forMissingBlock() {
+        parseFails("func F() { for x in list }")
+    }
+
+    @Test
+    fun forDestructuringMissingIn() {
+        parseFails("func F() { for (a, b) list {} }")
+    }
+
+    @Test
+    fun switchMissingBraces() {
+        parseFails("func F() { switch x case 1: foo() }")
+    }
+
+    @Test
+    fun elseWithoutIf() {
+        parseFails("func F() { else {} }")
+    }
+
+    @Test
+    fun caseOutsideSwitch() {
+        parseFails("func F() { case 1: foo() }")
+    }
+
+    @Test
+    fun switchDefaultBeforeCase() {
+        parseFails("func F() { switch x { default: foo() case 1: bar() } }")
     }
 }

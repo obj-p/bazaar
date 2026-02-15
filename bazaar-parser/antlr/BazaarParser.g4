@@ -70,8 +70,8 @@ expr
     | expr LBRACK expr RBRACK                                       # indexExpr
     | expr QUESTION LBRACK expr RBRACK                              # optionalIndexExpr
     // Note: trailingLambdaExpr greedily attaches any following LBRACE block.
-    // This is correct for expression statements. Issue #26 (if/else/for) will
-    // need semantic predicates to prevent `if cond { }` from being consumed.
+    // This is correct for expression statements. Control flow conditions
+    // (if/for/switch) use condExpr, which omits this alternative.
     | expr lambda                                                   # trailingLambdaExpr
     | (BANG | MINUS) expr                                           # unaryExpr
     | <assoc=right> expr STAR_STAR expr                             # powerExpr
@@ -92,6 +92,38 @@ expr
     | lambda                                                        # lambdaExpr
     | identOrKeyword                                                # identExpr
     | LPAREN expr RPAREN                                            # parenExpr
+    ;
+
+// ── Condition expressions ───────────────────────────────────
+// Identical to expr but WITHOUT trailingLambdaExpr, lambdaExpr, and
+// the trailing lambda on callExpr. Used in if/for/switch conditions
+// where the following LBRACE must be parsed as the statement block.
+// Nested sub-expressions (inside parens, brackets, args) use full `expr`.
+condExpr
+    : condExpr DOT identOrKeyword                                  # condMemberExpr
+    | condExpr QUESTION_DOT identOrKeyword                          # condOptionalMemberExpr
+    | condExpr LPAREN argList? RPAREN                               # condCallExpr
+    | condExpr QUESTION LPAREN argList? RPAREN                      # condOptionalCallExpr
+    | condExpr LBRACK expr RBRACK                                   # condIndexExpr
+    | condExpr QUESTION LBRACK expr RBRACK                          # condOptionalIndexExpr
+    | (BANG | MINUS) condExpr                                       # condUnaryExpr
+    | <assoc=right> condExpr STAR_STAR condExpr                     # condPowerExpr
+    | condExpr (STAR | SLASH | PERCENT) condExpr                    # condMulExpr
+    | condExpr (PLUS | MINUS) condExpr                              # condAddExpr
+    | condExpr (LESS | LESS_EQUAL | GREATER | GREATER_EQUAL) condExpr # condCompareExpr
+    | condExpr (EQUAL_EQUAL | BANG_EQUAL) condExpr                  # condEqualExpr
+    | condExpr AMP_AMP condExpr                                     # condAndExpr
+    | condExpr PIPE_PIPE condExpr                                   # condOrExpr
+    | <assoc=right> condExpr QUESTION_QUESTION condExpr             # condCoalesceExpr
+    | NULL                                                          # condNullExpr
+    | TRUE                                                          # condTrueExpr
+    | FALSE                                                         # condFalseExpr
+    | NUMBER                                                        # condNumberExpr
+    | stringLiteral                                                 # condStringExpr
+    | LBRACK argList? RBRACK                                        # condArrayExpr
+    | mapLiteral                                                    # condMapExpr
+    | identOrKeyword                                                # condIdentExpr
+    | LPAREN expr RPAREN                                            # condParenExpr
     ;
 
 // Note: LBRACE is shared by block, mapLiteral, and lambda. The colon
@@ -123,6 +155,9 @@ stmt
     : annotation+ (varDeclStmt | callStmt)                      # annotatedStmt
     | varDeclStmt                                                # varStmt
     | RETURN expr?                                               # returnStmt
+    | ifStmt                                                     # ifStatement
+    | forStmt                                                    # forStatement
+    | switchStmt                                                 # switchStatement
     | identOrKeyword assignOp expr                               # assignStmt
     | expr                                                       # exprStmt
     ;
@@ -144,6 +179,37 @@ destructuring: LPAREN identOrKeyword (COMMA identOrKeyword)* COMMA? RPAREN;
 // Assignment targets are bare identOrKeyword only (matching Go reference).
 // Member/index assignment (a.b = c, a[0] = c) is not supported.
 assignOp: EQUAL | PLUS_EQUAL | MINUS_EQUAL | STAR_EQUAL | SLASH_EQUAL | PERCENT_EQUAL;
+
+// ── If statement ────────────────────────────────────────────
+// Else greedily attaches: ELSE is a keyword not in identOrKeyword,
+// so it can't start any other statement — no dangling-else ambiguity.
+// Braces are required on all branches.
+ifStmt: IF ifFragmentList block (ELSE ifStmt | ELSE block)?;
+
+ifFragmentList: ifFragment (COMMA ifFragment)* COMMA?;
+
+ifFragment
+    : VAR (identOrKeyword | destructuring) (typeDecl? EQUAL condExpr)?  # ifVarFragment
+    | condExpr                                                           # ifExprFragment
+    ;
+
+// ── For statement ───────────────────────────────────────────
+// For-in: `for x in iterable { }` or `for (k, v) in iterable { }`.
+// Condition-based: `for expr { }` (while-style loop).
+// IN keyword after ident/destructuring disambiguates the two forms.
+forStmt
+    : FOR (identOrKeyword | destructuring) IN condExpr block     # forInStmt
+    | FOR condExpr block                                         # forCondStmt
+    ;
+
+// ── Switch statement ────────────────────────────────────────
+// CASE and DEFAULT are keywords not in identOrKeyword, so they
+// can't start any stmt — stmt* in each case terminates naturally.
+switchStmt: SWITCH condExpr LBRACE switchCase* switchDefault? RBRACE;
+
+switchCase: CASE condExpr COLON stmt*;
+
+switchDefault: DEFAULT COLON stmt*;
 
 // ── String literal ───────────────────────────────────────────
 stringLiteral: STRING_OPEN stringPart* STRING_CLOSE;
