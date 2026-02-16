@@ -1,0 +1,72 @@
+BazaarFile
+  packageDecl:
+    PackageDecl
+      segments: ["assigns"]
+  declarations:
+    FunctionDecl
+      name: "Assigns"
+      body:
+        VarDeclStmt
+          names: ["answer"]
+          value:
+            NumberLiteral
+              value: "42"
+        VarDeclStmt
+          names: ["answer"]
+          value:
+            NumberLiteral
+              value: "42.0"
+        VarDeclStmt
+          names: ["answer"]
+          value:
+            StringLiteral
+              parts:
+                TextPart
+                  text: "42"
+        VarDeclStmt
+          names: ["answer"]
+          type:
+            ValueType
+              name: "int"
+          value:
+            NumberLiteral
+              value: "42"
+        VarDeclStmt
+          names: ["answer"]
+          value:
+            LambdaExpr
+              body:
+                ReturnStmt
+                  value:
+                    NumberLiteral
+                      value: "42"
+        AssignStmt
+          target: "answer"
+          op: ADD_ASSIGN
+          value:
+            NumberLiteral
+              value: "0"
+        AssignStmt
+          target: "answer"
+          op: SUB_ASSIGN
+          value:
+            NumberLiteral
+              value: "0"
+        AssignStmt
+          target: "answer"
+          op: MOD_ASSIGN
+          value:
+            NumberLiteral
+              value: "128"
+        AssignStmt
+          target: "answer"
+          op: DIV_ASSIGN
+          value:
+            NumberLiteral
+              value: "1"
+        AssignStmt
+          target: "answer"
+          op: MUL_ASSIGN
+          value:
+            NumberLiteral
+              value: "1"

@@ -1,0 +1,26 @@
+BazaarFile
+  packageDecl:
+    PackageDecl
+      segments: ["imports"]
+  imports:
+    ImportDecl
+      segments: ["foo", "bar", "baz"]
+    ImportDecl
+      segments: ["foo", "bar", "baz", "Qux"]
+    ImportDecl
+      segments: ["bar", "baz", "Qux"]
+      alias: "Foo"
+    ImportDecl
+      segments: ["very", "long", "path", "Component"]
+      alias: "Brief"
+    ImportDecl
+      segments: ["SomeComponent"]
+      alias: "Short"
+    ImportDecl
+      segments: ["ui", "components", "Button"]
+      alias: "Btn"
+    ImportDecl
+      segments: ["<missing IDENTIFIER>"]
+  declarations:
+    DataDecl
+      name: "models"

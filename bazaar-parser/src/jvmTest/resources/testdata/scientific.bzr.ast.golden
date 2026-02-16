@@ -1,0 +1,199 @@
+BazaarFile
+  packageDecl:
+    PackageDecl
+      segments: ["scientific"]
+  declarations:
+    FunctionDecl
+      name: "ScientificNotation"
+      body:
+        VarDeclStmt
+          names: ["basic"]
+          value:
+            NumberLiteral
+              value: "1e5"
+        VarDeclStmt
+          names: ["decimal"]
+          value:
+            NumberLiteral
+              value: "1.5e10"
+        VarDeclStmt
+          names: ["small"]
+          value:
+            NumberLiteral
+              value: "2.3e-5"
+        VarDeclStmt
+          names: ["lowercase"]
+          value:
+            NumberLiteral
+              value: "1e3"
+        VarDeclStmt
+          names: ["uppercase"]
+          value:
+            NumberLiteral
+              value: "1E3"
+        VarDeclStmt
+          names: ["positive"]
+          value:
+            NumberLiteral
+              value: "1e+10"
+        VarDeclStmt
+          names: ["negative"]
+          value:
+            NumberLiteral
+              value: "1e-10"
+        VarDeclStmt
+          names: ["explicitPos"]
+          value:
+            NumberLiteral
+              value: "1.5e+5"
+        VarDeclStmt
+          names: ["explicitNeg"]
+          value:
+            NumberLiteral
+              value: "1.5e-5"
+        VarDeclStmt
+          names: ["zeroExp"]
+          value:
+            NumberLiteral
+              value: "3.14e0"
+        VarDeclStmt
+          names: ["zeroExpUpper"]
+          value:
+            NumberLiteral
+              value: "2.71E0"
+        VarDeclStmt
+          names: ["noDecimal"]
+          value:
+            NumberLiteral
+              value: "5e3"
+        VarDeclStmt
+          names: ["withDecimal"]
+          value:
+            NumberLiteral
+              value: "5.0e3"
+        VarDeclStmt
+          names: ["trailingDecimal"]
+          value:
+            NumberLiteral
+              value: "5.e3"
+        VarDeclStmt
+          names: ["smallBase"]
+          value:
+            NumberLiteral
+              value: "0.1e10"
+        VarDeclStmt
+          names: ["avogadro"]
+          value:
+            NumberLiteral
+              value: "6.022e23"
+        VarDeclStmt
+          names: ["planck"]
+          value:
+            NumberLiteral
+              value: "6.626e-34"
+        VarDeclStmt
+          names: ["lightSpeed"]
+          value:
+            NumberLiteral
+              value: "2.998e8"
+        VarDeclStmt
+          names: ["sum"]
+          value:
+            BinaryExpr
+              op: ADD
+              left:
+                NumberLiteral
+                  value: "1e3"
+              right:
+                NumberLiteral
+                  value: "2e3"
+        VarDeclStmt
+          names: ["product"]
+          value:
+            BinaryExpr
+              op: MUL
+              left:
+                NumberLiteral
+                  value: "3e2"
+              right:
+                NumberLiteral
+                  value: "4e-1"
+        VarDeclStmt
+          names: ["division"]
+          value:
+            BinaryExpr
+              op: DIV
+              left:
+                NumberLiteral
+                  value: "1e6"
+              right:
+                NumberLiteral
+                  value: "2e3"
+        VarDeclStmt
+          names: ["power"]
+          value:
+            BinaryExpr
+              op: POW
+              left:
+                NumberLiteral
+                  value: "1e2"
+              right:
+                NumberLiteral
+                  value: "2"
+        VarDeclStmt
+          names: ["mixed"]
+          value:
+            BinaryExpr
+              op: ADD
+              left:
+                NumberLiteral
+                  value: "1.5e3"
+              right:
+                BinaryExpr
+                  op: MUL
+                  left:
+                    NumberLiteral
+                      value: "2.5e-2"
+                  right:
+                    NumberLiteral
+                      value: "1e4"
+        VarDeclStmt
+          names: ["grouped"]
+          value:
+            BinaryExpr
+              op: MUL
+              left:
+                BinaryExpr
+                  op: ADD
+                  left:
+                    NumberLiteral
+                      value: "1e3"
+                  right:
+                    NumberLiteral
+                      value: "2e3"
+              right:
+                NumberLiteral
+                  value: "3e-1"
+        VarDeclStmt
+          names: ["complex"]
+          value:
+            BinaryExpr
+              op: DIV
+              left:
+                BinaryExpr
+                  op: ADD
+                  left:
+                    NumberLiteral
+                      value: "1.5e2"
+                  right:
+                    NumberLiteral
+                      value: "2.5e1"
+              right:
+                BinaryExpr
+                  op: ADD
+                  left:
+                    NumberLiteral
+                      value: "3e-1"
+                  right:
+                    NumberLiteral
+                      value: "7e-2"

@@ -1,0 +1,378 @@
+BazaarFile
+  packageDecl:
+    PackageDecl
+      segments: ["references"]
+  declarations:
+    FunctionDecl
+      name: "References"
+      body:
+        VarDeclStmt
+          names: ["prop"]
+          value:
+            MemberExpr
+              target:
+                ReferenceExpr
+                  name: "obj"
+              member: "property"
+        VarDeclStmt
+          names: ["nested"]
+          value:
+            MemberExpr
+              target:
+                MemberExpr
+                  target:
+                    ReferenceExpr
+                      name: "obj"
+                  member: "property"
+              member: "nested"
+        VarDeclStmt
+          names: ["deep"]
+          value:
+            MemberExpr
+              target:
+                MemberExpr
+                  target:
+                    MemberExpr
+                      target:
+                        ReferenceExpr
+                          name: "obj"
+                      member: "level1"
+                  member: "level2"
+              member: "level3"
+        VarDeclStmt
+          names: ["result"]
+          value:
+            CallExpr
+              target:
+                MemberExpr
+                  target:
+                    ReferenceExpr
+                      name: "obj"
+                  member: "method"
+        VarDeclStmt
+          names: ["chained"]
+          value:
+            MemberExpr
+              target:
+                CallExpr
+                  target:
+                    MemberExpr
+                      target:
+                        ReferenceExpr
+                          name: "obj"
+                      member: "method"
+              member: "property"
+        VarDeclStmt
+          names: ["methodChain"]
+          value:
+            CallExpr
+              target:
+                MemberExpr
+                  target:
+                    CallExpr
+                      target:
+                        MemberExpr
+                          target:
+                            ReferenceExpr
+                              name: "obj"
+                          member: "method1"
+                  member: "method2"
+        VarDeclStmt
+          names: ["methodNested"]
+          value:
+            CallExpr
+              target:
+                MemberExpr
+                  target:
+                    CallExpr
+                      target:
+                        MemberExpr
+                          target:
+                            ReferenceExpr
+                              name: "obj"
+                          member: "getData"
+                  member: "process"
+        VarDeclStmt
+          names: ["first"]
+          value:
+            IndexExpr
+              target:
+                ReferenceExpr
+                  name: "array"
+              index:
+                NumberLiteral
+                  value: "0"
+        VarDeclStmt
+          names: ["item"]
+          value:
+            IndexExpr
+              target:
+                ReferenceExpr
+                  name: "list"
+              index:
+                ReferenceExpr
+                  name: "index"
+        VarDeclStmt
+          names: ["calculated"]
+          value:
+            IndexExpr
+              target:
+                ReferenceExpr
+                  name: "array"
+              index:
+                BinaryExpr
+                  op: ADD
+                  left:
+                    ReferenceExpr
+                      name: "i"
+                  right:
+                    NumberLiteral
+                      value: "1"
+        VarDeclStmt
+          names: ["expression"]
+          value:
+            IndexExpr
+              target:
+                ReferenceExpr
+                  name: "items"
+              index:
+                BinaryExpr
+                  op: SUB
+                  left:
+                    CallExpr
+                      target:
+                        ReferenceExpr
+                          name: "len"
+                      args:
+                        Argument
+                          value:
+                            ReferenceExpr
+                              name: "other"
+                  right:
+                    NumberLiteral
+                      value: "1"
+        VarDeclStmt
+          names: ["value"]
+          value:
+            IndexExpr
+              target:
+                ReferenceExpr
+                  name: "map"
+              index:
+                StringLiteral
+                  parts:
+                    TextPart
+                      text: "key"
+        VarDeclStmt
+          names: ["config"]
+          value:
+            IndexExpr
+              target:
+                ReferenceExpr
+                  name: "settings"
+              index:
+                StringLiteral
+                  parts:
+                    TextPart
+                      text: "theme"
+        VarDeclStmt
+          names: ["dynamic"]
+          value:
+            IndexExpr
+              target:
+                ReferenceExpr
+                  name: "data"
+              index:
+                ReferenceExpr
+                  name: "keyName"
+        VarDeclStmt
+          names: ["cell"]
+          value:
+            IndexExpr
+              target:
+                IndexExpr
+                  target:
+                    ReferenceExpr
+                      name: "matrix"
+                  index:
+                    ReferenceExpr
+                      name: "row"
+              index:
+                ReferenceExpr
+                  name: "col"
+        VarDeclStmt
+          names: ["deep"]
+          value:
+            IndexExpr
+              target:
+                IndexExpr
+                  target:
+                    ReferenceExpr
+                      name: "nested"
+                  index:
+                    ReferenceExpr
+                      name: "outer"
+              index:
+                ReferenceExpr
+                  name: "inner"
+        VarDeclStmt
+          names: ["combined"]
+          value:
+            MemberExpr
+              target:
+                IndexExpr
+                  target:
+                    IndexExpr
+                      target:
+                        ReferenceExpr
+                          name: "nested"
+                      index:
+                        ReferenceExpr
+                          name: "outer"
+                  index:
+                    ReferenceExpr
+                      name: "inner"
+              member: "property"
+        VarDeclStmt
+          names: ["complex1"]
+          value:
+            MemberExpr
+              target:
+                IndexExpr
+                  target:
+                    MemberExpr
+                      target:
+                        CallExpr
+                          target:
+                            ReferenceExpr
+                              name: "getData"
+                      member: "items"
+                  index:
+                    NumberLiteral
+                      value: "0"
+              member: "name"
+        VarDeclStmt
+          names: ["complex2"]
+          value:
+            CallExpr
+              target:
+                MemberExpr
+                  target:
+                    IndexExpr
+                      target:
+                        CallExpr
+                          target:
+                            MemberExpr
+                              target:
+                                ReferenceExpr
+                                  name: "obj"
+                              member: "getArray"
+                      index:
+                        ReferenceExpr
+                          name: "index"
+                  member: "method"
+        VarDeclStmt
+          names: ["complex3"]
+          value:
+            IndexExpr
+              target:
+                MemberExpr
+                  target:
+                    IndexExpr
+                      target:
+                        MemberExpr
+                          target:
+                            ReferenceExpr
+                              name: "config"
+                          member: "settings"
+                      index:
+                        StringLiteral
+                          parts:
+                            TextPart
+                              text: "theme"
+                  member: "colors"
+              index:
+                NumberLiteral
+                  value: "0"
+        VarDeclStmt
+          names: ["complex4"]
+          value:
+            MemberExpr
+              target:
+                MemberExpr
+                  target:
+                    IndexExpr
+                      target:
+                        MemberExpr
+                          target:
+                            ReferenceExpr
+                              name: "root"
+                          member: "children"
+                      index:
+                        ReferenceExpr
+                          name: "i"
+                  member: "data"
+              member: "value"
+        VarDeclStmt
+          names: ["calculated1"]
+          value:
+            IndexExpr
+              target:
+                ReferenceExpr
+                  name: "grid"
+              index:
+                BinaryExpr
+                  op: ADD
+                  left:
+                    BinaryExpr
+                      op: MUL
+                      left:
+                        ReferenceExpr
+                          name: "x"
+                      right:
+                        ReferenceExpr
+                          name: "width"
+                  right:
+                    ReferenceExpr
+                      name: "y"
+        VarDeclStmt
+          names: ["calculated2"]
+          value:
+            IndexExpr
+              target:
+                ReferenceExpr
+                  name: "buffer"
+              index:
+                BinaryExpr
+                  op: ADD
+                  left:
+                    ReferenceExpr
+                      name: "offset"
+                  right:
+                    ReferenceExpr
+                      name: "size"
+        VarDeclStmt
+          names: ["originalPattern"]
+          value:
+            MemberExpr
+              target:
+                CallExpr
+                  target:
+                    IndexExpr
+                      target:
+                        ReferenceExpr
+                          name: "model"
+                      index:
+                        NumberLiteral
+                          value: "0"
+                      optional: true
+                  args:
+                    Argument
+                      value:
+                        StringLiteral
+                          parts:
+                            TextPart
+                              text: "hello, world!"
+                  optional: true
+              member: "foobar"
+              optional: true

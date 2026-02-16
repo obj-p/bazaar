@@ -1,0 +1,117 @@
+BazaarFile
+  packageDecl:
+    PackageDecl
+      segments: ["fors"]
+  declarations:
+    FunctionDecl
+      name: "Fors"
+      params:
+        ParameterDecl
+          name: "list"
+          type:
+            ArrayType
+              elementType:
+                ValueType
+                  name: "string"
+        ParameterDecl
+          name: "map"
+          type:
+            MapType
+              keyType:
+                ValueType
+                  name: "string"
+              valueType:
+                ValueType
+                  name: "int"
+      body:
+        ForInStmt
+          names: ["value"]
+          iterable:
+            ReferenceExpr
+              name: "list"
+        ForInStmt
+          names: ["entry"]
+          iterable:
+            ReferenceExpr
+              name: "map"
+        ForInStmt
+          names: ["entry"]
+          iterable:
+            CallExpr
+              target:
+                ReferenceExpr
+                  name: "enumerate"
+              args:
+                Argument
+                  value:
+                    ReferenceExpr
+                      name: "map"
+        ForInStmt
+          names: ["idx"]
+          iterable:
+            CallExpr
+              target:
+                ReferenceExpr
+                  name: "range"
+              args:
+                Argument
+                  value:
+                    NumberLiteral
+                      value: "0"
+                Argument
+                  value:
+                    NumberLiteral
+                      value: "10"
+        ForInStmt
+          names: ["idx", "value"]
+          iterable:
+            CallExpr
+              target:
+                ReferenceExpr
+                  name: "enumerate"
+              args:
+                Argument
+                  value:
+                    ReferenceExpr
+                      name: "list"
+        ForInStmt
+          names: ["key", "value"]
+          iterable:
+            CallExpr
+              target:
+                ReferenceExpr
+                  name: "enumerate"
+              args:
+                Argument
+                  value:
+                    ReferenceExpr
+                      name: "map"
+        VarDeclStmt
+          names: ["idx"]
+          value:
+            NumberLiteral
+              value: "0"
+        ForCondStmt
+          condition:
+            BinaryExpr
+              op: LT
+              left:
+                ReferenceExpr
+                  name: "idx"
+              right:
+                CallExpr
+                  target:
+                    ReferenceExpr
+                      name: "len"
+                  args:
+                    Argument
+                      value:
+                        ReferenceExpr
+                          name: "list"
+          body:
+            AssignStmt
+              target: "idx"
+              op: ADD_ASSIGN
+              value:
+                NumberLiteral
+                  value: "1"

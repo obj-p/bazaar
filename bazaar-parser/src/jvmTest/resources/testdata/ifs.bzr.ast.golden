@@ -1,0 +1,457 @@
+BazaarFile
+  packageDecl:
+    PackageDecl
+      segments: ["ifs"]
+  declarations:
+    FunctionDecl
+      name: "Ifs"
+      params:
+        ParameterDecl
+          name: "foo"
+          type:
+            ValueType
+              name: "bool"
+        ParameterDecl
+          name: "bar"
+          type:
+            ValueType
+              name: "bool"
+        ParameterDecl
+          name: "baz"
+          type:
+            ValueType
+              name: "bool"
+              nullable: true
+      body:
+        IfStmt
+          fragments:
+            IfExprFragment
+              expr:
+                BinaryExpr
+                  op: NEQ
+                  left:
+                    ReferenceExpr
+                      name: "foo"
+                  right:
+                    ReferenceExpr
+                      name: "bar"
+        IfStmt
+          fragments:
+            IfExprFragment
+              expr:
+                BinaryExpr
+                  op: EQ
+                  left:
+                    ReferenceExpr
+                      name: "foo"
+                  right:
+                    ReferenceExpr
+                      name: "bar"
+        IfStmt
+          fragments:
+            IfExprFragment
+              expr:
+                BinaryExpr
+                  op: AND
+                  left:
+                    BinaryExpr
+                      op: EQ
+                      left:
+                        ReferenceExpr
+                          name: "foo"
+                      right:
+                        ReferenceExpr
+                          name: "bar"
+                  right:
+                    BinaryExpr
+                      op: NEQ
+                      left:
+                        ReferenceExpr
+                          name: "foo"
+                      right:
+                        BoolLiteral
+                          value: true
+        IfStmt
+          fragments:
+            IfExprFragment
+              expr:
+                BinaryExpr
+                  op: OR
+                  left:
+                    BinaryExpr
+                      op: EQ
+                      left:
+                        ReferenceExpr
+                          name: "foo"
+                      right:
+                        ReferenceExpr
+                          name: "bar"
+                  right:
+                    BinaryExpr
+                      op: NEQ
+                      left:
+                        ReferenceExpr
+                          name: "foo"
+                      right:
+                        BoolLiteral
+                          value: true
+        IfStmt
+          fragments:
+            IfExprFragment
+              expr:
+                BinaryExpr
+                  op: OR
+                  left:
+                    BoolLiteral
+                      value: true
+                  right:
+                    BinaryExpr
+                      op: AND
+                      left:
+                        UnaryExpr
+                          op: NOT
+                          operand:
+                            BoolLiteral
+                              value: false
+                      right:
+                        BoolLiteral
+                          value: true
+        IfStmt
+          fragments:
+            IfExprFragment
+              expr:
+                BinaryExpr
+                  op: OR
+                  left:
+                    BinaryExpr
+                      op: AND
+                      left:
+                        ReferenceExpr
+                          name: "foo"
+                      right:
+                        ReferenceExpr
+                          name: "bar"
+                  right:
+                    BinaryExpr
+                      op: EQ
+                      left:
+                        ReferenceExpr
+                          name: "baz"
+                      right:
+                        BoolLiteral
+                          value: true
+        IfStmt
+          fragments:
+            IfVarFragment
+              names: ["baz"]
+            IfExprFragment
+              expr:
+                BinaryExpr
+                  op: EQ
+                  left:
+                    ReferenceExpr
+                      name: "baz"
+                  right:
+                    ReferenceExpr
+                      name: "bar"
+        IfStmt
+          fragments:
+            IfVarFragment
+              names: ["baz"]
+              value:
+                ReferenceExpr
+                  name: "baz"
+            IfExprFragment
+              expr:
+                BinaryExpr
+                  op: EQ
+                  left:
+                    BinaryExpr
+                      op: EQ
+                      left:
+                        ReferenceExpr
+                          name: "foo"
+                      right:
+                        ReferenceExpr
+                          name: "bar"
+                  right:
+                    ReferenceExpr
+                      name: "baz"
+        IfStmt
+          fragments:
+            IfVarFragment
+              names: ["bar", "baz"]
+              value:
+                ReferenceExpr
+                  name: "foo"
+        IfStmt
+          fragments:
+            IfExprFragment
+              expr:
+                BinaryExpr
+                  op: GT
+                  left:
+                    NumberLiteral
+                      value: "10"
+                  right:
+                    CallExpr
+                      target:
+                        ReferenceExpr
+                          name: "len"
+                      args:
+                        Argument
+                          value:
+                            ReferenceExpr
+                              name: "something"
+        IfStmt
+          fragments:
+            IfExprFragment
+              expr:
+                BoolLiteral
+                  value: true
+        IfStmt
+          fragments:
+            IfExprFragment
+              expr:
+                BinaryExpr
+                  op: EQ
+                  left:
+                    ReferenceExpr
+                      name: "foo"
+                  right:
+                    ReferenceExpr
+                      name: "bar"
+        IfStmt
+          fragments:
+            IfExprFragment
+              expr:
+                BinaryExpr
+                  op: EQ
+                  left:
+                    ReferenceExpr
+                      name: "foo"
+                  right:
+                    NumberLiteral
+                      value: "1"
+          elseIfs:
+            ElseIf
+              fragments:
+                IfExprFragment
+                  expr:
+                    BinaryExpr
+                      op: EQ
+                      left:
+                        ReferenceExpr
+                          name: "foo"
+                      right:
+                        NumberLiteral
+                          value: "2"
+        IfStmt
+          fragments:
+            IfExprFragment
+              expr:
+                BinaryExpr
+                  op: EQ
+                  left:
+                    ReferenceExpr
+                      name: "foo"
+                  right:
+                    NumberLiteral
+                      value: "1"
+          elseIfs:
+            ElseIf
+              fragments:
+                IfExprFragment
+                  expr:
+                    BinaryExpr
+                      op: EQ
+                      left:
+                        ReferenceExpr
+                          name: "foo"
+                      right:
+                        NumberLiteral
+                          value: "2"
+            ElseIf
+              fragments:
+                IfExprFragment
+                  expr:
+                    BinaryExpr
+                      op: EQ
+                      left:
+                        ReferenceExpr
+                          name: "foo"
+                      right:
+                        NumberLiteral
+                          value: "3"
+        IfStmt
+          fragments:
+            IfExprFragment
+              expr:
+                BoolLiteral
+                  value: true
+          elseIfs:
+            ElseIf
+              fragments:
+                IfExprFragment
+                  expr:
+                    BoolLiteral
+                      value: false
+        IfStmt
+          fragments:
+            IfExprFragment
+              expr:
+                BinaryExpr
+                  op: EQ
+                  left:
+                    ReferenceExpr
+                      name: "foo"
+                  right:
+                    ReferenceExpr
+                      name: "bar"
+          elseIfs:
+            ElseIf
+              fragments:
+                IfExprFragment
+                  expr:
+                    BinaryExpr
+                      op: EQ
+                      left:
+                        ReferenceExpr
+                          name: "bar"
+                      right:
+                        ReferenceExpr
+                          name: "baz"
+        IfStmt
+          fragments:
+            IfExprFragment
+              expr:
+                BinaryExpr
+                  op: EQ
+                  left:
+                    ReferenceExpr
+                      name: "foo"
+                  right:
+                    NumberLiteral
+                      value: "1"
+          elseIfs:
+            ElseIf
+              fragments:
+                IfExprFragment
+                  expr:
+                    BinaryExpr
+                      op: EQ
+                      left:
+                        ReferenceExpr
+                          name: "foo"
+                      right:
+                        NumberLiteral
+                          value: "2"
+            ElseIf
+              fragments:
+                IfExprFragment
+                  expr:
+                    BinaryExpr
+                      op: EQ
+                      left:
+                        ReferenceExpr
+                          name: "foo"
+                      right:
+                        NumberLiteral
+                          value: "3"
+        IfStmt
+          fragments:
+            IfExprFragment
+              expr:
+                BinaryExpr
+                  op: AND
+                  left:
+                    ReferenceExpr
+                      name: "foo"
+                  right:
+                    ReferenceExpr
+                      name: "bar"
+          elseIfs:
+            ElseIf
+              fragments:
+                IfExprFragment
+                  expr:
+                    BinaryExpr
+                      op: AND
+                      left:
+                        BinaryExpr
+                          op: OR
+                          left:
+                            ReferenceExpr
+                              name: "foo"
+                          right:
+                            ReferenceExpr
+                              name: "bar"
+                      right:
+                        ReferenceExpr
+                          name: "baz"
+        IfStmt
+          fragments:
+            IfVarFragment
+              names: ["x"]
+              value:
+                CallExpr
+                  target:
+                    ReferenceExpr
+                      name: "getValue"
+            IfExprFragment
+              expr:
+                BinaryExpr
+                  op: GT
+                  left:
+                    ReferenceExpr
+                      name: "x"
+                  right:
+                    NumberLiteral
+                      value: "0"
+          elseIfs:
+            ElseIf
+              fragments:
+                IfVarFragment
+                  names: ["y"]
+                  value:
+                    CallExpr
+                      target:
+                        ReferenceExpr
+                          name: "getOther"
+                IfExprFragment
+                  expr:
+                    BinaryExpr
+                      op: LT
+                      left:
+                        ReferenceExpr
+                          name: "y"
+                      right:
+                        NumberLiteral
+                          value: "0"
+        IfStmt
+          fragments:
+            IfVarFragment
+              names: ["a"]
+          elseIfs:
+            ElseIf
+              fragments:
+                IfVarFragment
+                  names: ["b"]
+                  value:
+                    ReferenceExpr
+                      name: "something"
+        IfStmt
+          fragments:
+            IfVarFragment
+              names: ["x", "y"]
+              value:
+                ReferenceExpr
+                  name: "coords"
+          elseIfs:
+            ElseIf
+              fragments:
+                IfVarFragment
+                  names: ["z"]
+                  value:
+                    ReferenceExpr
+                      name: "fallback"

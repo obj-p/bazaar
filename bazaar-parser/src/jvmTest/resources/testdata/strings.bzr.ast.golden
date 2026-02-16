@@ -1,0 +1,2051 @@
+BazaarFile
+  packageDecl:
+    PackageDecl
+      segments: ["strings"]
+  declarations:
+    DataDecl
+      name: "Messages"
+      members:
+        FieldDecl
+          name: "answer"
+          type:
+            ValueType
+              name: "string"
+          default:
+            StringLiteral
+              parts:
+                TextPart
+                  text: "The answer is "
+                InterpolationPart
+                  expr:
+                    NumberLiteral
+                      value: "42"
+        FieldDecl
+          name: "escaped"
+          type:
+            ValueType
+              name: "string"
+          default:
+            StringLiteral
+              parts:
+                EscapePart
+                  text: "\""
+    DataDecl
+      name: "ComplexInterpolation"
+      members:
+        FieldDecl
+          name: "arithmetic"
+          type:
+            ValueType
+              name: "string"
+          default:
+            StringLiteral
+              parts:
+                TextPart
+                  text: "Result: "
+                InterpolationPart
+                  expr:
+                    BinaryExpr
+                      op: ADD
+                      left:
+                        ReferenceExpr
+                          name: "x"
+                      right:
+                        BinaryExpr
+                          op: MUL
+                          left:
+                            ReferenceExpr
+                              name: "y"
+                          right:
+                            NumberLiteral
+                              value: "2"
+        FieldDecl
+          name: "functionCall"
+          type:
+            ValueType
+              name: "string"
+          default:
+            StringLiteral
+              parts:
+                TextPart
+                  text: "Hello "
+                InterpolationPart
+                  expr:
+                    CallExpr
+                      target:
+                        ReferenceExpr
+                          name: "getName"
+        FieldDecl
+          name: "variableRef"
+          type:
+            ValueType
+              name: "string"
+          default:
+            StringLiteral
+              parts:
+                TextPart
+                  text: "User: "
+                InterpolationPart
+                  expr:
+                    MemberExpr
+                      target:
+                        ReferenceExpr
+                          name: "user"
+                      member: "name"
+        FieldDecl
+          name: "multiple"
+          type:
+            ValueType
+              name: "string"
+          default:
+            StringLiteral
+              parts:
+                InterpolationPart
+                  expr:
+                    ReferenceExpr
+                      name: "first"
+                TextPart
+                  text: " and "
+                InterpolationPart
+                  expr:
+                    ReferenceExpr
+                      name: "second"
+        FieldDecl
+          name: "methodCall"
+          type:
+            ValueType
+              name: "string"
+          default:
+            StringLiteral
+              parts:
+                TextPart
+                  text: "Length: "
+                InterpolationPart
+                  expr:
+                    CallExpr
+                      target:
+                        MemberExpr
+                          target:
+                            ReferenceExpr
+                              name: "text"
+                          member: "length"
+    DataDecl
+      name: "EscapeSequences"
+      members:
+        FieldDecl
+          name: "newline"
+          type:
+            ValueType
+              name: "string"
+          default:
+            StringLiteral
+              parts:
+                TextPart
+                  text: "Line 1"
+                EscapePart
+                  text: "\n"
+                TextPart
+                  text: "Line 2"
+        FieldDecl
+          name: "tab"
+          type:
+            ValueType
+              name: "string"
+          default:
+            StringLiteral
+              parts:
+                TextPart
+                  text: "Col1"
+                EscapePart
+                  text: "\t"
+                TextPart
+                  text: "Col2"
+        FieldDecl
+          name: "backslash"
+          type:
+            ValueType
+              name: "string"
+          default:
+            StringLiteral
+              parts:
+                TextPart
+                  text: "Path"
+                EscapePart
+                  text: "\\"
+                TextPart
+                  text: "to"
+                EscapePart
+                  text: "\\"
+                TextPart
+                  text: "file"
+        FieldDecl
+          name: "mixed"
+          type:
+            ValueType
+              name: "string"
+          default:
+            StringLiteral
+              parts:
+                TextPart
+                  text: "Quote: "
+                EscapePart
+                  text: "\""
+                TextPart
+                  text: " Newline: "
+                EscapePart
+                  text: "\n"
+                TextPart
+                  text: " Tab: "
+                EscapePart
+                  text: "\t"
+                TextPart
+                  text: " Backslash: "
+                EscapePart
+                  text: "\\"
+        FieldDecl
+          name: "unicodeEscape"
+          type:
+            ValueType
+              name: "string"
+          default:
+            StringLiteral
+              parts:
+                TextPart
+                  text: "Unicode: "
+                EscapePart
+                  text: "\u0041"
+                EscapePart
+                  text: "\u0042"
+    DataDecl
+      name: "EdgeCases"
+      members:
+        FieldDecl
+          name: "empty"
+          type:
+            ValueType
+              name: "string"
+          default:
+            StringLiteral
+        FieldDecl
+          name: "whitespace"
+          type:
+            ValueType
+              name: "string"
+          default:
+            StringLiteral
+              parts:
+                TextPart
+                  text: "   "
+        FieldDecl
+          name: "specialChars"
+          type:
+            ValueType
+              name: "string"
+          default:
+            StringLiteral
+              parts:
+                TextPart
+                  text: "@#"
+                TextPart
+                  text: "$"
+                TextPart
+                  text: "%^&*()"
+        FieldDecl
+          name: "dollarSign"
+          type:
+            ValueType
+              name: "string"
+          default:
+            StringLiteral
+              parts:
+                TextPart
+                  text: "Cost: "
+                TextPart
+                  text: "$"
+                TextPart
+                  text: "5"
+        FieldDecl
+          name: "trailingBackslash"
+          type:
+            ValueType
+              name: "string"
+          default:
+            StringLiteral
+              parts:
+                TextPart
+                  text: "path"
+                EscapePart
+                  text: "\\"
+        FieldDecl
+          name: "multipleSpaces"
+          type:
+            ValueType
+              name: "string"
+          default:
+            StringLiteral
+              parts:
+                TextPart
+                  text: "word1    word2"
+        FieldDecl
+          name: "onlyNumbers"
+          type:
+            ValueType
+              name: "string"
+          default:
+            StringLiteral
+              parts:
+                TextPart
+                  text: "12345"
+    DataDecl
+      name: "ComplexScenarios"
+      members:
+        FieldDecl
+          name: "arithmeticExpr"
+          type:
+            ValueType
+              name: "string"
+          default:
+            StringLiteral
+              parts:
+                TextPart
+                  text: "Result: "
+                InterpolationPart
+                  expr:
+                    BinaryExpr
+                      op: MUL
+                      left:
+                        BinaryExpr
+                          op: ADD
+                          left:
+                            ReferenceExpr
+                              name: "a"
+                          right:
+                            ReferenceExpr
+                              name: "b"
+                      right:
+                        ReferenceExpr
+                          name: "c"
+        FieldDecl
+          name: "booleanExpr"
+          type:
+            ValueType
+              name: "string"
+          default:
+            StringLiteral
+              parts:
+                TextPart
+                  text: "Status: "
+                InterpolationPart
+                  expr:
+                    BinaryExpr
+                      op: AND
+                      left:
+                        ReferenceExpr
+                          name: "isActive"
+                      right:
+                        ReferenceExpr
+                          name: "isValid"
+        FieldDecl
+          name: "chainedAccess"
+          type:
+            ValueType
+              name: "string"
+          default:
+            StringLiteral
+              parts:
+                TextPart
+                  text: "Data: "
+                InterpolationPart
+                  expr:
+                    MemberExpr
+                      target:
+                        MemberExpr
+                          target:
+                            ReferenceExpr
+                              name: "obj"
+                          member: "field"
+                      member: "subfield"
+        FieldDecl
+          name: "arrayAccess"
+          type:
+            ValueType
+              name: "string"
+          default:
+            StringLiteral
+              parts:
+                TextPart
+                  text: "Item: "
+                InterpolationPart
+                  expr:
+                    IndexExpr
+                      target:
+                        ReferenceExpr
+                          name: "items"
+                      index:
+                        NumberLiteral
+                          value: "0"
+        FieldDecl
+          name: "powerOperator"
+          type:
+            ValueType
+              name: "string"
+          default:
+            StringLiteral
+              parts:
+                TextPart
+                  text: "Power: "
+                InterpolationPart
+                  expr:
+                    BinaryExpr
+                      op: POW
+                      left:
+                        ReferenceExpr
+                          name: "x"
+                      right:
+                        NumberLiteral
+                          value: "2"
+        FieldDecl
+          name: "nullCoalescing"
+          type:
+            ValueType
+              name: "string"
+          default:
+            StringLiteral
+              parts:
+                TextPart
+                  text: "Value: "
+                InterpolationPart
+                  expr:
+                    BinaryExpr
+                      op: COALESCE
+                      left:
+                        ReferenceExpr
+                          name: "value"
+                      right:
+                        ReferenceExpr
+                          name: "defaultValue"
+    DataDecl
+      name: "RealWorldUsage"
+      members:
+        FieldDecl
+          name: "url"
+          type:
+            ValueType
+              name: "string"
+          default:
+            StringLiteral
+              parts:
+                TextPart
+                  text: "https://example.com/api/users/"
+                InterpolationPart
+                  expr:
+                    ReferenceExpr
+                      name: "userId"
+        FieldDecl
+          name: "filePath"
+          type:
+            ValueType
+              name: "string"
+          default:
+            StringLiteral
+              parts:
+                TextPart
+                  text: "/home/user/documents/"
+                InterpolationPart
+                  expr:
+                    ReferenceExpr
+                      name: "filename"
+                TextPart
+                  text: ".txt"
+        FieldDecl
+          name: "sqlLike"
+          type:
+            ValueType
+              name: "string"
+          default:
+            StringLiteral
+              parts:
+                TextPart
+                  text: "SELECT * FROM users WHERE id = "
+                InterpolationPart
+                  expr:
+                    ReferenceExpr
+                      name: "id"
+        FieldDecl
+          name: "templateLike"
+          type:
+            ValueType
+              name: "string"
+          default:
+            StringLiteral
+              parts:
+                TextPart
+                  text: "Dear "
+                InterpolationPart
+                  expr:
+                    ReferenceExpr
+                      name: "name"
+                TextPart
+                  text: ", welcome to "
+                InterpolationPart
+                  expr:
+                    ReferenceExpr
+                      name: "appName"
+                TextPart
+                  text: "!"
+        FieldDecl
+          name: "logMessage"
+          type:
+            ValueType
+              name: "string"
+          default:
+            StringLiteral
+              parts:
+                TextPart
+                  text: "["
+                InterpolationPart
+                  expr:
+                    ReferenceExpr
+                      name: "timestamp"
+                TextPart
+                  text: "] "
+                InterpolationPart
+                  expr:
+                    ReferenceExpr
+                      name: "level"
+                TextPart
+                  text: ": "
+                InterpolationPart
+                  expr:
+                    ReferenceExpr
+                      name: "message"
+        FieldDecl
+          name: "cssClass"
+          type:
+            ValueType
+              name: "string"
+          default:
+            StringLiteral
+              parts:
+                TextPart
+                  text: "class-"
+                InterpolationPart
+                  expr:
+                    ReferenceExpr
+                      name: "type"
+                TextPart
+                  text: "-"
+                InterpolationPart
+                  expr:
+                    ReferenceExpr
+                      name: "variant"
+    DataDecl
+      name: "StringConcatenation"
+      members:
+        FieldDecl
+          name: "simpleConcat"
+          type:
+            ValueType
+              name: "string"
+          default:
+            BinaryExpr
+              op: ADD
+              left:
+                BinaryExpr
+                  op: ADD
+                  left:
+                    StringLiteral
+                      parts:
+                        TextPart
+                          text: "Hello"
+                  right:
+                    StringLiteral
+                      parts:
+                        TextPart
+                          text: " "
+              right:
+                StringLiteral
+                  parts:
+                    TextPart
+                      text: "World"
+        FieldDecl
+          name: "mixedConcat"
+          type:
+            ValueType
+              name: "string"
+          default:
+            BinaryExpr
+              op: ADD
+              left:
+                StringLiteral
+                  parts:
+                    TextPart
+                      text: "Count: "
+              right:
+                StringLiteral
+                  parts:
+                    InterpolationPart
+                      expr:
+                        ReferenceExpr
+                          name: "count"
+        FieldDecl
+          name: "multipleOps"
+          type:
+            ValueType
+              name: "string"
+          default:
+            BinaryExpr
+              op: ADD
+              left:
+                BinaryExpr
+                  op: ADD
+                  left:
+                    BinaryExpr
+                      op: ADD
+                      left:
+                        StringLiteral
+                          parts:
+                            TextPart
+                              text: "A"
+                      right:
+                        StringLiteral
+                          parts:
+                            TextPart
+                              text: "B"
+                  right:
+                    StringLiteral
+                      parts:
+                        TextPart
+                          text: "C"
+              right:
+                StringLiteral
+                  parts:
+                    InterpolationPart
+                      expr:
+                        ReferenceExpr
+                          name: "suffix"
+    DataDecl
+      name: "NestedInterpolation"
+      members:
+        FieldDecl
+          name: "nestedBasic"
+          type:
+            ValueType
+              name: "string"
+          default:
+            StringLiteral
+              parts:
+                TextPart
+                  text: "Outer: "
+                InterpolationPart
+                  expr:
+                    CallExpr
+                      target:
+                        ReferenceExpr
+                          name: "getInner"
+                      args:
+                        Argument
+                          value:
+                            StringLiteral
+                              parts:
+                                TextPart
+                                  text: "Inner: "
+                                InterpolationPart
+                                  expr:
+                                    ReferenceExpr
+                                      name: "x"
+        FieldDecl
+          name: "nestedFunction"
+          type:
+            ValueType
+              name: "string"
+          default:
+            StringLiteral
+              parts:
+                TextPart
+                  text: "Result: "
+                InterpolationPart
+                  expr:
+                    CallExpr
+                      target:
+                        ReferenceExpr
+                          name: "format"
+                      args:
+                        Argument
+                          value:
+                            StringLiteral
+                              parts:
+                                TextPart
+                                  text: "Value: "
+                                InterpolationPart
+                                  expr:
+                                    CallExpr
+                                      target:
+                                        ReferenceExpr
+                                          name: "getValue"
+        FieldDecl
+          name: "nestedConditionalSimple"
+          type:
+            ValueType
+              name: "string"
+          default:
+            StringLiteral
+              parts:
+                TextPart
+                  text: "Status: "
+                InterpolationPart
+                  expr:
+                    CallExpr
+                      target:
+                        ReferenceExpr
+                          name: "getStatus"
+                      args:
+                        Argument
+                          value:
+                            ReferenceExpr
+                              name: "isActive"
+                        Argument
+                          value:
+                            ReferenceExpr
+                              name: "level"
+        FieldDecl
+          name: "nestedArithmetic"
+          type:
+            ValueType
+              name: "string"
+          default:
+            StringLiteral
+              parts:
+                TextPart
+                  text: "Calc: "
+                InterpolationPart
+                  expr:
+                    CallExpr
+                      target:
+                        ReferenceExpr
+                          name: "compute"
+                      args:
+                        Argument
+                          value:
+                            StringLiteral
+                              parts:
+                                TextPart
+                                  text: "Base: "
+                                InterpolationPart
+                                  expr:
+                                    ReferenceExpr
+                                      name: "base"
+                                TextPart
+                                  text: " + "
+                                InterpolationPart
+                                  expr:
+                                    ReferenceExpr
+                                      name: "offset"
+        FieldDecl
+          name: "deepNesting"
+          type:
+            ValueType
+              name: "string"
+          default:
+            StringLiteral
+              parts:
+                TextPart
+                  text: "L1: "
+                InterpolationPart
+                  expr:
+                    CallExpr
+                      target:
+                        ReferenceExpr
+                          name: "level1"
+                      args:
+                        Argument
+                          value:
+                            StringLiteral
+                              parts:
+                                TextPart
+                                  text: "L2: "
+                                InterpolationPart
+                                  expr:
+                                    CallExpr
+                                      target:
+                                        ReferenceExpr
+                                          name: "level2"
+                                      args:
+                                        Argument
+                                          value:
+                                            StringLiteral
+                                              parts:
+                                                TextPart
+                                                  text: "L3: "
+                                                InterpolationPart
+                                                  expr:
+                                                    ReferenceExpr
+                                                      name: "level3"
+    DataDecl
+      name: "BoundaryConditions"
+      members:
+        FieldDecl
+          name: "startingWithInterpolation"
+          type:
+            ValueType
+              name: "string"
+          default:
+            StringLiteral
+              parts:
+                InterpolationPart
+                  expr:
+                    ReferenceExpr
+                      name: "greeting"
+                TextPart
+                  text: " world!"
+        FieldDecl
+          name: "endingWithInterpolation"
+          type:
+            ValueType
+              name: "string"
+          default:
+            StringLiteral
+              parts:
+                TextPart
+                  text: "Hello "
+                InterpolationPart
+                  expr:
+                    ReferenceExpr
+                      name: "name"
+        FieldDecl
+          name: "onlyInterpolation"
+          type:
+            ValueType
+              name: "string"
+          default:
+            StringLiteral
+              parts:
+                InterpolationPart
+                  expr:
+                    ReferenceExpr
+                      name: "value"
+        FieldDecl
+          name: "emptyStringLiteral"
+          type:
+            ValueType
+              name: "string"
+          default:
+            StringLiteral
+        FieldDecl
+          name: "whitespaceOnly"
+          type:
+            ValueType
+              name: "string"
+          default:
+            StringLiteral
+              parts:
+                TextPart
+                  text: "   "
+        FieldDecl
+          name: "consecutiveInterpolations"
+          type:
+            ValueType
+              name: "string"
+          default:
+            StringLiteral
+              parts:
+                InterpolationPart
+                  expr:
+                    ReferenceExpr
+                      name: "first"
+                InterpolationPart
+                  expr:
+                    ReferenceExpr
+                      name: "second"
+                InterpolationPart
+                  expr:
+                    ReferenceExpr
+                      name: "third"
+        FieldDecl
+          name: "interpolationWithSpaces"
+          type:
+            ValueType
+              name: "string"
+          default:
+            StringLiteral
+              parts:
+                InterpolationPart
+                  expr:
+                    ReferenceExpr
+                      name: "start"
+                TextPart
+                  text: " middle "
+                InterpolationPart
+                  expr:
+                    ReferenceExpr
+                      name: "end"
+        FieldDecl
+          name: "multipleSeparated"
+          type:
+            ValueType
+              name: "string"
+          default:
+            StringLiteral
+              parts:
+                InterpolationPart
+                  expr:
+                    ReferenceExpr
+                      name: "a"
+                TextPart
+                  text: " and "
+                InterpolationPart
+                  expr:
+                    ReferenceExpr
+                      name: "b"
+                TextPart
+                  text: " and "
+                InterpolationPart
+                  expr:
+                    ReferenceExpr
+                      name: "c"
+        FieldDecl
+          name: "interpolationInMiddle"
+          type:
+            ValueType
+              name: "string"
+          default:
+            StringLiteral
+              parts:
+                TextPart
+                  text: "start "
+                InterpolationPart
+                  expr:
+                    ReferenceExpr
+                      name: "middle"
+                TextPart
+                  text: " end"
+    DataDecl
+      name: "ComplexExpressionInterpolation"
+      members:
+        FieldDecl
+          name: "conditionalFunction"
+          type:
+            ValueType
+              name: "string"
+          default:
+            StringLiteral
+              parts:
+                TextPart
+                  text: "Status: "
+                InterpolationPart
+                  expr:
+                    CallExpr
+                      target:
+                        ReferenceExpr
+                          name: "getActiveStatus"
+                      args:
+                        Argument
+                          value:
+                            ReferenceExpr
+                              name: "isActive"
+        FieldDecl
+          name: "functionWithArgs"
+          type:
+            ValueType
+              name: "string"
+          default:
+            StringLiteral
+              parts:
+                TextPart
+                  text: "Result: "
+                InterpolationPart
+                  expr:
+                    CallExpr
+                      target:
+                        ReferenceExpr
+                          name: "func"
+                      args:
+                        Argument
+                          value:
+                            ReferenceExpr
+                              name: "a"
+                        Argument
+                          value:
+                            ReferenceExpr
+                              name: "b"
+                        Argument
+                          value:
+                            ReferenceExpr
+                              name: "c"
+        FieldDecl
+          name: "methodChaining"
+          type:
+            ValueType
+              name: "string"
+          default:
+            StringLiteral
+              parts:
+                TextPart
+                  text: "Value: "
+                InterpolationPart
+                  expr:
+                    MemberExpr
+                      target:
+                        CallExpr
+                          target:
+                            MemberExpr
+                              target:
+                                CallExpr
+                                  target:
+                                    MemberExpr
+                                      target:
+                                        ReferenceExpr
+                                          name: "obj"
+                                      member: "method1"
+                              member: "method2"
+                      member: "value"
+        FieldDecl
+          name: "arrayAccessing"
+          type:
+            ValueType
+              name: "string"
+          default:
+            StringLiteral
+              parts:
+                TextPart
+                  text: "Item: "
+                InterpolationPart
+                  expr:
+                    IndexExpr
+                      target:
+                        ReferenceExpr
+                          name: "items"
+                      index:
+                        ReferenceExpr
+                          name: "index"
+        FieldDecl
+          name: "mapAccessing"
+          type:
+            ValueType
+              name: "string"
+          default:
+            StringLiteral
+              parts:
+                TextPart
+                  text: "Value: "
+                InterpolationPart
+                  expr:
+                    IndexExpr
+                      target:
+                        ReferenceExpr
+                          name: "data"
+                      index:
+                        StringLiteral
+                          parts:
+                            TextPart
+                              text: "key"
+        FieldDecl
+          name: "arithmeticInInterpolation"
+          type:
+            ValueType
+              name: "string"
+          default:
+            StringLiteral
+              parts:
+                TextPart
+                  text: "Sum: "
+                InterpolationPart
+                  expr:
+                    BinaryExpr
+                      op: MUL
+                      left:
+                        BinaryExpr
+                          op: ADD
+                          left:
+                            ReferenceExpr
+                              name: "a"
+                          right:
+                            ReferenceExpr
+                              name: "b"
+                      right:
+                        BinaryExpr
+                          op: SUB
+                          left:
+                            ReferenceExpr
+                              name: "c"
+                          right:
+                            ReferenceExpr
+                              name: "d"
+        FieldDecl
+          name: "logicalOperations"
+          type:
+            ValueType
+              name: "string"
+          default:
+            StringLiteral
+              parts:
+                TextPart
+                  text: "Valid: "
+                InterpolationPart
+                  expr:
+                    BinaryExpr
+                      op: OR
+                      left:
+                        BinaryExpr
+                          op: AND
+                          left:
+                            ReferenceExpr
+                              name: "flag1"
+                          right:
+                            ReferenceExpr
+                              name: "flag2"
+                      right:
+                        ReferenceExpr
+                          name: "flag3"
+        FieldDecl
+          name: "comparisonOperations"
+          type:
+            ValueType
+              name: "string"
+          default:
+            StringLiteral
+              parts:
+                TextPart
+                  text: "Compare: "
+                InterpolationPart
+                  expr:
+                    BinaryExpr
+                      op: AND
+                      left:
+                        BinaryExpr
+                          op: GTE
+                          left:
+                            ReferenceExpr
+                              name: "x"
+                          right:
+                            ReferenceExpr
+                              name: "y"
+                      right:
+                        BinaryExpr
+                          op: LTE
+                          left:
+                            ReferenceExpr
+                              name: "z"
+                          right:
+                            ReferenceExpr
+                              name: "w"
+        FieldDecl
+          name: "nullCoalescingInString"
+          type:
+            ValueType
+              name: "string"
+          default:
+            StringLiteral
+              parts:
+                TextPart
+                  text: "Default: "
+                InterpolationPart
+                  expr:
+                    BinaryExpr
+                      op: COALESCE
+                      left:
+                        ReferenceExpr
+                          name: "value"
+                      right:
+                        BinaryExpr
+                          op: COALESCE
+                          left:
+                            ReferenceExpr
+                              name: "fallback"
+                          right:
+                            StringLiteral
+                              parts:
+                                TextPart
+                                  text: "none"
+        FieldDecl
+          name: "powerOperation"
+          type:
+            ValueType
+              name: "string"
+          default:
+            StringLiteral
+              parts:
+                TextPart
+                  text: "Power: "
+                InterpolationPart
+                  expr:
+                    BinaryExpr
+                      op: POW
+                      left:
+                        ReferenceExpr
+                          name: "base"
+                      right:
+                        ReferenceExpr
+                          name: "exponent"
+        FieldDecl
+          name: "modOperation"
+          type:
+            ValueType
+              name: "string"
+          default:
+            StringLiteral
+              parts:
+                TextPart
+                  text: "Remainder: "
+                InterpolationPart
+                  expr:
+                    BinaryExpr
+                      op: MOD
+                      left:
+                        ReferenceExpr
+                          name: "dividend"
+                      right:
+                        ReferenceExpr
+                          name: "divisor"
+        FieldDecl
+          name: "complexNested"
+          type:
+            ValueType
+              name: "string"
+          default:
+            StringLiteral
+              parts:
+                TextPart
+                  text: "Data: "
+                InterpolationPart
+                  expr:
+                    MemberExpr
+                      target:
+                        CallExpr
+                          target:
+                            MemberExpr
+                              target:
+                                CallExpr
+                                  target:
+                                    ReferenceExpr
+                                      name: "getData"
+                                  args:
+                                    Argument
+                                      value:
+                                        MemberExpr
+                                          target:
+                                            ReferenceExpr
+                                              name: "user"
+                                          member: "id"
+                              member: "process"
+                          args:
+                            Argument
+                              value:
+                                IndexExpr
+                                  target:
+                                    ReferenceExpr
+                                      name: "options"
+                                  index:
+                                    NumberLiteral
+                                      value: "0"
+                      member: "result"
+        FieldDecl
+          name: "lambdaInString"
+          type:
+            ValueType
+              name: "string"
+          default:
+            StringLiteral
+              parts:
+                TextPart
+                  text: "Mapped: "
+                InterpolationPart
+                  expr:
+                    CallExpr
+                      target:
+                        MemberExpr
+                          target:
+                            ReferenceExpr
+                              name: "items"
+                          member: "map"
+                      args:
+                        Argument
+                          value:
+                            LambdaExpr
+                              params:
+                                LambdaParam
+                                  name: "x"
+                              returnType:
+                                ValueType
+                                  name: "int"
+                              body:
+                                ExprStmt
+                                  expr:
+                                    BinaryExpr
+                                      op: MUL
+                                      left:
+                                        ReferenceExpr
+                                          name: "x"
+                                      right:
+                                        NumberLiteral
+                                          value: "2"
+        FieldDecl
+          name: "lambdaInString"
+          type:
+            ValueType
+              name: "string"
+          default:
+            StringLiteral
+              parts:
+                TextPart
+                  text: "Mapped: "
+                InterpolationPart
+                  expr:
+                    CallExpr
+                      target:
+                        MemberExpr
+                          target:
+                            ReferenceExpr
+                              name: "items"
+                          member: "map"
+                      args:
+                        Argument
+                          value:
+                            MapLiteral
+        FieldDecl
+          name: "mappedItems"
+          type:
+            ValueType
+              name: "string"
+          default:
+            StringLiteral
+              parts:
+                TextPart
+                  text: "Mapped: "
+                InterpolationPart
+                  expr:
+                    CallExpr
+                      target:
+                        ReferenceExpr
+                          name: "mapDoubled"
+                      args:
+                        Argument
+                          value:
+                            ReferenceExpr
+                              name: "items"
+        FieldDecl
+          name: "conditionalNested"
+          type:
+            ValueType
+              name: "string"
+          default:
+            StringLiteral
+              parts:
+                TextPart
+                  text: "Chain: "
+                InterpolationPart
+                  expr:
+                    CallExpr
+                      target:
+                        ReferenceExpr
+                          name: "getChainedValue"
+                      args:
+                        Argument
+                          value:
+                            ReferenceExpr
+                              name: "a"
+                        Argument
+                          value:
+                            ReferenceExpr
+                              name: "b"
+                        Argument
+                          value:
+                            ReferenceExpr
+                              name: "c"
+                        Argument
+                          value:
+                            ReferenceExpr
+                              name: "d"
+                        Argument
+                          value:
+                            ReferenceExpr
+                              name: "e"
+    DataDecl
+      name: "RawDollarEdgeCases"
+      members:
+        FieldDecl
+          name: "simpleDollar"
+          type:
+            ValueType
+              name: "string"
+          default:
+            StringLiteral
+              parts:
+                TextPart
+                  text: "Price: "
+                TextPart
+                  text: "$"
+                TextPart
+                  text: "5.99"
+        FieldDecl
+          name: "multipleDollars"
+          type:
+            ValueType
+              name: "string"
+          default:
+            StringLiteral
+              parts:
+                TextPart
+                  text: "Costs: "
+                TextPart
+                  text: "$"
+                TextPart
+                  text: "10, "
+                TextPart
+                  text: "$"
+                TextPart
+                  text: "20, "
+                TextPart
+                  text: "$"
+                TextPart
+                  text: "30"
+        FieldDecl
+          name: "dollarInMiddle"
+          type:
+            ValueType
+              name: "string"
+          default:
+            StringLiteral
+              parts:
+                TextPart
+                  text: "The "
+                TextPart
+                  text: "$"
+                TextPart
+                  text: "amount was paid"
+        FieldDecl
+          name: "dollarAtEnd"
+          type:
+            ValueType
+              name: "string"
+          default:
+            StringLiteral
+              parts:
+                TextPart
+                  text: "Total cost: "
+                TextPart
+                  text: "$"
+        FieldDecl
+          name: "dollarAtStart"
+          type:
+            ValueType
+              name: "string"
+          default:
+            StringLiteral
+              parts:
+                TextPart
+                  text: "$"
+                TextPart
+                  text: "variable assignment"
+        FieldDecl
+          name: "escapedDollar"
+          type:
+            ValueType
+              name: "string"
+          default:
+            StringLiteral
+              parts:
+                TextPart
+                  text: "Literal "
+                EscapePart
+                  text: "\\"
+                TextPart
+                  text: "$"
+                TextPart
+                  text: "dollar sign"
+        FieldDecl
+          name: "dollarWithoutBrace"
+          type:
+            ValueType
+              name: "string"
+          default:
+            StringLiteral
+              parts:
+                TextPart
+                  text: "Not interpolation: "
+                TextPart
+                  text: "$"
+                TextPart
+                  text: "variable"
+        FieldDecl
+          name: "dollarBeforeNumber"
+          type:
+            ValueType
+              name: "string"
+          default:
+            StringLiteral
+              parts:
+                TextPart
+                  text: "Amount: "
+                TextPart
+                  text: "$"
+                TextPart
+                  text: "123.45"
+        FieldDecl
+          name: "dollarInPath"
+          type:
+            ValueType
+              name: "string"
+          default:
+            StringLiteral
+              parts:
+                TextPart
+                  text: "Path: /home/"
+                TextPart
+                  text: "$"
+                TextPart
+                  text: "USER/documents"
+        FieldDecl
+          name: "dollarInUrl"
+          type:
+            ValueType
+              name: "string"
+          default:
+            StringLiteral
+              parts:
+                TextPart
+                  text: "URL: https://api.com/v1/"
+                TextPart
+                  text: "$"
+                TextPart
+                  text: "resource"
+        FieldDecl
+          name: "multipleRawDollars"
+          type:
+            ValueType
+              name: "string"
+          default:
+            StringLiteral
+              parts:
+                TextPart
+                  text: "$"
+                TextPart
+                  text: " "
+                TextPart
+                  text: "$"
+                TextPart
+                  text: " "
+                TextPart
+                  text: "$"
+                TextPart
+                  text: " multiple dollars"
+        FieldDecl
+          name: "dollarWithPunctuation"
+          type:
+            ValueType
+              name: "string"
+          default:
+            StringLiteral
+              parts:
+                TextPart
+                  text: "Cost: "
+                TextPart
+                  text: "$"
+                TextPart
+                  text: "1,234.56!"
+    DataDecl
+      name: "AdditionalEscapeSequences"
+      members:
+        FieldDecl
+          name: "carriageReturn"
+          type:
+            ValueType
+              name: "string"
+          default:
+            StringLiteral
+              parts:
+                TextPart
+                  text: "Line 1"
+                EscapePart
+                  text: "\r"
+                TextPart
+                  text: "Line 2"
+        FieldDecl
+          name: "formFeed"
+          type:
+            ValueType
+              name: "string"
+          default:
+            StringLiteral
+              parts:
+                TextPart
+                  text: "Page 1"
+                TextPart
+                  text: "Page 2"
+        FieldDecl
+          name: "verticalTab"
+          type:
+            ValueType
+              name: "string"
+          default:
+            StringLiteral
+              parts:
+                TextPart
+                  text: "Col 1"
+                TextPart
+                  text: "Col 2"
+        FieldDecl
+          name: "unicodeShort"
+          type:
+            ValueType
+              name: "string"
+          default:
+            StringLiteral
+              parts:
+                TextPart
+                  text: "Unicode: "
+                EscapePart
+                  text: "\u0041"
+        FieldDecl
+          name: "unicodeLong"
+          type:
+            ValueType
+              name: "string"
+          default:
+            StringLiteral
+              parts:
+                TextPart
+                  text: "Unicode: "
+                EscapePart
+                  text: "\U00000041"
+        FieldDecl
+          name: "unicodeGreek"
+          type:
+            ValueType
+              name: "string"
+          default:
+            StringLiteral
+              parts:
+                TextPart
+                  text: "Greek: "
+                EscapePart
+                  text: "\u03B1"
+                EscapePart
+                  text: "\u03B2"
+                EscapePart
+                  text: "\u03B3"
+        FieldDecl
+          name: "unicodeEmoji"
+          type:
+            ValueType
+              name: "string"
+          default:
+            StringLiteral
+              parts:
+                TextPart
+                  text: "Emoji: "
+                EscapePart
+                  text: "\U0001F600"
+                EscapePart
+                  text: "\U0001F44D"
+        FieldDecl
+          name: "unicodeInInterpolation"
+          type:
+            ValueType
+              name: "string"
+          default:
+            StringLiteral
+              parts:
+                TextPart
+                  text: "Value: "
+                InterpolationPart
+                  expr:
+                    CallExpr
+                      target:
+                        ReferenceExpr
+                          name: "getValue"
+                TextPart
+                  text: ", Unicode: "
+                EscapePart
+                  text: "\u2713"
+    DataDecl
+      name: "PotentiallyProblematicCases"
+      members:
+        FieldDecl
+          name: "invalidEscape"
+          type:
+            ValueType
+              name: "string"
+          default:
+            StringLiteral
+              parts:
+                TextPart
+                  text: "Bad escape: "
+        FieldDecl
+          name: "malformedInterpolation"
+          type:
+            ValueType
+              name: "string"
+          default:
+            StringLiteral
+              parts:
+                TextPart
+                  text: "Bad: "
+                TextPart
+                  text: "$"
+                TextPart
+                  text: "unclosed"
+        FieldDecl
+          name: "extraCloseBrace"
+          type:
+            ValueType
+              name: "string"
+          default:
+            StringLiteral
+              parts:
+                TextPart
+                  text: "Extra: "
+                InterpolationPart
+                  expr:
+                    ReferenceExpr
+                      name: "value"
+                TextPart
+                  text: "}"
+        FieldDecl
+          name: "veryLongString"
+          type:
+            ValueType
+              name: "string"
+          default:
+            StringLiteral
+              parts:
+                TextPart
+                  text: "This is a very long string that contains many characters to test the parser's ability to handle large string literals without any issues or performance degradation during the parsing phase of the Bazaar templating language processing pipeline"
+        FieldDecl
+          name: "manyInterpolations"
+          type:
+            ValueType
+              name: "string"
+          default:
+            StringLiteral
+              parts:
+                InterpolationPart
+                  expr:
+                    ReferenceExpr
+                      name: "a"
+                InterpolationPart
+                  expr:
+                    ReferenceExpr
+                      name: "b"
+                InterpolationPart
+                  expr:
+                    ReferenceExpr
+                      name: "c"
+                InterpolationPart
+                  expr:
+                    ReferenceExpr
+                      name: "d"
+                InterpolationPart
+                  expr:
+                    ReferenceExpr
+                      name: "e"
+                InterpolationPart
+                  expr:
+                    ReferenceExpr
+                      name: "f"
+                InterpolationPart
+                  expr:
+                    ReferenceExpr
+                      name: "g"
+                InterpolationPart
+                  expr:
+                    ReferenceExpr
+                      name: "h"
+                InterpolationPart
+                  expr:
+                    ReferenceExpr
+                      name: "i"
+                InterpolationPart
+                  expr:
+                    ReferenceExpr
+                      name: "j"
+                InterpolationPart
+                  expr:
+                    ReferenceExpr
+                      name: "k"
+                InterpolationPart
+                  expr:
+                    ReferenceExpr
+                      name: "l"
+                InterpolationPart
+                  expr:
+                    ReferenceExpr
+                      name: "m"
+                InterpolationPart
+                  expr:
+                    ReferenceExpr
+                      name: "n"
+                InterpolationPart
+                  expr:
+                    ReferenceExpr
+                      name: "o"
+                InterpolationPart
+                  expr:
+                    ReferenceExpr
+                      name: "p"
+                InterpolationPart
+                  expr:
+                    ReferenceExpr
+                      name: "q"
+                InterpolationPart
+                  expr:
+                    ReferenceExpr
+                      name: "r"
+                InterpolationPart
+                  expr:
+                    ReferenceExpr
+                      name: "s"
+                InterpolationPart
+                  expr:
+                    ReferenceExpr
+                      name: "t"
+                InterpolationPart
+                  expr:
+                    ReferenceExpr
+                      name: "u"
+                InterpolationPart
+                  expr:
+                    ReferenceExpr
+                      name: "v"
+                InterpolationPart
+                  expr:
+                    ReferenceExpr
+                      name: "w"
+                InterpolationPart
+                  expr:
+                    ReferenceExpr
+                      name: "x"
+                InterpolationPart
+                  expr:
+                    ReferenceExpr
+                      name: "y"
+                InterpolationPart
+                  expr:
+                    ReferenceExpr
+                      name: "z"
+        FieldDecl
+          name: "deeplyNestedExpressions"
+          type:
+            ValueType
+              name: "string"
+          default:
+            StringLiteral
+              parts:
+                TextPart
+                  text: "Result: "
+                InterpolationPart
+                  expr:
+                    CallExpr
+                      target:
+                        MemberExpr
+                          target:
+                            MemberExpr
+                              target:
+                                MemberExpr
+                                  target:
+                                    MemberExpr
+                                      target:
+                                        MemberExpr
+                                          target:
+                                            MemberExpr
+                                              target:
+                                                ReferenceExpr
+                                                  name: "obj"
+                                              member: "level1"
+                                          member: "level2"
+                                      member: "level3"
+                                  member: "level4"
+                              member: "level5"
+                          member: "getValue"
+    FunctionDecl
+      name: "StringOperations"
+      body:
+        VarDeclStmt
+          names: ["greeting"]
+          value:
+            StringLiteral
+              parts:
+                TextPart
+                  text: "Hello, "
+                InterpolationPart
+                  expr:
+                    ReferenceExpr
+                      name: "name"
+                TextPart
+                  text: "!"
+        VarDeclStmt
+          names: ["path"]
+          value:
+            StringLiteral
+              parts:
+                TextPart
+                  text: "/api/v1/users/"
+                InterpolationPart
+                  expr:
+                    ReferenceExpr
+                      name: "userId"
+                TextPart
+                  text: "/profile"
+        VarDeclStmt
+          names: ["message"]
+          value:
+            StringLiteral
+              parts:
+                TextPart
+                  text: "Error "
+                InterpolationPart
+                  expr:
+                    ReferenceExpr
+                      name: "code"
+                TextPart
+                  text: ": "
+                InterpolationPart
+                  expr:
+                    ReferenceExpr
+                      name: "description"
+        VarDeclStmt
+          names: ["complex"]
+          value:
+            StringLiteral
+              parts:
+                TextPart
+                  text: "Processing "
+                InterpolationPart
+                  expr:
+                    MemberExpr
+                      target:
+                        ReferenceExpr
+                          name: "items"
+                      member: "length"
+                TextPart
+                  text: " items"
+        VarDeclStmt
+          names: ["multiline"]
+          value:
+            StringLiteral
+              parts:
+                TextPart
+                  text: "First line"
+                EscapePart
+                  text: "\n"
+                TextPart
+                  text: "Second line"
+                EscapePart
+                  text: "\n"
+                TextPart
+                  text: "Third line"
+        VarDeclStmt
+          names: ["escaped"]
+          value:
+            StringLiteral
+              parts:
+                TextPart
+                  text: "He said: "
+                EscapePart
+                  text: "\""
+                TextPart
+                  text: "Hello, world!"
+                EscapePart
+                  text: "\""
+        VarDeclStmt
+          names: ["interpolatedConcat"]
+          value:
+            BinaryExpr
+              op: ADD
+              left:
+                StringLiteral
+                  parts:
+                    TextPart
+                      text: "Part1: "
+                    InterpolationPart
+                      expr:
+                        ReferenceExpr
+                          name: "part1"
+              right:
+                StringLiteral
+                  parts:
+                    TextPart
+                      text: " Part2: "
+                    InterpolationPart
+                      expr:
+                        ReferenceExpr
+                          name: "part2"
+        VarDeclStmt
+          names: ["mixedTypes"]
+          value:
+            StringLiteral
+              parts:
+                TextPart
+                  text: "Number: "
+                InterpolationPart
+                  expr:
+                    NumberLiteral
+                      value: "42"
+                TextPart
+                  text: " Boolean: "
+                InterpolationPart
+                  expr:
+                    BoolLiteral
+                      value: true
+                TextPart
+                  text: " Null: "
+                InterpolationPart
+                  expr:
+                    NullLiteral
+        VarDeclStmt
+          names: ["nestedQuotes"]
+          value:
+            StringLiteral
+              parts:
+                TextPart
+                  text: "Outer "
+                EscapePart
+                  text: "\""
+                TextPart
+                  text: "Inner "
+                InterpolationPart
+                  expr:
+                    ReferenceExpr
+                      name: "value"
+                TextPart
+                  text: " String"
+                EscapePart
+                  text: "\""
+                TextPart
+                  text: " End"
+        VarDeclStmt
+          names: ["pathLike"]
+          value:
+            StringLiteral
+              parts:
+                TextPart
+                  text: "/path/to/"
+                InterpolationPart
+                  expr:
+                    ReferenceExpr
+                      name: "resource"
+                TextPart
+                  text: "/"
+                InterpolationPart
+                  expr:
+                    ReferenceExpr
+                      name: "id"
+                TextPart
+                  text: "."
+                InterpolationPart
+                  expr:
+                    ReferenceExpr
+                      name: "extension"
+        VarDeclStmt
+          names: ["templateEngine"]
+          value:
+            StringLiteral
+              parts:
+                TextPart
+                  text: "{{"
+                InterpolationPart
+                  expr:
+                    ReferenceExpr
+                      name: "variable"
+                TextPart
+                  text: "}}"

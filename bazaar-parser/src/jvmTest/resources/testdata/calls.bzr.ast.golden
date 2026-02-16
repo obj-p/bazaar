@@ -1,0 +1,73 @@
+BazaarFile
+  packageDecl:
+    PackageDecl
+      segments: ["calls"]
+  declarations:
+    FunctionDecl
+      name: "Calls"
+      body:
+        ExprStmt
+          expr:
+            CallExpr
+              target:
+                ReferenceExpr
+                  name: "Print"
+              args:
+                Argument
+                  value:
+                    StringLiteral
+                      parts:
+                        TextPart
+                          text: "Hello, world!"
+        ExprStmt
+          expr:
+            CallExpr
+              target:
+                ReferenceExpr
+                  name: "BlockLiteral"
+              args:
+                Argument
+                  value:
+                    LambdaExpr
+        ExprStmt
+          expr:
+            CallExpr
+              target:
+                ReferenceExpr
+                  name: "NamedArgs"
+              args:
+                Argument
+                  name: "first"
+                  value:
+                    NumberLiteral
+                      value: "1337"
+                Argument
+                  name: "second"
+                  value:
+                    StringLiteral
+                      parts:
+                        TextPart
+                          text: "second"
+        ExprStmt
+          expr:
+            CallExpr
+              target:
+                ReferenceExpr
+                  name: "TrailingBlockLiteral"
+              trailingLambda:
+                LambdaExpr
+        ExprStmt
+          expr:
+            CallExpr
+              target:
+                ReferenceExpr
+                  name: "call"
+              args:
+                Argument
+                  value:
+                    ReferenceExpr
+                      name: "first"
+                Argument
+                  value:
+                    ReferenceExpr
+                      name: "second"

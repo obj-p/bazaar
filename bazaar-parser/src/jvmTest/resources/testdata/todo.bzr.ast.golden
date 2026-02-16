@@ -1,0 +1,17 @@
+BazaarFile
+  packageDecl:
+    PackageDecl
+      segments: ["todo"]
+  declarations:
+    FunctionDecl
+      name: "UnsupportedNumericLiterals"
+    FunctionDecl
+      name: "UnsupportedStringEscapes"
+    FunctionDecl
+      name: "UnsupportedOperators"
+    FunctionDecl
+      name: "UnsupportedControlFlow"
+    FunctionDecl
+      name: "UnsupportedDataStructures"
+    FunctionDecl
+      name: "UnsupportedAdvancedFeatures"

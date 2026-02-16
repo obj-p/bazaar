@@ -1,0 +1,236 @@
+BazaarFile
+  packageDecl:
+    PackageDecl
+      segments: ["builtins"]
+  declarations:
+    FunctionDecl
+      name: "BuiltinFunctions"
+      params:
+        ParameterDecl
+          name: "list"
+          type:
+            ArrayType
+              elementType:
+                ValueType
+                  name: "string"
+        ParameterDecl
+          name: "items"
+          type:
+            ArrayType
+              elementType:
+                ValueType
+                  name: "int"
+      body:
+        ForInStmt
+          names: ["i"]
+          iterable:
+            CallExpr
+              target:
+                ReferenceExpr
+                  name: "range"
+              args:
+                Argument
+                  value:
+                    NumberLiteral
+                      value: "0"
+                Argument
+                  value:
+                    NumberLiteral
+                      value: "10"
+        ForInStmt
+          names: ["idx", "val"]
+          iterable:
+            CallExpr
+              target:
+                ReferenceExpr
+                  name: "enumerate"
+              args:
+                Argument
+                  value:
+                    ReferenceExpr
+                      name: "list"
+        VarDeclStmt
+          names: ["size"]
+          value:
+            CallExpr
+              target:
+                ReferenceExpr
+                  name: "len"
+              args:
+                Argument
+                  value:
+                    ReferenceExpr
+                      name: "items"
+        IfStmt
+          fragments:
+            IfExprFragment
+              expr:
+                BinaryExpr
+                  op: GT
+                  left:
+                    CallExpr
+                      target:
+                        ReferenceExpr
+                          name: "len"
+                      args:
+                        Argument
+                          value:
+                            ReferenceExpr
+                              name: "items"
+                  right:
+                    NumberLiteral
+                      value: "0"
+        ForInStmt
+          names: ["i"]
+          iterable:
+            CallExpr
+              target:
+                ReferenceExpr
+                  name: "range"
+              args:
+                Argument
+                  value:
+                    NumberLiteral
+                      value: "0"
+                Argument
+                  value:
+                    CallExpr
+                      target:
+                        ReferenceExpr
+                          name: "len"
+                      args:
+                        Argument
+                          value:
+                            ReferenceExpr
+                              name: "list"
+        VarDeclStmt
+          names: ["rangeVar"]
+          value:
+            CallExpr
+              target:
+                ReferenceExpr
+                  name: "range"
+              args:
+                Argument
+                  value:
+                    NumberLiteral
+                      value: "1"
+                Argument
+                  value:
+                    NumberLiteral
+                      value: "5"
+        VarDeclStmt
+          names: ["enumerateVar"]
+          value:
+            CallExpr
+              target:
+                ReferenceExpr
+                  name: "enumerate"
+              args:
+                Argument
+                  value:
+                    ReferenceExpr
+                      name: "items"
+        VarDeclStmt
+          names: ["lengthCheck"]
+          value:
+            BinaryExpr
+              op: ADD
+              left:
+                CallExpr
+                  target:
+                    ReferenceExpr
+                      name: "len"
+                  args:
+                    Argument
+                      value:
+                        ReferenceExpr
+                          name: "list"
+              right:
+                CallExpr
+                  target:
+                    ReferenceExpr
+                      name: "len"
+                  args:
+                    Argument
+                      value:
+                        ReferenceExpr
+                          name: "items"
+        ForInStmt
+          names: ["i", "item"]
+          iterable:
+            CallExpr
+              target:
+                ReferenceExpr
+                  name: "enumerate"
+              args:
+                Argument
+                  value:
+                    CallExpr
+                      target:
+                        ReferenceExpr
+                          name: "range"
+                      args:
+                        Argument
+                          value:
+                            NumberLiteral
+                              value: "0"
+                        Argument
+                          value:
+                            CallExpr
+                              target:
+                                ReferenceExpr
+                                  name: "len"
+                              args:
+                                Argument
+                                  value:
+                                    ReferenceExpr
+                                      name: "list"
+        ForInStmt
+          names: ["entry"]
+          iterable:
+            CallExpr
+              target:
+                ReferenceExpr
+                  name: "enumerate"
+              args:
+                Argument
+                  value:
+                    ReferenceExpr
+                      name: "list"
+        VarDeclStmt
+          names: ["complexRange"]
+          value:
+            CallExpr
+              target:
+                ReferenceExpr
+                  name: "range"
+              args:
+                Argument
+                  value:
+                    CallExpr
+                      target:
+                        ReferenceExpr
+                          name: "len"
+                      args:
+                        Argument
+                          value:
+                            ReferenceExpr
+                              name: "items"
+                Argument
+                  value:
+                    BinaryExpr
+                      op: ADD
+                      left:
+                        CallExpr
+                          target:
+                            ReferenceExpr
+                              name: "len"
+                          args:
+                            Argument
+                              value:
+                                ReferenceExpr
+                                  name: "items"
+                      right:
+                        NumberLiteral
+                          value: "10"

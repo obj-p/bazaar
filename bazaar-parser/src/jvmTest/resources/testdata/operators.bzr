@@ -1,0 +1,61 @@
+package operators
+
+func Operators() {
+    // Comparison operators (testing <= and >= which are implemented)
+    if x <= y {}
+    if x >= z {}
+    if a <= b && c >= d {}
+
+    // Unary operators
+    var negative = -42
+    var negativeFloat = -3.14
+    var notValue = !true
+    var complexNot = !(x && y)
+
+    // All arithmetic operators together
+    var arithmetic = a + b - c * d / e % f
+
+    // All comparison operators together
+    if a < b && b <= c && c == d && d != e && e >= f && f > g {}
+
+    // Complex operator precedence
+    var grouped = (a + b) * (c - d)
+    var unaryPrecedence = -a + b
+    var precedenceTest = a + b * c - d / e % f
+    var mixedPrecedence = !flag && x < y || z >= w
+
+    // Unary minus with different types
+    var negInt = -123
+    var negFloat = -45.67
+    var negVar = -someValue
+
+    // Logical operators in complex expressions
+    var logicalComplex = (a && b) || (c && d)
+    if !(x || y) && z {}
+
+    // Null coalescing operator
+    var result = value ?? "default"
+    var chained = a ?? b ?? c
+    var complex = (obj?.count ?? 0) + 1
+
+    // Exponentiation operator (highest precedence, right-associative)
+    var power = base ** exponent
+    var rightAssociative = 2 ** 3 ** 2
+    var precedenceTest = 2 + 3 ** 2 * 4
+    var unaryInteraction = -2 ** 2
+    var parentheses = (2 + 3) ** 2
+    var floatingPoint = 2.5 ** 3
+
+    // Scientific notation (lexer-level, not an operator)
+    var scientific = 1.5e10
+    var negative = 2.3e-5
+    var uppercase = 1E3
+    var zeroExponent = 3.14e0
+    var explicitPlus = 1e+5
+
+    // Scientific notation in expressions
+    var mixed = 1e3 + 2e2
+    var complex = 2.5e2 * 3e-1
+    var precedence = 1e2 ** 2
+    var floating = 1.25e-2 / 5e-3
+}

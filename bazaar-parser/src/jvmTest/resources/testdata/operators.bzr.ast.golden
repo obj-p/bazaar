@@ -1,0 +1,586 @@
+BazaarFile
+  packageDecl:
+    PackageDecl
+      segments: ["operators"]
+  declarations:
+    FunctionDecl
+      name: "Operators"
+      body:
+        IfStmt
+          fragments:
+            IfExprFragment
+              expr:
+                BinaryExpr
+                  op: LTE
+                  left:
+                    ReferenceExpr
+                      name: "x"
+                  right:
+                    ReferenceExpr
+                      name: "y"
+        IfStmt
+          fragments:
+            IfExprFragment
+              expr:
+                BinaryExpr
+                  op: GTE
+                  left:
+                    ReferenceExpr
+                      name: "x"
+                  right:
+                    ReferenceExpr
+                      name: "z"
+        IfStmt
+          fragments:
+            IfExprFragment
+              expr:
+                BinaryExpr
+                  op: AND
+                  left:
+                    BinaryExpr
+                      op: LTE
+                      left:
+                        ReferenceExpr
+                          name: "a"
+                      right:
+                        ReferenceExpr
+                          name: "b"
+                  right:
+                    BinaryExpr
+                      op: GTE
+                      left:
+                        ReferenceExpr
+                          name: "c"
+                      right:
+                        ReferenceExpr
+                          name: "d"
+        VarDeclStmt
+          names: ["negative"]
+          value:
+            UnaryExpr
+              op: NEGATE
+              operand:
+                NumberLiteral
+                  value: "42"
+        VarDeclStmt
+          names: ["negativeFloat"]
+          value:
+            UnaryExpr
+              op: NEGATE
+              operand:
+                NumberLiteral
+                  value: "3.14"
+        VarDeclStmt
+          names: ["notValue"]
+          value:
+            UnaryExpr
+              op: NOT
+              operand:
+                BoolLiteral
+                  value: true
+        VarDeclStmt
+          names: ["complexNot"]
+          value:
+            UnaryExpr
+              op: NOT
+              operand:
+                BinaryExpr
+                  op: AND
+                  left:
+                    ReferenceExpr
+                      name: "x"
+                  right:
+                    ReferenceExpr
+                      name: "y"
+        VarDeclStmt
+          names: ["arithmetic"]
+          value:
+            BinaryExpr
+              op: SUB
+              left:
+                BinaryExpr
+                  op: ADD
+                  left:
+                    ReferenceExpr
+                      name: "a"
+                  right:
+                    ReferenceExpr
+                      name: "b"
+              right:
+                BinaryExpr
+                  op: MOD
+                  left:
+                    BinaryExpr
+                      op: DIV
+                      left:
+                        BinaryExpr
+                          op: MUL
+                          left:
+                            ReferenceExpr
+                              name: "c"
+                          right:
+                            ReferenceExpr
+                              name: "d"
+                      right:
+                        ReferenceExpr
+                          name: "e"
+                  right:
+                    ReferenceExpr
+                      name: "f"
+        IfStmt
+          fragments:
+            IfExprFragment
+              expr:
+                BinaryExpr
+                  op: AND
+                  left:
+                    BinaryExpr
+                      op: AND
+                      left:
+                        BinaryExpr
+                          op: AND
+                          left:
+                            BinaryExpr
+                              op: AND
+                              left:
+                                BinaryExpr
+                                  op: AND
+                                  left:
+                                    BinaryExpr
+                                      op: LT
+                                      left:
+                                        ReferenceExpr
+                                          name: "a"
+                                      right:
+                                        ReferenceExpr
+                                          name: "b"
+                                  right:
+                                    BinaryExpr
+                                      op: LTE
+                                      left:
+                                        ReferenceExpr
+                                          name: "b"
+                                      right:
+                                        ReferenceExpr
+                                          name: "c"
+                              right:
+                                BinaryExpr
+                                  op: EQ
+                                  left:
+                                    ReferenceExpr
+                                      name: "c"
+                                  right:
+                                    ReferenceExpr
+                                      name: "d"
+                          right:
+                            BinaryExpr
+                              op: NEQ
+                              left:
+                                ReferenceExpr
+                                  name: "d"
+                              right:
+                                ReferenceExpr
+                                  name: "e"
+                      right:
+                        BinaryExpr
+                          op: GTE
+                          left:
+                            ReferenceExpr
+                              name: "e"
+                          right:
+                            ReferenceExpr
+                              name: "f"
+                  right:
+                    BinaryExpr
+                      op: GT
+                      left:
+                        ReferenceExpr
+                          name: "f"
+                      right:
+                        ReferenceExpr
+                          name: "g"
+        VarDeclStmt
+          names: ["grouped"]
+          value:
+            BinaryExpr
+              op: MUL
+              left:
+                BinaryExpr
+                  op: ADD
+                  left:
+                    ReferenceExpr
+                      name: "a"
+                  right:
+                    ReferenceExpr
+                      name: "b"
+              right:
+                BinaryExpr
+                  op: SUB
+                  left:
+                    ReferenceExpr
+                      name: "c"
+                  right:
+                    ReferenceExpr
+                      name: "d"
+        VarDeclStmt
+          names: ["unaryPrecedence"]
+          value:
+            BinaryExpr
+              op: ADD
+              left:
+                UnaryExpr
+                  op: NEGATE
+                  operand:
+                    ReferenceExpr
+                      name: "a"
+              right:
+                ReferenceExpr
+                  name: "b"
+        VarDeclStmt
+          names: ["precedenceTest"]
+          value:
+            BinaryExpr
+              op: SUB
+              left:
+                BinaryExpr
+                  op: ADD
+                  left:
+                    ReferenceExpr
+                      name: "a"
+                  right:
+                    BinaryExpr
+                      op: MUL
+                      left:
+                        ReferenceExpr
+                          name: "b"
+                      right:
+                        ReferenceExpr
+                          name: "c"
+              right:
+                BinaryExpr
+                  op: MOD
+                  left:
+                    BinaryExpr
+                      op: DIV
+                      left:
+                        ReferenceExpr
+                          name: "d"
+                      right:
+                        ReferenceExpr
+                          name: "e"
+                  right:
+                    ReferenceExpr
+                      name: "f"
+        VarDeclStmt
+          names: ["mixedPrecedence"]
+          value:
+            BinaryExpr
+              op: OR
+              left:
+                BinaryExpr
+                  op: AND
+                  left:
+                    UnaryExpr
+                      op: NOT
+                      operand:
+                        ReferenceExpr
+                          name: "flag"
+                  right:
+                    BinaryExpr
+                      op: LT
+                      left:
+                        ReferenceExpr
+                          name: "x"
+                      right:
+                        ReferenceExpr
+                          name: "y"
+              right:
+                BinaryExpr
+                  op: GTE
+                  left:
+                    ReferenceExpr
+                      name: "z"
+                  right:
+                    ReferenceExpr
+                      name: "w"
+        VarDeclStmt
+          names: ["negInt"]
+          value:
+            UnaryExpr
+              op: NEGATE
+              operand:
+                NumberLiteral
+                  value: "123"
+        VarDeclStmt
+          names: ["negFloat"]
+          value:
+            UnaryExpr
+              op: NEGATE
+              operand:
+                NumberLiteral
+                  value: "45.67"
+        VarDeclStmt
+          names: ["negVar"]
+          value:
+            UnaryExpr
+              op: NEGATE
+              operand:
+                ReferenceExpr
+                  name: "someValue"
+        VarDeclStmt
+          names: ["logicalComplex"]
+          value:
+            BinaryExpr
+              op: OR
+              left:
+                BinaryExpr
+                  op: AND
+                  left:
+                    ReferenceExpr
+                      name: "a"
+                  right:
+                    ReferenceExpr
+                      name: "b"
+              right:
+                BinaryExpr
+                  op: AND
+                  left:
+                    ReferenceExpr
+                      name: "c"
+                  right:
+                    ReferenceExpr
+                      name: "d"
+        IfStmt
+          fragments:
+            IfExprFragment
+              expr:
+                BinaryExpr
+                  op: AND
+                  left:
+                    UnaryExpr
+                      op: NOT
+                      operand:
+                        BinaryExpr
+                          op: OR
+                          left:
+                            ReferenceExpr
+                              name: "x"
+                          right:
+                            ReferenceExpr
+                              name: "y"
+                  right:
+                    ReferenceExpr
+                      name: "z"
+        VarDeclStmt
+          names: ["result"]
+          value:
+            BinaryExpr
+              op: COALESCE
+              left:
+                ReferenceExpr
+                  name: "value"
+              right:
+                StringLiteral
+                  parts:
+                    TextPart
+                      text: "default"
+        VarDeclStmt
+          names: ["chained"]
+          value:
+            BinaryExpr
+              op: COALESCE
+              left:
+                ReferenceExpr
+                  name: "a"
+              right:
+                BinaryExpr
+                  op: COALESCE
+                  left:
+                    ReferenceExpr
+                      name: "b"
+                  right:
+                    ReferenceExpr
+                      name: "c"
+        VarDeclStmt
+          names: ["complex"]
+          value:
+            BinaryExpr
+              op: ADD
+              left:
+                BinaryExpr
+                  op: COALESCE
+                  left:
+                    MemberExpr
+                      target:
+                        ReferenceExpr
+                          name: "obj"
+                      member: "count"
+                      optional: true
+                  right:
+                    NumberLiteral
+                      value: "0"
+              right:
+                NumberLiteral
+                  value: "1"
+        VarDeclStmt
+          names: ["power"]
+          value:
+            BinaryExpr
+              op: POW
+              left:
+                ReferenceExpr
+                  name: "base"
+              right:
+                ReferenceExpr
+                  name: "exponent"
+        VarDeclStmt
+          names: ["rightAssociative"]
+          value:
+            BinaryExpr
+              op: POW
+              left:
+                NumberLiteral
+                  value: "2"
+              right:
+                BinaryExpr
+                  op: POW
+                  left:
+                    NumberLiteral
+                      value: "3"
+                  right:
+                    NumberLiteral
+                      value: "2"
+        VarDeclStmt
+          names: ["precedenceTest"]
+          value:
+            BinaryExpr
+              op: ADD
+              left:
+                NumberLiteral
+                  value: "2"
+              right:
+                BinaryExpr
+                  op: MUL
+                  left:
+                    BinaryExpr
+                      op: POW
+                      left:
+                        NumberLiteral
+                          value: "3"
+                      right:
+                        NumberLiteral
+                          value: "2"
+                  right:
+                    NumberLiteral
+                      value: "4"
+        VarDeclStmt
+          names: ["unaryInteraction"]
+          value:
+            BinaryExpr
+              op: POW
+              left:
+                UnaryExpr
+                  op: NEGATE
+                  operand:
+                    NumberLiteral
+                      value: "2"
+              right:
+                NumberLiteral
+                  value: "2"
+        VarDeclStmt
+          names: ["parentheses"]
+          value:
+            BinaryExpr
+              op: POW
+              left:
+                BinaryExpr
+                  op: ADD
+                  left:
+                    NumberLiteral
+                      value: "2"
+                  right:
+                    NumberLiteral
+                      value: "3"
+              right:
+                NumberLiteral
+                  value: "2"
+        VarDeclStmt
+          names: ["floatingPoint"]
+          value:
+            BinaryExpr
+              op: POW
+              left:
+                NumberLiteral
+                  value: "2.5"
+              right:
+                NumberLiteral
+                  value: "3"
+        VarDeclStmt
+          names: ["scientific"]
+          value:
+            NumberLiteral
+              value: "1.5e10"
+        VarDeclStmt
+          names: ["negative"]
+          value:
+            NumberLiteral
+              value: "2.3e-5"
+        VarDeclStmt
+          names: ["uppercase"]
+          value:
+            NumberLiteral
+              value: "1E3"
+        VarDeclStmt
+          names: ["zeroExponent"]
+          value:
+            NumberLiteral
+              value: "3.14e0"
+        VarDeclStmt
+          names: ["explicitPlus"]
+          value:
+            NumberLiteral
+              value: "1e+5"
+        VarDeclStmt
+          names: ["mixed"]
+          value:
+            BinaryExpr
+              op: ADD
+              left:
+                NumberLiteral
+                  value: "1e3"
+              right:
+                NumberLiteral
+                  value: "2e2"
+        VarDeclStmt
+          names: ["complex"]
+          value:
+            BinaryExpr
+              op: MUL
+              left:
+                NumberLiteral
+                  value: "2.5e2"
+              right:
+                NumberLiteral
+                  value: "3e-1"
+        VarDeclStmt
+          names: ["precedence"]
+          value:
+            BinaryExpr
+              op: POW
+              left:
+                NumberLiteral
+                  value: "1e2"
+              right:
+                NumberLiteral
+                  value: "2"
+        VarDeclStmt
+          names: ["floating"]
+          value:
+            BinaryExpr
+              op: DIV
+              left:
+                NumberLiteral
+                  value: "1.25e-2"
+              right:
+                NumberLiteral
+                  value: "5e-3"
