@@ -1,0 +1,76 @@
+BazaarFile
+  packageDecl:
+    PackageDecl
+      segments: ["annotations"]
+  declarations:
+    FunctionDecl
+      name: "MultipleAnnotations"
+      body:
+        CallStmt
+          annotations:
+            Annotation
+              name: "State"
+            Annotation
+              name: "Modifier"
+              args:
+                Argument
+                  value:
+                    CallExpr
+                      target:
+                        ReferenceExpr
+                          name: "Padding"
+                      args:
+                        Argument
+                          name: "all"
+                          value:
+                            NumberLiteral
+                              value: "42"
+            Annotation
+              name: "Custom"
+          expr:
+            CallExpr
+              target:
+                ReferenceExpr
+                  name: "SomeFunction"
+        CallStmt
+          annotations:
+            Annotation
+              name: "State"
+          expr:
+            CallExpr
+              target:
+                ReferenceExpr
+                  name: "AnotherFunction"
+        VarDeclStmt
+          names: ["singleVar"]
+          value:
+            NumberLiteral
+              value: "1"
+          annotations:
+            Annotation
+              name: "State"
+        CallStmt
+          annotations:
+            Annotation
+              name: "Logger"
+            Annotation
+              name: "Async"
+            Annotation
+              name: "Retry"
+          expr:
+            CallExpr
+              target:
+                ReferenceExpr
+                  name: "ProcessData"
+              args:
+                Argument
+                  value:
+                    StringLiteral
+                      parts:
+                        TextPart
+                          text: "input"
+                Argument
+                  name: "param2"
+                  value:
+                    NumberLiteral
+                      value: "42"

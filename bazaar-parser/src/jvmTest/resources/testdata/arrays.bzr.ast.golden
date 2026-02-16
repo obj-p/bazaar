@@ -1,0 +1,81 @@
+BazaarFile
+  packageDecl:
+    PackageDecl
+      segments: ["arrays"]
+  declarations:
+    DataDecl
+      name: "ArrayFields"
+      members:
+        FieldDecl
+          name: "empty"
+          type:
+            ArrayType
+              elementType:
+                ValueType
+                  name: "int"
+          default:
+            ArrayLiteral
+        FieldDecl
+          name: "singleValue"
+          type:
+            ArrayType
+              elementType:
+                ValueType
+                  name: "string"
+          default:
+            ArrayLiteral
+              elements:
+                StringLiteral
+                  parts:
+                    TextPart
+                      text: "hello, value!"
+        FieldDecl
+          name: "trailingComma"
+          type:
+            ArrayType
+              elementType:
+                ValueType
+                  name: "bool"
+          default:
+            ArrayLiteral
+              elements:
+                BoolLiteral
+                  value: true
+        FieldDecl
+          name: "optionalValue"
+          type:
+            ArrayType
+              elementType:
+                ValueType
+                  name: "int"
+                  nullable: true
+          default:
+            ArrayLiteral
+              elements:
+                NullLiteral
+        FieldDecl
+          name: "optionalArray"
+          type:
+            ArrayType
+              elementType:
+                ValueType
+                  name: "int"
+              nullable: true
+    FunctionDecl
+      name: "Arrays"
+      body:
+        VarDeclStmt
+          names: ["emptyArray"]
+          value:
+            ArrayLiteral
+        VarDeclStmt
+          names: ["array"]
+          value:
+            ArrayLiteral
+              elements:
+                NumberLiteral
+                  value: "1"
+                NumberLiteral
+                  value: "2"
+                NumberLiteral
+                  value: "3"

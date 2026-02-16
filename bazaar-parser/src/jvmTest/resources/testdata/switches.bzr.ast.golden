@@ -1,0 +1,49 @@
+BazaarFile
+  packageDecl:
+    PackageDecl
+      segments: ["switches"]
+  declarations:
+    FunctionDecl
+      name: "Switches"
+      body:
+        SwitchStmt
+          expr:
+            ReferenceExpr
+              name: "expression"
+          cases:
+            SwitchCase
+              expr:
+                ReferenceExpr
+                  name: "expr1"
+            SwitchCase
+              expr:
+                ReferenceExpr
+                  name: "value1"
+              body:
+                ExprStmt
+                  expr:
+                    BinaryExpr
+                      op: ADD
+                      left:
+                        NumberLiteral
+                          value: "2"
+                      right:
+                        NumberLiteral
+                          value: "2"
+                ExprStmt
+                  expr:
+                    CallExpr
+                      target:
+                        ReferenceExpr
+                          name: "foo"
+          default:
+            ExprStmt
+              expr:
+                BinaryExpr
+                  op: ADD
+                  left:
+                    NumberLiteral
+                      value: "1"
+                  right:
+                    NumberLiteral
+                      value: "1"

@@ -39,3 +39,9 @@ kotlin {
                 }
         }
 }
+
+tasks.withType<Test> {
+        systemProperty("record", System.getProperty("record") ?: "false")
+        systemProperty("testdata.dir",
+                project.file("src/jvmTest/resources/testdata").absolutePath)
+}

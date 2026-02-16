@@ -1,0 +1,359 @@
+BazaarFile
+  packageDecl:
+    PackageDecl
+      segments: ["lambdas"]
+  declarations:
+    FunctionDecl
+      name: "Lambdas"
+      body:
+        ExprStmt
+          expr:
+            CallExpr
+              target:
+                ReferenceExpr
+                  name: "Foo"
+              trailingLambda:
+                LambdaExpr
+        ExprStmt
+          expr:
+            CallExpr
+              target:
+                ReferenceExpr
+                  name: "Foo"
+              trailingLambda:
+                LambdaExpr
+                  body:
+                    ExprStmt
+                      expr:
+                        CallExpr
+                          target:
+                            ReferenceExpr
+                              name: "Bar"
+        ExprStmt
+          expr:
+            CallExpr
+              target:
+                ReferenceExpr
+                  name: "Foo"
+              trailingLambda:
+                LambdaExpr
+                  body:
+                    ExprStmt
+                      expr:
+                        CallExpr
+                          target:
+                            ReferenceExpr
+                              name: "Bar"
+                          trailingLambda:
+                            LambdaExpr
+                              body:
+                                ExprStmt
+                                  expr:
+                                    CallExpr
+                                      target:
+                                        ReferenceExpr
+                                          name: "Baz"
+                                      trailingLambda:
+                                        LambdaExpr
+        ExprStmt
+          expr:
+            CallExpr
+              target:
+                ReferenceExpr
+                  name: "Foo"
+              trailingLambda:
+                LambdaExpr
+        ExprStmt
+          expr:
+            CallExpr
+              target:
+                ReferenceExpr
+                  name: "Foo"
+              trailingLambda:
+                LambdaExpr
+                  body:
+                    ExprStmt
+                      expr:
+                        CallExpr
+                          target:
+                            ReferenceExpr
+                              name: "Bar"
+        ExprStmt
+          expr:
+            CallExpr
+              target:
+                ReferenceExpr
+                  name: "Foo"
+              trailingLambda:
+                LambdaExpr
+                  body:
+                    ExprStmt
+                      expr:
+                        CallExpr
+                          target:
+                            ReferenceExpr
+                              name: "Bar"
+                          trailingLambda:
+                            LambdaExpr
+                              body:
+                                ExprStmt
+                                  expr:
+                                    CallExpr
+                                      target:
+                                        ReferenceExpr
+                                          name: "Baz"
+                                      trailingLambda:
+                                        LambdaExpr
+        ExprStmt
+          expr:
+            CallExpr
+              target:
+                ReferenceExpr
+                  name: "Foo"
+              args:
+                Argument
+                  value:
+                    ReferenceExpr
+                      name: "bar"
+              trailingLambda:
+                LambdaExpr
+                  params:
+                    LambdaParam
+                      name: "bar"
+                  body:
+                    ExprStmt
+                      expr:
+                        CallExpr
+                          target:
+                            ReferenceExpr
+                              name: "Bar"
+        ExprStmt
+          expr:
+            CallExpr
+              target:
+                ReferenceExpr
+                  name: "Foo"
+              args:
+                Argument
+                  value:
+                    ReferenceExpr
+                      name: "bar"
+              trailingLambda:
+                LambdaExpr
+                  params:
+                    LambdaParam
+                      name: "bar"
+                  returnType:
+                    ValueType
+                      name: "int"
+                  body:
+                    ExprStmt
+                      expr:
+                        CallExpr
+                          target:
+                            ReferenceExpr
+                              name: "Bar"
+        ExprStmt
+          expr:
+            CallExpr
+              target:
+                ReferenceExpr
+                  name: "Foo"
+              args:
+                Argument
+                  value:
+                    ReferenceExpr
+                      name: "bar"
+              trailingLambda:
+                LambdaExpr
+                  params:
+                    LambdaParam
+                      name: "bar"
+                      type:
+                        ValueType
+                          name: "string"
+                  returnType:
+                    ValueType
+                      name: "int"
+                  body:
+                    ExprStmt
+                      expr:
+                        CallExpr
+                          target:
+                            ReferenceExpr
+                              name: "Bar"
+                          args:
+                            Argument
+                              value:
+                                ReferenceExpr
+                                  name: "bar"
+        ExprStmt
+          expr:
+            CallExpr
+              target:
+                ReferenceExpr
+                  name: "Foo"
+              args:
+                Argument
+                  value:
+                    ReferenceExpr
+                      name: "bar"
+              trailingLambda:
+                LambdaExpr
+                  params:
+                    LambdaParam
+                      name: "bar"
+                      type:
+                        ValueType
+                          name: "string"
+                    LambdaParam
+                      name: "baz"
+                      type:
+                        ValueType
+                          name: "string"
+                  returnType:
+                    ValueType
+                      name: "int"
+                  body:
+                    ExprStmt
+                      expr:
+                        CallExpr
+                          target:
+                            ReferenceExpr
+                              name: "Bar"
+                          args:
+                            Argument
+                              value:
+                                ReferenceExpr
+                                  name: "bar"
+                          trailingLambda:
+                            LambdaExpr
+                              body:
+                                ExprStmt
+                                  expr:
+                                    CallExpr
+                                      target:
+                                        ReferenceExpr
+                                          name: "Baz"
+                                      args:
+                                        Argument
+                                          value:
+                                            ReferenceExpr
+                                              name: "baz"
+        ExprStmt
+          expr:
+            CallExpr
+              target:
+                ReferenceExpr
+                  name: "Foo"
+              args:
+                Argument
+                  name: "bar"
+                  value:
+                    LambdaExpr
+                      body:
+                        ExprStmt
+                          expr:
+                            CallExpr
+                              target:
+                                ReferenceExpr
+                                  name: "Bar"
+              trailingLambda:
+                LambdaExpr
+                  body:
+                    ExprStmt
+                      expr:
+                        CallExpr
+                          target:
+                            ReferenceExpr
+                              name: "Baz"
+        VarDeclStmt
+          names: ["foo"]
+          value:
+            LambdaExpr
+              params:
+                LambdaParam
+                  name: "bar"
+              returnType:
+                ValueType
+                  name: "int"
+              body:
+                ReturnStmt
+                  value:
+                    ReferenceExpr
+                      name: "bar"
+        VarDeclStmt
+          names: ["foo"]
+          value:
+            LambdaExpr
+              params:
+                LambdaParam
+                  name: "bar"
+                  type:
+                    ValueType
+                      name: "int"
+              returnType:
+                ValueType
+                  name: "int"
+              body:
+                ReturnStmt
+                  value:
+                    ReferenceExpr
+                      name: "bar"
+        VarDeclStmt
+          names: ["foo"]
+          value:
+            LambdaExpr
+        ExprStmt
+          expr:
+            CallExpr
+              target:
+                ReferenceExpr
+                  name: "call"
+              trailingLambda:
+                LambdaExpr
+                  params:
+                    LambdaParam
+                      name: "x"
+                      type:
+                        ValueType
+                          name: "int"
+                    LambdaParam
+                      name: "y"
+                      type:
+                        ValueType
+                          name: "string"
+                  returnType:
+                    ValueType
+                      name: "bool"
+                  body:
+                    ReturnStmt
+                      value:
+                        BinaryExpr
+                          op: GT
+                          left:
+                            ReferenceExpr
+                              name: "x"
+                          right:
+                            NumberLiteral
+                              value: "0"
+        ExprStmt
+          expr:
+            CallExpr
+              target:
+                ReferenceExpr
+                  name: "call"
+              trailingLambda:
+                LambdaExpr
+                  params:
+                    LambdaParam
+                      name: "a"
+                    LambdaParam
+                      name: "b"
+                    LambdaParam
+                      name: "c"
+                  body:
+                    ReturnStmt
+                      value:
+                        ReferenceExpr
+                          name: "a"

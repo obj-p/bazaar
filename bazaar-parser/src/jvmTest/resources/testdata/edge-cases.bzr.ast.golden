@@ -1,0 +1,103 @@
+BazaarFile
+  packageDecl:
+    PackageDecl
+      segments: ["edgecases"]
+  declarations:
+    EnumDecl
+      name: "EmptyEnum"
+    EnumDecl
+      name: "TrailingCommaEnum"
+      values: ["a", "b", "c"]
+    ComponentDecl
+      name: "EmptyComponent"
+    DataDecl
+      name: "EmptyData"
+    TemplateDecl
+      name: "EmptyTemplate"
+    FunctionDecl
+      name: "EdgeCases"
+      body:
+        VarDeclStmt
+          names: ["component"]
+          value:
+            StringLiteral
+              parts:
+                TextPart
+                  text: "foo"
+        VarDeclStmt
+          names: ["data"]
+          value:
+            StringLiteral
+              parts:
+                TextPart
+                  text: "bar"
+        VarDeclStmt
+          names: ["modifier"]
+          value:
+            StringLiteral
+              parts:
+                TextPart
+                  text: "baz"
+        VarDeclStmt
+          names: ["package"]
+          value:
+            StringLiteral
+              parts:
+                TextPart
+                  text: "qux"
+        VarDeclStmt
+          names: ["len"]
+          value:
+            StringLiteral
+              parts:
+                TextPart
+                  text: "foo"
+        VarDeclStmt
+          names: ["enumerate"]
+          value:
+            StringLiteral
+              parts:
+                TextPart
+                  text: "bar"
+        VarDeclStmt
+          names: ["range"]
+          value:
+            StringLiteral
+              parts:
+                TextPart
+                  text: "baz"
+        VarDeclStmt
+          names: ["arrayWithTrailing"]
+          value:
+            ArrayLiteral
+              elements:
+                NumberLiteral
+                  value: "1"
+                NumberLiteral
+                  value: "2"
+                NumberLiteral
+                  value: "3"
+        VarDeclStmt
+          names: ["mapWithTrailing"]
+          value:
+            MapLiteral
+              entries:
+                MapEntry
+                  key:
+                    ReferenceExpr
+                      name: "a"
+                  value:
+                    NumberLiteral
+                      value: "1"
+                MapEntry
+                  key:
+                    ReferenceExpr
+                      name: "b"
+                  value:
+                    NumberLiteral
+                      value: "2"
+        ForInStmt
+          names: ["a", "b"]
+          iterable:
+            ReferenceExpr
+              name: "something"

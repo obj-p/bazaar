@@ -1,0 +1,16 @@
+package functions
+
+data FunctionFields {
+    empty func()
+    add func(int, int) -> int
+    trailingComma func(int,)
+    optional func()?
+    nestedOptional (func() -> string?)?
+    extraNested ((func()?))
+}
+
+func DefinedBody() -> int {
+    return 42
+}
+
+func HigherOrderFunction() -> func() -> func()

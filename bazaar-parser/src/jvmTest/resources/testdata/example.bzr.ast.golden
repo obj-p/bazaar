@@ -1,0 +1,376 @@
+BazaarFile
+  packageDecl:
+    PackageDecl
+      segments: ["example"]
+  imports:
+    ImportDecl
+      segments: ["layout"]
+  declarations:
+    EnumDecl
+      name: "RowAlignment"
+      values: ["top", "center", "bottom"]
+    ComponentDecl
+      name: "Row"
+      members:
+        FieldDecl
+          name: "alignment"
+          type:
+            ValueType
+              name: "RowAlignment"
+          default:
+            MemberExpr
+              target:
+                ReferenceExpr
+                  name: "RowAlignment"
+              member: "center"
+        FieldDecl
+          name: "children"
+          type:
+            ArrayType
+              elementType:
+                ValueType
+                  name: "component"
+    ComponentDecl
+      name: "Button"
+      members:
+        FieldDecl
+          name: "label"
+          type:
+            ValueType
+              name: "string"
+        FieldDecl
+          name: "onClick"
+          type:
+            FunctionType
+              nullable: true
+          default:
+            NullLiteral
+    ComponentDecl
+      name: "Text"
+      members:
+        FieldDecl
+          name: "value"
+          type:
+            ValueType
+              name: "string"
+    ModifierDecl
+      name: "Padding"
+      members:
+        FieldDecl
+          name: "top"
+          type:
+            ValueType
+              name: "double"
+          default:
+            NumberLiteral
+              value: "0"
+        FieldDecl
+          name: "leading"
+          type:
+            ValueType
+              name: "double"
+          default:
+            NumberLiteral
+              value: "0"
+        FieldDecl
+          name: "bottom"
+          type:
+            ValueType
+              name: "double"
+          default:
+            NumberLiteral
+              value: "0"
+        FieldDecl
+          name: "trailing"
+          type:
+            ValueType
+              name: "double"
+          default:
+            NumberLiteral
+              value: "0"
+        ConstructorDecl
+          params:
+            ParameterDecl
+              name: "all"
+              type:
+                ValueType
+                  name: "double"
+          value:
+            CallExpr
+              target:
+                ReferenceExpr
+                  name: "Padding"
+              args:
+                Argument
+                  value:
+                    ReferenceExpr
+                      name: "all"
+                Argument
+                  value:
+                    ReferenceExpr
+                      name: "all"
+                Argument
+                  value:
+                    ReferenceExpr
+                      name: "all"
+                Argument
+                  value:
+                    ReferenceExpr
+                      name: "all"
+        ConstructorDecl
+          params:
+            ParameterDecl
+              name: "vertical"
+              type:
+                ValueType
+                  name: "double"
+            ParameterDecl
+              name: "horizontal"
+              type:
+                ValueType
+                  name: "double"
+          value:
+            CallExpr
+              target:
+                ReferenceExpr
+                  name: "Padding"
+              args:
+                Argument
+                  value:
+                    ReferenceExpr
+                      name: "vertical"
+                Argument
+                  value:
+                    ReferenceExpr
+                      name: "horizontal"
+                Argument
+                  value:
+                    ReferenceExpr
+                      name: "vertical"
+                Argument
+                  value:
+                    ReferenceExpr
+                      name: "horizontal"
+    FunctionDecl
+      name: "Add"
+      params:
+        ParameterDecl
+          name: "x"
+          type:
+            ValueType
+              name: "int"
+        ParameterDecl
+          name: "y"
+          type:
+            ValueType
+              name: "int"
+      returnType:
+        ValueType
+          name: "int"
+    FunctionDecl
+      name: "Truncate"
+      params:
+        ParameterDecl
+          name: "x"
+          type:
+            ValueType
+              name: "double"
+      returnType:
+        ValueType
+          name: "int"
+    FunctionDecl
+      name: "Print"
+      params:
+        ParameterDecl
+          name: "message"
+          type:
+            ValueType
+              name: "string"
+    FunctionDecl
+      name: "Dismiss"
+      params:
+        ParameterDecl
+          name: "animated"
+          type:
+            ValueType
+              name: "bool"
+          default:
+            BoolLiteral
+              value: false
+    DataDecl
+      name: "Point"
+      members:
+        FieldDecl
+          name: "x"
+          type:
+            ValueType
+              name: "double"
+          default:
+            NumberLiteral
+              value: "0.0"
+        FieldDecl
+          name: "y"
+          type:
+            ValueType
+              name: "double"
+          default:
+            NumberLiteral
+              value: "0"
+    DataDecl
+      name: "TextAndButtonRowModel"
+      members:
+        FieldDecl
+          name: "value"
+          type:
+            ValueType
+              name: "string"
+          default:
+            StringLiteral
+              parts:
+                TextPart
+                  text: "Hello, world!"
+        FieldDecl
+          name: "label"
+          type:
+            ValueType
+              name: "string"
+          default:
+            StringLiteral
+              parts:
+                TextPart
+                  text: "Click, me!"
+        FieldDecl
+          name: "message"
+          type:
+            ValueType
+              name: "string"
+              nullable: true
+          default:
+            NullLiteral
+    TemplateDecl
+      name: "TextAndButtonRow"
+      params:
+        ParameterDecl
+          name: "models"
+          type:
+            ArrayType
+              elementType:
+                ValueType
+                  name: "TextAndButtonRowModel"
+      body:
+        VarDeclStmt
+          names: ["count"]
+          value:
+            NumberLiteral
+              value: "0"
+          annotations:
+            Annotation
+              name: "State"
+        ForInStmt
+          names: ["model"]
+          iterable:
+            ReferenceExpr
+              name: "models"
+          body:
+            CallStmt
+              annotations:
+                Annotation
+                  name: "Modifier"
+                  args:
+                    Argument
+                      value:
+                        CallExpr
+                          target:
+                            ReferenceExpr
+                              name: "Padding"
+                          args:
+                            Argument
+                              name: "all"
+                              value:
+                                NumberLiteral
+                                  value: "12.0"
+              expr:
+                CallExpr
+                  target:
+                    ReferenceExpr
+                      name: "Row"
+                  trailingLambda:
+                    LambdaExpr
+                      body:
+                        ExprStmt
+                          expr:
+                            CallExpr
+                              target:
+                                ReferenceExpr
+                                  name: "Text"
+                              args:
+                                Argument
+                                  value:
+                                    MemberExpr
+                                      target:
+                                        ReferenceExpr
+                                          name: "model"
+                                      member: "value"
+                        ExprStmt
+                          expr:
+                            CallExpr
+                              target:
+                                ReferenceExpr
+                                  name: "Button"
+                              args:
+                                Argument
+                                  value:
+                                    MemberExpr
+                                      target:
+                                        ReferenceExpr
+                                          name: "model"
+                                      member: "label"
+                              trailingLambda:
+                                LambdaExpr
+                                  body:
+                                    AssignStmt
+                                      target: "count"
+                                      op: ADD_ASSIGN
+                                      value:
+                                        NumberLiteral
+                                          value: "1"
+                                    IfStmt
+                                      fragments:
+                                        IfVarFragment
+                                          names: ["message"]
+                                          value:
+                                            MemberExpr
+                                              target:
+                                                ReferenceExpr
+                                                  name: "model"
+                                              member: "message"
+                                      body:
+                                        ExprStmt
+                                          expr:
+                                            CallExpr
+                                              target:
+                                                ReferenceExpr
+                                                  name: "Print"
+                                              args:
+                                                Argument
+                                                  value:
+                                                    ReferenceExpr
+                                                      name: "message"
+    PreviewDecl
+      name: "TextAndButtonRowPreview"
+      body:
+        ExprStmt
+          expr:
+            CallExpr
+              target:
+                ReferenceExpr
+                  name: "TextAndButtonRow"
+              args:
+                Argument
+                  value:
+                    ArrayLiteral
+                      elements:
+                        CallExpr
+                          target:
+                            ReferenceExpr
+                              name: "TextAndButtonRowModel"

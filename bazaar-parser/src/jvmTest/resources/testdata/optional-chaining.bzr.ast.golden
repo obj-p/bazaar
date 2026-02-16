@@ -1,0 +1,268 @@
+BazaarFile
+  packageDecl:
+    PackageDecl
+      segments: ["optionalchaining"]
+  declarations:
+    FunctionDecl
+      name: "OptionalChaining"
+      body:
+        VarDeclStmt
+          names: ["result"]
+          value:
+            MemberExpr
+              target:
+                ReferenceExpr
+                  name: "obj"
+              member: "property"
+              optional: true
+        VarDeclStmt
+          names: ["method"]
+          value:
+            CallExpr
+              target:
+                MemberExpr
+                  target:
+                    ReferenceExpr
+                      name: "obj"
+                  member: "method"
+                  optional: true
+        VarDeclStmt
+          names: ["nested"]
+          value:
+            MemberExpr
+              target:
+                MemberExpr
+                  target:
+                    ReferenceExpr
+                      name: "obj"
+                  member: "nested"
+                  optional: true
+              member: "property"
+              optional: true
+        VarDeclStmt
+          names: ["indexed"]
+          value:
+            IndexExpr
+              target:
+                ReferenceExpr
+                  name: "array"
+              index:
+                NumberLiteral
+                  value: "0"
+              optional: true
+        VarDeclStmt
+          names: ["deepIndexed"]
+          value:
+            MemberExpr
+              target:
+                IndexExpr
+                  target:
+                    ReferenceExpr
+                      name: "array"
+                  index:
+                    NumberLiteral
+                      value: "0"
+                  optional: true
+              member: "field"
+              optional: true
+        VarDeclStmt
+          names: ["called"]
+          value:
+            CallExpr
+              target:
+                ReferenceExpr
+                  name: "func"
+              args:
+                Argument
+                  value:
+                    ReferenceExpr
+                      name: "param"
+              optional: true
+        VarDeclStmt
+          names: ["chainedCall"]
+          value:
+            MemberExpr
+              target:
+                CallExpr
+                  target:
+                    MemberExpr
+                      target:
+                        ReferenceExpr
+                          name: "obj"
+                      member: "method"
+                      optional: true
+              member: "result"
+              optional: true
+        IfStmt
+          fragments:
+            IfExprFragment
+              expr:
+                MemberExpr
+                  target:
+                    ReferenceExpr
+                      name: "obj"
+                  member: "property"
+                  optional: true
+        VarDeclStmt
+          names: ["conditional"]
+          value:
+            BinaryExpr
+              op: GT
+              left:
+                MemberExpr
+                  target:
+                    ReferenceExpr
+                      name: "obj"
+                  member: "value"
+                  optional: true
+              right:
+                NumberLiteral
+                  value: "0"
+        VarDeclStmt
+          names: ["complexResult"]
+          value:
+            MemberExpr
+              target:
+                CallExpr
+                  target:
+                    MemberExpr
+                      target:
+                        ReferenceExpr
+                          name: "obj"
+                      member: "method"
+                      optional: true
+              member: "property"
+              optional: true
+        VarDeclStmt
+          names: ["complexIndexed"]
+          value:
+            MemberExpr
+              target:
+                IndexExpr
+                  target:
+                    ReferenceExpr
+                      name: "array"
+                  index:
+                    NumberLiteral
+                      value: "0"
+                  optional: true
+              member: "field"
+              optional: true
+        VarDeclStmt
+          names: ["complexCalled"]
+          value:
+            MemberExpr
+              target:
+                CallExpr
+                  target:
+                    ReferenceExpr
+                      name: "func"
+                  args:
+                    Argument
+                      value:
+                        ReferenceExpr
+                          name: "param"
+                  optional: true
+              member: "result"
+              optional: true
+        VarDeclStmt
+          names: ["complex"]
+          value:
+            CallExpr
+              target:
+                MemberExpr
+                  target:
+                    IndexExpr
+                      target:
+                        MemberExpr
+                          target:
+                            ReferenceExpr
+                              name: "obj"
+                          member: "arr"
+                          optional: true
+                      index:
+                        ReferenceExpr
+                          name: "idx"
+                      optional: true
+                  member: "call"
+                  optional: true
+        VarDeclStmt
+          names: ["mixedChain"]
+          value:
+            MemberExpr
+              target:
+                IndexExpr
+                  target:
+                    ReferenceExpr
+                      name: "items"
+                  index:
+                    NumberLiteral
+                      value: "0"
+                  optional: true
+              member: "name"
+              optional: true
+        VarDeclStmt
+          names: ["deepChain"]
+          value:
+            MemberExpr
+              target:
+                MemberExpr
+                  target:
+                    MemberExpr
+                      target:
+                        ReferenceExpr
+                          name: "root"
+                      member: "child"
+                      optional: true
+                  member: "grandchild"
+                  optional: true
+              member: "value"
+              optional: true
+        VarDeclStmt
+          names: ["arithmetic"]
+          value:
+            BinaryExpr
+              op: ADD
+              left:
+                BinaryExpr
+                  op: COALESCE
+                  left:
+                    MemberExpr
+                      target:
+                        ReferenceExpr
+                          name: "obj"
+                      member: "count"
+                      optional: true
+                  right:
+                    NumberLiteral
+                      value: "0"
+              right:
+                NumberLiteral
+                  value: "1"
+        VarDeclStmt
+          names: ["chained"]
+          value:
+            BinaryExpr
+              op: COALESCE
+              left:
+                MemberExpr
+                  target:
+                    ReferenceExpr
+                      name: "obj"
+                  member: "value"
+                  optional: true
+              right:
+                BinaryExpr
+                  op: COALESCE
+                  left:
+                    MemberExpr
+                      target:
+                        ReferenceExpr
+                          name: "other"
+                      member: "value"
+                      optional: true
+                  right:
+                    StringLiteral
+                      parts:
+                        TextPart
+                          text: "default"

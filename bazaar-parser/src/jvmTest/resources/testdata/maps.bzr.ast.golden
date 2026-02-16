@@ -1,0 +1,158 @@
+BazaarFile
+  packageDecl:
+    PackageDecl
+      segments: ["maps"]
+  declarations:
+    DataDecl
+      name: "MapFields"
+      members:
+        FieldDecl
+          name: "empty"
+          type:
+            MapType
+              keyType:
+                ValueType
+                  name: "string"
+              valueType:
+                ValueType
+                  name: "int"
+          default:
+            MapLiteral
+        FieldDecl
+          name: "singleValue"
+          type:
+            MapType
+              keyType:
+                ValueType
+                  name: "string"
+              valueType:
+                ValueType
+                  name: "int"
+          default:
+            MapLiteral
+              entries:
+                MapEntry
+                  key:
+                    StringLiteral
+                      parts:
+                        TextPart
+                          text: "key"
+                  value:
+                    NumberLiteral
+                      value: "42"
+        FieldDecl
+          name: "trailingComma"
+          type:
+            MapType
+              keyType:
+                ValueType
+                  name: "string"
+              valueType:
+                ValueType
+                  name: "int"
+          default:
+            MapLiteral
+              entries:
+                MapEntry
+                  key:
+                    StringLiteral
+                      parts:
+                        TextPart
+                          text: "key"
+                  value:
+                    NumberLiteral
+                      value: "42"
+        FieldDecl
+          name: "optionalValue"
+          type:
+            MapType
+              keyType:
+                ValueType
+                  name: "string"
+              valueType:
+                ValueType
+                  name: "int"
+                  nullable: true
+          default:
+            MapLiteral
+              entries:
+                MapEntry
+                  key:
+                    StringLiteral
+                      parts:
+                        TextPart
+                          text: "key"
+                  value:
+                    NullLiteral
+        FieldDecl
+          name: "optionalMap"
+          type:
+            MapType
+              keyType:
+                ValueType
+                  name: "string"
+              valueType:
+                ValueType
+                  name: "int"
+              nullable: true
+    FunctionDecl
+      name: "Maps"
+      body:
+        VarDeclStmt
+          names: ["map"]
+          value:
+            MapLiteral
+        VarDeclStmt
+          names: ["map"]
+          value:
+            MapLiteral
+              entries:
+                MapEntry
+                  key:
+                    ReferenceExpr
+                      name: "a"
+                  value:
+                    NumberLiteral
+                      value: "1"
+        VarDeclStmt
+          names: ["map"]
+          value:
+            MapLiteral
+              entries:
+                MapEntry
+                  key:
+                    ReferenceExpr
+                      name: "a"
+                  value:
+                    NumberLiteral
+                      value: "1"
+                MapEntry
+                  key:
+                    ReferenceExpr
+                      name: "b"
+                  value:
+                    NumberLiteral
+                      value: "2"
+        VarDeclStmt
+          names: ["map"]
+          value:
+            MapLiteral
+              entries:
+                MapEntry
+                  key:
+                    StringLiteral
+                      parts:
+                        TextPart
+                          text: "a"
+                  value:
+                    NumberLiteral
+                      value: "1"
+                MapEntry
+                  key:
+                    StringLiteral
+                      parts:
+                        TextPart
+                          text: "b"
+                  value:
+                    NumberLiteral
+                      value: "2"

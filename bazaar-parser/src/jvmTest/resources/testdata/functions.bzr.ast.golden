@@ -1,0 +1,66 @@
+BazaarFile
+  packageDecl:
+    PackageDecl
+      segments: ["functions"]
+  declarations:
+    DataDecl
+      name: "FunctionFields"
+      members:
+        FieldDecl
+          name: "empty"
+          type:
+            FunctionType
+        FieldDecl
+          name: "add"
+          type:
+            FunctionType
+              paramTypes:
+                ValueType
+                  name: "int"
+                ValueType
+                  name: "int"
+              returnType:
+                ValueType
+                  name: "int"
+        FieldDecl
+          name: "trailingComma"
+          type:
+            FunctionType
+              paramTypes:
+                ValueType
+                  name: "int"
+        FieldDecl
+          name: "optional"
+          type:
+            FunctionType
+              nullable: true
+        FieldDecl
+          name: "nestedOptional"
+          type:
+            FunctionType
+              returnType:
+                ValueType
+                  name: "string"
+                  nullable: true
+              nullable: true
+        FieldDecl
+          name: "extraNested"
+          type:
+            FunctionType
+              nullable: true
+    FunctionDecl
+      name: "DefinedBody"
+      returnType:
+        ValueType
+          name: "int"
+      body:
+        ReturnStmt
+          value:
+            NumberLiteral
+              value: "42"
+    FunctionDecl
+      name: "HigherOrderFunction"
+      returnType:
+        FunctionType
+          returnType:
+            FunctionType

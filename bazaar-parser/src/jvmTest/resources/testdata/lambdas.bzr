@@ -1,0 +1,30 @@
+package lambdas
+
+func Lambdas() {
+    Foo {}
+    Foo { Bar() }
+    Foo { Bar() { Baz {} } }
+    Foo() {}
+    Foo() { Bar() }
+    Foo() { Bar() { Baz() {} } }
+    Foo(bar) { (bar) in Bar() }
+    Foo(bar) { (bar) -> int in Bar() }
+    Foo(bar) { (bar string) -> int in Bar(bar) }
+    Foo(bar) { (bar string, baz string) -> int in Bar(bar) { Baz(baz) } }
+    Foo(bar = { Bar() } ) {
+        Baz()
+    }
+
+    var foo = { (bar) -> int in return bar }
+    var foo = { (bar int) -> int in return bar }
+    var foo = {}
+
+    // Complex lambda parameters from edge-cases.bzr
+    call { (x int, y string) -> bool in
+        return x > 0
+    }
+
+    call { (a, b, c) in
+        return a
+    }
+}

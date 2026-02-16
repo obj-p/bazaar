@@ -1,0 +1,528 @@
+BazaarFile
+  packageDecl:
+    PackageDecl
+      segments: ["arithmetic"]
+  declarations:
+    FunctionDecl
+      name: "Arithmetic"
+      body:
+        VarDeclStmt
+          names: ["answer"]
+          value:
+            BinaryExpr
+              op: SUB
+              left:
+                BinaryExpr
+                  op: ADD
+                  left:
+                    BinaryExpr
+                      op: MUL
+                      left:
+                        NumberLiteral
+                          value: "42"
+                      right:
+                        NumberLiteral
+                          value: "1"
+                  right:
+                    NumberLiteral
+                      value: "1"
+              right:
+                NumberLiteral
+                  value: "1"
+        VarDeclStmt
+          names: ["mulDiv"]
+          value:
+            BinaryExpr
+              op: MUL
+              left:
+                BinaryExpr
+                  op: DIV
+                  left:
+                    NumberLiteral
+                      value: "12"
+                  right:
+                    NumberLiteral
+                      value: "3"
+              right:
+                NumberLiteral
+                  value: "4"
+        VarDeclStmt
+          names: ["divMul"]
+          value:
+            BinaryExpr
+              op: DIV
+              left:
+                BinaryExpr
+                  op: MUL
+                  left:
+                    NumberLiteral
+                      value: "12"
+                  right:
+                    NumberLiteral
+                      value: "3"
+              right:
+                NumberLiteral
+                  value: "4"
+        VarDeclStmt
+          names: ["mulMod"]
+          value:
+            BinaryExpr
+              op: MOD
+              left:
+                BinaryExpr
+                  op: MUL
+                  left:
+                    NumberLiteral
+                      value: "10"
+                  right:
+                    NumberLiteral
+                      value: "3"
+              right:
+                NumberLiteral
+                  value: "7"
+        VarDeclStmt
+          names: ["modMul"]
+          value:
+            BinaryExpr
+              op: MUL
+              left:
+                BinaryExpr
+                  op: MOD
+                  left:
+                    NumberLiteral
+                      value: "10"
+                  right:
+                    NumberLiteral
+                      value: "3"
+              right:
+                NumberLiteral
+                  value: "7"
+        VarDeclStmt
+          names: ["divMod"]
+          value:
+            BinaryExpr
+              op: MOD
+              left:
+                BinaryExpr
+                  op: DIV
+                  left:
+                    NumberLiteral
+                      value: "20"
+                  right:
+                    NumberLiteral
+                      value: "4"
+              right:
+                NumberLiteral
+                  value: "3"
+        VarDeclStmt
+          names: ["modDiv"]
+          value:
+            BinaryExpr
+              op: DIV
+              left:
+                BinaryExpr
+                  op: MOD
+                  left:
+                    NumberLiteral
+                      value: "20"
+                  right:
+                    NumberLiteral
+                      value: "6"
+              right:
+                NumberLiteral
+                  value: "2"
+        VarDeclStmt
+          names: ["complex1"]
+          value:
+            BinaryExpr
+              op: SUB
+              left:
+                BinaryExpr
+                  op: ADD
+                  left:
+                    NumberLiteral
+                      value: "2"
+                  right:
+                    BinaryExpr
+                      op: MUL
+                      left:
+                        NumberLiteral
+                          value: "3"
+                      right:
+                        NumberLiteral
+                          value: "4"
+              right:
+                NumberLiteral
+                  value: "5"
+        VarDeclStmt
+          names: ["complex2"]
+          value:
+            BinaryExpr
+              op: ADD
+              left:
+                BinaryExpr
+                  op: SUB
+                  left:
+                    NumberLiteral
+                      value: "10"
+                  right:
+                    BinaryExpr
+                      op: DIV
+                      left:
+                        NumberLiteral
+                          value: "6"
+                      right:
+                        NumberLiteral
+                          value: "2"
+              right:
+                NumberLiteral
+                  value: "1"
+        VarDeclStmt
+          names: ["complex3"]
+          value:
+            BinaryExpr
+              op: ADD
+              left:
+                NumberLiteral
+                  value: "15"
+              right:
+                BinaryExpr
+                  op: MUL
+                  left:
+                    BinaryExpr
+                      op: MOD
+                      left:
+                        NumberLiteral
+                          value: "8"
+                      right:
+                        NumberLiteral
+                          value: "3"
+                  right:
+                    NumberLiteral
+                      value: "2"
+        VarDeclStmt
+          names: ["complex4"]
+          value:
+            BinaryExpr
+              op: SUB
+              left:
+                BinaryExpr
+                  op: ADD
+                  left:
+                    BinaryExpr
+                      op: DIV
+                      left:
+                        NumberLiteral
+                          value: "20"
+                      right:
+                        NumberLiteral
+                          value: "4"
+                  right:
+                    BinaryExpr
+                      op: MUL
+                      left:
+                        NumberLiteral
+                          value: "3"
+                      right:
+                        NumberLiteral
+                          value: "2"
+              right:
+                NumberLiteral
+                  value: "1"
+        VarDeclStmt
+          names: ["allOps"]
+          value:
+            BinaryExpr
+              op: SUB
+              left:
+                BinaryExpr
+                  op: ADD
+                  left:
+                    NumberLiteral
+                      value: "100"
+                  right:
+                    NumberLiteral
+                      value: "50"
+              right:
+                BinaryExpr
+                  op: MOD
+                  left:
+                    BinaryExpr
+                      op: DIV
+                      left:
+                        BinaryExpr
+                          op: MUL
+                          left:
+                            NumberLiteral
+                              value: "20"
+                          right:
+                            NumberLiteral
+                              value: "2"
+                      right:
+                        NumberLiteral
+                          value: "4"
+                  right:
+                    NumberLiteral
+                      value: "3"
+        VarDeclStmt
+          names: ["unaryMinus1"]
+          value:
+            BinaryExpr
+              op: ADD
+              left:
+                UnaryExpr
+                  op: NEGATE
+                  operand:
+                    NumberLiteral
+                      value: "5"
+              right:
+                NumberLiteral
+                  value: "3"
+        VarDeclStmt
+          names: ["unaryMinus2"]
+          value:
+            BinaryExpr
+              op: MUL
+              left:
+                NumberLiteral
+                  value: "2"
+              right:
+                UnaryExpr
+                  op: NEGATE
+                  operand:
+                    NumberLiteral
+                      value: "3"
+        VarDeclStmt
+          names: ["unaryMinus3"]
+          value:
+            BinaryExpr
+              op: DIV
+              left:
+                UnaryExpr
+                  op: NEGATE
+                  operand:
+                    NumberLiteral
+                      value: "10"
+              right:
+                NumberLiteral
+                  value: "2"
+        VarDeclStmt
+          names: ["unaryMinus4"]
+          value:
+            BinaryExpr
+              op: MOD
+              left:
+                UnaryExpr
+                  op: NEGATE
+                  operand:
+                    NumberLiteral
+                      value: "4"
+              right:
+                NumberLiteral
+                  value: "3"
+        VarDeclStmt
+          names: ["grouped1"]
+          value:
+            BinaryExpr
+              op: MUL
+              left:
+                BinaryExpr
+                  op: ADD
+                  left:
+                    NumberLiteral
+                      value: "2"
+                  right:
+                    NumberLiteral
+                      value: "3"
+              right:
+                NumberLiteral
+                  value: "4"
+        VarDeclStmt
+          names: ["grouped2"]
+          value:
+            BinaryExpr
+              op: MUL
+              left:
+                NumberLiteral
+                  value: "2"
+              right:
+                BinaryExpr
+                  op: ADD
+                  left:
+                    NumberLiteral
+                      value: "3"
+                  right:
+                    NumberLiteral
+                      value: "4"
+        VarDeclStmt
+          names: ["grouped3"]
+          value:
+            BinaryExpr
+              op: DIV
+              left:
+                BinaryExpr
+                  op: SUB
+                  left:
+                    NumberLiteral
+                      value: "10"
+                  right:
+                    NumberLiteral
+                      value: "2"
+              right:
+                BinaryExpr
+                  op: ADD
+                  left:
+                    NumberLiteral
+                      value: "3"
+                  right:
+                    NumberLiteral
+                      value: "1"
+        VarDeclStmt
+          names: ["grouped4"]
+          value:
+            BinaryExpr
+              op: MUL
+              left:
+                UnaryExpr
+                  op: NEGATE
+                  operand:
+                    BinaryExpr
+                      op: ADD
+                      left:
+                        NumberLiteral
+                          value: "2"
+                      right:
+                        NumberLiteral
+                          value: "3"
+              right:
+                NumberLiteral
+                  value: "4"
+        VarDeclStmt
+          names: ["nested1"]
+          value:
+            BinaryExpr
+              op: SUB
+              left:
+                BinaryExpr
+                  op: MUL
+                  left:
+                    BinaryExpr
+                      op: ADD
+                      left:
+                        NumberLiteral
+                          value: "2"
+                      right:
+                        NumberLiteral
+                          value: "3"
+                  right:
+                    NumberLiteral
+                      value: "4"
+              right:
+                NumberLiteral
+                  value: "1"
+        VarDeclStmt
+          names: ["nested2"]
+          value:
+            BinaryExpr
+              op: MUL
+              left:
+                NumberLiteral
+                  value: "2"
+              right:
+                BinaryExpr
+                  op: DIV
+                  left:
+                    BinaryExpr
+                      op: SUB
+                      left:
+                        NumberLiteral
+                          value: "10"
+                      right:
+                        NumberLiteral
+                          value: "6"
+                  right:
+                    NumberLiteral
+                      value: "2"
+        VarDeclStmt
+          names: ["nested3"]
+          value:
+            BinaryExpr
+              op: SUB
+              left:
+                BinaryExpr
+                  op: ADD
+                  left:
+                    NumberLiteral
+                      value: "5"
+                  right:
+                    BinaryExpr
+                      op: MUL
+                      left:
+                        NumberLiteral
+                          value: "3"
+                      right:
+                        NumberLiteral
+                          value: "2"
+              right:
+                BinaryExpr
+                  op: DIV
+                  left:
+                    NumberLiteral
+                      value: "8"
+                  right:
+                    NumberLiteral
+                      value: "4"
+        VarDeclStmt
+          names: ["mixedTypes1"]
+          value:
+            BinaryExpr
+              op: ADD
+              left:
+                NumberLiteral
+                  value: "10"
+              right:
+                BinaryExpr
+                  op: MUL
+                  left:
+                    NumberLiteral
+                      value: "3.5"
+                  right:
+                    NumberLiteral
+                      value: "2"
+        VarDeclStmt
+          names: ["mixedTypes2"]
+          value:
+            BinaryExpr
+              op: SUB
+              left:
+                BinaryExpr
+                  op: DIV
+                  left:
+                    NumberLiteral
+                      value: "15.0"
+                  right:
+                    NumberLiteral
+                      value: "3"
+              right:
+                NumberLiteral
+                  value: "1"
+        VarDeclStmt
+          names: ["mixedTypes3"]
+          value:
+            BinaryExpr
+              op: ADD
+              left:
+                UnaryExpr
+                  op: NEGATE
+                  operand:
+                    NumberLiteral
+                      value: "2.5"
+              right:
+                BinaryExpr
+                  op: MUL
+                  left:
+                    NumberLiteral
+                      value: "5"
+                  right:
+                    NumberLiteral
+                      value: "2"

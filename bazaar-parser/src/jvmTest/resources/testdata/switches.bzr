@@ -1,0 +1,12 @@
+package switches
+
+func Switches() {
+    switch expression {
+    case expr1:
+    case value1:
+        2 + 2
+        foo()
+    default:
+        1 + 1
+    }
+}

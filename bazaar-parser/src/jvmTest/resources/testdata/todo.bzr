@@ -1,0 +1,102 @@
+package todo
+
+// This file tracks language features that are not yet supported but may be added in the future.
+// Each section contains commented-out examples and TODO comments for systematic tracking.
+
+func UnsupportedNumericLiterals() {
+    // TODO: Binary number literals (0b prefix)
+    // Support for: 0b1010, 0b1111, 0B0001
+    // var binaryValue int = 0b1010
+    // var binaryFlags int = 0b11110000
+
+    // TODO: Hexadecimal number literals (0x prefix)
+    // Support for: 0xFF, 0x1A2B, 0X123
+    // var hexValue int = 0xFF
+    // var hexColor int = 0x1A2B3C
+
+    // TODO: Octal number literals (0o prefix and legacy 0 prefix)
+    // Support for: 0o755, 0o644, 0755 (legacy)
+    // var octalPermissions int = 0o755
+    // var legacyOctal int = 0644
+}
+
+func UnsupportedStringEscapes() {
+    // TODO: Hexadecimal escape sequences (\x prefix)
+    // Support for: \x41 (represents 'A'), \xFF
+    // Note: Not supported in Kotlin, would need conversion to \u0041
+    // var hexEscape string = "Hex character: \x41"
+    // var hexBytes string = "Byte sequence: \x00\xFF\x7F"
+
+    // TODO: Octal escape sequences (\nnn format)
+    // Support for: \101 (represents 'A'), \377
+    // Note: Not supported in Kotlin/Swift, would need conversion
+    // var octalEscape string = "Octal character: \101"
+    // var octalNull string = "Null byte: \000"
+
+    // TODO: Raw string literals (multi-line, no escaping)
+    // Support for: """raw content""" or similar syntax
+    // var rawString string = """This would be
+    // a multi-line string with no escape processing
+    // including literal \n and ${expressions}"""
+}
+
+func UnsupportedOperators() {
+    // TODO: Ternary conditional operator (? :)
+    // Useful for conditional expressions, especially in string interpolation
+    // var result string = condition ? "yes" : "no"
+    // var interpolated string = "Status: ${isActive ? "online" : "offline"}"
+}
+
+func UnsupportedControlFlow() {
+    // TODO: Break and continue statements for loops
+    // Standard loop control flow
+    // for item in items {
+    //     if shouldSkip(item) { continue }
+    //     if shouldStop(item) { break }
+    //     process(item)
+    // }
+
+    // TODO: Labeled break/continue for nested loops
+    // outer: for i in range1 {
+    //     for j in range2 {
+    //         if condition { break outer }
+    //     }
+    // }
+
+    // TODO: Guard statements for early returns
+    // guard condition else { return }
+}
+
+func UnsupportedDataStructures() {
+    // TODO: Set literals [unique collection]
+    // var setValues set = {1, 2, 3, 1} // would contain {1, 2, 3}
+
+    // TODO: Tuple literals and destructuring
+    // var coordinate tuple = (x: 10, y: 20)
+    // var (x, y) = coordinate
+
+    // TODO: Range expressions
+    // var numbers range = 1..10
+    // var chars range = 'a'..'z'
+}
+
+func UnsupportedAdvancedFeatures() {
+    // TODO: Async/await syntax
+    // var result = await fetchData()
+
+    // TODO: Pattern matching/when expressions
+    // var result = when (value) {
+    //     is String -> "text"
+    //     is Int -> "number"
+    //     else -> "unknown"
+    // }
+
+    // TODO: Extension functions
+    // extend String {
+    //     func reversed() -> String { ... }
+    // }
+
+    // TODO: Type casting and any types
+    // var number = 42.0 as? int
+    // var something any = "something"
+}
