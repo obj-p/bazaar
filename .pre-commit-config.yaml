@@ -13,23 +13,17 @@ repos:
 
   - repo: local
     hooks:
-      - id: make vet
-        name: make vet
-        entry: "make vet"
-        language: system
-        types: [go]
-        pass_filenames: false
-      - id: make test
+      - id: detekt
         stages: [pre-push]
-        name: make test
-        entry: "make test"
+        name: detekt
+        entry: "./gradlew detekt --auto-correct"
         language: system
-        types: [go]
+        types: [kotlin]
         pass_filenames: false
-      - id: make tidy
+      - id: spotless
         stages: [pre-push]
-        name: make tidy
-        entry: "make tidy"
+        name: spotless
+        entry: "./gradlew spotlessApply"
         language: system
-        types: [go]
+        types: [kotlin]
         pass_filenames: false

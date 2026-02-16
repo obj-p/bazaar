@@ -19,34 +19,9 @@ bootstrap: ## Development setup
 	@$(MAKE) $(BIN_PRE_COMMIT)
 	@$(PRE_COMMIT) install --hook-type pre-commit --hook-type pre-push
 
-.PHONY: fmt
-fmt: ## go fmt
-	@go fmt ./...
-
-.PHONY: grammar
-grammar: ## Print the Bazaar grammar
-	@go run github.com/obj-p/bazaar/cmd/bazaar grammar
-
-.PHONY: parse
-parse: ## Print the parsed source
-	@go run github.com/obj-p/bazaar/cmd/bazaar parse $(SOURCE)
-
 .PHONY: pre-commit
 pre-commit: ## Run pre-commit
 	@$(PRE_COMMIT) run
-
-.PHONY: railroad
-railroad: ## Visualize the Bazaar grammar
-	# TODO(jason.prasad): https://github.com/alecthomas/participle/issues/444
-	@$(MAKE) grammar | bash scripts/railroad.sh
-
-PHONY: test
-test: ## go test ./...
-	@go test ./...
-
-.PHONY: tidy
-tidy: ## go mod tidy
-	@go mod tidy
 
 .PHONY: todo
 todo: ## List TODO comments with file and line number
@@ -57,7 +32,3 @@ todo: ## List TODO comments with file and line number
 		--include="*.bzr" \
 		--exclude-dir=".git" \
 		--exclude-dir="bin" . || true
-
-.PHONY: vet
-vet: fmt ## go vet ./...
-	@go vet ./...
