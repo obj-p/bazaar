@@ -9,7 +9,6 @@ class BazaarBuildPlugin : Plugin<Project> {
         target.plugins.apply("org.jetbrains.kotlin.multiplatform")
 
         target.extensions.configure<KotlinMultiplatformExtension>("kotlin") {
-            jvm()
             macosArm64()
             macosX64()
             linuxX64()
