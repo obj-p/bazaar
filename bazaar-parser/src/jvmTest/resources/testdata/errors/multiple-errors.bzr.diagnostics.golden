@@ -1,0 +1,5 @@
+ERROR 1:11 extraneous input '{' expecting IDENTIFIER
+ERROR 2:10 missing '{' at 'string'
+ERROR 2:17 mismatched input '=' expecting {'component', 'func', IDENTIFIER, '(', '[', '{'}
+ERROR 3:1 extraneous input '}' expecting {'component', 'constructor', 'data', 'enum', 'false', 'func', 'modifier', 'null', 'package', 'preview', 'template', 'true', NUMBER, IDENTIFIER, '-', '!', '(', '[', '{', STRING_OPEN}
+ERROR 5:6 extraneous input '456' expecting {'component', 'constructor', 'data', 'enum', 'false', 'func', 'modifier', 'null', 'package', 'preview', 'template', 'true', IDENTIFIER, '}'}

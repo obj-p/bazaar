@@ -20,7 +20,5 @@ BazaarFile
       segments: ["ui", "components", "Button"]
       alias: "Btn"
     ImportDecl
-      segments: ["<missing IDENTIFIER>"]
-  declarations:
-    DataDecl
-      name: "models"
+      segments: ["models", "User"]
+      alias: "UserModel"

@@ -1561,30 +1561,6 @@ BazaarFile
                 TextPart
                   text: "Line 2"
         FieldDecl
-          name: "formFeed"
-          type:
-            ValueType
-              name: "string"
-          default:
-            StringLiteral
-              parts:
-                TextPart
-                  text: "Page 1"
-                TextPart
-                  text: "Page 2"
-        FieldDecl
-          name: "verticalTab"
-          type:
-            ValueType
-              name: "string"
-          default:
-            StringLiteral
-              parts:
-                TextPart
-                  text: "Col 1"
-                TextPart
-                  text: "Col 2"
-        FieldDecl
           name: "unicodeShort"
           type:
             ValueType
@@ -1671,6 +1647,10 @@ BazaarFile
               parts:
                 TextPart
                   text: "Bad escape: "
+                EscapePart
+                  text: "\\"
+                TextPart
+                  text: "q"
         FieldDecl
           name: "malformedInterpolation"
           type:
