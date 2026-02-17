@@ -1,48 +1,46 @@
 package com.bazaar.parser
 
 import com.bazaar.parser.ast.AstSerializer
-import java.io.File
+import kotlinx.io.buffered
+import kotlinx.io.files.Path
+import kotlinx.io.files.SystemFileSystem
+import kotlinx.io.readString
+import kotlinx.io.writeString
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.fail
 
 class AstGoldenTest {
 
-    private val record = System.getProperty("record") == "true"
-    private val testdataDir = System.getProperty("testdata.dir")
-        ?: error("testdata.dir system property not set")
+    private val record = getEnv("RECORD") == "true"
+    private val testdataDir = getEnv("TESTDATA_DIR")
+        ?: error("TESTDATA_DIR environment variable not set")
 
     private fun goldenTest(name: String) {
-        val source = javaClass.getResourceAsStream("/testdata/$name.bzr")
-            ?.bufferedReader()?.readText()
-            ?: fail("Test file not found: /testdata/$name.bzr")
+        val source = SystemFileSystem.source(Path(testdataDir, "$name.bzr")).buffered().use {
+            it.readString()
+        }
 
         val ast = BazaarParser.parse(source)
         val actual = AstSerializer.serialize(ast)
 
-        val goldenFile = File(testdataDir, "$name.bzr.ast.golden")
+        val goldenPath = Path(testdataDir, "$name.bzr.ast.golden")
 
         if (record) {
-            goldenFile.writeText(actual)
-            println("Recorded golden file: ${goldenFile.absolutePath}")
+            SystemFileSystem.sink(goldenPath).buffered().use { it.writeString(actual) }
+            println("Recorded golden file: $goldenPath")
             return
         }
 
-        if (!goldenFile.exists()) {
-            // Try classpath as fallback
-            val classpathGolden = javaClass.getResourceAsStream("/testdata/$name.bzr.ast.golden")
-                ?.bufferedReader()?.readText()
-            if (classpathGolden == null) {
-                fail(
-                    "Golden file not found: ${goldenFile.absolutePath}\n" +
-                        "Run with -Drecord=true to generate it.",
-                )
-            }
-            assertEquals(classpathGolden, actual, "AST mismatch for $name")
-        } else {
-            val expected = goldenFile.readText()
-            assertEquals(expected, actual, "AST mismatch for $name")
+        if (!SystemFileSystem.exists(goldenPath)) {
+            fail(
+                "Golden file not found: $goldenPath\n" +
+                    "Run with RECORD=true to generate it.",
+            )
         }
+
+        val expected = SystemFileSystem.source(goldenPath).buffered().use { it.readString() }
+        assertEquals(expected, actual, "AST mismatch for $name")
     }
 
     @Test fun annotations() = goldenTest("annotations")

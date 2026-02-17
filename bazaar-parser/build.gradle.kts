@@ -35,13 +35,16 @@ kotlin {
                 commonTest {
                         dependencies {
                                 implementation(kotlin("test"))
+                                implementation(libs.kotlinx.io.core)
                         }
                 }
         }
 }
 
-tasks.withType<Test> {
-        systemProperty("record", System.getProperty("record") ?: "false")
-        systemProperty("testdata.dir",
-                project.file("src/jvmTest/resources/testdata").absolutePath)
+val testdataDir = project.file("src/commonTest/resources/testdata").absolutePath
+val recordMode = System.getProperty("record") ?: System.getenv("RECORD") ?: "false"
+
+tasks.withType<org.jetbrains.kotlin.gradle.targets.native.tasks.KotlinNativeTest> {
+        environment("TESTDATA_DIR", testdataDir)
+        environment("RECORD", recordMode)
 }
