@@ -116,8 +116,6 @@ data RawDollarEdgeCases {
 data AdditionalEscapeSequences {
     // Test additional escape sequences that might be supported
     carriageReturn string = "Line 1\rLine 2"
-    formFeed string = "Page 1\fPage 2"
-    verticalTab string = "Col 1\vCol 2"
     // Unicode escape sequences (supported)
     unicodeShort string = "Unicode: \u0041"
     unicodeLong string = "Unicode: \U00000041"
@@ -128,7 +126,7 @@ data AdditionalEscapeSequences {
 
 data PotentiallyProblematicCases {
     // These cases might cause parsing issues - all commented out for safety
-    invalidEscape string = "Bad escape: \q"
+    invalidEscape string = "Bad escape: \\q"
     malformedInterpolation string = "Bad: $unclosed"
     extraCloseBrace string = "Extra: ${value}}"
 

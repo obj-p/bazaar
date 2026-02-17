@@ -8,4 +8,4 @@ import bar.baz.Qux as Foo
 import very.long.path.Component as Brief
 import SomeComponent as Short
 import ui.components.Button as Btn
-import data.models.User as UserModel
+import models.User as UserModel
