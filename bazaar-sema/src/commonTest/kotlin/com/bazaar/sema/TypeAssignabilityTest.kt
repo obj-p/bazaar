@@ -134,4 +134,60 @@ class TypeAssignabilityTest {
             IrFunctionType(emptyList(), null),
         ))
     }
+
+    @Test
+    fun nullableToNullableIsAssignable() {
+        assertTrue(isAssignable(
+            IrBuiltinType("int", IrPrimitiveKind.INT, nullable = true),
+            IrBuiltinType("int", IrPrimitiveKind.INT, nullable = true),
+        ))
+    }
+
+    @Test
+    fun intWideningWithNullableTargetIsAssignable() {
+        assertTrue(isAssignable(
+            IrBuiltinType("int", IrPrimitiveKind.INT),
+            IrBuiltinType("double", IrPrimitiveKind.DOUBLE, nullable = true),
+        ))
+    }
+
+    @Test
+    fun crossKindTypesAreNotAssignable() {
+        assertFalse(isAssignable(
+            IrArrayType(IrBuiltinType("int", IrPrimitiveKind.INT)),
+            IrBuiltinType("int", IrPrimitiveKind.INT),
+        ))
+    }
+
+    @Test
+    fun declaredTypeToBuiltinIsNotAssignable() {
+        assertFalse(isAssignable(
+            IrDeclaredType("Color", SymbolKind.ENUM),
+            IrBuiltinType("string", IrPrimitiveKind.STRING),
+        ))
+    }
+
+    @Test
+    fun matchingMapIsAssignable() {
+        assertTrue(isAssignable(
+            IrMapType(IrBuiltinType("string", IrPrimitiveKind.STRING), IrBuiltinType("int", IrPrimitiveKind.INT)),
+            IrMapType(IrBuiltinType("string", IrPrimitiveKind.STRING), IrBuiltinType("int", IrPrimitiveKind.INT)),
+        ))
+    }
+
+    @Test
+    fun mismatchedMapKeyIsNotAssignable() {
+        assertFalse(isAssignable(
+            IrMapType(IrBuiltinType("int", IrPrimitiveKind.INT), IrBuiltinType("string", IrPrimitiveKind.STRING)),
+            IrMapType(IrBuiltinType("string", IrPrimitiveKind.STRING), IrBuiltinType("string", IrPrimitiveKind.STRING)),
+        ))
+    }
+
+    @Test
+    fun mismatchedMapValueIsNotAssignable() {
+        assertFalse(isAssignable(
+            IrMapType(IrBuiltinType("string", IrPrimitiveKind.STRING), IrBuiltinType("int", IrPrimitiveKind.INT)),
+            IrMapType(IrBuiltinType("string", IrPrimitiveKind.STRING), IrBuiltinType("bool", IrPrimitiveKind.BOOL)),
+        ))
+    }
 }

@@ -20,22 +20,22 @@ object TypeChecker {
 
         fun checkDeclaration(decl: IrDeclaration) {
             when (decl) {
-                is IrComponent -> {
-                    checkFieldDefaults(decl.name, decl.fields)
-                    checkConstructors(decl.name, decl.fields, decl.constructors)
-                }
-                is IrData -> {
-                    checkFieldDefaults(decl.name, decl.fields)
-                    checkConstructors(decl.name, decl.fields, decl.constructors)
-                }
-                is IrModifier -> {
-                    checkFieldDefaults(decl.name, decl.fields)
-                    checkConstructors(decl.name, decl.fields, decl.constructors)
-                }
+                is IrComponent -> checkFieldsAndConstructors(decl.name, decl.fields, decl.constructors)
+                is IrData -> checkFieldsAndConstructors(decl.name, decl.fields, decl.constructors)
+                is IrModifier -> checkFieldsAndConstructors(decl.name, decl.fields, decl.constructors)
                 is IrFunction -> checkParamDefaults(decl.name, decl.params)
                 is IrTemplate -> checkParamDefaults(decl.name, decl.params)
                 is IrEnum, is IrPreview -> { /* nothing to check */ }
             }
+        }
+
+        private fun checkFieldsAndConstructors(
+            declName: String,
+            fields: List<IrField>,
+            constructors: List<IrConstructor>,
+        ) {
+            checkFieldDefaults(declName, fields)
+            checkConstructors(declName, fields, constructors)
         }
 
         private fun checkFieldDefaults(declName: String, fields: List<IrField>) {
@@ -65,7 +65,7 @@ object TypeChecker {
                 if (target is ReferenceExpr) {
                     val symbol = symbolTable.lookup(target.name)
                     if (symbol != null && symbol.kind == SymbolKind.ENUM) {
-                        val enumDecl = symbol.decl as EnumDecl
+                        val enumDecl = symbol.decl as? EnumDecl ?: return
                         if (expr.member !in enumDecl.values) {
                             val valueList = enumDecl.values.joinToString("', '", "'", "'")
                             diagnostics += SemaDiagnostic(
@@ -141,27 +141,53 @@ object TypeChecker {
             // Check each argument type against corresponding field
             for ((index, pair) in args.zip(fields).withIndex()) {
                 val (arg, field) = pair
-                val argType = resolveArgType(arg.value, paramScope)
-                if (argType != null && !isAssignable(argType, field.type)) {
-                    diagnostics += SemaDiagnostic(
-                        SemaSeverity.ERROR,
-                        "constructor of '$declName': argument ${index + 1} has type ${formatType(argType)} " +
-                            "but field '${field.name}' expects ${formatType(field.type)}",
-                    )
-                }
+                checkConstructorArg(declName, arg.value, field, index, paramScope)
             }
         }
 
-        private fun resolveArgType(expr: Expr, paramScope: Map<String, IrType>): IrType? {
-            // If it's a reference to a constructor param, use the param's type
+        private fun checkConstructorArg(
+            declName: String,
+            expr: Expr,
+            field: IrField,
+            index: Int,
+            paramScope: Map<String, IrType>,
+        ) {
+            // Resolve from param scope first
             if (expr is ReferenceExpr) {
                 val paramType = paramScope[expr.name]
-                if (paramType != null) return paramType
+                if (paramType != null) {
+                    if (!isAssignable(paramType, field.type)) {
+                        diagnostics += SemaDiagnostic(
+                            SemaSeverity.ERROR,
+                            "constructor of '$declName': argument ${index + 1} has type ${formatType(paramType)} " +
+                                "but field '${field.name}' expects ${formatType(field.type)}",
+                        )
+                    }
+                    return
+                }
             }
+
             // Otherwise, infer from expression
-            return when (val result = ExprTypeInferrer.infer(expr, symbolTable)) {
-                is InferResult.Inferred -> result.type
-                else -> null // NullLiteralResult and Uninferrable — skip
+            when (val result = ExprTypeInferrer.infer(expr, symbolTable)) {
+                is InferResult.Inferred -> {
+                    if (!isAssignable(result.type, field.type)) {
+                        diagnostics += SemaDiagnostic(
+                            SemaSeverity.ERROR,
+                            "constructor of '$declName': argument ${index + 1} has type ${formatType(result.type)} " +
+                                "but field '${field.name}' expects ${formatType(field.type)}",
+                        )
+                    }
+                }
+                is InferResult.NullLiteralResult -> {
+                    if (!field.type.nullable) {
+                        diagnostics += SemaDiagnostic(
+                            SemaSeverity.ERROR,
+                            "constructor of '$declName': argument ${index + 1} is null " +
+                                "but field '${field.name}' expects non-nullable ${formatType(field.type)}",
+                        )
+                    }
+                }
+                is InferResult.Uninferrable -> { /* skip — deferred to Milestone 3 */ }
             }
         }
     }

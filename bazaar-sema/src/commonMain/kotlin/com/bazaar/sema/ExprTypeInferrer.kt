@@ -34,8 +34,9 @@ object ExprTypeInferrer {
 
     private fun inferArray(expr: ArrayLiteral, symbolTable: SymbolTable): InferResult {
         if (expr.elements.isEmpty()) {
-            return InferResult.Inferred(IrArrayType(IrErrorType("unknown")))
+            return InferResult.Inferred(IrArrayType(IrErrorType(IrErrorType.UNKNOWN)))
         }
+        // Infer from first element only; heterogeneous arrays deferred to Milestone 3
         val first = infer(expr.elements[0], symbolTable)
         return when (first) {
             is InferResult.Inferred -> InferResult.Inferred(IrArrayType(first.type))
@@ -45,7 +46,7 @@ object ExprTypeInferrer {
 
     private fun inferMap(expr: MapLiteral, symbolTable: SymbolTable): InferResult {
         if (expr.entries.isEmpty()) {
-            return InferResult.Inferred(IrMapType(IrErrorType("unknown"), IrErrorType("unknown")))
+            return InferResult.Inferred(IrMapType(IrErrorType(IrErrorType.UNKNOWN), IrErrorType(IrErrorType.UNKNOWN)))
         }
         val firstKey = infer(expr.entries[0].key, symbolTable)
         val firstValue = infer(expr.entries[0].value, symbolTable)

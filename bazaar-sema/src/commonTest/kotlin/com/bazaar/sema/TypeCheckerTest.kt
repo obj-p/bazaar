@@ -325,4 +325,75 @@ class TypeCheckerTest {
         ))))
         assertTrue(result.diagnostics.isEmpty())
     }
+
+    @Test
+    fun rejectsNullConstructorArgForNonNullableField() {
+        val result = analyze(ComponentDecl("Point", listOf(
+            FieldDecl("x", ValueType("int")),
+        ) + listOf(ConstructorDecl(
+            emptyList(),
+            CallExpr(ReferenceExpr("Point"), listOf(
+                Argument(value = NullLiteral),
+            )),
+        ))))
+        assertTrue(result.hasErrors)
+        assertTrue(result.diagnostics.any {
+            it.message.contains("argument 1 is null") &&
+                it.message.contains("field 'x' expects non-nullable int")
+        })
+    }
+
+    @Test
+    fun acceptsNullConstructorArgForNullableField() {
+        val result = analyze(ComponentDecl("Model", listOf(
+            FieldDecl("name", ValueType("string", nullable = true)),
+        ) + listOf(ConstructorDecl(
+            emptyList(),
+            CallExpr(ReferenceExpr("Model"), listOf(
+                Argument(value = NullLiteral),
+            )),
+        ))))
+        assertTrue(result.diagnostics.isEmpty())
+    }
+
+    // --- Data and modifier declaration checks ---
+
+    @Test
+    fun checksDataDeclFieldDefaults() {
+        val result = analyze(DataDecl("Model", listOf(
+            FieldDecl("count", ValueType("int"), StringLiteral(listOf(TextPart("bad")))),
+        )))
+        assertTrue(result.hasErrors)
+        assertTrue(result.diagnostics[0].message.contains("type mismatch in field 'count' of 'Model'"))
+    }
+
+    @Test
+    fun checksModifierDeclFieldDefaults() {
+        val result = analyze(ModifierDecl("Padding", listOf(
+            FieldDecl("top", ValueType("double"), BoolLiteral(true)),
+        )))
+        assertTrue(result.hasErrors)
+        assertTrue(result.diagnostics[0].message.contains("type mismatch in field 'top' of 'Padding'"))
+    }
+
+    @Test
+    fun checksTemplateParamDefaults() {
+        val result = analyze(TemplateDecl("ItemList", listOf(
+            ParameterDecl("count", ValueType("int"), StringLiteral(listOf(TextPart("bad")))),
+        )))
+        assertTrue(result.hasErrors)
+        assertTrue(result.diagnostics[0].message.contains("type mismatch in parameter 'count' of 'ItemList'"))
+    }
+
+    // --- Non-empty collection type mismatch ---
+
+    @Test
+    fun rejectsArrayWithWrongElementType() {
+        val result = analyze(ComponentDecl("List", listOf(
+            FieldDecl("items", ArrayType(ValueType("int")),
+                ArrayLiteral(listOf(StringLiteral(listOf(TextPart("bad")))))),
+        )))
+        assertTrue(result.hasErrors)
+        assertTrue(result.diagnostics[0].message.contains("expected [int], got [string]"))
+    }
 }

@@ -28,7 +28,7 @@ class ExprTypeInferrerTest {
     }
 
     @Test
-    fun infersNegativeInteger() {
+    fun infersZeroAsInteger() {
         assertInferred(IrBuiltinType("int", IrPrimitiveKind.INT), NumberLiteral("0"))
     }
 
