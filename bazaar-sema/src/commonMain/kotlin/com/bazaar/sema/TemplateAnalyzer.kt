@@ -186,6 +186,13 @@ object TemplateAnalyzer {
                 return null
             }
 
+            if (annotationArgs.size > 1) {
+                diagnostics += SemaDiagnostic(
+                    SemaSeverity.WARNING,
+                    "@Modifier annotation accepts only one argument in $declKind '$declName'",
+                )
+            }
+
             val argValue = annotationArgs[0].value
             if (argValue !is CallExpr) {
                 diagnostics += SemaDiagnostic(
@@ -236,6 +243,7 @@ object TemplateAnalyzer {
                         SemaSeverity.ERROR,
                         "@State variable must have exactly one name in $declKind '$declName'",
                     )
+                    return IrLocalDecl(names = stmt.names, value = stmt.value)
                 }
                 return IrStateDecl(name = stmt.names.first(), value = stmt.value)
             }

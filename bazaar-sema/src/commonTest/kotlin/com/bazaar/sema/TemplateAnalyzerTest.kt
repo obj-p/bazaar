@@ -274,7 +274,7 @@ class TemplateAnalyzerTest {
     }
 
     @Test
-    fun stateMultiNameProducesError() {
+    fun stateMultiNameProducesErrorAndFallsBackToLocalDecl() {
         val result = analyzeTemplate(listOf(
             TemplateDecl("MyScreen", body = listOf(
                 VarDeclStmt(listOf("a", "b"), value = NumberLiteral("0"), annotations = listOf(Annotation("State"))),
@@ -283,6 +283,9 @@ class TemplateAnalyzerTest {
 
         assertEquals(1, result.diagnostics.size)
         assertTrue(result.diagnostics[0].message.contains("@State variable must have exactly one name"))
+        val tmpl = assertIs<IrTemplate>(result.ir.declarations[0])
+        val node = assertIs<IrLocalDecl>(tmpl.body[0])
+        assertEquals(listOf("a", "b"), node.names)
     }
 
     // ============================================================
@@ -637,5 +640,111 @@ class TemplateAnalyzerTest {
         val tmpl = assertIs<IrTemplate>(result.ir.declarations[1])
         val node = assertIs<IrComponentCall>(tmpl.body[0])
         assertEquals("Text", node.name)
+    }
+
+    // ============================================================
+    // Additional coverage (review findings m5-m8, M2)
+    // ============================================================
+
+    @Test
+    fun modifierWithNonCallExprArgProducesError() {
+        val result = analyzeTemplate(listOf(
+            ComponentDecl("Row"),
+            TemplateDecl("MyScreen", body = listOf(
+                callStmt("Row", annotations = listOf(Annotation("Modifier", listOf(
+                    Argument(value = ref("someVariable")),
+                )))),
+            )),
+        ))
+
+        assertEquals(1, result.diagnostics.size)
+        assertTrue(result.diagnostics[0].message.contains("@Modifier argument must be a modifier constructor call"))
+    }
+
+    @Test
+    fun modifierWithNonReferenceExprCallTargetProducesError() {
+        val result = analyzeTemplate(listOf(
+            ComponentDecl("Row"),
+            TemplateDecl("MyScreen", body = listOf(
+                callStmt("Row", annotations = listOf(Annotation("Modifier", listOf(
+                    Argument(value = CallExpr(
+                        target = MemberExpr(ref("obj"), "method"),
+                        args = emptyList(),
+                    )),
+                )))),
+            )),
+        ))
+
+        assertEquals(1, result.diagnostics.size)
+        assertTrue(result.diagnostics[0].message.contains("@Modifier argument must be a modifier constructor call"))
+    }
+
+    @Test
+    fun modifierWithMultipleArgsProducesWarning() {
+        val result = analyzeTemplate(listOf(
+            ModifierDecl("Padding", listOf(FieldDecl("all", ValueType("double")))),
+            ModifierDecl("Margin", listOf(FieldDecl("all", ValueType("double")))),
+            ComponentDecl("Row"),
+            TemplateDecl("MyScreen", body = listOf(
+                callStmt("Row", annotations = listOf(Annotation("Modifier", listOf(
+                    Argument(value = call("Padding", Argument(name = "all", value = NumberLiteral("10.0")))),
+                    Argument(value = call("Margin", Argument(name = "all", value = NumberLiteral("5.0")))),
+                )))),
+            )),
+        ))
+
+        assertEquals(1, result.diagnostics.size)
+        assertEquals(SemaSeverity.WARNING, result.diagnostics[0].severity)
+        assertTrue(result.diagnostics[0].message.contains("@Modifier annotation accepts only one argument"))
+    }
+
+    @Test
+    fun callStmtWithUndefinedTarget() {
+        val result = analyzeTemplate(listOf(
+            TemplateDecl("MyScreen", body = listOf(
+                callStmt("Unknown", annotations = listOf(Annotation("State"))),
+            )),
+        ))
+
+        assertEquals(2, result.diagnostics.size)
+        assertTrue(result.diagnostics.any { it.message.contains("@State annotation is not valid on call") })
+        assertTrue(result.diagnostics.any { it.message.contains("undefined call target 'Unknown'") })
+    }
+
+    @Test
+    fun switchStatementWithNoDefault() {
+        val result = analyzeTemplate(listOf(
+            ComponentDecl("Text"),
+            TemplateDecl("MyScreen", body = listOf(
+                SwitchStmt(
+                    expr = ref("x"),
+                    cases = listOf(
+                        SwitchCase(NumberLiteral("1"), listOf(exprCallStmt("Text"))),
+                        SwitchCase(NumberLiteral("2"), listOf(exprCallStmt("Text"))),
+                    ),
+                ),
+            )),
+        ))
+
+        assertTrue(result.diagnostics.isEmpty())
+        val tmpl = assertIs<IrTemplate>(result.ir.declarations[1])
+        val switchNode = assertIs<IrSwitchNode>(tmpl.body[0])
+        assertEquals(2, switchNode.cases.size)
+        assertNull(switchNode.default)
+    }
+
+    @Test
+    fun returnStatementWithNoValue() {
+        val result = analyzeTemplate(listOf(
+            TemplateDecl("MyScreen", body = listOf(
+                ReturnStmt(),
+            )),
+        ))
+
+        assertEquals(1, result.diagnostics.size)
+        assertTrue(result.diagnostics[0].message.contains("return statements are not allowed in template 'MyScreen'"))
+        val tmpl = assertIs<IrTemplate>(result.ir.declarations[0])
+        val node = assertIs<IrReturnNode>(tmpl.body[0])
+        assertNull(node.value)
     }
 }
