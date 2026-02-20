@@ -23,8 +23,17 @@ object BazaarAnalyzer {
             hasErrors = allDiagnostics.any { it.severity == SemaSeverity.ERROR }
         }
 
+        // Pass 4: template analysis (only when no prior errors)
+        var finalIr = resolution.ir
+        if (!hasErrors) {
+            val templateAnalysis = TemplateAnalyzer.analyze(resolution.ir, collection.symbolTable)
+            allDiagnostics += templateAnalysis.diagnostics
+            hasErrors = allDiagnostics.any { it.severity == SemaSeverity.ERROR }
+            finalIr = templateAnalysis.ir
+        }
+
         return AnalysisResult(
-            ir = if (hasErrors) null else resolution.ir,
+            ir = if (hasErrors) null else finalIr,
             diagnostics = allDiagnostics,
         )
     }

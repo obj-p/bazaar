@@ -181,8 +181,18 @@ class AnalyzerTest {
                 ), returnType = ValueType("string")),
                 TemplateDecl("ButtonRow", listOf(
                     ParameterDecl("models", ArrayType(ValueType("ButtonModel"))),
+                ), body = listOf(
+                    ForInStmt(listOf("model"), ReferenceExpr("models"), listOf(
+                        ExprStmt(CallExpr(ReferenceExpr("Button"), listOf(
+                            Argument(value = ReferenceExpr("model")),
+                        ))),
+                    )),
                 )),
-                PreviewDecl("PreviewButtonRow"),
+                PreviewDecl("PreviewButtonRow", body = listOf(
+                    ExprStmt(CallExpr(ReferenceExpr("ButtonRow"), listOf(
+                        Argument(value = ArrayLiteral(emptyList())),
+                    ))),
+                )),
             ),
         )
         val result = BazaarAnalyzer.analyze(file)
@@ -198,7 +208,125 @@ class AnalyzerTest {
         assertIs<IrModifier>(result.ir!!.declarations[3])
         assertIs<IrData>(result.ir!!.declarations[4])
         assertIs<IrFunction>(result.ir!!.declarations[5])
-        assertIs<IrTemplate>(result.ir!!.declarations[6])
-        assertIs<IrPreview>(result.ir!!.declarations[7])
+
+        // Verify template body is analyzed (Pass 4)
+        val tmpl = assertIs<IrTemplate>(result.ir!!.declarations[6])
+        assertEquals(1, tmpl.body.size)
+        val forNode = assertIs<IrForNode>(tmpl.body[0])
+        assertEquals(1, forNode.body.size)
+        assertIs<IrComponentCall>(forNode.body[0])
+
+        // Verify preview body is analyzed (Pass 4)
+        val preview = assertIs<IrPreview>(result.ir!!.declarations[7])
+        assertEquals(1, preview.body.size)
+        val call = assertIs<IrComponentCall>(preview.body[0])
+        assertEquals("ButtonRow", call.name)
+        assertEquals(SymbolKind.TEMPLATE, call.symbolKind)
+    }
+
+    @Test
+    fun fullPipelineWithStateAndModifier() {
+        val file = BazaarFile(declarations = listOf(
+            ComponentDecl("Text"),
+            ComponentDecl("Row"),
+            ModifierDecl("Padding", listOf(FieldDecl("all", ValueType("double")))),
+            FunctionDecl("Print"),
+            TemplateDecl("MyScreen", body = listOf(
+                VarDeclStmt(listOf("count"), value = NumberLiteral("0"), annotations = listOf(Annotation("State"))),
+                CallStmt(
+                    CallExpr(ReferenceExpr("Row"), emptyList(), trailingLambda = LambdaExpr(
+                        params = emptyList(),
+                        body = listOf(
+                            ExprStmt(CallExpr(ReferenceExpr("Text"), emptyList())),
+                        ),
+                    )),
+                    annotations = listOf(Annotation("Modifier", listOf(
+                        Argument(value = CallExpr(ReferenceExpr("Padding"), listOf(
+                            Argument(name = "all", value = NumberLiteral("12.0")),
+                        ))),
+                    ))),
+                ),
+                ForInStmt(listOf("i"), ReferenceExpr("items"), listOf(
+                    ExprStmt(CallExpr(ReferenceExpr("Text"), emptyList())),
+                )),
+            )),
+        ))
+        val result = BazaarAnalyzer.analyze(file)
+
+        assertTrue(result.diagnostics.isEmpty(), "diagnostics: ${result.diagnostics}")
+        assertNotNull(result.ir)
+
+        val tmpl = assertIs<IrTemplate>(result.ir!!.declarations[4])
+        assertEquals(3, tmpl.body.size)
+
+        // @State var count = 0
+        val state = assertIs<IrStateDecl>(tmpl.body[0])
+        assertEquals("count", state.name)
+
+        // @Modifier(Padding(all = 12.0)) Row { Text() }
+        val row = assertIs<IrComponentCall>(tmpl.body[1])
+        assertEquals("Row", row.name)
+        assertNotNull(row.modifier)
+        assertEquals("Padding", row.modifier!!.name)
+        assertEquals(1, row.children.size)
+        assertIs<IrComponentCall>(row.children[0])
+
+        // for i in items { Text() }
+        val forNode = assertIs<IrForNode>(tmpl.body[2])
+        assertEquals(1, forNode.body.size)
+        assertIs<IrComponentCall>(forNode.body[0])
+    }
+
+    @Test
+    fun previewBodyWithTemplateCall() {
+        val file = BazaarFile(declarations = listOf(
+            TemplateDecl("MainScreen"),
+            PreviewDecl("PreviewMain", body = listOf(
+                ExprStmt(CallExpr(ReferenceExpr("MainScreen"), emptyList())),
+            )),
+        ))
+        val result = BazaarAnalyzer.analyze(file)
+
+        assertTrue(result.diagnostics.isEmpty())
+        assertNotNull(result.ir)
+
+        val preview = assertIs<IrPreview>(result.ir!!.declarations[1])
+        assertEquals(1, preview.body.size)
+        val call = assertIs<IrComponentCall>(preview.body[0])
+        assertEquals("MainScreen", call.name)
+        assertEquals(SymbolKind.TEMPLATE, call.symbolKind)
+    }
+
+    @Test
+    fun templateWithUndefinedCallTargetProducesNullIr() {
+        val file = BazaarFile(declarations = listOf(
+            TemplateDecl("MyScreen", body = listOf(
+                ExprStmt(CallExpr(ReferenceExpr("Undefined"), emptyList())),
+            )),
+        ))
+        val result = BazaarAnalyzer.analyze(file)
+
+        assertTrue(result.hasErrors)
+        assertNull(result.ir)
+        assertTrue(result.diagnostics.any { it.message.contains("undefined call target 'Undefined'") })
+    }
+
+    @Test
+    fun pass4SkippedWhenPriorErrorsExist() {
+        val file = BazaarFile(declarations = listOf(
+            ComponentDecl("A"),
+            ComponentDecl("A"), // duplicate — Pass 1 error
+            TemplateDecl("MyScreen", body = listOf(
+                ExprStmt(CallExpr(ReferenceExpr("Unknown"), emptyList())),
+            )),
+        ))
+        val result = BazaarAnalyzer.analyze(file)
+
+        assertTrue(result.hasErrors)
+        assertNull(result.ir)
+        // Should have duplicate error from Pass 1
+        assertTrue(result.diagnostics.any { it.message.contains("duplicate") })
+        // Should NOT have template analysis error (Pass 4 skipped)
+        assertTrue(result.diagnostics.none { it.message.contains("undefined call target") })
     }
 }
