@@ -58,11 +58,11 @@ object TypeResolver {
                 is TemplateDecl -> IrTemplate(
                     name = decl.name,
                     params = decl.params.map { resolveParam(it) },
-                    body = decl.body,
+                    body = listOf(IrRawBody(decl.body)),
                 )
                 is PreviewDecl -> IrPreview(
                     name = decl.name,
-                    body = decl.body,
+                    body = listOf(IrRawBody(decl.body)),
                 )
             }
         }

@@ -45,12 +45,12 @@ data class IrFunction(
 data class IrTemplate(
     override val name: String,
     val params: List<IrParam>,
-    val body: List<Stmt>,
+    val body: List<IrTemplateNode>,
 ) : IrDeclaration
 
 data class IrPreview(
     override val name: String,
-    val body: List<Stmt>,
+    val body: List<IrTemplateNode>,
 ) : IrDeclaration
 
 data class IrField(
