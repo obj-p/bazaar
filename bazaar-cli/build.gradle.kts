@@ -18,5 +18,11 @@ kotlin {
                 implementation(libs.kotlinx.io.core)
             }
         }
+
+        commonTest {
+            dependencies {
+                implementation(kotlin("test"))
+            }
+        }
     }
 }
