@@ -36,3 +36,8 @@ data class IrFunctionType(
     val returnType: IrType?,
     override val nullable: Boolean = false,
 ) : IrType
+
+data class IrErrorType(
+    val name: String,
+    override val nullable: Boolean = false,
+) : IrType

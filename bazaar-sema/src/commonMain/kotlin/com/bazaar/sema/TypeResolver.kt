@@ -23,59 +23,75 @@ object TypeResolver {
         private val symbolTable: SymbolTable,
         private val diagnostics: MutableList<SemaDiagnostic>,
     ) {
-        fun resolveDecl(decl: Decl): IrDeclaration = when (decl) {
-            is ComponentDecl -> IrComponent(
-                name = decl.name,
-                fields = decl.members.filterIsInstance<FieldDecl>().map { resolveField(it) },
-                constructors = decl.members.filterIsInstance<ConstructorDecl>().map { resolveConstructor(it) },
-            )
-            is DataDecl -> IrData(
-                name = decl.name,
-                fields = decl.members.filterIsInstance<FieldDecl>().map { resolveField(it) },
-                constructors = decl.members.filterIsInstance<ConstructorDecl>().map { resolveConstructor(it) },
-            )
-            is ModifierDecl -> IrModifier(
-                name = decl.name,
-                fields = decl.members.filterIsInstance<FieldDecl>().map { resolveField(it) },
-                constructors = decl.members.filterIsInstance<ConstructorDecl>().map { resolveConstructor(it) },
-            )
-            is EnumDecl -> IrEnum(
-                name = decl.name,
-                values = decl.values,
-            )
-            is FunctionDecl -> IrFunction(
-                name = decl.name,
-                params = decl.params.map { resolveParam(it) },
-                returnType = decl.returnType?.let { resolveType(it) },
-                body = decl.body,
-            )
-            is TemplateDecl -> IrTemplate(
-                name = decl.name,
-                params = decl.params.map { resolveParam(it) },
-                body = decl.body,
-            )
-            is PreviewDecl -> IrPreview(
-                name = decl.name,
-                body = decl.body,
+        private var currentDecl: String? = null
+        private var currentMember: String? = null
+
+        fun resolveDecl(decl: Decl): IrDeclaration {
+            currentDecl = declName(decl)
+            currentMember = null
+            return when (decl) {
+                is ComponentDecl -> IrComponent(
+                    name = decl.name,
+                    fields = decl.members.filterIsInstance<FieldDecl>().map { resolveField(it) },
+                    constructors = decl.members.filterIsInstance<ConstructorDecl>().map { resolveConstructor(it) },
+                )
+                is DataDecl -> IrData(
+                    name = decl.name,
+                    fields = decl.members.filterIsInstance<FieldDecl>().map { resolveField(it) },
+                    constructors = decl.members.filterIsInstance<ConstructorDecl>().map { resolveConstructor(it) },
+                )
+                is ModifierDecl -> IrModifier(
+                    name = decl.name,
+                    fields = decl.members.filterIsInstance<FieldDecl>().map { resolveField(it) },
+                    constructors = decl.members.filterIsInstance<ConstructorDecl>().map { resolveConstructor(it) },
+                )
+                is EnumDecl -> IrEnum(
+                    name = decl.name,
+                    values = decl.values,
+                )
+                is FunctionDecl -> IrFunction(
+                    name = decl.name,
+                    params = decl.params.map { resolveParam(it) },
+                    returnType = decl.returnType?.let { resolveType(it) },
+                    body = decl.body,
+                )
+                is TemplateDecl -> IrTemplate(
+                    name = decl.name,
+                    params = decl.params.map { resolveParam(it) },
+                    body = decl.body,
+                )
+                is PreviewDecl -> IrPreview(
+                    name = decl.name,
+                    body = decl.body,
+                )
+            }
+        }
+
+        private fun resolveField(field: FieldDecl): IrField {
+            currentMember = field.name
+            return IrField(
+                name = field.name,
+                type = resolveType(field.type),
+                default = field.default,
             )
         }
 
-        private fun resolveField(field: FieldDecl): IrField = IrField(
-            name = field.name,
-            type = resolveType(field.type),
-            default = field.default,
-        )
+        private fun resolveParam(param: ParameterDecl): IrParam {
+            currentMember = param.name
+            return IrParam(
+                name = param.name,
+                type = resolveType(param.type),
+                default = param.default,
+            )
+        }
 
-        private fun resolveParam(param: ParameterDecl): IrParam = IrParam(
-            name = param.name,
-            type = resolveType(param.type),
-            default = param.default,
-        )
-
-        private fun resolveConstructor(ctor: ConstructorDecl): IrConstructor = IrConstructor(
-            params = ctor.params.map { resolveParam(it) },
-            value = ctor.value,
-        )
+        private fun resolveConstructor(ctor: ConstructorDecl): IrConstructor {
+            currentMember = "constructor"
+            return IrConstructor(
+                params = ctor.params.map { resolveParam(it) },
+                value = ctor.value,
+            )
+        }
 
         fun resolveType(typeDecl: TypeDecl): IrType = when (typeDecl) {
             is ValueType -> resolveValueType(typeDecl)
@@ -96,7 +112,7 @@ object TypeResolver {
         }
 
         private fun resolveValueType(type: ValueType): IrType {
-            val primitiveKind = builtinKind(type.name)
+            val primitiveKind = BuiltinTypes.kindOf(type.name)
             if (primitiveKind != null) {
                 return IrBuiltinType(type.name, primitiveKind, type.nullable)
             }
@@ -106,20 +122,24 @@ object TypeResolver {
                 return IrDeclaredType(type.name, symbol.kind, type.nullable)
             }
 
-            diagnostics += SemaDiagnostic(
-                SemaSeverity.ERROR,
-                "undefined type '${type.name}'",
-            )
-            return IrDeclaredType(type.name, SymbolKind.COMPONENT, type.nullable)
+            val context = buildString {
+                append("undefined type '${type.name}'")
+                if (currentMember != null && currentDecl != null) {
+                    append(" in '$currentMember' of '$currentDecl'")
+                }
+            }
+            diagnostics += SemaDiagnostic(SemaSeverity.ERROR, context)
+            return IrErrorType(type.name, type.nullable)
         }
 
-        private fun builtinKind(name: String): IrPrimitiveKind? = when (name) {
-            "int" -> IrPrimitiveKind.INT
-            "double" -> IrPrimitiveKind.DOUBLE
-            "string" -> IrPrimitiveKind.STRING
-            "bool" -> IrPrimitiveKind.BOOL
-            "component" -> IrPrimitiveKind.COMPONENT
-            else -> null
+        private fun declName(decl: Decl): String = when (decl) {
+            is ComponentDecl -> decl.name
+            is DataDecl -> decl.name
+            is ModifierDecl -> decl.name
+            is EnumDecl -> decl.name
+            is FunctionDecl -> decl.name
+            is TemplateDecl -> decl.name
+            is PreviewDecl -> decl.name
         }
     }
 }

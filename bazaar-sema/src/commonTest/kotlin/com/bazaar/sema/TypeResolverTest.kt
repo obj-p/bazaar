@@ -78,6 +78,22 @@ class TypeResolverTest {
     }
 
     @Test
+    fun resolvesNullableDeclaredType() {
+        val file = BazaarFile(declarations = listOf(
+            ComponentDecl("Icon"),
+            ComponentDecl("Button", listOf(FieldDecl("icon", ValueType("Icon", nullable = true)))),
+        ))
+        val table = tableWith(ComponentDecl("Icon"), ComponentDecl("Button"))
+        val result = TypeResolver.resolve(file, table)
+
+        assertTrue(result.diagnostics.isEmpty())
+        val button = assertIs<IrComponent>(result.ir.declarations[1])
+        val type = assertIs<IrDeclaredType>(button.fields[0].type)
+        assertEquals("Icon", type.name)
+        assertEquals(true, type.nullable)
+    }
+
+    @Test
     fun resolvesArrayType() {
         val file = BazaarFile(declarations = listOf(
             ComponentDecl("List", listOf(FieldDecl("items", ArrayType(ValueType("string"))))),
@@ -162,6 +178,9 @@ class TypeResolverTest {
         assertEquals(SemaSeverity.ERROR, result.diagnostics[0].severity)
         assertTrue(result.diagnostics[0].message.contains("undefined type"))
         assertTrue(result.diagnostics[0].message.contains("NonExistent"))
+        assertTrue(result.diagnostics[0].message.contains("'child' of 'Box'"))
+        val comp = assertIs<IrComponent>(result.ir.declarations[0])
+        assertIs<IrErrorType>(comp.fields[0].type)
     }
 
     @Test
@@ -174,6 +193,7 @@ class TypeResolverTest {
 
         assertEquals(1, result.diagnostics.size)
         assertTrue(result.diagnostics[0].message.contains("Unknown"))
+        assertTrue(result.diagnostics[0].message.contains("'items' of 'List'"))
     }
 
     @Test
