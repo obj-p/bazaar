@@ -14,7 +14,14 @@ object BazaarAnalyzer {
         val resolution = TypeResolver.resolve(file, collection.symbolTable)
         allDiagnostics += resolution.diagnostics
 
-        val hasErrors = allDiagnostics.any { it.severity == SemaSeverity.ERROR }
+        var hasErrors = allDiagnostics.any { it.severity == SemaSeverity.ERROR }
+
+        // Pass 3: type checking (only when no prior errors)
+        if (!hasErrors) {
+            val typeCheck = TypeChecker.check(resolution.ir, collection.symbolTable)
+            allDiagnostics += typeCheck.diagnostics
+            hasErrors = allDiagnostics.any { it.severity == SemaSeverity.ERROR }
+        }
 
         return AnalysisResult(
             ir = if (hasErrors) null else resolution.ir,
