@@ -40,4 +40,9 @@ data class IrFunctionType(
 data class IrErrorType(
     val name: String,
     override val nullable: Boolean = false,
-) : IrType
+) : IrType {
+    companion object {
+        /** Sentinel name for empty collection element types (empty arrays/maps). */
+        const val UNKNOWN = "unknown"
+    }
+}
