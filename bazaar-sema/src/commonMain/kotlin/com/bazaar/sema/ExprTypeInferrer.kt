@@ -68,6 +68,7 @@ object ExprTypeInferrer {
         return InferResult.Uninferrable
     }
 
+    @Suppress("UnusedParameter")
     private fun inferUnary(expr: UnaryExpr, symbolTable: SymbolTable): InferResult {
         val operand = expr.operand
         return when {

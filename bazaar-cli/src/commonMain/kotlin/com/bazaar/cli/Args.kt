@@ -9,8 +9,14 @@ data class CliArgs(
 )
 
 sealed class ArgsResult {
-    data class Success(val args: CliArgs) : ArgsResult()
-    data class Error(val message: String) : ArgsResult()
+    data class Success(
+        val args: CliArgs,
+    ) : ArgsResult()
+
+    data class Error(
+        val message: String,
+    ) : ArgsResult()
+
     data object Help : ArgsResult()
 }
 
@@ -29,11 +35,12 @@ fun parseArgs(args: Array<String>): ArgsResult {
                 if (i >= args.size) {
                     return ArgsResult.Error("--format requires an argument (text or json)")
                 }
-                format = when (args[i].lowercase()) {
-                    "text" -> OutputFormat.TEXT
-                    "json" -> OutputFormat.JSON
-                    else -> return ArgsResult.Error("Unknown format: ${args[i]}. Expected 'text' or 'json'.")
-                }
+                format =
+                    when (args[i].lowercase()) {
+                        "text" -> OutputFormat.TEXT
+                        "json" -> OutputFormat.JSON
+                        else -> return ArgsResult.Error("Unknown format: ${args[i]}. Expected 'text' or 'json'.")
+                    }
             }
             else -> {
                 if (args[i].startsWith("-")) {

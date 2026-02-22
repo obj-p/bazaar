@@ -7,7 +7,6 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class StringLexerTest {
-
     private fun tokenTypes(input: String): List<Int> {
         val lexer = BazaarLexer(CharStreams.fromString(input))
         val stream = CommonTokenStream(lexer)
@@ -173,13 +172,13 @@ class StringLexerTest {
             listOf(
                 BazaarLexer.Tokens.STRING_OPEN,
                 BazaarLexer.Tokens.STRING_INTERP_OPEN,
-                BazaarLexer.Tokens.IDENTIFIER,  // map
+                BazaarLexer.Tokens.IDENTIFIER, // map
                 BazaarLexer.Tokens.LBRACE,
-                BazaarLexer.Tokens.IDENTIFIER,  // k
-                BazaarLexer.Tokens.ARROW,        // ->
-                BazaarLexer.Tokens.IDENTIFIER,  // v
-                BazaarLexer.Tokens.RBRACE,       // closes inner {
-                BazaarLexer.Tokens.RBRACE,       // closes ${
+                BazaarLexer.Tokens.IDENTIFIER, // k
+                BazaarLexer.Tokens.ARROW, // ->
+                BazaarLexer.Tokens.IDENTIFIER, // v
+                BazaarLexer.Tokens.RBRACE, // closes inner {
+                BazaarLexer.Tokens.RBRACE, // closes ${
                 BazaarLexer.Tokens.STRING_CLOSE,
             ),
             types,
@@ -194,10 +193,10 @@ class StringLexerTest {
             listOf(
                 BazaarLexer.Tokens.STRING_OPEN,
                 BazaarLexer.Tokens.STRING_INTERP_OPEN,
-                BazaarLexer.Tokens.IDENTIFIER,       // foo
+                BazaarLexer.Tokens.IDENTIFIER, // foo
                 BazaarLexer.Tokens.LPAREN,
                 BazaarLexer.Tokens.STRING_OPEN,
-                BazaarLexer.Tokens.STRING_TEXT,       // bar
+                BazaarLexer.Tokens.STRING_TEXT, // bar
                 BazaarLexer.Tokens.STRING_CLOSE,
                 BazaarLexer.Tokens.RPAREN,
                 BazaarLexer.Tokens.RBRACE,
@@ -228,10 +227,10 @@ class StringLexerTest {
             listOf(
                 BazaarLexer.Tokens.STRING_OPEN,
                 BazaarLexer.Tokens.STRING_INTERP_OPEN,
-                BazaarLexer.Tokens.IDENTIFIER,  // a
+                BazaarLexer.Tokens.IDENTIFIER, // a
                 BazaarLexer.Tokens.RBRACE,
                 BazaarLexer.Tokens.STRING_INTERP_OPEN,
-                BazaarLexer.Tokens.IDENTIFIER,  // b
+                BazaarLexer.Tokens.IDENTIFIER, // b
                 BazaarLexer.Tokens.RBRACE,
                 BazaarLexer.Tokens.STRING_CLOSE,
             ),
@@ -249,7 +248,7 @@ class StringLexerTest {
                 BazaarLexer.Tokens.STRING_INTERP_OPEN,
                 BazaarLexer.Tokens.STRING_OPEN,
                 BazaarLexer.Tokens.STRING_INTERP_OPEN,
-                BazaarLexer.Tokens.IDENTIFIER,  // x
+                BazaarLexer.Tokens.IDENTIFIER, // x
                 BazaarLexer.Tokens.RBRACE,
                 BazaarLexer.Tokens.STRING_CLOSE,
                 BazaarLexer.Tokens.RBRACE,
@@ -266,9 +265,9 @@ class StringLexerTest {
             listOf(
                 BazaarLexer.Tokens.STRING_OPEN,
                 BazaarLexer.Tokens.STRING_INTERP_OPEN,
-                BazaarLexer.Tokens.IDENTIFIER,  // a
+                BazaarLexer.Tokens.IDENTIFIER, // a
                 BazaarLexer.Tokens.PLUS,
-                BazaarLexer.Tokens.IDENTIFIER,  // b
+                BazaarLexer.Tokens.IDENTIFIER, // b
                 BazaarLexer.Tokens.RBRACE,
                 BazaarLexer.Tokens.STRING_CLOSE,
             ),
@@ -321,10 +320,10 @@ class StringLexerTest {
         assertEquals(
             listOf(
                 BazaarLexer.Tokens.STRING_OPEN,
-                BazaarLexer.Tokens.STRING_TEXT,   // abc
+                BazaarLexer.Tokens.STRING_TEXT, // abc
                 BazaarLexer.Tokens.STRING_NL,
-                BazaarLexer.Tokens.IDENTIFIER,    // def
-                BazaarLexer.Tokens.STRING_OPEN,   // trailing " opens a new string
+                BazaarLexer.Tokens.IDENTIFIER, // def
+                BazaarLexer.Tokens.STRING_OPEN, // trailing " opens a new string
             ),
             types,
         )

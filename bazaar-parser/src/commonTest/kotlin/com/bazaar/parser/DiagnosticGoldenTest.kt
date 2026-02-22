@@ -10,15 +10,16 @@ import kotlin.test.assertEquals
 import kotlin.test.fail
 
 class DiagnosticGoldenTest {
-
     private val record = getEnv("RECORD") == "true"
-    private val testdataDir = getEnv("TESTDATA_DIR")
-        ?: error("TESTDATA_DIR environment variable not set")
+    private val testdataDir =
+        getEnv("TESTDATA_DIR")
+            ?: error("TESTDATA_DIR environment variable not set")
 
     private fun goldenTest(name: String) {
-        val source = SystemFileSystem.source(Path(testdataDir, "errors", "$name.bzr")).buffered().use {
-            it.readString()
-        }
+        val source =
+            SystemFileSystem.source(Path(testdataDir, "errors", "$name.bzr")).buffered().use {
+                it.readString()
+            }
 
         val result = BazaarParser.parseWithDiagnostics(source)
         val actual = serializeDiagnostics(result.diagnostics)
@@ -43,10 +44,16 @@ class DiagnosticGoldenTest {
     }
 
     @Test fun missingClosingBrace() = goldenTest("missing-closing-brace")
+
     @Test fun unexpectedToken() = goldenTest("unexpected-token")
+
     @Test fun missingExpression() = goldenTest("missing-expression")
+
     @Test fun unterminatedString() = goldenTest("unterminated-string")
+
     @Test fun unexpectedEof() = goldenTest("unexpected-eof")
+
     @Test fun invalidEscape() = goldenTest("invalid-escape")
+
     @Test fun multipleErrors() = goldenTest("multiple-errors")
 }

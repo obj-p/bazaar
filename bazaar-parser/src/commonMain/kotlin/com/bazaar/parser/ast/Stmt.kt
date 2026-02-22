@@ -11,16 +11,24 @@ data class VarDeclStmt(
     val annotations: List<Annotation> = emptyList(),
 ) : Stmt
 
-data class AssignStmt(val target: String, val op: AssignOp, val value: Expr) : Stmt
+data class AssignStmt(
+    val target: String,
+    val op: AssignOp,
+    val value: Expr,
+) : Stmt
 
 data class CallStmt(
     val expr: CallExpr,
     val annotations: List<Annotation> = emptyList(),
 ) : Stmt
 
-data class ReturnStmt(val value: Expr? = null) : Stmt
+data class ReturnStmt(
+    val value: Expr? = null,
+) : Stmt
 
-data class ExprStmt(val expr: Expr) : Stmt
+data class ExprStmt(
+    val expr: Expr,
+) : Stmt
 
 // --- If ---
 
@@ -31,7 +39,10 @@ data class IfStmt(
     val elseBody: List<Stmt>? = null,
 ) : Stmt
 
-data class ElseIf(val fragments: List<IfFragment>, val body: List<Stmt>)
+data class ElseIf(
+    val fragments: List<IfFragment>,
+    val body: List<Stmt>,
+)
 
 sealed interface IfFragment
 
@@ -41,7 +52,9 @@ data class IfVarFragment(
     val value: Expr? = null,
 ) : IfFragment
 
-data class IfExprFragment(val expr: Expr) : IfFragment
+data class IfExprFragment(
+    val expr: Expr,
+) : IfFragment
 
 // --- For ---
 
@@ -53,7 +66,10 @@ data class ForInStmt(
     val body: List<Stmt>,
 ) : ForStmt
 
-data class ForCondStmt(val condition: Expr, val body: List<Stmt>) : ForStmt
+data class ForCondStmt(
+    val condition: Expr,
+    val body: List<Stmt>,
+) : ForStmt
 
 // --- Switch ---
 
@@ -63,4 +79,7 @@ data class SwitchStmt(
     val default: List<Stmt>? = null,
 ) : Stmt
 
-data class SwitchCase(val expr: Expr, val body: List<Stmt>)
+data class SwitchCase(
+    val expr: Expr,
+    val body: List<Stmt>,
+)

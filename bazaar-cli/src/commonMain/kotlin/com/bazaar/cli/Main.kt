@@ -32,20 +32,20 @@ private fun usageText(): String =
     |  -h, --help          Show this help message
     """.trimMargin()
 
-
 private fun run(args: CliArgs): Int {
     val multiFile = args.files.size > 1
     var hasErrors = false
     val jsonResults = if (args.format == OutputFormat.JSON && !args.check) mutableListOf<String>() else null
 
     for (filePath in args.files) {
-        val source = try {
-            SystemFileSystem.source(Path(filePath)).buffered().use { it.readString() }
-        } catch (e: Exception) {
-            printStderr("Error: Cannot read file: $filePath (${e.message})")
-            hasErrors = true
-            continue
-        }
+        val source =
+            try {
+                SystemFileSystem.source(Path(filePath)).buffered().use { it.readString() }
+            } catch (e: Exception) {
+                printStderr("Error: Cannot read file: $filePath (${e.message})")
+                hasErrors = true
+                continue
+            }
 
         val result = BazaarParser.parseWithDiagnostics(source)
 

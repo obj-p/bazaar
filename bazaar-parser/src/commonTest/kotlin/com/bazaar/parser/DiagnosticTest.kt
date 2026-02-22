@@ -8,7 +8,6 @@ import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
 class DiagnosticTest {
-
     @Test
     fun successfulParseReturnsEmptyDiagnostics() {
         val result = BazaarParser.parseWithDiagnostics("component Foo {}")
@@ -33,23 +32,25 @@ class DiagnosticTest {
 
     @Test
     fun parseExceptionCarriesDiagnosticList() {
-        val ex = assertFailsWith<ParseException> {
-            BazaarParser.parse("component {}")
-        }
+        val ex =
+            assertFailsWith<ParseException> {
+                BazaarParser.parse("component {}")
+            }
         assertTrue(ex.diagnostics.isNotEmpty())
         assertEquals(Severity.ERROR, ex.diagnostics.first().severity)
     }
 
     @Test
     fun multipleErrorsAreAllReported() {
-        val result = BazaarParser.parseWithDiagnostics(
-            """
-            component {
-                name string =
-            }
-            data 456 {}
-            """.trimIndent()
-        )
+        val result =
+            BazaarParser.parseWithDiagnostics(
+                """
+                component {
+                    name string =
+                }
+                data 456 {}
+                """.trimIndent(),
+            )
         assertTrue(result.diagnostics.size >= 2, "Expected at least 2 errors, got ${result.diagnostics.size}")
     }
 
@@ -70,9 +71,10 @@ class DiagnosticTest {
 
     @Test
     fun parseExceptionMessageContainsLocation() {
-        val ex = assertFailsWith<ParseException> {
-            BazaarParser.parse("component {}")
-        }
+        val ex =
+            assertFailsWith<ParseException> {
+                BazaarParser.parse("component {}")
+            }
         assertTrue(ex.message!!.contains(":"), "Message should contain line:column")
     }
 
@@ -100,9 +102,10 @@ class DiagnosticTest {
 
     @Test
     fun serializeDiagnosticsFormatsCorrectly() {
-        val diagnostics = listOf(
-            Diagnostic(Severity.ERROR, 1, 15, "missing '}' at '<EOF>'"),
-        )
+        val diagnostics =
+            listOf(
+                Diagnostic(Severity.ERROR, 1, 15, "missing '}' at '<EOF>'"),
+            )
         assertEquals("ERROR 1:15 missing '}' at '<EOF>'\n", serializeDiagnostics(diagnostics))
     }
 }
