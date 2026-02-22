@@ -172,9 +172,7 @@ template TodoFooter(count int, activeFilter Filter) {
     Row(spacing = 12.0) {
         Text("${count} items remaining")
 
-        Button("All", enabled = activeFilter != Filter.all) {
-            count += 1
-        }
+        Button("All", enabled = activeFilter != Filter.all)
         Button("Active", enabled = activeFilter != Filter.active)
         Button("Completed", enabled = activeFilter != Filter.completed)
 

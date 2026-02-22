@@ -1137,15 +1137,6 @@ BazaarFile
                                         ReferenceExpr
                                           name: "Filter"
                                       member: "all"
-                          trailingLambda:
-                            LambdaExpr
-                              body:
-                                AssignStmt
-                                  target: "count"
-                                  op: ADD_ASSIGN
-                                  value:
-                                    NumberLiteral
-                                      value: "1"
                     ExprStmt
                       expr:
                         CallExpr
