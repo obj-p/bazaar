@@ -1129,6 +1129,89 @@ A reducer doesn't eliminate all control flow from the tree — `$if` for conditi
 
 This is also related to the **derived state** question in [section 6](#6-state-bindings): a reducer generalizes derived state by bundling multiple derivations into a single state transition function.
 
+### Pagination
+
+Lists in SDUI can be large — a TODO app might have hundreds of items, a feed thousands. The wire format needs a strategy for delivering lists incrementally without sending the entire dataset upfront.
+
+#### Option A: Server-Controlled Pagination
+
+The server sends a page of items and a continuation token. The client requests more when needed (e.g., user scrolls to the bottom):
+
+```json
+{
+    "$type": "$for",
+    "bindings": ["todo"],
+    "in": { "$ref": "todos" },
+    "body": [ ... ],
+    "$page": {
+        "cursor": "eyJpZCI6NDJ9",
+        "hasNext": true
+    }
+}
+```
+
+The client sends the cursor back via an action to fetch the next page:
+
+```json
+{
+    "$type": "$action",
+    "name": "$loadMore",
+    "args": [{ "cursor": "eyJpZCI6NDJ9" }]
+}
+```
+
+The server responds with a **patch** — additional children to append — rather than re-sending the entire tree. This requires a tree-patching protocol on top of the current replace-the-whole-tree model.
+
+#### Option B: Client-Side Virtual Pagination
+
+The server sends all items in a single payload but the client only renders a visible window. This is the "virtualized list" pattern (e.g., `react-window`). No wire format changes needed — it's purely a client rendering optimization.
+
+This works for moderate datasets (hundreds of items) but breaks down for very large ones where the payload itself is too large.
+
+#### Option C: Progressive List Delivery
+
+Combine pagination with [progressive delivery](#4-progressive-delivery). The server sends an initial page inline and a `$pending` placeholder for the rest:
+
+```json
+{
+    "$type": "$for",
+    "bindings": ["todo"],
+    "in": { "$ref": "todos" },
+    "body": [ ... ]
+}
+```
+
+Where `todos` is delivered progressively:
+
+```json
+{ "$state": { "todos": { "initial": [{ "$pending": "page-0" }] } } }
+{ "$chunk": "page-0", "value": [ ... first 20 items ... ], "next": { "$pending": "page-1" } }
+{ "$chunk": "page-1", "value": [ ... next 20 items ... ] }
+```
+
+This streams pages as they become available without client-initiated requests, similar to RSC streaming.
+
+#### Key Questions
+
+- **Trigger mechanism:** How does the client signal it needs more data? Scroll position? Explicit "load more" button? Automatic prefetch?
+- **Tree patching:** If the server sends a page of new items, how are they merged into the existing tree? Append to `children`? Replace a `$pending` slot? This implies a **diff/patch protocol** that doesn't exist yet.
+- **Interaction with filtering:** If the client changes a filter (`@State var filter`), does that invalidate the pagination cursor? In server-controlled pagination, the server must be aware of the active filter. In client-side virtual pagination, the client re-filters the full dataset locally.
+- **Interaction with state:** If an item on page 1 is deleted while the user is viewing page 3, how is the list reindexed? Cursor-based pagination (keyed by item ID) is more resilient than offset-based.
+- **Stable IDs:** `$id` generation inside paginated `$for` loops must remain stable across page loads. Using the item's natural key (e.g., `todo.id`) rather than array index is essential.
+- **Protobuf:** Length-prefixed framing naturally supports streaming pages. Each frame could carry a page of items with a continuation marker.
+
+#### Tradeoffs
+
+| | Server-controlled | Client virtual | Progressive |
+|---|---|---|---|
+| Initial payload | Small (one page) | Large (all items) | Small, then streamed |
+| Server round-trips | Per page | One | One (streamed) |
+| Client complexity | Must request pages + patch tree | Virtualized rendering | Must resolve `$pending` slots |
+| Filtering | Server re-paginates | Client filters locally | Server re-streams |
+| Offline | Only cached pages | Full dataset available | Partial until stream completes |
+
+Server-controlled pagination is the most practical starting point — it matches how most APIs work and keeps payloads small. Progressive delivery is an optimization for the initial load. Client-side virtualization is orthogonal and can be layered on top of either approach.
+
 ### Children vs Slots
 
 In Bazaar, `children [component]` is a typed slot. In the wire format, `children` is an array of nodes and `actions` is an array of event handler actions (see [section 2.6](#26-actions-and-event-handlers)). This separation resolves the ambiguity between component composition and event handlers.
@@ -1155,6 +1238,8 @@ All `$`-prefixed keys used in the wire format:
 | `$action` | Node `$type` | Server-side function call |
 | `$pending` | Streaming placeholder | Content arriving later |
 | `$chunk` | Streaming frame | Fills a `$pending` placeholder |
+| `$page` | `$for` node | Pagination cursor and metadata |
+| `$loadMore` | Action name | Client requests next page |
 | `$version` | Tree root | Format version (for evolution) |
 
 ## References
