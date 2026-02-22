@@ -79,12 +79,6 @@ data TodoItem {
     note string? = null
 }
 
-data TodoStats {
-    total int = 0
-    completed int = 0
-    labels {string: int} = {}
-}
-
 // --- Functions (server actions) ---
 func AddTodo(title string, priority Priority) -> TodoItem
 func ToggleTodo(id int)
@@ -92,19 +86,33 @@ func DeleteTodo(id int, animated bool = false)
 func ClearCompleted()
 
 // --- Templates ---
-template TodoApp(items [TodoItem]) {
-    @State var todos = items
+template TodoApp(items [TodoItem], activeCount int) {
     @State var newTitle = ""
     @State var filter = Filter.all
-    @State var count = 0
 
     @Modifier(Padding(all = 16.0))
     Column(spacing = 8.0) {
         TodoHeader(newTitle)
         Divider()
-        TodoList(todos, filter)
+        TodoList(items, filter)
         Divider()
-        TodoFooter(count, filter)
+        Row(spacing = 12.0) {
+            Text("${activeCount} items remaining")
+
+            Button("All", enabled = filter != Filter.all) {
+                filter = Filter.all
+            }
+            Button("Active", enabled = filter != Filter.active) {
+                filter = Filter.active
+            }
+            Button("Completed", enabled = filter != Filter.completed) {
+                filter = Filter.completed
+            }
+
+            Button("Clear completed") {
+                ClearCompleted()
+            }
+        }
     }
 }
 
@@ -152,7 +160,7 @@ template TodoItemRow(todo TodoItem) {
 
         if var note = todo.note {
             @Modifier(Opacity(value = 0.6))
-            Text(note ?? "", bold = false)
+            Text(note, bold = false)
         } else if todo.completed {
             Icon("checkmark")
         }
@@ -163,24 +171,10 @@ template TodoItemRow(todo TodoItem) {
     }
 }
 
-template TodoFooter(count int, activeFilter Filter) {
-    Row(spacing = 12.0) {
-        Text("${count} items remaining")
-
-        Button("All", enabled = activeFilter != Filter.all)
-        Button("Active", enabled = activeFilter != Filter.active)
-        Button("Completed", enabled = activeFilter != Filter.completed)
-
-        Button("Clear completed") {
-            ClearCompleted()
-        }
-    }
-}
-
 preview TodoAppPreview {
     TodoApp([
         TodoItem(1, "Buy groceries", priority = Priority.high, note = "Milk, eggs, bread"),
         TodoItem(2, "Write tests", completed = true),
         TodoItem(3, "Read proposal")
-    ])
+    ], 2)
 }

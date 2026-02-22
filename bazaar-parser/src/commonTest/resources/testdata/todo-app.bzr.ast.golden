@@ -327,37 +327,6 @@ BazaarFile
               nullable: true
           default:
             NullLiteral
-    DataDecl
-      name: "TodoStats"
-      members:
-        FieldDecl
-          name: "total"
-          type:
-            ValueType
-              name: "int"
-          default:
-            NumberLiteral
-              value: "0"
-        FieldDecl
-          name: "completed"
-          type:
-            ValueType
-              name: "int"
-          default:
-            NumberLiteral
-              value: "0"
-        FieldDecl
-          name: "labels"
-          type:
-            MapType
-              keyType:
-                ValueType
-                  name: "string"
-              valueType:
-                ValueType
-                  name: "int"
-          default:
-            LambdaExpr
     FunctionDecl
       name: "AddTodo"
       params:
@@ -410,15 +379,12 @@ BazaarFile
               elementType:
                 ValueType
                   name: "TodoItem"
+        ParameterDecl
+          name: "activeCount"
+          type:
+            ValueType
+              name: "int"
       body:
-        VarDeclStmt
-          names: ["todos"]
-          value:
-            ReferenceExpr
-              name: "items"
-          annotations:
-            Annotation
-              name: "State"
         VarDeclStmt
           names: ["newTitle"]
           value:
@@ -434,14 +400,6 @@ BazaarFile
                 ReferenceExpr
                   name: "Filter"
               member: "all"
-          annotations:
-            Annotation
-              name: "State"
-        VarDeclStmt
-          names: ["count"]
-          value:
-            NumberLiteral
-              value: "0"
           annotations:
             Annotation
               name: "State"
@@ -503,7 +461,7 @@ BazaarFile
                             Argument
                               value:
                                 ReferenceExpr
-                                  name: "todos"
+                                  name: "items"
                             Argument
                               value:
                                 ReferenceExpr
@@ -519,16 +477,172 @@ BazaarFile
                         CallExpr
                           target:
                             ReferenceExpr
-                              name: "TodoFooter"
+                              name: "Row"
                           args:
                             Argument
+                              name: "spacing"
                               value:
-                                ReferenceExpr
-                                  name: "count"
-                            Argument
-                              value:
-                                ReferenceExpr
-                                  name: "filter"
+                                NumberLiteral
+                                  value: "12.0"
+                          trailingLambda:
+                            LambdaExpr
+                              body:
+                                ExprStmt
+                                  expr:
+                                    CallExpr
+                                      target:
+                                        ReferenceExpr
+                                          name: "Text"
+                                      args:
+                                        Argument
+                                          value:
+                                            StringLiteral
+                                              parts:
+                                                InterpolationPart
+                                                  expr:
+                                                    ReferenceExpr
+                                                      name: "activeCount"
+                                                TextPart
+                                                  text: " items remaining"
+                                ExprStmt
+                                  expr:
+                                    CallExpr
+                                      target:
+                                        ReferenceExpr
+                                          name: "Button"
+                                      args:
+                                        Argument
+                                          value:
+                                            StringLiteral
+                                              parts:
+                                                TextPart
+                                                  text: "All"
+                                        Argument
+                                          name: "enabled"
+                                          value:
+                                            BinaryExpr
+                                              op: NEQ
+                                              left:
+                                                ReferenceExpr
+                                                  name: "filter"
+                                              right:
+                                                MemberExpr
+                                                  target:
+                                                    ReferenceExpr
+                                                      name: "Filter"
+                                                  member: "all"
+                                      trailingLambda:
+                                        LambdaExpr
+                                          body:
+                                            AssignStmt
+                                              target: "filter"
+                                              op: ASSIGN
+                                              value:
+                                                MemberExpr
+                                                  target:
+                                                    ReferenceExpr
+                                                      name: "Filter"
+                                                  member: "all"
+                                ExprStmt
+                                  expr:
+                                    CallExpr
+                                      target:
+                                        ReferenceExpr
+                                          name: "Button"
+                                      args:
+                                        Argument
+                                          value:
+                                            StringLiteral
+                                              parts:
+                                                TextPart
+                                                  text: "Active"
+                                        Argument
+                                          name: "enabled"
+                                          value:
+                                            BinaryExpr
+                                              op: NEQ
+                                              left:
+                                                ReferenceExpr
+                                                  name: "filter"
+                                              right:
+                                                MemberExpr
+                                                  target:
+                                                    ReferenceExpr
+                                                      name: "Filter"
+                                                  member: "active"
+                                      trailingLambda:
+                                        LambdaExpr
+                                          body:
+                                            AssignStmt
+                                              target: "filter"
+                                              op: ASSIGN
+                                              value:
+                                                MemberExpr
+                                                  target:
+                                                    ReferenceExpr
+                                                      name: "Filter"
+                                                  member: "active"
+                                ExprStmt
+                                  expr:
+                                    CallExpr
+                                      target:
+                                        ReferenceExpr
+                                          name: "Button"
+                                      args:
+                                        Argument
+                                          value:
+                                            StringLiteral
+                                              parts:
+                                                TextPart
+                                                  text: "Completed"
+                                        Argument
+                                          name: "enabled"
+                                          value:
+                                            BinaryExpr
+                                              op: NEQ
+                                              left:
+                                                ReferenceExpr
+                                                  name: "filter"
+                                              right:
+                                                MemberExpr
+                                                  target:
+                                                    ReferenceExpr
+                                                      name: "Filter"
+                                                  member: "completed"
+                                      trailingLambda:
+                                        LambdaExpr
+                                          body:
+                                            AssignStmt
+                                              target: "filter"
+                                              op: ASSIGN
+                                              value:
+                                                MemberExpr
+                                                  target:
+                                                    ReferenceExpr
+                                                      name: "Filter"
+                                                  member: "completed"
+                                ExprStmt
+                                  expr:
+                                    CallExpr
+                                      target:
+                                        ReferenceExpr
+                                          name: "Button"
+                                      args:
+                                        Argument
+                                          value:
+                                            StringLiteral
+                                              parts:
+                                                TextPart
+                                                  text: "Clear completed"
+                                      trailingLambda:
+                                        LambdaExpr
+                                          body:
+                                            ExprStmt
+                                              expr:
+                                                CallExpr
+                                                  target:
+                                                    ReferenceExpr
+                                                      name: "ClearCompleted"
     TemplateDecl
       name: "TodoHeader"
       params:
@@ -998,13 +1112,8 @@ BazaarFile
                               args:
                                 Argument
                                   value:
-                                    BinaryExpr
-                                      op: COALESCE
-                                      left:
-                                        ReferenceExpr
-                                          name: "note"
-                                      right:
-                                        StringLiteral
+                                    ReferenceExpr
+                                      name: "note"
                                 Argument
                                   name: "bold"
                                   value:
@@ -1064,155 +1173,6 @@ BazaarFile
                                                 ReferenceExpr
                                                   name: "todo"
                                               member: "id"
-    TemplateDecl
-      name: "TodoFooter"
-      params:
-        ParameterDecl
-          name: "count"
-          type:
-            ValueType
-              name: "int"
-        ParameterDecl
-          name: "activeFilter"
-          type:
-            ValueType
-              name: "Filter"
-      body:
-        ExprStmt
-          expr:
-            CallExpr
-              target:
-                ReferenceExpr
-                  name: "Row"
-              args:
-                Argument
-                  name: "spacing"
-                  value:
-                    NumberLiteral
-                      value: "12.0"
-              trailingLambda:
-                LambdaExpr
-                  body:
-                    ExprStmt
-                      expr:
-                        CallExpr
-                          target:
-                            ReferenceExpr
-                              name: "Text"
-                          args:
-                            Argument
-                              value:
-                                StringLiteral
-                                  parts:
-                                    InterpolationPart
-                                      expr:
-                                        ReferenceExpr
-                                          name: "count"
-                                    TextPart
-                                      text: " items remaining"
-                    ExprStmt
-                      expr:
-                        CallExpr
-                          target:
-                            ReferenceExpr
-                              name: "Button"
-                          args:
-                            Argument
-                              value:
-                                StringLiteral
-                                  parts:
-                                    TextPart
-                                      text: "All"
-                            Argument
-                              name: "enabled"
-                              value:
-                                BinaryExpr
-                                  op: NEQ
-                                  left:
-                                    ReferenceExpr
-                                      name: "activeFilter"
-                                  right:
-                                    MemberExpr
-                                      target:
-                                        ReferenceExpr
-                                          name: "Filter"
-                                      member: "all"
-                    ExprStmt
-                      expr:
-                        CallExpr
-                          target:
-                            ReferenceExpr
-                              name: "Button"
-                          args:
-                            Argument
-                              value:
-                                StringLiteral
-                                  parts:
-                                    TextPart
-                                      text: "Active"
-                            Argument
-                              name: "enabled"
-                              value:
-                                BinaryExpr
-                                  op: NEQ
-                                  left:
-                                    ReferenceExpr
-                                      name: "activeFilter"
-                                  right:
-                                    MemberExpr
-                                      target:
-                                        ReferenceExpr
-                                          name: "Filter"
-                                      member: "active"
-                    ExprStmt
-                      expr:
-                        CallExpr
-                          target:
-                            ReferenceExpr
-                              name: "Button"
-                          args:
-                            Argument
-                              value:
-                                StringLiteral
-                                  parts:
-                                    TextPart
-                                      text: "Completed"
-                            Argument
-                              name: "enabled"
-                              value:
-                                BinaryExpr
-                                  op: NEQ
-                                  left:
-                                    ReferenceExpr
-                                      name: "activeFilter"
-                                  right:
-                                    MemberExpr
-                                      target:
-                                        ReferenceExpr
-                                          name: "Filter"
-                                      member: "completed"
-                    ExprStmt
-                      expr:
-                        CallExpr
-                          target:
-                            ReferenceExpr
-                              name: "Button"
-                          args:
-                            Argument
-                              value:
-                                StringLiteral
-                                  parts:
-                                    TextPart
-                                      text: "Clear completed"
-                          trailingLambda:
-                            LambdaExpr
-                              body:
-                                ExprStmt
-                                  expr:
-                                    CallExpr
-                                      target:
-                                        ReferenceExpr
-                                          name: "ClearCompleted"
     PreviewDecl
       name: "TodoAppPreview"
       body:
@@ -1292,3 +1252,7 @@ BazaarFile
                                   parts:
                                     TextPart
                                       text: "Read proposal"
+                Argument
+                  value:
+                    NumberLiteral
+                      value: "2"

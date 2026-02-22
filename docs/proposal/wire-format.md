@@ -59,7 +59,7 @@ template TodoItemRow(todo TodoItem) {
 
         if var note = todo.note {
             @Modifier(Opacity(value = 0.6))
-            Text(note ?? "", bold = false)
+            Text(note, bold = false)
         } else if todo.completed {
             Icon("checkmark")
         }
@@ -646,7 +646,7 @@ Same template, but control flow and data binding are preserved for client interp
                                 }
                             ],
                             "props": {
-                                "value": { "$expr": ["??", { "$ref": "note" }, ""] },
+                                "value": { "$ref": "note" },
                                 "bold": false
                             }
                         }
