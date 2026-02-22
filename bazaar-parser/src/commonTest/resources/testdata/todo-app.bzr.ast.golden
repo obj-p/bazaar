@@ -1,0 +1,1303 @@
+BazaarFile
+  packageDecl:
+    PackageDecl
+      segments: ["todo"]
+  imports:
+    ImportDecl
+      segments: ["ui"]
+    ImportDecl
+      segments: ["icons"]
+  declarations:
+    EnumDecl
+      name: "Priority"
+      values: ["low", "medium", "high"]
+    EnumDecl
+      name: "Filter"
+      values: ["all", "active", "completed"]
+    ComponentDecl
+      name: "Column"
+      members:
+        FieldDecl
+          name: "spacing"
+          type:
+            ValueType
+              name: "double"
+          default:
+            NumberLiteral
+              value: "0"
+        FieldDecl
+          name: "children"
+          type:
+            ArrayType
+              elementType:
+                ValueType
+                  name: "component"
+    ComponentDecl
+      name: "Row"
+      members:
+        FieldDecl
+          name: "spacing"
+          type:
+            ValueType
+              name: "double"
+          default:
+            NumberLiteral
+              value: "0"
+        FieldDecl
+          name: "children"
+          type:
+            ArrayType
+              elementType:
+                ValueType
+                  name: "component"
+    ComponentDecl
+      name: "Text"
+      members:
+        FieldDecl
+          name: "value"
+          type:
+            ValueType
+              name: "string"
+        FieldDecl
+          name: "bold"
+          type:
+            ValueType
+              name: "bool"
+          default:
+            BoolLiteral
+              value: false
+        FieldDecl
+          name: "strikethrough"
+          type:
+            ValueType
+              name: "bool"
+          default:
+            BoolLiteral
+              value: false
+    ComponentDecl
+      name: "TextField"
+      members:
+        FieldDecl
+          name: "value"
+          type:
+            ValueType
+              name: "string"
+          default:
+            StringLiteral
+        FieldDecl
+          name: "placeholder"
+          type:
+            ValueType
+              name: "string"
+          default:
+            StringLiteral
+        FieldDecl
+          name: "onSubmit"
+          type:
+            FunctionType
+              paramTypes:
+                ValueType
+                  name: "string"
+              nullable: true
+          default:
+            NullLiteral
+    ComponentDecl
+      name: "Button"
+      members:
+        FieldDecl
+          name: "label"
+          type:
+            ValueType
+              name: "string"
+        FieldDecl
+          name: "enabled"
+          type:
+            ValueType
+              name: "bool"
+          default:
+            BoolLiteral
+              value: true
+        FieldDecl
+          name: "onTap"
+          type:
+            FunctionType
+              nullable: true
+          default:
+            NullLiteral
+    ComponentDecl
+      name: "Checkbox"
+      members:
+        FieldDecl
+          name: "checked"
+          type:
+            ValueType
+              name: "bool"
+          default:
+            BoolLiteral
+              value: false
+        FieldDecl
+          name: "onToggle"
+          type:
+            FunctionType
+              nullable: true
+          default:
+            NullLiteral
+    ComponentDecl
+      name: "Icon"
+      members:
+        FieldDecl
+          name: "name"
+          type:
+            ValueType
+              name: "string"
+    ComponentDecl
+      name: "Badge"
+      members:
+        FieldDecl
+          name: "label"
+          type:
+            ValueType
+              name: "string"
+        FieldDecl
+          name: "color"
+          type:
+            ValueType
+              name: "string"
+          default:
+            StringLiteral
+              parts:
+                TextPart
+                  text: "#888888"
+    ComponentDecl
+      name: "Divider"
+    ModifierDecl
+      name: "Padding"
+      members:
+        FieldDecl
+          name: "top"
+          type:
+            ValueType
+              name: "double"
+          default:
+            NumberLiteral
+              value: "0"
+        FieldDecl
+          name: "leading"
+          type:
+            ValueType
+              name: "double"
+          default:
+            NumberLiteral
+              value: "0"
+        FieldDecl
+          name: "bottom"
+          type:
+            ValueType
+              name: "double"
+          default:
+            NumberLiteral
+              value: "0"
+        FieldDecl
+          name: "trailing"
+          type:
+            ValueType
+              name: "double"
+          default:
+            NumberLiteral
+              value: "0"
+        ConstructorDecl
+          params:
+            ParameterDecl
+              name: "all"
+              type:
+                ValueType
+                  name: "double"
+          value:
+            CallExpr
+              target:
+                ReferenceExpr
+                  name: "Padding"
+              args:
+                Argument
+                  value:
+                    ReferenceExpr
+                      name: "all"
+                Argument
+                  value:
+                    ReferenceExpr
+                      name: "all"
+                Argument
+                  value:
+                    ReferenceExpr
+                      name: "all"
+                Argument
+                  value:
+                    ReferenceExpr
+                      name: "all"
+        ConstructorDecl
+          params:
+            ParameterDecl
+              name: "vertical"
+              type:
+                ValueType
+                  name: "double"
+            ParameterDecl
+              name: "horizontal"
+              type:
+                ValueType
+                  name: "double"
+          value:
+            CallExpr
+              target:
+                ReferenceExpr
+                  name: "Padding"
+              args:
+                Argument
+                  value:
+                    ReferenceExpr
+                      name: "vertical"
+                Argument
+                  value:
+                    ReferenceExpr
+                      name: "horizontal"
+                Argument
+                  value:
+                    ReferenceExpr
+                      name: "vertical"
+                Argument
+                  value:
+                    ReferenceExpr
+                      name: "horizontal"
+    ModifierDecl
+      name: "Background"
+      members:
+        FieldDecl
+          name: "color"
+          type:
+            ValueType
+              name: "string"
+    ModifierDecl
+      name: "Opacity"
+      members:
+        FieldDecl
+          name: "value"
+          type:
+            ValueType
+              name: "double"
+          default:
+            NumberLiteral
+              value: "1.0"
+    DataDecl
+      name: "TodoItem"
+      members:
+        FieldDecl
+          name: "id"
+          type:
+            ValueType
+              name: "int"
+        FieldDecl
+          name: "title"
+          type:
+            ValueType
+              name: "string"
+        FieldDecl
+          name: "completed"
+          type:
+            ValueType
+              name: "bool"
+          default:
+            BoolLiteral
+              value: false
+        FieldDecl
+          name: "priority"
+          type:
+            ValueType
+              name: "Priority"
+          default:
+            MemberExpr
+              target:
+                ReferenceExpr
+                  name: "Priority"
+              member: "medium"
+        FieldDecl
+          name: "note"
+          type:
+            ValueType
+              name: "string"
+              nullable: true
+          default:
+            NullLiteral
+    DataDecl
+      name: "TodoStats"
+      members:
+        FieldDecl
+          name: "total"
+          type:
+            ValueType
+              name: "int"
+          default:
+            NumberLiteral
+              value: "0"
+        FieldDecl
+          name: "completed"
+          type:
+            ValueType
+              name: "int"
+          default:
+            NumberLiteral
+              value: "0"
+        FieldDecl
+          name: "labels"
+          type:
+            MapType
+              keyType:
+                ValueType
+                  name: "string"
+              valueType:
+                ValueType
+                  name: "int"
+          default:
+            LambdaExpr
+    FunctionDecl
+      name: "AddTodo"
+      params:
+        ParameterDecl
+          name: "title"
+          type:
+            ValueType
+              name: "string"
+        ParameterDecl
+          name: "priority"
+          type:
+            ValueType
+              name: "Priority"
+      returnType:
+        ValueType
+          name: "TodoItem"
+    FunctionDecl
+      name: "ToggleTodo"
+      params:
+        ParameterDecl
+          name: "id"
+          type:
+            ValueType
+              name: "int"
+    FunctionDecl
+      name: "DeleteTodo"
+      params:
+        ParameterDecl
+          name: "id"
+          type:
+            ValueType
+              name: "int"
+        ParameterDecl
+          name: "animated"
+          type:
+            ValueType
+              name: "bool"
+          default:
+            BoolLiteral
+              value: false
+    FunctionDecl
+      name: "ClearCompleted"
+    TemplateDecl
+      name: "TodoApp"
+      params:
+        ParameterDecl
+          name: "items"
+          type:
+            ArrayType
+              elementType:
+                ValueType
+                  name: "TodoItem"
+      body:
+        VarDeclStmt
+          names: ["todos"]
+          value:
+            ReferenceExpr
+              name: "items"
+          annotations:
+            Annotation
+              name: "State"
+        VarDeclStmt
+          names: ["newTitle"]
+          value:
+            StringLiteral
+          annotations:
+            Annotation
+              name: "State"
+        VarDeclStmt
+          names: ["filter"]
+          value:
+            MemberExpr
+              target:
+                ReferenceExpr
+                  name: "Filter"
+              member: "all"
+          annotations:
+            Annotation
+              name: "State"
+        VarDeclStmt
+          names: ["count"]
+          value:
+            NumberLiteral
+              value: "0"
+          annotations:
+            Annotation
+              name: "State"
+        CallStmt
+          annotations:
+            Annotation
+              name: "Modifier"
+              args:
+                Argument
+                  value:
+                    CallExpr
+                      target:
+                        ReferenceExpr
+                          name: "Padding"
+                      args:
+                        Argument
+                          name: "all"
+                          value:
+                            NumberLiteral
+                              value: "16.0"
+          expr:
+            CallExpr
+              target:
+                ReferenceExpr
+                  name: "Column"
+              args:
+                Argument
+                  name: "spacing"
+                  value:
+                    NumberLiteral
+                      value: "8.0"
+              trailingLambda:
+                LambdaExpr
+                  body:
+                    ExprStmt
+                      expr:
+                        CallExpr
+                          target:
+                            ReferenceExpr
+                              name: "TodoHeader"
+                          args:
+                            Argument
+                              value:
+                                ReferenceExpr
+                                  name: "newTitle"
+                    ExprStmt
+                      expr:
+                        CallExpr
+                          target:
+                            ReferenceExpr
+                              name: "Divider"
+                    ExprStmt
+                      expr:
+                        CallExpr
+                          target:
+                            ReferenceExpr
+                              name: "TodoList"
+                          args:
+                            Argument
+                              value:
+                                ReferenceExpr
+                                  name: "todos"
+                            Argument
+                              value:
+                                ReferenceExpr
+                                  name: "filter"
+                    ExprStmt
+                      expr:
+                        CallExpr
+                          target:
+                            ReferenceExpr
+                              name: "Divider"
+                    ExprStmt
+                      expr:
+                        CallExpr
+                          target:
+                            ReferenceExpr
+                              name: "TodoFooter"
+                          args:
+                            Argument
+                              value:
+                                ReferenceExpr
+                                  name: "count"
+                            Argument
+                              value:
+                                ReferenceExpr
+                                  name: "filter"
+    TemplateDecl
+      name: "TodoHeader"
+      params:
+        ParameterDecl
+          name: "title"
+          type:
+            ValueType
+              name: "string"
+      body:
+        CallStmt
+          annotations:
+            Annotation
+              name: "Modifier"
+              args:
+                Argument
+                  value:
+                    CallExpr
+                      target:
+                        ReferenceExpr
+                          name: "Padding"
+                      args:
+                        Argument
+                          name: "vertical"
+                          value:
+                            NumberLiteral
+                              value: "8.0"
+                        Argument
+                          name: "horizontal"
+                          value:
+                            NumberLiteral
+                              value: "0.0"
+          expr:
+            CallExpr
+              target:
+                ReferenceExpr
+                  name: "Row"
+              args:
+                Argument
+                  name: "spacing"
+                  value:
+                    NumberLiteral
+                      value: "8.0"
+              trailingLambda:
+                LambdaExpr
+                  body:
+                    ExprStmt
+                      expr:
+                        CallExpr
+                          target:
+                            ReferenceExpr
+                              name: "TextField"
+                          args:
+                            Argument
+                              value:
+                                ReferenceExpr
+                                  name: "title"
+                            Argument
+                              name: "placeholder"
+                              value:
+                                StringLiteral
+                                  parts:
+                                    TextPart
+                                      text: "What needs to be done?"
+                    ExprStmt
+                      expr:
+                        CallExpr
+                          target:
+                            ReferenceExpr
+                              name: "Button"
+                          args:
+                            Argument
+                              value:
+                                StringLiteral
+                                  parts:
+                                    TextPart
+                                      text: "Add"
+                            Argument
+                              name: "enabled"
+                              value:
+                                BinaryExpr
+                                  op: NEQ
+                                  left:
+                                    ReferenceExpr
+                                      name: "title"
+                                  right:
+                                    StringLiteral
+                          trailingLambda:
+                            LambdaExpr
+                              body:
+                                ExprStmt
+                                  expr:
+                                    CallExpr
+                                      target:
+                                        ReferenceExpr
+                                          name: "AddTodo"
+                                      args:
+                                        Argument
+                                          value:
+                                            ReferenceExpr
+                                              name: "title"
+                                        Argument
+                                          value:
+                                            MemberExpr
+                                              target:
+                                                ReferenceExpr
+                                                  name: "Priority"
+                                              member: "medium"
+    TemplateDecl
+      name: "TodoList"
+      params:
+        ParameterDecl
+          name: "todos"
+          type:
+            ArrayType
+              elementType:
+                ValueType
+                  name: "TodoItem"
+        ParameterDecl
+          name: "filter"
+          type:
+            ValueType
+              name: "Filter"
+      body:
+        ForInStmt
+          names: ["todo"]
+          iterable:
+            ReferenceExpr
+              name: "todos"
+          body:
+            IfStmt
+              fragments:
+                IfExprFragment
+                  expr:
+                    BinaryExpr
+                      op: OR
+                      left:
+                        BinaryExpr
+                          op: OR
+                          left:
+                            BinaryExpr
+                              op: EQ
+                              left:
+                                ReferenceExpr
+                                  name: "filter"
+                              right:
+                                MemberExpr
+                                  target:
+                                    ReferenceExpr
+                                      name: "Filter"
+                                  member: "all"
+                          right:
+                            BinaryExpr
+                              op: AND
+                              left:
+                                BinaryExpr
+                                  op: EQ
+                                  left:
+                                    ReferenceExpr
+                                      name: "filter"
+                                  right:
+                                    MemberExpr
+                                      target:
+                                        ReferenceExpr
+                                          name: "Filter"
+                                      member: "active"
+                              right:
+                                UnaryExpr
+                                  op: NOT
+                                  operand:
+                                    MemberExpr
+                                      target:
+                                        ReferenceExpr
+                                          name: "todo"
+                                      member: "completed"
+                      right:
+                        BinaryExpr
+                          op: AND
+                          left:
+                            BinaryExpr
+                              op: EQ
+                              left:
+                                ReferenceExpr
+                                  name: "filter"
+                              right:
+                                MemberExpr
+                                  target:
+                                    ReferenceExpr
+                                      name: "Filter"
+                                  member: "completed"
+                          right:
+                            MemberExpr
+                              target:
+                                ReferenceExpr
+                                  name: "todo"
+                              member: "completed"
+              body:
+                ExprStmt
+                  expr:
+                    CallExpr
+                      target:
+                        ReferenceExpr
+                          name: "TodoItemRow"
+                      args:
+                        Argument
+                          value:
+                            ReferenceExpr
+                              name: "todo"
+    TemplateDecl
+      name: "TodoItemRow"
+      params:
+        ParameterDecl
+          name: "todo"
+          type:
+            ValueType
+              name: "TodoItem"
+      body:
+        CallStmt
+          annotations:
+            Annotation
+              name: "Modifier"
+              args:
+                Argument
+                  value:
+                    CallExpr
+                      target:
+                        ReferenceExpr
+                          name: "Padding"
+                      args:
+                        Argument
+                          name: "vertical"
+                          value:
+                            NumberLiteral
+                              value: "4.0"
+                        Argument
+                          name: "horizontal"
+                          value:
+                            NumberLiteral
+                              value: "0.0"
+          expr:
+            CallExpr
+              target:
+                ReferenceExpr
+                  name: "Row"
+              args:
+                Argument
+                  name: "spacing"
+                  value:
+                    NumberLiteral
+                      value: "8.0"
+              trailingLambda:
+                LambdaExpr
+                  body:
+                    ExprStmt
+                      expr:
+                        CallExpr
+                          target:
+                            ReferenceExpr
+                              name: "Checkbox"
+                          args:
+                            Argument
+                              value:
+                                MemberExpr
+                                  target:
+                                    ReferenceExpr
+                                      name: "todo"
+                                  member: "completed"
+                          trailingLambda:
+                            LambdaExpr
+                              body:
+                                ExprStmt
+                                  expr:
+                                    CallExpr
+                                      target:
+                                        ReferenceExpr
+                                          name: "ToggleTodo"
+                                      args:
+                                        Argument
+                                          value:
+                                            MemberExpr
+                                              target:
+                                                ReferenceExpr
+                                                  name: "todo"
+                                              member: "id"
+                    IfStmt
+                      fragments:
+                        IfExprFragment
+                          expr:
+                            MemberExpr
+                              target:
+                                ReferenceExpr
+                                  name: "todo"
+                              member: "completed"
+                      body:
+                        ExprStmt
+                          expr:
+                            CallExpr
+                              target:
+                                ReferenceExpr
+                                  name: "Text"
+                              args:
+                                Argument
+                                  value:
+                                    MemberExpr
+                                      target:
+                                        ReferenceExpr
+                                          name: "todo"
+                                      member: "title"
+                                Argument
+                                  name: "strikethrough"
+                                  value:
+                                    BoolLiteral
+                                      value: true
+                      elseBody:
+                        ExprStmt
+                          expr:
+                            CallExpr
+                              target:
+                                ReferenceExpr
+                                  name: "Text"
+                              args:
+                                Argument
+                                  value:
+                                    MemberExpr
+                                      target:
+                                        ReferenceExpr
+                                          name: "todo"
+                                      member: "title"
+                    SwitchStmt
+                      expr:
+                        MemberExpr
+                          target:
+                            ReferenceExpr
+                              name: "todo"
+                          member: "priority"
+                      cases:
+                        SwitchCase
+                          expr:
+                            MemberExpr
+                              target:
+                                ReferenceExpr
+                                  name: "Priority"
+                              member: "high"
+                          body:
+                            ExprStmt
+                              expr:
+                                CallExpr
+                                  target:
+                                    ReferenceExpr
+                                      name: "Badge"
+                                  args:
+                                    Argument
+                                      value:
+                                        StringLiteral
+                                          parts:
+                                            TextPart
+                                              text: "!"
+                                    Argument
+                                      name: "color"
+                                      value:
+                                        StringLiteral
+                                          parts:
+                                            TextPart
+                                              text: "#FF3B30"
+                        SwitchCase
+                          expr:
+                            MemberExpr
+                              target:
+                                ReferenceExpr
+                                  name: "Priority"
+                              member: "medium"
+                          body:
+                            ExprStmt
+                              expr:
+                                CallExpr
+                                  target:
+                                    ReferenceExpr
+                                      name: "Badge"
+                                  args:
+                                    Argument
+                                      value:
+                                        StringLiteral
+                                          parts:
+                                            TextPart
+                                              text: "~"
+                                    Argument
+                                      name: "color"
+                                      value:
+                                        StringLiteral
+                                          parts:
+                                            TextPart
+                                              text: "#FF9500"
+                        SwitchCase
+                          expr:
+                            MemberExpr
+                              target:
+                                ReferenceExpr
+                                  name: "Priority"
+                              member: "low"
+                          body:
+                            ExprStmt
+                              expr:
+                                CallExpr
+                                  target:
+                                    ReferenceExpr
+                                      name: "Badge"
+                                  args:
+                                    Argument
+                                      value:
+                                        StringLiteral
+                                          parts:
+                                            TextPart
+                                              text: "-"
+                                    Argument
+                                      name: "color"
+                                      value:
+                                        StringLiteral
+                                          parts:
+                                            TextPart
+                                              text: "#34C759"
+                      default:
+                        ExprStmt
+                          expr:
+                            CallExpr
+                              target:
+                                ReferenceExpr
+                                  name: "Badge"
+                              args:
+                                Argument
+                                  value:
+                                    StringLiteral
+                                      parts:
+                                        TextPart
+                                          text: "?"
+                    IfStmt
+                      fragments:
+                        IfVarFragment
+                          names: ["note"]
+                          value:
+                            MemberExpr
+                              target:
+                                ReferenceExpr
+                                  name: "todo"
+                              member: "note"
+                      body:
+                        CallStmt
+                          annotations:
+                            Annotation
+                              name: "Modifier"
+                              args:
+                                Argument
+                                  value:
+                                    CallExpr
+                                      target:
+                                        ReferenceExpr
+                                          name: "Opacity"
+                                      args:
+                                        Argument
+                                          name: "value"
+                                          value:
+                                            NumberLiteral
+                                              value: "0.6"
+                          expr:
+                            CallExpr
+                              target:
+                                ReferenceExpr
+                                  name: "Text"
+                              args:
+                                Argument
+                                  value:
+                                    BinaryExpr
+                                      op: COALESCE
+                                      left:
+                                        ReferenceExpr
+                                          name: "note"
+                                      right:
+                                        StringLiteral
+                                Argument
+                                  name: "bold"
+                                  value:
+                                    BoolLiteral
+                                      value: false
+                      elseIfs:
+                        ElseIf
+                          fragments:
+                            IfExprFragment
+                              expr:
+                                MemberExpr
+                                  target:
+                                    ReferenceExpr
+                                      name: "todo"
+                                  member: "completed"
+                          body:
+                            ExprStmt
+                              expr:
+                                CallExpr
+                                  target:
+                                    ReferenceExpr
+                                      name: "Icon"
+                                  args:
+                                    Argument
+                                      value:
+                                        StringLiteral
+                                          parts:
+                                            TextPart
+                                              text: "checkmark"
+                    ExprStmt
+                      expr:
+                        CallExpr
+                          target:
+                            ReferenceExpr
+                              name: "Button"
+                          args:
+                            Argument
+                              value:
+                                StringLiteral
+                                  parts:
+                                    TextPart
+                                      text: "Delete"
+                          trailingLambda:
+                            LambdaExpr
+                              body:
+                                ExprStmt
+                                  expr:
+                                    CallExpr
+                                      target:
+                                        ReferenceExpr
+                                          name: "DeleteTodo"
+                                      args:
+                                        Argument
+                                          value:
+                                            MemberExpr
+                                              target:
+                                                ReferenceExpr
+                                                  name: "todo"
+                                              member: "id"
+    TemplateDecl
+      name: "TodoFooter"
+      params:
+        ParameterDecl
+          name: "count"
+          type:
+            ValueType
+              name: "int"
+        ParameterDecl
+          name: "activeFilter"
+          type:
+            ValueType
+              name: "Filter"
+      body:
+        ExprStmt
+          expr:
+            CallExpr
+              target:
+                ReferenceExpr
+                  name: "Row"
+              args:
+                Argument
+                  name: "spacing"
+                  value:
+                    NumberLiteral
+                      value: "12.0"
+              trailingLambda:
+                LambdaExpr
+                  body:
+                    ExprStmt
+                      expr:
+                        CallExpr
+                          target:
+                            ReferenceExpr
+                              name: "Text"
+                          args:
+                            Argument
+                              value:
+                                StringLiteral
+                                  parts:
+                                    InterpolationPart
+                                      expr:
+                                        ReferenceExpr
+                                          name: "count"
+                                    TextPart
+                                      text: " items remaining"
+                    ExprStmt
+                      expr:
+                        CallExpr
+                          target:
+                            ReferenceExpr
+                              name: "Button"
+                          args:
+                            Argument
+                              value:
+                                StringLiteral
+                                  parts:
+                                    TextPart
+                                      text: "All"
+                            Argument
+                              name: "enabled"
+                              value:
+                                BinaryExpr
+                                  op: NEQ
+                                  left:
+                                    ReferenceExpr
+                                      name: "activeFilter"
+                                  right:
+                                    MemberExpr
+                                      target:
+                                        ReferenceExpr
+                                          name: "Filter"
+                                      member: "all"
+                          trailingLambda:
+                            LambdaExpr
+                              body:
+                                AssignStmt
+                                  target: "count"
+                                  op: ADD_ASSIGN
+                                  value:
+                                    NumberLiteral
+                                      value: "1"
+                    ExprStmt
+                      expr:
+                        CallExpr
+                          target:
+                            ReferenceExpr
+                              name: "Button"
+                          args:
+                            Argument
+                              value:
+                                StringLiteral
+                                  parts:
+                                    TextPart
+                                      text: "Active"
+                            Argument
+                              name: "enabled"
+                              value:
+                                BinaryExpr
+                                  op: NEQ
+                                  left:
+                                    ReferenceExpr
+                                      name: "activeFilter"
+                                  right:
+                                    MemberExpr
+                                      target:
+                                        ReferenceExpr
+                                          name: "Filter"
+                                      member: "active"
+                    ExprStmt
+                      expr:
+                        CallExpr
+                          target:
+                            ReferenceExpr
+                              name: "Button"
+                          args:
+                            Argument
+                              value:
+                                StringLiteral
+                                  parts:
+                                    TextPart
+                                      text: "Completed"
+                            Argument
+                              name: "enabled"
+                              value:
+                                BinaryExpr
+                                  op: NEQ
+                                  left:
+                                    ReferenceExpr
+                                      name: "activeFilter"
+                                  right:
+                                    MemberExpr
+                                      target:
+                                        ReferenceExpr
+                                          name: "Filter"
+                                      member: "completed"
+                    ExprStmt
+                      expr:
+                        CallExpr
+                          target:
+                            ReferenceExpr
+                              name: "Button"
+                          args:
+                            Argument
+                              value:
+                                StringLiteral
+                                  parts:
+                                    TextPart
+                                      text: "Clear completed"
+                          trailingLambda:
+                            LambdaExpr
+                              body:
+                                ExprStmt
+                                  expr:
+                                    CallExpr
+                                      target:
+                                        ReferenceExpr
+                                          name: "ClearCompleted"
+    PreviewDecl
+      name: "TodoAppPreview"
+      body:
+        ExprStmt
+          expr:
+            CallExpr
+              target:
+                ReferenceExpr
+                  name: "TodoApp"
+              args:
+                Argument
+                  value:
+                    ArrayLiteral
+                      elements:
+                        CallExpr
+                          target:
+                            ReferenceExpr
+                              name: "TodoItem"
+                          args:
+                            Argument
+                              value:
+                                NumberLiteral
+                                  value: "1"
+                            Argument
+                              value:
+                                StringLiteral
+                                  parts:
+                                    TextPart
+                                      text: "Buy groceries"
+                            Argument
+                              name: "priority"
+                              value:
+                                MemberExpr
+                                  target:
+                                    ReferenceExpr
+                                      name: "Priority"
+                                  member: "high"
+                            Argument
+                              name: "note"
+                              value:
+                                StringLiteral
+                                  parts:
+                                    TextPart
+                                      text: "Milk, eggs, bread"
+                        CallExpr
+                          target:
+                            ReferenceExpr
+                              name: "TodoItem"
+                          args:
+                            Argument
+                              value:
+                                NumberLiteral
+                                  value: "2"
+                            Argument
+                              value:
+                                StringLiteral
+                                  parts:
+                                    TextPart
+                                      text: "Write tests"
+                            Argument
+                              name: "completed"
+                              value:
+                                BoolLiteral
+                                  value: true
+                        CallExpr
+                          target:
+                            ReferenceExpr
+                              name: "TodoItem"
+                          args:
+                            Argument
+                              value:
+                                NumberLiteral
+                                  value: "3"
+                            Argument
+                              value:
+                                StringLiteral
+                                  parts:
+                                    TextPart
+                                      text: "Read proposal"

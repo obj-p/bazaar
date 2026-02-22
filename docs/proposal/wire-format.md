@@ -17,34 +17,61 @@ This format must be:
 
 ## Running Example
 
-All examples in this document render the `TextAndButtonRow` template:
+All examples in this document render the `TodoItemRow` template from a TODO app:
 
 ```bzr
-data TextAndButtonRowModel {
-    value string = "Hello, world!"
-    label string = "Click, me!"
-    message string? = null
+enum Priority { low, medium, high }
+
+data TodoItem {
+    id int
+    title string
+    completed bool = false
+    priority Priority = Priority.medium
+    note string? = null
 }
 
-template TextAndButtonRow(models [TextAndButtonRowModel]) {
-    @State var count = 0
+func ToggleTodo(id int)
+func DeleteTodo(id int)
 
-    for model in models {
-        @Modifier(Padding(all = 12.0))
-        Row {
-            Text(model.value)
-            Button(model.label) {
-                count += 1
-                if var message = model.message {
-                    Print(message)
-                }
-            }
+template TodoItemRow(todo TodoItem) {
+    @Modifier(Padding(vertical = 4.0, horizontal = 0.0))
+    Row(spacing = 8.0) {
+        Checkbox(todo.completed) {
+            ToggleTodo(todo.id)
+        }
+
+        if todo.completed {
+            Text(todo.title, strikethrough = true)
+        } else {
+            Text(todo.title)
+        }
+
+        switch todo.priority {
+        case Priority.high:
+            Badge("!", color = "#FF3B30")
+        case Priority.medium:
+            Badge("~", color = "#FF9500")
+        case Priority.low:
+            Badge("-", color = "#34C759")
+        default:
+            Badge("?")
+        }
+
+        if var note = todo.note {
+            @Modifier(Opacity(value = 0.6))
+            Text(note ?? "", bold = false)
+        } else if todo.completed {
+            Icon("checkmark")
+        }
+
+        Button("Delete") {
+            DeleteTodo(todo.id)
         }
     }
 }
 ```
 
-Called with `TextAndButtonRow([TextAndButtonRowModel()])` — one model with default values.
+Called with `TodoItemRow(TodoItem(1, "Buy groceries", priority = Priority.high, note = "Milk, eggs, bread"))` — a single item with a high priority and a note.
 
 ---
 
@@ -87,7 +114,7 @@ Every node in the tree uses a single envelope:
     "$type": "Row",
     "$id": "n1",
     "props": {
-        "alignment": "center"
+        "spacing": 8.0
     },
     "modifier": { ... },
     "children": [ ... ]
@@ -107,7 +134,7 @@ The `$` prefix on `$type` and `$id` prevents collisions with user-defined prop n
 
 **Type qualification.** If two packages define a `Button`, the `$type` uses a qualified name: `"layout.Button"`. The package prefix can be omitted when unambiguous within a single file's imports.
 
-**`$id` generation.** IDs must be stable across re-renders for diffing and state preservation. A deterministic scheme based on template path works well: `"TextAndButtonRow/0/Row"` encodes the template name, loop index, and component type. Inside `$for` loops, the iteration index (or a user-specified key) is incorporated to produce unique, stable IDs per iteration.
+**`$id` generation.** IDs must be stable across re-renders for diffing and state preservation. A deterministic scheme based on template path works well: `"TodoItemRow/Row"` encodes the template name and component type. Inside `$for` loops, the iteration index (or a user-specified key) is incorporated to produce unique, stable IDs per iteration.
 
 ### 2.2 Prop Values
 
@@ -115,11 +142,11 @@ Primitives map directly:
 
 ```json
 {
-    "label": "Click, me!",
-    "count": 0,
+    "label": "Delete",
+    "checked": false,
     "opacity": 1.0,
     "enabled": true,
-    "onClick": null
+    "onTap": null
 }
 ```
 
@@ -144,16 +171,18 @@ Data objects carry a `$type` discriminator:
 
 ```json
 {
-    "model": {
-        "$type": "TextAndButtonRowModel",
-        "value": "Hello, world!",
-        "label": "Click, me!",
-        "message": null
+    "todo": {
+        "$type": "TodoItem",
+        "id": 1,
+        "title": "Buy groceries",
+        "completed": false,
+        "priority": "high",
+        "note": "Milk, eggs, bread"
     }
 }
 ```
 
-Function-typed props (e.g., `onClick func()? = null`) are not serialized as values. Instead, the event handler body is encoded in the node's `actions` array (see [section 2.6](#26-actions-and-event-handlers)). A `null` function prop means no handler is attached.
+Function-typed props (e.g., `onTap func()? = null`) are not serialized as values. Instead, the event handler body is encoded in the node's `actions` array (see [section 2.6](#26-actions-and-event-handlers)). A `null` function prop means no handler is attached.
 
 ### 2.3 State Bindings
 
@@ -193,7 +222,7 @@ A modifier is a typed object attached to a node, similar to a data object. Modif
             "trailing": 12.0
         }
     ],
-    "props": { "alignment": "center" },
+    "props": { "spacing": 8.0 },
     "children": [ ... ]
 }
 ```
@@ -224,23 +253,17 @@ Template parameters are not referenced at runtime. In server-evaluated mode, par
 
 ### 2.6 Actions and Event Handlers
 
-In Bazaar source, trailing lambdas on components (e.g., `Button(label) { ... }`) represent event handlers. In the wire format, the handler body is encoded as an `actions` array on the node, separate from `children` (which are for component composition):
+In Bazaar source, trailing lambdas on components (e.g., `Checkbox(todo.completed) { ToggleTodo(todo.id) }`) represent event handlers. In the wire format, the handler body is encoded as an `actions` array on the node, separate from `children` (which are for component composition):
 
 ```json
 {
-    "$type": "Button",
-    "props": { "label": "Click, me!" },
+    "$type": "Checkbox",
+    "props": { "checked": false },
     "actions": [
         {
-            "$type": "$assign",
-            "target": { "$ref": "count" },
-            "op": "+=",
-            "value": 1
-        },
-        {
             "$type": "$action",
-            "name": "Print",
-            "args": [{ "$ref": "message" }]
+            "name": "ToggleTodo",
+            "args": [1]
         }
     ]
 }
@@ -267,8 +290,8 @@ Maps to `IrForNode`. Iterates over a collection, binding each element to one or 
 ```json
 {
     "$type": "$for",
-    "bindings": ["model"],
-    "in": { "$expr": ["ref", "models"] },
+    "bindings": ["todo"],
+    "in": { "$expr": ["ref", "todos"] },
     "body": [ ... ]
 }
 ```
@@ -308,17 +331,17 @@ Boolean condition:
 }
 ```
 
-Optional binding (`if var message = model.message`):
+Optional binding (`if var note = todo.note`):
 
 ```json
 {
     "$type": "$if",
-    "bind": { "message": { "$expr": ["get", "model", "message"] } },
+    "bind": { "note": { "$expr": ["get", "todo", "note"] } },
     "then": [ ... ]
 }
 ```
 
-When `bind` is used, the named variable (e.g., `message`) is in scope within `then`. The condition is implicitly "the bound value is non-null."
+When `bind` is used, the named variable (e.g., `note`) is in scope within `then`. The condition is implicitly "the bound value is non-null."
 
 #### `$switch`
 
@@ -327,10 +350,10 @@ Maps to `IrSwitchNode`:
 ```json
 {
     "$type": "$switch",
-    "expr": { "$ref": "alignment" },
+    "expr": { "$expr": ["get", "todo", "priority"] },
     "cases": [
-        { "value": "top", "body": [ ... ] },
-        { "value": "center", "body": [ ... ] }
+        { "value": "high", "body": [ ... ] },
+        { "value": "medium", "body": [ ... ] }
     ],
     "default": [ ... ]
 }
@@ -343,120 +366,79 @@ Maps to `IrLocalDecl`. Introduces a scoped binding:
 ```json
 {
     "$type": "$let",
-    "name": "label",
-    "value": { "$expr": ["get", "model", "label"] },
+    "name": "title",
+    "value": { "$expr": ["get", "todo", "title"] },
     "body": [ ... ]
 }
 ```
 
 The variable is in scope only within `body`.
 
-### 2.8 Full Example (Server-Evaluated, message = null)
+### 2.8 Full Example (Server-Evaluated, completed = true, note = null)
 
-`TextAndButtonRow([TextAndButtonRowModel()])` with defaults, loop unrolled by the server:
-
-```json
-{
-    "$state": {
-        "count": { "initial": 0 }
-    },
-    "children": [
-        {
-            "$type": "Row",
-            "$id": "TextAndButtonRow/0/Row",
-            "modifier": [
-                {
-                    "$type": "Padding",
-                    "top": 12.0,
-                    "leading": 12.0,
-                    "bottom": 12.0,
-                    "trailing": 12.0
-                }
-            ],
-            "props": {
-                "alignment": "center"
-            },
-            "children": [
-                {
-                    "$type": "Text",
-                    "$id": "TextAndButtonRow/0/Row/Text",
-                    "props": {
-                        "value": "Hello, world!"
-                    }
-                },
-                {
-                    "$type": "Button",
-                    "$id": "TextAndButtonRow/0/Row/Button",
-                    "props": {
-                        "label": "Click, me!"
-                    },
-                    "actions": [
-                        {
-                            "$type": "$assign",
-                            "target": { "$ref": "count" },
-                            "op": "+=",
-                            "value": 1
-                        }
-                    ]
-                }
-            ]
-        }
-    ]
-}
-```
-
-The `if var message = model.message` branch is pruned because `message` is `null` at render time. The `Button` has no `children` (no component slots) but does have `actions` from its trailing lambda event handler.
-
-### 2.9 Full Example (Server-Evaluated, message = "hello")
-
-Same template, but `TextAndButtonRowModel(message = "hello")` — the optional binding is non-null:
+`TodoItemRow(TodoItem(2, "Write tests", completed = true))` — a completed item with no note, rendered server-side:
 
 ```json
 {
-    "$state": {
-        "count": { "initial": 0 }
-    },
     "children": [
         {
             "$type": "Row",
-            "$id": "TextAndButtonRow/0/Row",
+            "$id": "TodoItemRow/Row",
             "modifier": [
                 {
                     "$type": "Padding",
-                    "top": 12.0,
-                    "leading": 12.0,
-                    "bottom": 12.0,
-                    "trailing": 12.0
+                    "top": 4.0,
+                    "leading": 0.0,
+                    "bottom": 4.0,
+                    "trailing": 0.0
                 }
             ],
             "props": {
-                "alignment": "center"
+                "spacing": 8.0
             },
             "children": [
                 {
-                    "$type": "Text",
-                    "$id": "TextAndButtonRow/0/Row/Text",
-                    "props": {
-                        "value": "Hello, world!"
-                    }
-                },
-                {
-                    "$type": "Button",
-                    "$id": "TextAndButtonRow/0/Row/Button",
-                    "props": {
-                        "label": "Click, me!"
-                    },
+                    "$type": "Checkbox",
+                    "$id": "TodoItemRow/Row/Checkbox",
+                    "props": { "checked": true },
                     "actions": [
-                        {
-                            "$type": "$assign",
-                            "target": { "$ref": "count" },
-                            "op": "+=",
-                            "value": 1
-                        },
                         {
                             "$type": "$action",
-                            "name": "Print",
-                            "args": ["hello"]
+                            "name": "ToggleTodo",
+                            "args": [2]
+                        }
+                    ]
+                },
+                {
+                    "$type": "Text",
+                    "$id": "TodoItemRow/Row/Text",
+                    "props": {
+                        "value": "Write tests",
+                        "strikethrough": true
+                    }
+                },
+                {
+                    "$type": "Badge",
+                    "$id": "TodoItemRow/Row/Badge",
+                    "props": {
+                        "label": "~",
+                        "color": "#FF9500"
+                    }
+                },
+                {
+                    "$type": "Icon",
+                    "$id": "TodoItemRow/Row/Icon",
+                    "props": { "name": "checkmark" }
+                },
+                {
+                    "$type": "Button",
+                    "$id": "TodoItemRow/Row/Button",
+                    "props": { "label": "Delete" },
+                    "actions": [
+                        {
+                            "$type": "$action",
+                            "name": "DeleteTodo",
+                            "args": [2]
                         }
                     ]
                 }
@@ -466,7 +448,91 @@ Same template, but `TextAndButtonRowModel(message = "hello")` — the optional b
 }
 ```
 
-Because the server evaluated the `if var message = model.message` branch and `message` was `"hello"`, the `Print` action is included with the resolved value.
+The `if var note = todo.note` branch is pruned because `note` is `null`. The `else if todo.completed` branch is taken, emitting the `Icon("checkmark")` node. The `switch` resolved to `Priority.medium`, emitting the `Badge("~")` node. The `if todo.completed` branch emitted `Text` with `strikethrough = true`.
+
+### 2.9 Full Example (Server-Evaluated, note = "Milk, eggs, bread")
+
+Same template, but `TodoItem(1, "Buy groceries", priority = Priority.high, note = "Milk, eggs, bread")` — the optional binding is non-null:
+
+```json
+{
+    "children": [
+        {
+            "$type": "Row",
+            "$id": "TodoItemRow/Row",
+            "modifier": [
+                {
+                    "$type": "Padding",
+                    "top": 4.0,
+                    "leading": 0.0,
+                    "bottom": 4.0,
+                    "trailing": 0.0
+                }
+            ],
+            "props": {
+                "spacing": 8.0
+            },
+            "children": [
+                {
+                    "$type": "Checkbox",
+                    "$id": "TodoItemRow/Row/Checkbox",
+                    "props": { "checked": false },
+                    "actions": [
+                        {
+                            "$type": "$action",
+                            "name": "ToggleTodo",
+                            "args": [1]
+                        }
+                    ]
+                },
+                {
+                    "$type": "Text",
+                    "$id": "TodoItemRow/Row/Text",
+                    "props": {
+                        "value": "Buy groceries"
+                    }
+                },
+                {
+                    "$type": "Badge",
+                    "$id": "TodoItemRow/Row/Badge",
+                    "props": {
+                        "label": "!",
+                        "color": "#FF3B30"
+                    }
+                },
+                {
+                    "$type": "Text",
+                    "$id": "TodoItemRow/Row/Text/note",
+                    "modifier": [
+                        {
+                            "$type": "Opacity",
+                            "value": 0.6
+                        }
+                    ],
+                    "props": {
+                        "value": "Milk, eggs, bread",
+                        "bold": false
+                    }
+                },
+                {
+                    "$type": "Button",
+                    "$id": "TodoItemRow/Row/Button",
+                    "props": { "label": "Delete" },
+                    "actions": [
+                        {
+                            "$type": "$action",
+                            "name": "DeleteTodo",
+                            "args": [1]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
+```
+
+Because the server evaluated the `if var note = todo.note` branch and `note` was `"Milk, eggs, bread"`, the note `Text` node is included with an `Opacity` modifier. The `switch` resolved to `Priority.high`, emitting `Badge("!", color = "#FF3B30")`. The item is not completed, so the `else` branch of `if todo.completed` emits `Text(todo.title)` without strikethrough.
 
 ### 2.10 Full Example (Client-Evaluated)
 
@@ -474,64 +540,137 @@ Same template, but control flow and data binding are preserved for client interp
 
 ```json
 {
-    "$state": {
-        "count": { "initial": 0 }
-    },
     "children": [
         {
-            "$type": "$for",
-            "bindings": ["model"],
-            "in": { "$expr": ["ref", "models"] },
-            "body": [
+            "$type": "Row",
+            "modifier": [
                 {
-                    "$type": "Row",
-                    "modifier": [
-                        {
-                            "$type": "Padding",
-                            "top": 12.0,
-                            "leading": 12.0,
-                            "bottom": 12.0,
-                            "trailing": 12.0
-                        }
-                    ],
+                    "$type": "Padding",
+                    "top": 4.0,
+                    "leading": 0.0,
+                    "bottom": 4.0,
+                    "trailing": 0.0
+                }
+            ],
+            "props": {
+                "spacing": 8.0
+            },
+            "children": [
+                {
+                    "$type": "Checkbox",
                     "props": {
-                        "alignment": "center"
+                        "checked": { "$expr": ["get", "todo", "completed"] }
                     },
-                    "children": [
+                    "actions": [
+                        {
+                            "$type": "$action",
+                            "name": "ToggleTodo",
+                            "args": [{ "$expr": ["get", "todo", "id"] }]
+                        }
+                    ]
+                },
+                {
+                    "$type": "$if",
+                    "condition": { "$expr": ["get", "todo", "completed"] },
+                    "then": [
                         {
                             "$type": "Text",
                             "props": {
-                                "value": { "$expr": ["get", "model", "value"] }
+                                "value": { "$expr": ["get", "todo", "title"] },
+                                "strikethrough": true
                             }
-                        },
+                        }
+                    ],
+                    "else": [
                         {
-                            "$type": "Button",
+                            "$type": "Text",
                             "props": {
-                                "label": { "$expr": ["get", "model", "label"] }
-                            },
-                            "actions": [
+                                "value": { "$expr": ["get", "todo", "title"] }
+                            }
+                        }
+                    ]
+                },
+                {
+                    "$type": "$switch",
+                    "expr": { "$expr": ["get", "todo", "priority"] },
+                    "cases": [
+                        {
+                            "value": "high",
+                            "body": [
                                 {
-                                    "$type": "$assign",
-                                    "target": { "$ref": "count" },
-                                    "op": "+=",
-                                    "value": 1
-                                },
-                                {
-                                    "$type": "$if",
-                                    "bind": {
-                                        "message": {
-                                            "$expr": ["get", "model", "message"]
-                                        }
-                                    },
-                                    "then": [
-                                        {
-                                            "$type": "$action",
-                                            "name": "Print",
-                                            "args": [{ "$ref": "message" }]
-                                        }
-                                    ]
+                                    "$type": "Badge",
+                                    "props": { "label": "!", "color": "#FF3B30" }
                                 }
                             ]
+                        },
+                        {
+                            "value": "medium",
+                            "body": [
+                                {
+                                    "$type": "Badge",
+                                    "props": { "label": "~", "color": "#FF9500" }
+                                }
+                            ]
+                        },
+                        {
+                            "value": "low",
+                            "body": [
+                                {
+                                    "$type": "Badge",
+                                    "props": { "label": "-", "color": "#34C759" }
+                                }
+                            ]
+                        }
+                    ],
+                    "default": [
+                        {
+                            "$type": "Badge",
+                            "props": { "label": "?" }
+                        }
+                    ]
+                },
+                {
+                    "$type": "$if",
+                    "bind": {
+                        "note": {
+                            "$expr": ["get", "todo", "note"]
+                        }
+                    },
+                    "then": [
+                        {
+                            "$type": "Text",
+                            "modifier": [
+                                {
+                                    "$type": "Opacity",
+                                    "value": 0.6
+                                }
+                            ],
+                            "props": {
+                                "value": { "$expr": ["??", { "$ref": "note" }, ""] },
+                                "bold": false
+                            }
+                        }
+                    ],
+                    "elseIfs": [
+                        {
+                            "condition": { "$expr": ["get", "todo", "completed"] },
+                            "then": [
+                                {
+                                    "$type": "Icon",
+                                    "props": { "name": "checkmark" }
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "$type": "Button",
+                    "props": { "label": "Delete" },
+                    "actions": [
+                        {
+                            "$type": "$action",
+                            "name": "DeleteTodo",
+                            "args": [{ "$expr": ["get", "todo", "id"] }]
                         }
                     ]
                 }
@@ -804,8 +943,8 @@ Flatten to prefix notation:
 
 ```json
 { "$expr": ["+", { "$ref": "count" }, 1] }
-{ "$expr": ["get", "model", "value"] }
-{ "$expr": ["call", "Print", { "$ref": "message" }] }
+{ "$expr": ["get", "todo", "title"] }
+{ "$expr": ["call", "ToggleTodo", { "$expr": ["get", "todo", "id"] }] }
 ```
 
 - **Pro:** Compact, easy to parse, no key overhead.
@@ -836,8 +975,8 @@ Use inline values for simple cases, expressions only when needed:
 
 ```json
 {
-    "label": "Click, me!",
-    "value": { "$expr": ["get", "model", "value"] },
+    "label": "Delete",
+    "checked": { "$expr": ["get", "todo", "completed"] },
     "count": { "$ref": "count" }
 }
 ```
@@ -918,7 +1057,7 @@ Within a template, `$for` bindings, `$if` optional bindings, and `$let` variable
 | Consistency | Server is source of truth | Risk of client/server divergence |
 | Offline | Not possible | Possible for state-only changes |
 
-A hybrid is likely: server-evaluated for initial render, client-evaluated for state-driven interactions (counters, toggles, form inputs), server round-trip for actions (`Print`, `Dismiss`).
+A hybrid is likely: server-evaluated for initial render, client-evaluated for state-driven interactions (counters, toggles, form inputs), server round-trip for actions (`ToggleTodo`, `DeleteTodo`).
 
 ### Versioning
 
@@ -937,7 +1076,7 @@ Is progressive delivery needed? See [section 4](#4-progressive-delivery). If Baz
 How are server actions invoked?
 
 - RSC model: action references are opaque IDs. The client sends them back with arguments.
-- Bazaar equivalent: `{ "$action": "Print", "args": ["hello"] }` triggers a server RPC.
+- Bazaar equivalent: `{ "$action": "ToggleTodo", "args": [1] }` triggers a server RPC.
 - **Correlation:** Each action invocation needs a request ID so the client can match responses.
 - **Error handling:** What does the client do when an action fails? Show an error boundary? Retry? Roll back optimistic state changes?
 - **Batching:** A single event handler can contain multiple `$assign` and `$action` nodes. Should they execute atomically or independently?

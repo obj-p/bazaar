@@ -58,8 +58,6 @@ class AstGoldenTest {
 
     @Test fun edgeCases() = goldenTest("edge-cases")
 
-    @Test fun example() = goldenTest("example")
-
     @Test fun fors() = goldenTest("fors")
 
     @Test fun functions() = goldenTest("functions")
@@ -67,6 +65,8 @@ class AstGoldenTest {
     @Test fun ifs() = goldenTest("ifs")
 
     @Test fun imports() = goldenTest("imports")
+
+    @Test fun incubating() = goldenTest("incubating")
 
     @Test fun lambdas() = goldenTest("lambdas")
 
@@ -84,5 +84,5 @@ class AstGoldenTest {
 
     @Test fun switches() = goldenTest("switches")
 
-    @Test fun todo() = goldenTest("todo")
+    @Test fun todoApp() = goldenTest("todo-app")
 }
