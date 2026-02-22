@@ -22,13 +22,3 @@ bootstrap: ## Development setup
 .PHONY: pre-commit
 pre-commit: ## Run pre-commit
 	@$(PRE_COMMIT) run
-
-.PHONY: todo
-todo: ## List TODO comments with file and line number
-	@grep -rn "TODO" \
-		--include="*.go" \
-		--include="*.md" \
-		--include="*.sh" \
-		--include="*.bzr" \
-		--exclude-dir=".git" \
-		--exclude-dir="bin" . || true
