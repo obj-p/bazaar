@@ -1084,6 +1084,51 @@ How are server actions invoked?
 - **Idempotency:** If the network drops a response, can the client safely retry?
 - **Authentication:** Action names are visible in the wire format. The server must validate that the caller is authorized to invoke each action.
 
+### Reducers vs Control Flow Nodes
+
+Client-evaluated mode encodes `$switch`, `$if`, and `$for` nodes directly in the UI tree. The client must interpret these — matching cases, evaluating conditions, iterating collections — which pushes business logic into the rendering layer.
+
+An alternative is a **reducer** (analogous to React's `useReducer`): a pure function that computes derived state from current state. The UI tree then uses simple state bindings instead of control flow nodes.
+
+**Example: priority badge.** Currently, a `switch` on `todo.priority` produces a `$switch` node with four case branches, each containing a different `Badge`. With a reducer, the priority-to-badge mapping is computed upfront and the tree contains a single `Badge` with state bindings:
+
+```json
+// Control flow approach — client interprets $switch
+{
+    "$type": "$switch",
+    "expr": { "$expr": ["get", "todo", "priority"] },
+    "cases": [
+        { "value": "high", "body": [{ "$type": "Badge", "props": { "label": "!", "color": "#FF3B30" } }] },
+        { "value": "medium", "body": [{ "$type": "Badge", "props": { "label": "~", "color": "#FF9500" } }] }
+    ]
+}
+
+// Reducer approach — client just binds
+{
+    "$type": "Badge",
+    "props": {
+        "label": { "$ref": "todo.priorityLabel" },
+        "color": { "$ref": "todo.priorityColor" }
+    }
+}
+```
+
+**Example: filtered list.** Instead of a `$for` with a nested `$if` that the client evaluates per item, the reducer produces an already-filtered list and the UI iterates without conditions.
+
+**Tradeoffs:**
+
+| | Control flow nodes | Reducer |
+|---|---|---|
+| Client complexity | High — must interpret `$switch`, `$if`, `$for` | Low — just bind and render |
+| Wire payload | Larger — contains all branches | Smaller — only the active state |
+| Separation of concerns | Logic mixed into UI tree | Logic isolated in reducer |
+| Language impact | None (current design) | Requires `@Reducer` or equivalent |
+| Server vs client | Can run either side | Reducer runs where state lives |
+
+A reducer doesn't eliminate all control flow from the tree — `$if` for conditional rendering (e.g., show/hide a section) and `$for` for list iteration are inherently view concerns. But `$switch` on data to select prop values is state derivation, not rendering, and could be lifted into a reducer.
+
+This is also related to the **derived state** question in [section 6](#6-state-bindings): a reducer generalizes derived state by bundling multiple derivations into a single state transition function.
+
 ### Children vs Slots
 
 In Bazaar, `children [component]` is a typed slot. In the wire format, `children` is an array of nodes and `actions` is an array of event handler actions (see [section 2.6](#26-actions-and-event-handlers)). This separation resolves the ambiguity between component composition and event handlers.
