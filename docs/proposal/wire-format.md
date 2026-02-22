@@ -1092,7 +1092,7 @@ An alternative is a **reducer** (analogous to React's `useReducer`): a pure func
 
 **Example: priority badge.** Currently, a `switch` on `todo.priority` produces a `$switch` node with four case branches, each containing a different `Badge`. With a reducer, the priority-to-badge mapping is computed upfront and the tree contains a single `Badge` with state bindings:
 
-```json
+```jsonc
 // Control flow approach — client interprets $switch
 {
     "$type": "$switch",
