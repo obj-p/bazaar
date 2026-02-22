@@ -57,9 +57,24 @@ Called with `TextAndButtonRow([TextAndButtonRowModel()])` — one model with def
 | Modifier | `IrModifierCall` | Metadata attached to a node |
 | Enum value | `IrEnum` | String or integer encoding |
 | State variable | `IrStateDecl` | Client-side mutable binding |
+| Local variable | `IrLocalDecl` | Scoped binding within control flow |
 | Expression | AST `Expr` | Evaluable by the client (see [section 5](#5-expression-encoding)) |
-| Control flow | `IrForNode`, `IrIfNode` | Conditional/repeated subtrees |
+| Control flow | `IrForNode`, `IrForCondNode`, `IrIfNode`, `IrSwitchNode` | Conditional/repeated subtrees |
+| State mutation | `IrAssignNode` | Client-side state update |
 | Action | `IrFunctionCall` | Server-side function reference |
+
+### IR Concepts with No Wire Encoding
+
+Some IR types are compiler-internal and never appear in wire output:
+
+- **`IrRawBody`** — placeholder before Pass 4 analysis. Replaced by specific `IrTemplateNode` types.
+- **`IrReturnNode`** — return statements are errors in templates (caught by sema). No wire encoding.
+- **`IrExprNode`** — catch-all expression statements. If they survive analysis, they should be represented as `$expr` nodes or `$action` calls depending on context.
+- **`IrPreview`** — development-time rendering aid. Not included in production wire output.
+
+### Constructors and Default Values
+
+Bazaar components, data, and modifiers support custom constructors (e.g., `Padding(all double) = Padding(all, all, all, all)`). **Constructors are always expanded at render time** — the wire format only sees the fully-resolved field values, never the shorthand form. Similarly, **default prop values are always materialized** in the wire format. This makes clients simpler (no need for a component registry to resolve defaults) at the cost of slightly larger payloads.
 
 ## 2. JSON Format
 
@@ -84,10 +99,15 @@ Every node in the tree uses a single envelope:
 | `$type` | yes | Component type name. Matches a Bazaar `component` declaration. |
 | `$id` | no | Stable identity for diffing and state preservation. |
 | `props` | yes | Key-value map. Values are primitives, arrays, maps, data objects, state refs, or expressions. |
-| `modifier` | no | Modifier chain applied to this node. |
+| `modifier` | no | Modifier chain applied to this node (always an array). |
 | `children` | no | Ordered list of child nodes. |
+| `actions` | no | Ordered list of event handler actions (see [section 2.6](#26-actions-and-event-handlers)). |
 
 The `$` prefix on `$type` and `$id` prevents collisions with user-defined prop names.
+
+**Type qualification.** If two packages define a `Button`, the `$type` uses a qualified name: `"layout.Button"`. The package prefix can be omitted when unambiguous within a single file's imports.
+
+**`$id` generation.** IDs must be stable across re-renders for diffing and state preservation. A deterministic scheme based on template path works well: `"TextAndButtonRow/0/Row"` encodes the template name, loop index, and component type. Inside `$for` loops, the iteration index (or a user-specified key) is incorporated to produce unique, stable IDs per iteration.
 
 ### 2.2 Prop Values
 
@@ -133,6 +153,8 @@ Data objects carry a `$type` discriminator:
 }
 ```
 
+Function-typed props (e.g., `onClick func()? = null`) are not serialized as values. Instead, the event handler body is encoded in the node's `actions` array (see [section 2.6](#26-actions-and-event-handlers)). A `null` function prop means no handler is attached.
+
 ### 2.3 State Bindings
 
 State variables are declared at the template scope. A `$state` block at the root of a template's output declares initial values and gives each variable an ID:
@@ -157,24 +179,26 @@ Props that write to state (event handlers) use action expressions (see [section 
 
 ### 2.4 Modifiers
 
-A modifier is a typed object attached to a node, similar to a data object:
+A modifier is a typed object attached to a node, similar to a data object. Modifiers are always an array to support chaining uniformly (even when there's only one):
 
 ```json
 {
     "$type": "Row",
-    "modifier": {
-        "$type": "Padding",
-        "top": 12.0,
-        "leading": 12.0,
-        "bottom": 12.0,
-        "trailing": 12.0
-    },
+    "modifier": [
+        {
+            "$type": "Padding",
+            "top": 12.0,
+            "leading": 12.0,
+            "bottom": 12.0,
+            "trailing": 12.0
+        }
+    ],
     "props": { "alignment": "center" },
     "children": [ ... ]
 }
 ```
 
-Modifier chaining (future) could use an array:
+Multiple modifiers are applied in order:
 
 ```json
 {
@@ -185,7 +209,48 @@ Modifier chaining (future) could use an array:
 }
 ```
 
-### 2.5 Control Flow
+### 2.5 Reference Types
+
+The wire format uses several `$`-prefixed reference objects. Here is the complete set:
+
+| Key | Meaning | Example |
+|---|---|---|
+| `$ref` | Read a variable (state or local binding) | `{ "$ref": "count" }` |
+| `$expr` | Evaluable expression (tuple encoding) | `{ "$expr": ["+", { "$ref": "count" }, 1] }` |
+
+`$ref` is sugar for `{ "$expr": ["ref", "count"] }`. Both resolve variables from the current scope — state variables, `$for` bindings, and `$let` bindings are all in scope.
+
+Template parameters are not referenced at runtime. In server-evaluated mode, parameters are resolved before wire output. In client-evaluated mode, the template receives its data through the `$for`/`$let` bindings that destructure the parameter — the parameter itself does not appear in the wire format.
+
+### 2.6 Actions and Event Handlers
+
+In Bazaar source, trailing lambdas on components (e.g., `Button(label) { ... }`) represent event handlers. In the wire format, the handler body is encoded as an `actions` array on the node, separate from `children` (which are for component composition):
+
+```json
+{
+    "$type": "Button",
+    "props": { "label": "Click, me!" },
+    "actions": [
+        {
+            "$type": "$assign",
+            "target": { "$ref": "count" },
+            "op": "+=",
+            "value": 1
+        },
+        {
+            "$type": "$action",
+            "name": "Print",
+            "args": [{ "$ref": "message" }]
+        }
+    ]
+}
+```
+
+**`$assign`** — client-side state mutation. The client evaluates this locally.
+
+**`$action`** — server-side function call. The client sends an RPC to the server with the function name and resolved arguments. Open questions around actions (correlation IDs, error handling, batching, idempotency) are discussed in [section 7](#7-open-questions).
+
+### 2.7 Control Flow
 
 Control flow can be handled in two ways. This is an open design question.
 
@@ -193,51 +258,100 @@ Control flow can be handled in two ways. This is an open design question.
 
 **Option B: Client-evaluated.** The wire format includes control flow nodes that the client interprets. This allows the client to re-render locally when state changes, without a server round-trip.
 
-Option B encoding:
+Control flow nodes use `$`-prefixed type names to distinguish them from user components.
+
+#### `$for` (for-in loop)
+
+Maps to `IrForNode`. Iterates over a collection, binding each element to one or more names:
 
 ```json
 {
     "$type": "$for",
-    "binding": "model",
-    "in": { "$ref": "models" },
+    "bindings": ["model"],
+    "in": { "$expr": ["ref", "models"] },
     "body": [ ... ]
 }
 ```
 
+`bindings` is an array to support destructuring (e.g., `for (key, value) in map`).
+
+#### `$while` (conditional loop)
+
+Maps to `IrForCondNode`. Repeats while a condition is true:
+
+```json
+{
+    "$type": "$while",
+    "condition": { "$expr": ["<", { "$ref": "i" }, 10] },
+    "body": [ ... ]
+}
+```
+
+#### `$if` (conditional)
+
+Maps to `IrIfNode`. Supports two forms: boolean condition and optional binding.
+
+Boolean condition:
+
 ```json
 {
     "$type": "$if",
-    "condition": { "$bind": "model.message" },
+    "condition": { "$expr": ["!=", { "$ref": "count" }, 0] },
+    "then": [ ... ],
+    "elseIfs": [
+        {
+            "condition": { "$expr": [">", { "$ref": "count" }, 10] },
+            "then": [ ... ]
+        }
+    ],
+    "else": [ ... ]
+}
+```
+
+Optional binding (`if var message = model.message`):
+
+```json
+{
+    "$type": "$if",
+    "bind": { "message": { "$expr": ["get", "model", "message"] } },
     "then": [ ... ]
 }
 ```
 
-Control flow nodes use `$`-prefixed type names (`$for`, `$if`, `$switch`) to distinguish them from user components.
+When `bind` is used, the named variable (e.g., `message`) is in scope within `then`. The condition is implicitly "the bound value is non-null."
 
-### 2.6 Actions
+#### `$switch`
 
-Function calls in event handlers are server actions — references the client sends back to the server for execution:
-
-```json
-{
-    "$type": "$action",
-    "name": "Print",
-    "args": [{ "$ref": "message" }]
-}
-```
-
-State mutations are client-side actions:
+Maps to `IrSwitchNode`:
 
 ```json
 {
-    "$type": "$assign",
-    "target": { "$ref": "count" },
-    "op": "+=",
-    "value": 1
+    "$type": "$switch",
+    "expr": { "$ref": "alignment" },
+    "cases": [
+        { "value": "top", "body": [ ... ] },
+        { "value": "center", "body": [ ... ] }
+    ],
+    "default": [ ... ]
 }
 ```
 
-### 2.7 Full Example (Server-Evaluated)
+#### `$let` (local variable)
+
+Maps to `IrLocalDecl`. Introduces a scoped binding:
+
+```json
+{
+    "$type": "$let",
+    "name": "label",
+    "value": { "$expr": ["get", "model", "label"] },
+    "body": [ ... ]
+}
+```
+
+The variable is in scope only within `body`.
+
+### 2.8 Full Example (Server-Evaluated, message = null)
 
 `TextAndButtonRow([TextAndButtonRowModel()])` with defaults, loop unrolled by the server:
 
@@ -249,32 +363,34 @@ State mutations are client-side actions:
     "children": [
         {
             "$type": "Row",
-            "$id": "n1",
-            "modifier": {
-                "$type": "Padding",
-                "top": 12.0,
-                "leading": 12.0,
-                "bottom": 12.0,
-                "trailing": 12.0
-            },
+            "$id": "TextAndButtonRow/0/Row",
+            "modifier": [
+                {
+                    "$type": "Padding",
+                    "top": 12.0,
+                    "leading": 12.0,
+                    "bottom": 12.0,
+                    "trailing": 12.0
+                }
+            ],
             "props": {
                 "alignment": "center"
             },
             "children": [
                 {
                     "$type": "Text",
-                    "$id": "n2",
+                    "$id": "TextAndButtonRow/0/Row/Text",
                     "props": {
                         "value": "Hello, world!"
                     }
                 },
                 {
                     "$type": "Button",
-                    "$id": "n3",
+                    "$id": "TextAndButtonRow/0/Row/Button",
                     "props": {
                         "label": "Click, me!"
                     },
-                    "children": [
+                    "actions": [
                         {
                             "$type": "$assign",
                             "target": { "$ref": "count" },
@@ -289,9 +405,70 @@ State mutations are client-side actions:
 }
 ```
 
-Note: the `if var message = model.message` branch is pruned because `message` is `null` at render time.
+The `if var message = model.message` branch is pruned because `message` is `null` at render time. The `Button` has no `children` (no component slots) but does have `actions` from its trailing lambda event handler.
 
-### 2.8 Full Example (Client-Evaluated)
+### 2.9 Full Example (Server-Evaluated, message = "hello")
+
+Same template, but `TextAndButtonRowModel(message = "hello")` — the optional binding is non-null:
+
+```json
+{
+    "$state": {
+        "count": { "initial": 0 }
+    },
+    "children": [
+        {
+            "$type": "Row",
+            "$id": "TextAndButtonRow/0/Row",
+            "modifier": [
+                {
+                    "$type": "Padding",
+                    "top": 12.0,
+                    "leading": 12.0,
+                    "bottom": 12.0,
+                    "trailing": 12.0
+                }
+            ],
+            "props": {
+                "alignment": "center"
+            },
+            "children": [
+                {
+                    "$type": "Text",
+                    "$id": "TextAndButtonRow/0/Row/Text",
+                    "props": {
+                        "value": "Hello, world!"
+                    }
+                },
+                {
+                    "$type": "Button",
+                    "$id": "TextAndButtonRow/0/Row/Button",
+                    "props": {
+                        "label": "Click, me!"
+                    },
+                    "actions": [
+                        {
+                            "$type": "$assign",
+                            "target": { "$ref": "count" },
+                            "op": "+=",
+                            "value": 1
+                        },
+                        {
+                            "$type": "$action",
+                            "name": "Print",
+                            "args": ["hello"]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
+```
+
+Because the server evaluated the `if var message = model.message` branch and `message` was `"hello"`, the `Print` action is included with the resolved value.
+
+### 2.10 Full Example (Client-Evaluated)
 
 Same template, but control flow and data binding are preserved for client interpretation:
 
@@ -303,18 +480,20 @@ Same template, but control flow and data binding are preserved for client interp
     "children": [
         {
             "$type": "$for",
-            "binding": "model",
-            "in": { "$param": "models" },
+            "bindings": ["model"],
+            "in": { "$expr": ["ref", "models"] },
             "body": [
                 {
                     "$type": "Row",
-                    "modifier": {
-                        "$type": "Padding",
-                        "top": 12.0,
-                        "leading": 12.0,
-                        "bottom": 12.0,
-                        "trailing": 12.0
-                    },
+                    "modifier": [
+                        {
+                            "$type": "Padding",
+                            "top": 12.0,
+                            "leading": 12.0,
+                            "bottom": 12.0,
+                            "trailing": 12.0
+                        }
+                    ],
                     "props": {
                         "alignment": "center"
                     },
@@ -330,7 +509,7 @@ Same template, but control flow and data binding are preserved for client interp
                             "props": {
                                 "label": { "$expr": ["get", "model", "label"] }
                             },
-                            "children": [
+                            "actions": [
                                 {
                                     "$type": "$assign",
                                     "target": { "$ref": "count" },
@@ -339,7 +518,11 @@ Same template, but control flow and data binding are preserved for client interp
                                 },
                                 {
                                     "$type": "$if",
-                                    "bind": { "message": { "$expr": ["get", "model", "message"] } },
+                                    "bind": {
+                                        "message": {
+                                            "$expr": ["get", "model", "message"]
+                                        }
+                                    },
                                     "then": [
                                         {
                                             "$type": "$action",
@@ -370,15 +553,33 @@ package bazaar.wire;
 
 message BazaarTree {
     map<string, StateVar> state = 1;
-    repeated Node children = 2;
+    repeated TreeNode children = 2;
 }
 
-message Node {
+// TreeNode wraps all possible node types in a oneof.
+// This allows component nodes, control flow, and actions
+// to appear in the same children/body lists.
+message TreeNode {
+    oneof kind {
+        ComponentNode component = 1;
+        ForNode for_loop = 2;
+        WhileNode while_loop = 3;
+        IfNode if_cond = 4;
+        SwitchNode switch_stmt = 5;
+        LetNode let_binding = 6;
+        AssignNode assign = 7;
+        ActionNode action = 8;
+        ExprNode expr = 9;
+    }
+}
+
+message ComponentNode {
     string type = 1;
     optional string id = 2;
     repeated Prop props = 3;
-    optional Modifier modifier = 4;
-    repeated Node children = 5;
+    repeated Modifier modifier = 4;  // array, not linked list
+    repeated TreeNode children = 5;
+    repeated TreeNode actions = 6;
 }
 
 message Prop {
@@ -396,7 +597,7 @@ message Value {
         ArrayValue array_value = 6;
         MapValue map_value = 7;
         DataObject data_value = 8;
-        StateRef ref = 9;
+        VarRef ref = 9;
         Expr expr = 10;
     }
 }
@@ -427,14 +628,13 @@ message StateVar {
     Value initial = 1;
 }
 
-message StateRef {
+message VarRef {
     string name = 1;
 }
 
 message Modifier {
     string type = 1;
     repeated Prop fields = 2;
-    optional Modifier next = 3;  // chaining
 }
 ```
 
@@ -447,7 +647,8 @@ message Expr {
         UnaryExpr unary = 2;
         MemberAccess member = 3;
         Literal literal = 4;
-        StateRef ref = 5;
+        VarRef ref = 5;
+        CallExpr call = 6;
     }
 }
 
@@ -471,9 +672,24 @@ message Literal {
     Value value = 1;
 }
 
-message Action {
+message CallExpr {
     string name = 1;
     repeated Value args = 2;
+}
+
+message AssignNode {
+    VarRef target = 1;
+    string op = 2;
+    Value value = 3;
+}
+
+message ActionNode {
+    string name = 1;
+    repeated Value args = 2;
+}
+
+message ExprNode {
+    Expr expr = 1;
 }
 ```
 
@@ -481,21 +697,46 @@ message Action {
 
 ```protobuf
 message ForNode {
-    string binding = 1;
+    repeated string bindings = 1;  // supports destructuring
     Expr iterable = 2;
-    repeated Node body = 3;
+    repeated TreeNode body = 3;
+}
+
+message WhileNode {
+    Expr condition = 1;
+    repeated TreeNode body = 2;
 }
 
 message IfNode {
-    Expr condition = 1;
-    repeated Node then = 2;
-    repeated ElseIfBranch else_ifs = 3;
-    repeated Node else_body = 4;
+    // Exactly one of condition or bind is set.
+    optional Expr condition = 1;
+    map<string, Expr> bind = 2;  // optional binding (if var x = ...)
+    repeated TreeNode then = 3;
+    repeated ElseIfBranch else_ifs = 4;
+    repeated TreeNode else_body = 5;
 }
 
 message ElseIfBranch {
-    Expr condition = 1;
-    repeated Node body = 2;
+    optional Expr condition = 1;
+    map<string, Expr> bind = 2;
+    repeated TreeNode body = 3;
+}
+
+message SwitchNode {
+    Expr expr = 1;
+    repeated SwitchCase cases = 2;
+    repeated TreeNode default_body = 3;
+}
+
+message SwitchCase {
+    Value value = 1;
+    repeated TreeNode body = 2;
+}
+
+message LetNode {
+    string name = 1;
+    Value value = 2;
+    repeated TreeNode body = 3;
 }
 ```
 
@@ -607,6 +848,15 @@ A `$ref` is sugar for the common case of reading a single state variable. `$expr
 
 Start with **Option B (tuple encoding)** with `$ref` sugar for simple state reads. It balances compactness and readability. Bytecode can be introduced later as an optimization if expression evaluation becomes a bottleneck.
 
+### Security
+
+If clients evaluate `$expr` trees, the expression language becomes an attack surface. Mitigations:
+
+- **Depth limit** — reject expressions deeper than N levels (e.g., 32).
+- **No recursion** — expressions cannot define or call user functions. Only built-in operators and member access.
+- **No side effects** — expressions are pure. Side effects (state mutation, server calls) go through `$assign` and `$action`, which have their own validation.
+- **Sandboxed evaluation** — the client expression interpreter should have no access to host APIs, filesystem, or network.
+
 ## 6. State Bindings
 
 ### Declaration
@@ -643,11 +893,17 @@ State mutations appear in event handler children as `$assign` nodes:
 }
 ```
 
+### Scoping
+
+State is currently template-level (`@State` in the IR is always at the template root). If templates compose other templates, each template's `$state` block is independent — there is no shared state across template boundaries.
+
+Within a template, `$for` bindings, `$if` optional bindings, and `$let` variables create nested scopes. `$ref` resolves from the innermost scope outward: a `$for` binding named `model` shadows any state variable named `model`.
+
 ### Open Questions
 
-- **Scoping:** Can state be scoped to a subtree, or is it always template-level? The IR currently has template-level `@State` only.
 - **Derived state:** Should there be computed/derived values that auto-update? (e.g., `fullName` derived from `first` + `last`)
 - **Server sync:** When state changes, does the client re-render locally (client-evaluated) or request a new tree from the server (server-evaluated)? This is the central architectural question.
+- **Cross-template state:** If a parent template passes state down to a child template, how is that expressed? Props? Context?
 
 ## 7. Open Questions
 
@@ -682,14 +938,40 @@ How are server actions invoked?
 
 - RSC model: action references are opaque IDs. The client sends them back with arguments.
 - Bazaar equivalent: `{ "$action": "Print", "args": ["hello"] }` triggers a server RPC.
-- Open: authentication, rate limiting, idempotency, error handling for actions.
+- **Correlation:** Each action invocation needs a request ID so the client can match responses.
+- **Error handling:** What does the client do when an action fails? Show an error boundary? Retry? Roll back optimistic state changes?
+- **Batching:** A single event handler can contain multiple `$assign` and `$action` nodes. Should they execute atomically or independently?
+- **Ordering:** Are actions in the `actions` array executed sequentially or can they be parallelized?
+- **Idempotency:** If the network drops a response, can the client safely retry?
+- **Authentication:** Action names are visible in the wire format. The server must validate that the caller is authorized to invoke each action.
 
-### Children Semantics
+### Children vs Slots
 
-In Bazaar, `children [component]` is a typed slot. In the wire format, `children` is an array of nodes. Questions:
+In Bazaar, `children [component]` is a typed slot. In the wire format, `children` is an array of nodes and `actions` is an array of event handler actions (see [section 2.6](#26-actions-and-event-handlers)). This separation resolves the ambiguity between component composition and event handlers.
 
-- Should there be named slots (e.g., `header`, `footer`) in addition to default `children`?
-- Should `children` in event handlers (action lists) be distinguished from `children` in component composition?
+Open question: Should there be **named slots** (e.g., `header`, `footer`) in addition to the default `children` array? This would require a language-level feature (named children declarations) that doesn't exist yet.
+
+## Appendix: Reserved Keys
+
+All `$`-prefixed keys used in the wire format:
+
+| Key | Context | Meaning |
+|---|---|---|
+| `$type` | Node envelope, data objects, modifiers | Type discriminator |
+| `$id` | Node envelope | Stable identity for diffing |
+| `$state` | Tree root | State variable declarations |
+| `$ref` | Prop value | Read a variable (state, for-binding, let-binding) |
+| `$expr` | Prop value | Evaluable expression (tuple-encoded) |
+| `$for` | Node `$type` | For-in loop (client-evaluated) |
+| `$while` | Node `$type` | Conditional loop (client-evaluated) |
+| `$if` | Node `$type` | Conditional (client-evaluated) |
+| `$switch` | Node `$type` | Switch/case (client-evaluated) |
+| `$let` | Node `$type` | Local variable binding (client-evaluated) |
+| `$assign` | Node `$type` | Client-side state mutation |
+| `$action` | Node `$type` | Server-side function call |
+| `$pending` | Streaming placeholder | Content arriving later |
+| `$chunk` | Streaming frame | Fills a `$pending` placeholder |
+| `$version` | Tree root | Format version (for evolution) |
 
 ## References
 
