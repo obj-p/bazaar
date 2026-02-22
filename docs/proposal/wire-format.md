@@ -690,3 +690,10 @@ In Bazaar, `children [component]` is a typed slot. In the wire format, `children
 
 - Should there be named slots (e.g., `header`, `footer`) in addition to default `children`?
 - Should `children` in event handlers (action lists) be distinguished from `children` in component composition?
+
+## References
+
+- [JSX Over The Wire](https://overreacted.io/jsx-over-the-wire/) — serializing component trees as JSON, client vs server component boundaries
+- [Progressive JSON](https://overreacted.io/progressive-json/) — breadth-first streaming with placeholder references
+- [Introducing RSC Explorer](https://overreacted.io/introducing-rsc-explorer/) — RSC wire protocol internals, streaming, suspense holes
+- [Support All of Structured Clone in RSC Serialization](https://github.com/facebook/react/issues/25687) — RSC serialization capabilities and type support
