@@ -1415,7 +1415,7 @@ State bindings from `$state` map to Compose `mutableStateOf` holders. When an `$
 - **Performance.** For large trees, converting the entire JSON into a `TreeNode` graph upfront may cause allocation pressure. A lazy or streaming deserializer that walks the JSON tree during composition -- similar to how Compose's `LazyColumn` defers item composition -- could amortize cost. This interacts with the progressive delivery design.
 - **Testing.** The sealed class hierarchy is straightforward to snapshot-test: serialize a `TreeNode` back to JSON and compare. Expression evaluation can be unit-tested in isolation from Compose.
 
-## Appendix: Swift Client Deserialization
+## Appendix: iOS Client Deserialization
 
 This section explores how an iOS/macOS client would deserialize Bazaar wire format responses into concrete Swift types and render them as SwiftUI views. The goal is to surface design tradeoffs — not to prescribe a final implementation.
 
