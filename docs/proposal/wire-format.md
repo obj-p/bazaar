@@ -1242,6 +1242,430 @@ All `$`-prefixed keys used in the wire format:
 | `$loadMore` | Action name | Client requests next page |
 | `$version` | Tree root | Format version (for evolution) |
 
+## Appendix: Android Client Deserialization
+
+This appendix explores how an Android client would deserialize the JSON wire format into concrete Kotlin types and render them with Jetpack Compose. The goal is to surface design considerations early, not to prescribe a final implementation.
+
+### Type Hierarchy
+
+The node envelope maps naturally to a sealed interface hierarchy. Component nodes, control flow nodes, and action nodes share a common `TreeNode` supertype so they can appear interchangeably in `children`, `body`, and `actions` arrays:
+
+```kotlin
+sealed interface TreeNode
+
+data class ComponentNode(
+    val type: String,
+    val id: String? = null,
+    val props: Map<String, Value> = emptyMap(),
+    val modifier: List<ModifierNode> = emptyList(),
+    val children: List<TreeNode> = emptyList(),
+    val actions: List<TreeNode> = emptyList(),
+) : TreeNode
+
+data class ModifierNode(
+    val type: String,
+    val fields: Map<String, Value> = emptyMap(),
+)
+
+// Control flow
+data class IfNode(val condition: Value? = null, val bind: Map<String, Value>? = null,
+    val then: List<TreeNode>, val elseIfs: List<ElseIfBranch> = emptyList(),
+    val elseBody: List<TreeNode> = emptyList()) : TreeNode
+data class ForNode(val bindings: List<String>, val iterable: Value, val body: List<TreeNode>) : TreeNode
+data class SwitchNode(val expr: Value, val cases: List<SwitchCase>, val default: List<TreeNode> = emptyList()) : TreeNode
+data class LetNode(val name: String, val value: Value, val body: List<TreeNode>) : TreeNode
+
+// Actions
+data class ActionNode(val name: String, val args: List<Value> = emptyList()) : TreeNode
+data class AssignNode(val target: Value, val op: String, val value: Value) : TreeNode
+```
+
+### Value Type
+
+The heterogeneous `Value` type (props, expression operands, action args) requires a sealed hierarchy that mirrors the wire format's union of primitives, containers, and reference types:
+
+```kotlin
+sealed interface Value
+
+@JvmInline value class IntValue(val value: Long) : Value
+@JvmInline value class DoubleValue(val value: Double) : Value
+@JvmInline value class StringValue(val value: String) : Value
+@JvmInline value class BoolValue(val value: Boolean) : Value
+data object NullValue : Value
+data class ArrayValue(val elements: List<Value>) : Value
+data class MapValue(val entries: Map<String, Value>) : Value
+data class DataObjectValue(val type: String, val fields: Map<String, Value>) : Value
+data class RefValue(val name: String) : Value                  // { "$ref": "count" }
+data class ExprValue(val operands: List<Value>) : Value        // { "$expr": ["+", ...] }
+```
+
+Using `value class` for primitives avoids boxing overhead on the JVM. An alternative is collapsing primitives into a single `LiteralValue` wrapper around `Any`, trading type safety for fewer classes. The sealed approach is safer and pairs well with `when` exhaustiveness checks.
+
+### Decoding Strategy
+
+Three viable approaches, in rough order of type safety:
+
+**kotlinx.serialization with `JsonContentPolymorphicSerializer`.** A custom serializer inspects the `$type` key and delegates to the appropriate subclass. This integrates with Kotlin's serialization compiler plugin and provides compile-time safety for the non-polymorphic parts:
+
+```kotlin
+object TreeNodeSerializer : JsonContentPolymorphicSerializer<TreeNode>(TreeNode::class) {
+    override fun selectDeserializer(element: JsonElement): DeserializationStrategy<TreeNode> {
+        val obj = element.jsonObject
+        return when (val type = obj["\$type"]?.jsonPrimitive?.contentOrNull) {
+            "\$if"     -> IfNode.serializer()
+            "\$for"    -> ForNode.serializer()
+            "\$switch" -> SwitchNode.serializer()
+            "\$let"    -> LetNode.serializer()
+            "\$action" -> ActionNode.serializer()
+            "\$assign" -> AssignNode.serializer()
+            else       -> ComponentNode.serializer()   // user-defined component
+        }
+    }
+}
+```
+
+The `Value` type needs a similar polymorphic serializer that distinguishes `$ref` objects, `$expr` objects, data objects (have `$type`), and plain JSON primitives/arrays/maps.
+
+**Moshi with custom `JsonAdapter`.** Moshi's streaming API (`JsonReader.peekJson()`) allows lookahead on the `$type` field without buffering the entire object. This can be more memory-efficient for large payloads than kotlinx.serialization's `JsonElement` approach, but requires manual adapter wiring.
+
+**Manual `JsonElement` tree walk.** Parse the entire response into a `JsonElement` tree (via kotlinx.serialization or org.json) and walk it manually. This is the most flexible and easiest to debug, but sacrifices compile-time guarantees. It may be the right starting point for prototyping.
+
+All three approaches must handle the `Value` type carefully: a JSON number might be `IntValue` or `DoubleValue` (heuristic: if it has a decimal point or is outside `Long` range, treat as `Double`), and a JSON object could be a `$ref`, `$expr`, `DataObjectValue`, or `MapValue` depending on which keys are present.
+
+### Expression Evaluation
+
+At runtime, the client maintains a scope stack (state variables at the root, with `$for` bindings, `$let` bindings, and `$if` optional bindings pushed as frames). A recursive evaluator walks `ExprValue` tuples:
+
+```kotlin
+fun evaluate(value: Value, scope: Scope): Any? = when (value) {
+    is RefValue  -> scope.resolve(value.name)
+    is ExprValue -> {
+        val op = (value.operands[0] as StringValue).value
+        when (op) {
+            "+"   -> (evaluate(value.operands[1], scope) as Number).toDouble() +
+                     (evaluate(value.operands[2], scope) as Number).toDouble()
+            "get" -> {
+                val target = scope.resolve((value.operands[1] as StringValue).value) as Map<*, *>
+                target[(value.operands[2] as StringValue).value]
+            }
+            // ... other operators
+            else  -> error("Unknown operator: $op")
+        }
+    }
+    is IntValue    -> value.value
+    is StringValue -> value.value
+    // ... other literal types pass through
+    else -> error("Cannot evaluate: $value")
+}
+```
+
+This is intentionally sketch-level. A production evaluator would need type coercion rules, error boundaries (what happens when a `$ref` is unresolved?), and the depth/complexity limits described in the security section. Whether the evaluator returns `Any?` or a typed `Value` is a design choice -- `Any?` is simpler for Compose interop, but a typed return enables better error reporting.
+
+### Jetpack Compose Integration
+
+Deserialized `TreeNode` values map to `@Composable` functions via a registry-based dispatch. The registry maps `$type` strings to composable renderers, allowing the component set to be extended without modifying the core rendering loop:
+
+```kotlin
+typealias NodeRenderer = @Composable (ComponentNode, Scope) -> Unit
+
+class RendererRegistry {
+    private val renderers = mutableMapOf<String, NodeRenderer>()
+    fun register(type: String, renderer: NodeRenderer) { renderers[type] = renderer }
+    fun resolve(type: String): NodeRenderer = renderers[type] ?: ::FallbackRenderer
+}
+
+@Composable
+fun RenderTree(node: TreeNode, scope: Scope, registry: RendererRegistry) {
+    when (node) {
+        is ComponentNode -> registry.resolve(node.type).invoke(node, scope)
+        is IfNode        -> RenderIf(node, scope, registry)
+        is ForNode       -> RenderFor(node, scope, registry)
+        is SwitchNode    -> RenderSwitch(node, scope, registry)
+        is LetNode       -> RenderLet(node, scope, registry)
+        is ActionNode    -> { /* actions are dispatched on events, not during composition */ }
+        is AssignNode    -> { }
+    }
+}
+```
+
+Modifiers map to Compose `Modifier` chains. Each `ModifierNode` type resolves to a `Modifier` extension:
+
+```kotlin
+fun resolveModifier(nodes: List<ModifierNode>, scope: Scope): Modifier =
+    nodes.fold(Modifier as Modifier) { acc, node ->
+        when (node.type) {
+            "Padding" -> acc.padding(
+                start = node.fields.dp("leading", scope),
+                top = node.fields.dp("top", scope),
+                end = node.fields.dp("trailing", scope),
+                bottom = node.fields.dp("bottom", scope),
+            )
+            "Opacity" -> acc.alpha(node.fields.float("value", scope))
+            else -> acc // unknown modifier -- ignore or log
+        }
+    }
+```
+
+State bindings from `$state` map to Compose `mutableStateOf` holders. When an `$assign` action fires, the client updates the corresponding `MutableState`, and Compose's snapshot system triggers recomposition of any composable reading that state via `$ref`. This gives client-evaluated mode reactive updates without a server round-trip.
+
+### Tradeoffs and Open Questions
+
+- **Code generation vs hand-written renderers.** If the Bazaar compiler knows the full set of built-in components, it could generate the renderer registry and modifier mapping at build time. Hand-written renderers are more flexible but risk drift.
+- **Error boundaries.** An unknown `$type` or a failed expression evaluation should not crash the entire tree. A `FallbackRenderer` (blank space, error text in debug builds) provides graceful degradation.
+- **Performance.** For large trees, converting the entire JSON into a `TreeNode` graph upfront may cause allocation pressure. A lazy or streaming deserializer that walks the JSON tree during composition -- similar to how Compose's `LazyColumn` defers item composition -- could amortize cost. This interacts with the progressive delivery design.
+- **Testing.** The sealed class hierarchy is straightforward to snapshot-test: serialize a `TreeNode` back to JSON and compare. Expression evaluation can be unit-tested in isolation from Compose.
+
+## Appendix: Swift Client Deserialization
+
+This section explores how an iOS/macOS client would deserialize Bazaar wire format responses into concrete Swift types and render them as SwiftUI views. The goal is to surface design tradeoffs — not to prescribe a final implementation.
+
+### Type Hierarchy
+
+The node envelope maps naturally to a Swift struct with an enum for the `$type` discriminator. The central modeling question is whether `TreeNode` should be an enum (closed set of cases), a protocol (open for extension), or a struct with a type tag.
+
+An **enum with associated values** is the most idiomatic choice for a closed wire format. Control flow nodes (`$for`, `$if`, `$switch`, `$let`, `$while`), action nodes (`$assign`, `$action`), and component nodes are all known at compile time. If the node set is truly fixed, an enum gives exhaustive switch checking:
+
+```swift
+enum TreeNode: Sendable {
+    case component(ComponentNode)
+    case forLoop(ForNode)
+    case whileLoop(WhileNode)
+    case ifCond(IfNode)
+    case switchStmt(SwitchNode)
+    case letBinding(LetNode)
+    case assign(AssignNode)
+    case action(ActionNode)
+}
+
+struct ComponentNode: Sendable {
+    let type: String
+    let id: String?
+    let props: [String: Value]
+    let modifier: [Modifier]
+    let children: [TreeNode]
+    let actions: [TreeNode]
+}
+
+struct Modifier: Sendable {
+    let type: String
+    let fields: [String: Value]
+}
+```
+
+A **protocol-based** approach (`protocol TreeNode`) would allow third-party node types, but the wire format's `$`-prefixed control flow set is closed by design — unknown `$type` values should hit a fallback path, not a plugin system. Protocols also lose exhaustive switching unless `@frozen` semantics are simulated with a visitor.
+
+### The Value Type
+
+Props are heterogeneous: a prop map can contain ints, doubles, strings, bools, null, arrays, maps, data objects, `$ref` bindings, and `$expr` trees. A Swift enum with associated values models this directly:
+
+```swift
+enum Value: Sendable {
+    case int(Int64)
+    case double(Double)
+    case string(String)
+    case bool(Bool)
+    case null
+    case array([Value])
+    case map([String: Value])
+    case data(DataObject)
+    case ref(String)
+    case expr([Value])  // tuple-encoded: [op, ...operands]
+}
+
+struct DataObject: Sendable {
+    let type: String
+    let fields: [String: Value]
+}
+```
+
+One subtlety: JSON numbers are untyped. A `spacing: 8.0` and a `count: 8` are indistinguishable at the JSON level. The decoder could use `Decimal` as a single numeric case, or attempt `Int64` first and fall back to `Double`. The protobuf path avoids this entirely since `int64` and `double` are distinct wire types.
+
+### Decoding Strategy
+
+Two viable approaches exist for JSON deserialization.
+
+**`Codable` with custom `init(from:)`** — The `$type` discriminator pattern requires peeking at a key before deciding which type to decode. This means `TreeNode` cannot use synthesized `Decodable` conformance; it needs a manual implementation:
+
+```swift
+extension TreeNode: Decodable {
+    private enum CodingKeys: String, CodingKey {
+        case type = "$type"
+    }
+
+    init(from decoder: any Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        let typeName = try container.decode(String.self, forKey: .type)
+
+        switch typeName {
+        case "$for":    self = .forLoop(try ForNode(from: decoder))
+        case "$while":  self = .whileLoop(try WhileNode(from: decoder))
+        case "$if":     self = .ifCond(try IfNode(from: decoder))
+        case "$switch": self = .switchStmt(try SwitchNode(from: decoder))
+        case "$let":    self = .letBinding(try LetNode(from: decoder))
+        case "$assign": self = .assign(try AssignNode(from: decoder))
+        case "$action": self = .action(try ActionNode(from: decoder))
+        default:        self = .component(try ComponentNode(from: decoder))
+        }
+    }
+}
+```
+
+`Value` decoding is trickier because values can be primitives, objects with `$ref`/`$expr` keys, or data objects with `$type`. The decoder must attempt multiple strategies:
+
+```swift
+extension Value: Decodable {
+    init(from decoder: any Decoder) throws {
+        if let container = try? decoder.singleValueContainer() {
+            if container.decodeNil() { self = .null; return }
+            if let b = try? container.decode(Bool.self) { self = .bool(b); return }
+            if let i = try? container.decode(Int64.self) { self = .int(i); return }
+            if let d = try? container.decode(Double.self) { self = .double(d); return }
+            if let s = try? container.decode(String.self) { self = .string(s); return }
+            if let a = try? container.decode([Value].self) { self = .array(a); return }
+        }
+        let container = try decoder.container(keyedBy: DynamicCodingKey.self)
+        if let key = DynamicCodingKey(stringValue: "$ref"),
+           let name = try? container.decode(String.self, forKey: key) {
+            self = .ref(name); return
+        }
+        if let key = DynamicCodingKey(stringValue: "$expr"),
+           let tuple = try? container.decode([Value].self, forKey: key) {
+            self = .expr(tuple); return
+        }
+        // Fall through to data object (has $type) or generic map
+        if let typeKey = DynamicCodingKey(stringValue: "$type"),
+           let typeName = try? container.decode(String.self, forKey: typeKey) {
+            let fields = try decodeDynamicFields(from: container, excluding: ["$type"])
+            self = .data(DataObject(type: typeName, fields: fields)); return
+        }
+        self = .map(try decodeDynamicFields(from: container, excluding: []))
+    }
+}
+```
+
+**`JSONSerialization` manual parsing** — An alternative is to deserialize into `Any` first, then walk the dictionary tree. This avoids the awkward `Codable` gymnastics for heterogeneous types but loses compile-time safety and requires casting at every level. For a wire format this dynamic, manual parsing may actually be simpler in practice — but it makes it harder to catch malformed payloads early.
+
+A pragmatic middle ground: use `JSONSerialization` to get `[String: Any]`, then convert to the typed `Value` / `TreeNode` model in a second pass. This separates JSON parsing from semantic interpretation.
+
+### Expression Evaluation
+
+`$expr` tuples and `$ref` bindings are resolved against a **scope stack** — an ordered list of `[String: Value]` dictionaries representing state, `$for` bindings, and `$let` bindings. Resolution walks innermost-first:
+
+```swift
+struct Scope: Sendable {
+    private var frames: [[String: Value]]
+
+    func resolve(_ name: String) -> Value? {
+        for frame in frames.reversed() {
+            if let value = frame[name] { return value }
+        }
+        return nil
+    }
+
+    func pushing(_ bindings: [String: Value]) -> Scope {
+        Scope(frames: frames + [bindings])
+    }
+}
+
+func evaluate(_ value: Value, in scope: Scope) -> Value {
+    switch value {
+    case .ref(let name):
+        return scope.resolve(name) ?? .null
+    case .expr(let tuple):
+        guard case .string(let op) = tuple.first else { return .null }
+        switch op {
+        case "+":
+            return add(evaluate(tuple[1], in: scope), evaluate(tuple[2], in: scope))
+        case "get":
+            guard case .string(let root) = tuple[1],
+                  case .string(let field) = tuple[2],
+                  case .data(let obj) = scope.resolve(root) else { return .null }
+            return obj.fields[field] ?? .null
+        default: return .null
+        }
+    default:
+        return value  // literals pass through
+    }
+}
+```
+
+The expression evaluator should enforce the depth and complexity limits described in the security section. A recursive evaluator with a depth counter is straightforward; a stack-based interpreter would be needed if bytecode expressions are adopted later.
+
+### SwiftUI Integration
+
+Deserialized `TreeNode` values must map to SwiftUI views. The core challenge is that SwiftUI's type system is static (`some View`), but the node tree is dynamic.
+
+**Option A: `AnyView` wrapping.** A recursive function maps each node to `AnyView`. This is simple but defeats SwiftUI's diffing optimizations — every re-render produces a new type-erased wrapper, so SwiftUI cannot detect structural identity changes.
+
+**Option B: `@ViewBuilder` with bounded switch.** Since `TreeNode` is an enum with a fixed case set, a `@ViewBuilder` switch produces a concrete `_ConditionalContent` type tree. This preserves structural identity but produces deeply nested generic types for large trees.
+
+**Option C: Custom `View` per node kind.** Each node type gets its own `View` conformance. The top-level renderer switches on the enum and delegates. Combined with `ForEach` for children and `$id` for stable identity, this gives SwiftUI the best diffing information:
+
+```swift
+struct BazaarNodeView: View {
+    let node: TreeNode
+    let scope: Scope
+
+    var body: some View {
+        switch node {
+        case .component(let comp):
+            ComponentView(node: comp, scope: scope)
+        case .ifCond(let ifNode):
+            IfView(node: ifNode, scope: scope)
+        case .forLoop(let forNode):
+            ForLoopView(node: forNode, scope: scope)
+        // ... remaining cases
+        }
+    }
+}
+
+struct ComponentView: View {
+    let node: ComponentNode
+    let scope: Scope
+
+    var body: some View {
+        let resolved = node.props.mapValues { evaluate($0, in: scope) }
+        let content = ForEach(node.children.indices, id: \.self) { i in
+            BazaarNodeView(node: node.children[i], scope: scope)
+        }
+        switch node.type {
+        case "Row":   HStack(spacing: resolved.cgFloat("spacing")) { content }
+        case "Text":  Text(resolved.string("value") ?? "")
+        case "Badge": BadgeView(label: resolved.string("label"), color: resolved.string("color"))
+        default:      FallbackView(typeName: node.type)
+        }
+    }
+}
+```
+
+**Modifier application** is a separate concern. Since modifiers are an ordered array of typed objects, they can be applied with a `reduce` over the chain. This is one place where `AnyView` is hard to avoid — the return type changes with each modifier. This is an acceptable tradeoff since modifier chains are typically short (2-3 deep), and the outer `ComponentView` still maintains structural identity:
+
+```swift
+func applyModifiers(_ modifiers: [Modifier], to view: some View, scope: Scope) -> AnyView {
+    modifiers.reduce(AnyView(view)) { current, mod in
+        switch mod.type {
+        case "Padding":
+            let edges = resolvePaddingEdges(mod, scope: scope)
+            return AnyView(current.padding(edges))
+        case "Opacity":
+            let value = evaluate(mod.fields["value"] ?? .double(1.0), in: scope)
+            return AnyView(current.opacity(value.asDouble ?? 1.0))
+        default:
+            return current  // unknown modifier — pass through
+        }
+    }
+}
+```
+
+**State management** maps to SwiftUI's `@Observable`. The `$state` block at the tree root initializes an observable store. `$assign` nodes in event handlers mutate the store, which triggers SwiftUI re-renders. Whether this store is a flat dictionary (`[String: Value]`) or a generated `@Observable` class depends on whether the client has schema access at build time.
+
+### Tradeoffs and Open Questions
+
+- **Component registry vs inline switch.** A `switch` on `node.type` is a closed mapping — new server-side components require a client update. A dictionary-based registry (`[String: (ComponentNode, Scope) -> AnyView]`) allows dynamic extension but loses type safety.
+- **Performance.** Recursive `AnyView` construction on every state change is a concern for large trees. Memoization, structural identity hints from `$id`, and selective re-evaluation of `$expr` nodes could mitigate this. Instruments profiling on real payloads is needed before optimizing.
+- **Accessibility.** Server-driven views must still produce correct accessibility trees. This likely requires accessibility-related props (`accessibilityLabel`, `accessibilityRole`) in the wire format, passed through to SwiftUI's accessibility modifiers.
+- **Previews.** The server-evaluated examples from sections 2.8 and 2.9 are static JSON — they could drive SwiftUI Previews directly during development, without a running server.
+
 ## References
 
 - [JSX Over The Wire](https://overreacted.io/jsx-over-the-wire/) — serializing component trees as JSON, client vs server component boundaries
