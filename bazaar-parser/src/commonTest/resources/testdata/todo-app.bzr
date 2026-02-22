@@ -1,22 +1,13 @@
-# Bazaar
-
-A statically-typed, component-oriented language for declarative UI definition.
-
-Bazaar is designed around composable UI primitives — components, modifiers, templates, and previews — with a concise syntax that blends declarative structure with imperative logic where needed.
-
-## Example
-
-A TODO app that exercises enums, components, modifiers, data, functions, templates, state, control flow, and previews:
-
-```
 package todo
 
 import ui
 import icons
 
+// --- Enums ---
 enum Priority { low, medium, high }
 enum Filter { all, active, completed }
 
+// --- Components ---
 component Column {
     spacing double = 0
     children [component]
@@ -61,6 +52,7 @@ component Badge {
 
 component Divider {}
 
+// --- Modifiers ---
 modifier Padding {
     top double = 0
     leading double = 0
@@ -78,6 +70,7 @@ modifier Opacity {
     value double = 1.0
 }
 
+// --- Data ---
 data TodoItem {
     id int
     title string
@@ -86,11 +79,13 @@ data TodoItem {
     note string? = null
 }
 
+// --- Functions (server actions) ---
 func AddTodo(title string, priority Priority) -> TodoItem
 func ToggleTodo(id int)
 func DeleteTodo(id int, animated bool = false)
 func ClearCompleted()
 
+// --- Templates ---
 template TodoApp(items [TodoItem], activeCount int) {
     @State var newTitle = ""
     @State var filter = Filter.all
@@ -183,50 +178,3 @@ preview TodoAppPreview {
         TodoItem(3, "Read proposal")
     ], 2)
 }
-```
-
-## Features
-
-- **Declarations**: enums, components, data classes, modifiers, functions, templates, previews
-- **Type system**: named types, function types, arrays, maps, nullable types
-- **Expressions**: arithmetic, comparison, logical, null coalescing (`??`), exponentiation (`**`), optional chaining (`?.`)
-- **Control flow**: if/else with optional binding, for-in, for-condition, switch
-- **Lambdas** with trailing closure syntax
-- **String interpolation** and escape sequences
-- **Annotations**
-- **Imports** with aliases
-
-## Building
-
-**Prerequisites**: Kotlin 2.2+, Gradle 8.13+
-
-```sh
-# Run tests for your host platform
-./gradlew :bazaar-parser:macosArm64Test
-
-# Run all platform tests
-./gradlew :bazaar-parser:allTests
-
-# Regenerate golden test files after intentional AST changes
-RECORD=true ./gradlew :bazaar-parser:allTests
-```
-
-## Project Structure
-
-The `bazaar-parser` module contains the ANTLR4 grammar, Kotlin Multiplatform parser, AST definitions, and test suite.
-
-**Supported platforms**: macOS (ARM64, x64), Linux x64, Windows x64 (MinGW)
-
-## Roadmap
-
-Tracked in [#32 (future language features)](https://github.com/obj-p/bazaar/issues/32) and [#33 (CLI with native binary output)](https://github.com/obj-p/bazaar/issues/33).
-
-- Binary, hex, and octal literals
-- Raw strings and multi-line strings
-- Ternary conditional, range expressions, type casting
-- `break`, `continue`, guard statements
-- Sets, tuples
-- Async/await
-- Pattern matching
-- Generics and protocols
-- Native CLI executable (`bazaar-cli`)
