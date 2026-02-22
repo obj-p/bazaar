@@ -10,15 +10,23 @@ data class BazaarFile(
 
 // --- Package / Import ---
 
-data class PackageDecl(val segments: List<String>)
+data class PackageDecl(
+    val segments: List<String>,
+)
 
-data class ImportDecl(val segments: List<String>, val alias: String? = null)
+data class ImportDecl(
+    val segments: List<String>,
+    val alias: String? = null,
+)
 
 // --- Declarations ---
 
 sealed interface Decl
 
-data class EnumDecl(val name: String, val values: List<String>) : Decl
+data class EnumDecl(
+    val name: String,
+    val values: List<String>,
+) : Decl
 
 data class ComponentDecl(
     val name: String,

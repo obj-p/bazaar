@@ -11,15 +11,16 @@ import kotlin.test.assertEquals
 import kotlin.test.fail
 
 class AstGoldenTest {
-
     private val record = getEnv("RECORD") == "true"
-    private val testdataDir = getEnv("TESTDATA_DIR")
-        ?: error("TESTDATA_DIR environment variable not set")
+    private val testdataDir =
+        getEnv("TESTDATA_DIR")
+            ?: error("TESTDATA_DIR environment variable not set")
 
     private fun goldenTest(name: String) {
-        val source = SystemFileSystem.source(Path(testdataDir, "$name.bzr")).buffered().use {
-            it.readString()
-        }
+        val source =
+            SystemFileSystem.source(Path(testdataDir, "$name.bzr")).buffered().use {
+                it.readString()
+            }
 
         val ast = BazaarParser.parse(source)
         val actual = AstSerializer.serialize(ast)
@@ -44,24 +45,44 @@ class AstGoldenTest {
     }
 
     @Test fun annotations() = goldenTest("annotations")
+
     @Test fun arithmetic() = goldenTest("arithmetic")
+
     @Test fun arrays() = goldenTest("arrays")
+
     @Test fun assigns() = goldenTest("assigns")
+
     @Test fun builtins() = goldenTest("builtins")
+
     @Test fun calls() = goldenTest("calls")
+
     @Test fun edgeCases() = goldenTest("edge-cases")
+
     @Test fun example() = goldenTest("example")
+
     @Test fun fors() = goldenTest("fors")
+
     @Test fun functions() = goldenTest("functions")
+
     @Test fun ifs() = goldenTest("ifs")
+
     @Test fun imports() = goldenTest("imports")
+
     @Test fun lambdas() = goldenTest("lambdas")
+
     @Test fun maps() = goldenTest("maps")
+
     @Test fun operators() = goldenTest("operators")
+
     @Test fun optionalChaining() = goldenTest("optional-chaining")
+
     @Test fun references() = goldenTest("references")
+
     @Test fun scientific() = goldenTest("scientific")
+
     @Test fun strings() = goldenTest("strings")
+
     @Test fun switches() = goldenTest("switches")
+
     @Test fun todo() = goldenTest("todo")
 }

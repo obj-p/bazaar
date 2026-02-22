@@ -6,7 +6,6 @@ import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
 class AstSerializerTest {
-
     @Test
     fun emptyFile() {
         val file = BazaarFile()
@@ -32,12 +31,14 @@ class AstSerializerTest {
 
     @Test
     fun imports() {
-        val file = BazaarFile(
-            imports = listOf(
-                ImportDecl(listOf("layout")),
-                ImportDecl(listOf("com", "example", "utils"), alias = "u"),
-            ),
-        )
+        val file =
+            BazaarFile(
+                imports =
+                    listOf(
+                        ImportDecl(listOf("layout")),
+                        ImportDecl(listOf("com", "example", "utils"), alias = "u"),
+                    ),
+            )
         assertEquals(
             """
             BazaarFile
@@ -54,11 +55,13 @@ class AstSerializerTest {
 
     @Test
     fun enumDecl() {
-        val file = BazaarFile(
-            declarations = listOf(
-                EnumDecl("Color", listOf("Red", "Green", "Blue")),
-            ),
-        )
+        val file =
+            BazaarFile(
+                declarations =
+                    listOf(
+                        EnumDecl("Color", listOf("Red", "Green", "Blue")),
+                    ),
+            )
         assertEquals(
             """
             BazaarFile
@@ -73,24 +76,27 @@ class AstSerializerTest {
 
     @Test
     fun componentWithFields() {
-        val file = BazaarFile(
-            declarations = listOf(
-                ComponentDecl(
-                    name = "Button",
-                    members = listOf(
-                        FieldDecl(
-                            name = "label",
-                            type = ValueType("string"),
-                        ),
-                        FieldDecl(
-                            name = "onClick",
-                            type = FunctionType(emptyList(), nullable = true),
-                            default = NullLiteral,
+        val file =
+            BazaarFile(
+                declarations =
+                    listOf(
+                        ComponentDecl(
+                            name = "Button",
+                            members =
+                                listOf(
+                                    FieldDecl(
+                                        name = "label",
+                                        type = ValueType("string"),
+                                    ),
+                                    FieldDecl(
+                                        name = "onClick",
+                                        type = FunctionType(emptyList(), nullable = true),
+                                        default = NullLiteral,
+                                    ),
+                                ),
                         ),
                     ),
-                ),
-            ),
-        )
+            )
         assertEquals(
             """
             BazaarFile
@@ -117,18 +123,21 @@ class AstSerializerTest {
 
     @Test
     fun functionDeclWithParams() {
-        val file = BazaarFile(
-            declarations = listOf(
-                FunctionDecl(
-                    name = "add",
-                    params = listOf(
-                        ParameterDecl("x", ValueType("int")),
-                        ParameterDecl("y", ValueType("int")),
+        val file =
+            BazaarFile(
+                declarations =
+                    listOf(
+                        FunctionDecl(
+                            name = "add",
+                            params =
+                                listOf(
+                                    ParameterDecl("x", ValueType("int")),
+                                    ParameterDecl("y", ValueType("int")),
+                                ),
+                            returnType = ValueType("int"),
+                        ),
                     ),
-                    returnType = ValueType("int"),
-                ),
-            ),
-        )
+            )
         assertEquals(
             """
             BazaarFile
@@ -156,26 +165,32 @@ class AstSerializerTest {
 
     @Test
     fun ifStatement() {
-        val file = BazaarFile(
-            declarations = listOf(
-                TemplateDecl(
-                    name = "Test",
-                    body = listOf(
-                        IfStmt(
-                            fragments = listOf(
-                                IfExprFragment(BoolLiteral(true)),
-                            ),
-                            body = listOf(
-                                ReturnStmt(),
-                            ),
-                            elseBody = listOf(
-                                ReturnStmt(NumberLiteral("0")),
-                            ),
+        val file =
+            BazaarFile(
+                declarations =
+                    listOf(
+                        TemplateDecl(
+                            name = "Test",
+                            body =
+                                listOf(
+                                    IfStmt(
+                                        fragments =
+                                            listOf(
+                                                IfExprFragment(BoolLiteral(true)),
+                                            ),
+                                        body =
+                                            listOf(
+                                                ReturnStmt(),
+                                            ),
+                                        elseBody =
+                                            listOf(
+                                                ReturnStmt(NumberLiteral("0")),
+                                            ),
+                                    ),
+                                ),
                         ),
                     ),
-                ),
-            ),
-        )
+            )
         assertEquals(
             """
             BazaarFile
@@ -203,16 +218,19 @@ class AstSerializerTest {
 
     @Test
     fun nullLiteral() {
-        val file = BazaarFile(
-            declarations = listOf(
-                FunctionDecl(
-                    name = "f",
-                    body = listOf(
-                        ReturnStmt(NullLiteral),
+        val file =
+            BazaarFile(
+                declarations =
+                    listOf(
+                        FunctionDecl(
+                            name = "f",
+                            body =
+                                listOf(
+                                    ReturnStmt(NullLiteral),
+                                ),
+                        ),
                     ),
-                ),
-            ),
-        )
+            )
         val result = AstSerializer.serialize(file)
         assertTrue(result.contains("NullLiteral"), "Should contain NullLiteral")
         assertFalse(result.contains("NullLiteral\n            value:"), "NullLiteral should have no children")
@@ -220,43 +238,49 @@ class AstSerializerTest {
 
     @Test
     fun memberExprWithOptional() {
-        val expr = MemberExpr(
-            target = ReferenceExpr("foo"),
-            member = "bar",
-            optional = true,
-        )
-        val file = BazaarFile(
-            declarations = listOf(
-                FunctionDecl(
-                    name = "f",
-                    body = listOf(ExprStmt(expr)),
-                ),
-            ),
-        )
+        val expr =
+            MemberExpr(
+                target = ReferenceExpr("foo"),
+                member = "bar",
+                optional = true,
+            )
+        val file =
+            BazaarFile(
+                declarations =
+                    listOf(
+                        FunctionDecl(
+                            name = "f",
+                            body = listOf(ExprStmt(expr)),
+                        ),
+                    ),
+            )
         val result = AstSerializer.serialize(file)
         assertTrue(result.contains("optional: true"), "Should contain optional: true")
     }
 
     @Test
     fun stringLiteralWithParts() {
-        val file = BazaarFile(
-            declarations = listOf(
-                FunctionDecl(
-                    name = "f",
-                    body = listOf(
-                        ExprStmt(
-                            StringLiteral(
+        val file =
+            BazaarFile(
+                declarations =
+                    listOf(
+                        FunctionDecl(
+                            name = "f",
+                            body =
                                 listOf(
-                                    TextPart("hello "),
-                                    InterpolationPart(ReferenceExpr("name")),
-                                    EscapePart("\\n"),
+                                    ExprStmt(
+                                        StringLiteral(
+                                            listOf(
+                                                TextPart("hello "),
+                                                InterpolationPart(ReferenceExpr("name")),
+                                                EscapePart("\\n"),
+                                            ),
+                                        ),
+                                    ),
                                 ),
-                            ),
                         ),
                     ),
-                ),
-            ),
-        )
+            )
         val result = AstSerializer.serialize(file)
         assertTrue(result.contains("TextPart"), "Should contain TextPart")
         assertTrue(result.contains("InterpolationPart"), "Should contain InterpolationPart")

@@ -11,7 +11,9 @@ sealed interface IrTemplateNode
 
 // Placeholder: raw AST body not yet analyzed by Pass 4.
 // Present between Pass 2 and Pass 4; replaced by Pass 4.
-data class IrRawBody(val stmts: List<Stmt>) : IrTemplateNode
+data class IrRawBody(
+    val stmts: List<Stmt>,
+) : IrTemplateNode
 
 // Component or template instantiation: Row { ... }, Text("hello")
 data class IrComponentCall(
@@ -30,21 +32,40 @@ data class IrFunctionCall(
 ) : IrTemplateNode
 
 // Mapped from Argument(name, value) in the parser AST
-data class IrCallArg(val name: String?, val value: Expr)
+data class IrCallArg(
+    val name: String?,
+    val value: Expr,
+)
 
-data class IrModifierCall(val name: String, val args: List<IrCallArg>)
+data class IrModifierCall(
+    val name: String,
+    val args: List<IrCallArg>,
+)
 
 // @State variable: @State var count = 0
-data class IrStateDecl(val name: String, val value: Expr) : IrTemplateNode
+data class IrStateDecl(
+    val name: String,
+    val value: Expr,
+) : IrTemplateNode
 
 // Local variable: var label = "hi"
-data class IrLocalDecl(val names: List<String>, val value: Expr) : IrTemplateNode
+data class IrLocalDecl(
+    val names: List<String>,
+    val value: Expr,
+) : IrTemplateNode
 
 // For-in loop
-data class IrForNode(val names: List<String>, val iterable: Expr, val body: List<IrTemplateNode>) : IrTemplateNode
+data class IrForNode(
+    val names: List<String>,
+    val iterable: Expr,
+    val body: List<IrTemplateNode>,
+) : IrTemplateNode
 
 // While-style loop: for condition { ... }
-data class IrForCondNode(val condition: Expr, val body: List<IrTemplateNode>) : IrTemplateNode
+data class IrForCondNode(
+    val condition: Expr,
+    val body: List<IrTemplateNode>,
+) : IrTemplateNode
 
 // If/else conditional
 data class IrIfNode(
@@ -54,17 +75,34 @@ data class IrIfNode(
     val elseBody: List<IrTemplateNode>?,
 ) : IrTemplateNode
 
-data class IrElseIfBranch(val fragments: List<IfFragment>, val body: List<IrTemplateNode>)
+data class IrElseIfBranch(
+    val fragments: List<IfFragment>,
+    val body: List<IrTemplateNode>,
+)
 
 // Switch statement
-data class IrSwitchNode(val expr: Expr, val cases: List<IrSwitchCase>, val default: List<IrTemplateNode>?) : IrTemplateNode
-data class IrSwitchCase(val expr: Expr, val body: List<IrTemplateNode>)
+data class IrSwitchNode(
+    val expr: Expr,
+    val cases: List<IrSwitchCase>,
+    val default: List<IrTemplateNode>?,
+) : IrTemplateNode
+
+data class IrSwitchCase(
+    val expr: Expr,
+    val body: List<IrTemplateNode>,
+)
 
 // Assignment: count += 1
-data class IrAssignNode(val stmt: AssignStmt) : IrTemplateNode
+data class IrAssignNode(
+    val stmt: AssignStmt,
+) : IrTemplateNode
 
 // Return statement — error in templates, but captured for diagnostics
-data class IrReturnNode(val value: Expr?) : IrTemplateNode
+data class IrReturnNode(
+    val value: Expr?,
+) : IrTemplateNode
 
 // Catch-all expression statement (non-call expressions)
-data class IrExprNode(val expr: Expr) : IrTemplateNode
+data class IrExprNode(
+    val expr: Expr,
+) : IrTemplateNode

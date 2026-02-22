@@ -4,7 +4,11 @@ import com.bazaar.parser.ParseResult
 import com.bazaar.parser.ast.AstSerializer
 import com.bazaar.parser.serializeDiagnostics
 
-fun formatTextResult(filePath: String, result: ParseResult, multiFile: Boolean): String {
+fun formatTextResult(
+    filePath: String,
+    result: ParseResult,
+    multiFile: Boolean,
+): String {
     val sb = StringBuilder()
     if (multiFile) {
         sb.appendLine("--- $filePath ---")
@@ -19,7 +23,10 @@ fun formatTextResult(filePath: String, result: ParseResult, multiFile: Boolean):
     return sb.toString()
 }
 
-fun formatJsonResult(filePath: String, result: ParseResult): String {
+fun formatJsonResult(
+    filePath: String,
+    result: ParseResult,
+): String {
     val sb = StringBuilder()
     sb.appendLine("{")
     sb.appendLine("  \"file\": ${jsonString(filePath)},")
@@ -57,11 +64,12 @@ private fun jsonString(value: String): String {
             '\n' -> sb.append("\\n")
             '\r' -> sb.append("\\r")
             '\t' -> sb.append("\\t")
-            else -> if (c < '\u0020') {
-                sb.append("\\u${c.code.toString(16).padStart(4, '0')}")
-            } else {
-                sb.append(c)
-            }
+            else ->
+                if (c < '\u0020') {
+                    sb.append("\\u${c.code.toString(16).padStart(4, '0')}")
+                } else {
+                    sb.append(c)
+                }
         }
     }
     sb.append('"')

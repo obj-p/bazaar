@@ -13,25 +13,26 @@ import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
 class ParserTest {
-
     private fun parse(input: String): BazaarParser.BazaarFileContext {
         val lexer = BazaarLexer(CharStreams.fromString(input))
         val tokens = CommonTokenStream(lexer)
         val parser = BazaarParser(tokens)
         val errors = mutableListOf<String>()
         parser.removeErrorListeners()
-        parser.addErrorListener(object : BaseErrorListener() {
-            override fun syntaxError(
-                recognizer: Recognizer<*, *>,
-                offendingSymbol: Any?,
-                line: Int,
-                charPositionInLine: Int,
-                msg: String,
-                e: RecognitionException?,
-            ) {
-                errors.add("$line:$charPositionInLine $msg")
-            }
-        })
+        parser.addErrorListener(
+            object : BaseErrorListener() {
+                override fun syntaxError(
+                    recognizer: Recognizer<*, *>,
+                    offendingSymbol: Any?,
+                    line: Int,
+                    charPositionInLine: Int,
+                    msg: String,
+                    e: RecognitionException?,
+                ) {
+                    errors.add("$line:$charPositionInLine $msg")
+                }
+            },
+        )
         val tree = parser.bazaarFile()
         assertEquals(emptyList(), errors, "Parse errors")
         return tree
@@ -39,7 +40,14 @@ class ParserTest {
 
     private fun parseExpr(exprText: String): BazaarParser.ExprContext {
         val tree = parse("component Foo { x int = $exprText }")
-        return tree.topLevelDecl().single().componentDecl()!!.memberDecl().single().fieldDecl()!!.expr()!!
+        return tree
+            .topLevelDecl()
+            .single()
+            .componentDecl()!!
+            .memberDecl()
+            .single()
+            .fieldDecl()!!
+            .expr()!!
     }
 
     private fun parseExprPermissive(exprText: String): BazaarParser.ExprContext {
@@ -49,17 +57,35 @@ class ParserTest {
         val parser = BazaarParser(tokens)
         parser.removeErrorListeners()
         val tree = parser.bazaarFile()
-        return tree.topLevelDecl().first().componentDecl()!!.memberDecl().first().fieldDecl()!!.expr()!!
+        return tree
+            .topLevelDecl()
+            .first()
+            .componentDecl()!!
+            .memberDecl()
+            .first()
+            .fieldDecl()!!
+            .expr()!!
     }
 
     private fun parseStmt(stmtText: String): BazaarParser.StmtContext {
         val tree = parse("func Test() { $stmtText }")
-        return tree.topLevelDecl().single().functionDecl()!!.block()!!.stmt().single()
+        return tree
+            .topLevelDecl()
+            .single()
+            .functionDecl()!!
+            .block()!!
+            .stmt()
+            .single()
     }
 
     private fun parseStmts(bodyText: String): List<BazaarParser.StmtContext> {
         val tree = parse("func Test() { $bodyText }")
-        return tree.topLevelDecl().single().functionDecl()!!.block()!!.stmt()
+        return tree
+            .topLevelDecl()
+            .single()
+            .functionDecl()!!
+            .block()!!
+            .stmt()
     }
 
     private fun parseFails(input: String) {
@@ -68,18 +94,20 @@ class ParserTest {
         val parser = BazaarParser(tokens)
         val errors = mutableListOf<String>()
         parser.removeErrorListeners()
-        parser.addErrorListener(object : BaseErrorListener() {
-            override fun syntaxError(
-                recognizer: Recognizer<*, *>,
-                offendingSymbol: Any?,
-                line: Int,
-                charPositionInLine: Int,
-                msg: String,
-                e: RecognitionException?,
-            ) {
-                errors.add("$line:$charPositionInLine $msg")
-            }
-        })
+        parser.addErrorListener(
+            object : BaseErrorListener() {
+                override fun syntaxError(
+                    recognizer: Recognizer<*, *>,
+                    offendingSymbol: Any?,
+                    line: Int,
+                    charPositionInLine: Int,
+                    msg: String,
+                    e: RecognitionException?,
+                ) {
+                    errors.add("$line:$charPositionInLine $msg")
+                }
+            },
+        )
         parser.bazaarFile()
         assertTrue(errors.isNotEmpty(), "Expected parse errors but got none")
     }
@@ -92,18 +120,26 @@ class ParserTest {
     @Test
     fun packageOnly() {
         val tree = parse("package foo.bar")
-        assertEquals(2, tree.packageDecl()!!.qualifiedName().IDENTIFIER().size)
+        assertEquals(
+            2,
+            tree
+                .packageDecl()!!
+                .qualifiedName()
+                .IDENTIFIER()
+                .size,
+        )
     }
 
     @Test
     fun importsWithAliases() {
-        val tree = parse(
-            """
-            package imp
-            import a.b
-            import c as D
-            """.trimIndent()
-        )
+        val tree =
+            parse(
+                """
+                package imp
+                import a.b
+                import c as D
+                """.trimIndent(),
+            )
         assertEquals(2, tree.importDecl().size)
     }
 
@@ -138,14 +174,15 @@ class ParserTest {
 
     @Test
     fun componentWithFields() {
-        val tree = parse(
-            """
-            component Foo {
-                name string
-                age int = 0
-            }
-            """.trimIndent()
-        )
+        val tree =
+            parse(
+                """
+                component Foo {
+                    name string
+                    age int = 0
+                }
+                """.trimIndent(),
+            )
         val decl = tree.topLevelDecl().single().componentDecl()!!
         assertEquals(2, decl.memberDecl().size)
     }
@@ -159,15 +196,16 @@ class ParserTest {
 
     @Test
     fun modifierWithConstructor() {
-        val tree = parse(
-            """
-            modifier Padding {
-                top double
-                bottom double
-                constructor(all double) = Padding(all, all)
-            }
-            """.trimIndent()
-        )
+        val tree =
+            parse(
+                """
+                modifier Padding {
+                    top double
+                    bottom double
+                    constructor(all double) = Padding(all, all)
+                }
+                """.trimIndent(),
+            )
         val decl = tree.topLevelDecl().single().modifierDecl()!!
         assertEquals(3, decl.memberDecl().size)
         val ctor = decl.memberDecl().last().constructorDecl()!!
@@ -215,21 +253,34 @@ class ParserTest {
     @Test
     fun keywordAsFieldName() {
         val tree = parse("component Foo { data string }")
-        val field = tree.topLevelDecl().single().componentDecl()!!.memberDecl().single().fieldDecl()!!
+        val field =
+            tree
+                .topLevelDecl()
+                .single()
+                .componentDecl()!!
+                .memberDecl()
+                .single()
+                .fieldDecl()!!
         assertEquals("data", field.identOrKeyword()!!.text)
     }
 
     @Test
     fun optionalAndArrayTypes() {
-        val tree = parse(
-            """
-            component Foo {
-                name string?
-                items [int]
-            }
-            """.trimIndent()
-        )
-        val members = tree.topLevelDecl().single().componentDecl()!!.memberDecl()
+        val tree =
+            parse(
+                """
+                component Foo {
+                    name string?
+                    items [int]
+                }
+                """.trimIndent(),
+            )
+        val members =
+            tree
+                .topLevelDecl()
+                .single()
+                .componentDecl()!!
+                .memberDecl()
         assertEquals(2, members.size)
     }
 
@@ -244,7 +295,14 @@ class ParserTest {
     @Test
     fun paramWithDefault() {
         val tree = parse("func Foo(x int = 0)")
-        val param = tree.topLevelDecl().single().functionDecl()!!.parameterList()!!.parameterDecl().single()
+        val param =
+            tree
+                .topLevelDecl()
+                .single()
+                .functionDecl()!!
+                .parameterList()!!
+                .parameterDecl()
+                .single()
         assertEquals("x", param.identOrKeyword()!!.text)
         assertEquals("0", param.expr()!!.text)
     }
@@ -258,28 +316,35 @@ class ParserTest {
 
     @Test
     fun blockWithStringInterp() {
-        val tree = parse(
-            """
-            template Foo { "${"\$"}{x}" }
-            """.trimIndent()
-        )
+        val tree =
+            parse(
+                """
+                template Foo { "${"\$"}{x}" }
+                """.trimIndent(),
+            )
         val decl = tree.topLevelDecl().single().templateDecl()!!
         assertEquals(1, decl.block()!!.stmt().size)
     }
 
     @Test
     fun mapType() {
-        val tree = parse(
-            """
-            data Lookup {
-                basic {string: int}
-                optionalValue {string: int?}
-                optionalMap {string: int}?
-                nestedArray {string: [int]}
-            }
-            """.trimIndent()
-        )
-        val members = tree.topLevelDecl().single().dataDecl()!!.memberDecl()
+        val tree =
+            parse(
+                """
+                data Lookup {
+                    basic {string: int}
+                    optionalValue {string: int?}
+                    optionalMap {string: int}?
+                    nestedArray {string: [int]}
+                }
+                """.trimIndent(),
+            )
+        val members =
+            tree
+                .topLevelDecl()
+                .single()
+                .dataDecl()!!
+                .memberDecl()
         assertEquals(4, members.size)
     }
 
@@ -294,7 +359,12 @@ class ParserTest {
     @Test
     fun nestedMapType() {
         val tree = parse("data Nested { inner {string: {string: int}} }")
-        val members = tree.topLevelDecl().single().dataDecl()!!.memberDecl()
+        val members =
+            tree
+                .topLevelDecl()
+                .single()
+                .dataDecl()!!
+                .memberDecl()
         assertEquals(1, members.size)
     }
 
@@ -307,19 +377,25 @@ class ParserTest {
 
     @Test
     fun functionTypeFields() {
-        val tree = parse(
-            """
-            data Callbacks {
-                a func()
-                b func(int, int) -> int
-                c func(int,)
-                d func()?
-                e (func() -> string?)?
-                f ((func()?))
-            }
-            """.trimIndent()
-        )
-        val members = tree.topLevelDecl().single().dataDecl()!!.memberDecl()
+        val tree =
+            parse(
+                """
+                data Callbacks {
+                    a func()
+                    b func(int, int) -> int
+                    c func(int,)
+                    d func()?
+                    e (func() -> string?)?
+                    f ((func()?))
+                }
+                """.trimIndent(),
+            )
+        val members =
+            tree
+                .topLevelDecl()
+                .single()
+                .dataDecl()!!
+                .memberDecl()
         assertEquals(6, members.size)
     }
 
@@ -333,56 +409,102 @@ class ParserTest {
     @Test
     fun componentArrayType() {
         val tree = parse("component Row { children [component] }")
-        val members = tree.topLevelDecl().single().componentDecl()!!.memberDecl()
+        val members =
+            tree
+                .topLevelDecl()
+                .single()
+                .componentDecl()!!
+                .memberDecl()
         assertEquals(1, members.size)
     }
 
     @Test
     fun numberExpr() {
         val tree = parse("component Foo { x int = 42 }")
-        val field = tree.topLevelDecl().single().componentDecl()!!.memberDecl().single().fieldDecl()!!
+        val field =
+            tree
+                .topLevelDecl()
+                .single()
+                .componentDecl()!!
+                .memberDecl()
+                .single()
+                .fieldDecl()!!
         assertIs<BazaarParser.NumberExprContext>(field.expr()!!)
     }
 
     @Test
     fun stringExpr() {
         val tree = parse("component Foo { x string = \"hello\" }")
-        val field = tree.topLevelDecl().single().componentDecl()!!.memberDecl().single().fieldDecl()!!
+        val field =
+            tree
+                .topLevelDecl()
+                .single()
+                .componentDecl()!!
+                .memberDecl()
+                .single()
+                .fieldDecl()!!
         assertIs<BazaarParser.StringExprContext>(field.expr()!!)
     }
 
     @Test
     fun identExpr() {
         val tree = parse("component Foo { x int = y }")
-        val field = tree.topLevelDecl().single().componentDecl()!!.memberDecl().single().fieldDecl()!!
+        val field =
+            tree
+                .topLevelDecl()
+                .single()
+                .componentDecl()!!
+                .memberDecl()
+                .single()
+                .fieldDecl()!!
         assertIs<BazaarParser.IdentExprContext>(field.expr()!!)
     }
 
     @Test
     fun parenExpr() {
         val tree = parse("component Foo { x int = (42) }")
-        val field = tree.topLevelDecl().single().componentDecl()!!.memberDecl().single().fieldDecl()!!
+        val field =
+            tree
+                .topLevelDecl()
+                .single()
+                .componentDecl()!!
+                .memberDecl()
+                .single()
+                .fieldDecl()!!
         assertIs<BazaarParser.ParenExprContext>(field.expr()!!)
     }
 
     @Test
     fun nullLiteral() {
         val tree = parse("component Foo { x int? = null }")
-        val field = tree.topLevelDecl().single().componentDecl()!!.memberDecl().single().fieldDecl()!!
+        val field =
+            tree
+                .topLevelDecl()
+                .single()
+                .componentDecl()!!
+                .memberDecl()
+                .single()
+                .fieldDecl()!!
         assertIs<BazaarParser.NullExprContext>(field.expr()!!)
     }
 
     @Test
     fun booleanLiterals() {
-        val tree = parse(
-            """
-            component Foo {
-                a bool = true
-                b bool = false
-            }
-            """.trimIndent()
-        )
-        val members = tree.topLevelDecl().single().componentDecl()!!.memberDecl()
+        val tree =
+            parse(
+                """
+                component Foo {
+                    a bool = true
+                    b bool = false
+                }
+                """.trimIndent(),
+            )
+        val members =
+            tree
+                .topLevelDecl()
+                .single()
+                .componentDecl()!!
+                .memberDecl()
         assertIs<BazaarParser.TrueExprContext>(members[0].fieldDecl()!!.expr()!!)
         assertIs<BazaarParser.FalseExprContext>(members[1].fieldDecl()!!.expr()!!)
     }
@@ -390,7 +512,14 @@ class ParserTest {
     @Test
     fun emptyMapLiteral() {
         val tree = parse("component Foo { x {string: int} = {:} }")
-        val field = tree.topLevelDecl().single().componentDecl()!!.memberDecl().single().fieldDecl()!!
+        val field =
+            tree
+                .topLevelDecl()
+                .single()
+                .componentDecl()!!
+                .memberDecl()
+                .single()
+                .fieldDecl()!!
         val expr = field.expr()!! as BazaarParser.MapExprContext
         val map = expr.mapLiteral()!!
         assertEquals(0, map.mapEntry().size)
@@ -398,16 +527,22 @@ class ParserTest {
 
     @Test
     fun mapLiteralWithEntries() {
-        val tree = parse(
-            """
-            data Foo {
-                x {string: int} = {a: 1, b: 2}
-                y {string: int} = {"key": 42}
-                z {string: int} = {c: 3,}
-            }
-            """.trimIndent()
-        )
-        val members = tree.topLevelDecl().single().dataDecl()!!.memberDecl()
+        val tree =
+            parse(
+                """
+                data Foo {
+                    x {string: int} = {a: 1, b: 2}
+                    y {string: int} = {"key": 42}
+                    z {string: int} = {c: 3,}
+                }
+                """.trimIndent(),
+            )
+        val members =
+            tree
+                .topLevelDecl()
+                .single()
+                .dataDecl()!!
+                .memberDecl()
         val xMap = (members[0].fieldDecl()!!.expr()!! as BazaarParser.MapExprContext).mapLiteral()!!
         assertEquals(2, xMap.mapEntry().size)
         val yMap = (members[1].fieldDecl()!!.expr()!! as BazaarParser.MapExprContext).mapLiteral()!!
@@ -419,7 +554,14 @@ class ParserTest {
     @Test
     fun mapLiteralWithNullValue() {
         val tree = parse("component Foo { x {string: int?} = {\"key\": null} }")
-        val field = tree.topLevelDecl().single().componentDecl()!!.memberDecl().single().fieldDecl()!!
+        val field =
+            tree
+                .topLevelDecl()
+                .single()
+                .componentDecl()!!
+                .memberDecl()
+                .single()
+                .fieldDecl()!!
         val map = (field.expr()!! as BazaarParser.MapExprContext).mapLiteral()!!
         assertEquals(1, map.mapEntry().size)
         assertIs<BazaarParser.NullExprContext>(map.mapEntry().single().expr(1)!!)
@@ -428,37 +570,77 @@ class ParserTest {
     @Test
     fun mapInsideArray() {
         val tree = parse("component Foo { x [{string: int}] = [{:}] }")
-        val field = tree.topLevelDecl().single().componentDecl()!!.memberDecl().single().fieldDecl()!!
+        val field =
+            tree
+                .topLevelDecl()
+                .single()
+                .componentDecl()!!
+                .memberDecl()
+                .single()
+                .fieldDecl()!!
         val arr = field.expr()!! as BazaarParser.ArrayExprContext
-        val inner = arr.argList()!!.arg().single().expr()!! as BazaarParser.MapExprContext
+        val inner =
+            arr
+                .argList()!!
+                .arg()
+                .single()
+                .expr()!! as BazaarParser.MapExprContext
         assertEquals(0, inner.mapLiteral()!!.mapEntry().size)
     }
 
     @Test
     fun optionalMemberAccess() {
         val tree = parse("component Foo { x int = a?.b }")
-        val field = tree.topLevelDecl().single().componentDecl()!!.memberDecl().single().fieldDecl()!!
+        val field =
+            tree
+                .topLevelDecl()
+                .single()
+                .componentDecl()!!
+                .memberDecl()
+                .single()
+                .fieldDecl()!!
         assertIs<BazaarParser.OptionalMemberExprContext>(field.expr()!!)
     }
 
     @Test
     fun optionalIndexAccess() {
         val tree = parse("component Foo { x int = a?[0] }")
-        val field = tree.topLevelDecl().single().componentDecl()!!.memberDecl().single().fieldDecl()!!
+        val field =
+            tree
+                .topLevelDecl()
+                .single()
+                .componentDecl()!!
+                .memberDecl()
+                .single()
+                .fieldDecl()!!
         assertIs<BazaarParser.OptionalIndexExprContext>(field.expr()!!)
     }
 
     @Test
     fun optionalCall() {
         val tree = parse("component Foo { x int = a?(b) }")
-        val field = tree.topLevelDecl().single().componentDecl()!!.memberDecl().single().fieldDecl()!!
+        val field =
+            tree
+                .topLevelDecl()
+                .single()
+                .componentDecl()!!
+                .memberDecl()
+                .single()
+                .fieldDecl()!!
         assertIs<BazaarParser.OptionalCallExprContext>(field.expr()!!)
     }
 
     @Test
     fun chainedOptionalAccess() {
         val tree = parse("component Foo { x int = a?.b?.c }")
-        val field = tree.topLevelDecl().single().componentDecl()!!.memberDecl().single().fieldDecl()!!
+        val field =
+            tree
+                .topLevelDecl()
+                .single()
+                .componentDecl()!!
+                .memberDecl()
+                .single()
+                .fieldDecl()!!
         val outer = field.expr()!! as BazaarParser.OptionalMemberExprContext
         assertIs<BazaarParser.OptionalMemberExprContext>(outer.expr()!!)
     }
@@ -466,7 +648,14 @@ class ParserTest {
     @Test
     fun mixedOptionalChain() {
         val tree = parse("component Foo { x int = a?.b?[0]?.c() }")
-        val field = tree.topLevelDecl().single().componentDecl()!!.memberDecl().single().fieldDecl()!!
+        val field =
+            tree
+                .topLevelDecl()
+                .single()
+                .componentDecl()!!
+                .memberDecl()
+                .single()
+                .fieldDecl()!!
         // Outermost: ?.c() → callExpr wrapping optionalMemberExpr
         val call = field.expr()!! as BazaarParser.CallExprContext
         val optMember = call.expr()!! as BazaarParser.OptionalMemberExprContext
@@ -477,7 +666,14 @@ class ParserTest {
     @Test
     fun chainedMemberAccess() {
         val tree = parse("component Foo { x int = a.b.c }")
-        val field = tree.topLevelDecl().single().componentDecl()!!.memberDecl().single().fieldDecl()!!
+        val field =
+            tree
+                .topLevelDecl()
+                .single()
+                .componentDecl()!!
+                .memberDecl()
+                .single()
+                .fieldDecl()!!
         val outer = field.expr()!! as BazaarParser.MemberExprContext
         assertIs<BazaarParser.MemberExprContext>(outer.expr()!!)
     }
@@ -485,7 +681,14 @@ class ParserTest {
     @Test
     fun memberThenCall() {
         val tree = parse("component Foo { x int = a.b() }")
-        val field = tree.topLevelDecl().single().componentDecl()!!.memberDecl().single().fieldDecl()!!
+        val field =
+            tree
+                .topLevelDecl()
+                .single()
+                .componentDecl()!!
+                .memberDecl()
+                .single()
+                .fieldDecl()!!
         val call = field.expr()!! as BazaarParser.CallExprContext
         assertIs<BazaarParser.MemberExprContext>(call.expr()!!)
     }
@@ -493,22 +696,37 @@ class ParserTest {
     @Test
     fun indexThenMember() {
         val tree = parse("component Foo { x int = a[0].b }")
-        val field = tree.topLevelDecl().single().componentDecl()!!.memberDecl().single().fieldDecl()!!
+        val field =
+            tree
+                .topLevelDecl()
+                .single()
+                .componentDecl()!!
+                .memberDecl()
+                .single()
+                .fieldDecl()!!
         val member = field.expr()!! as BazaarParser.MemberExprContext
         assertIs<BazaarParser.IndexExprContext>(member.expr()!!)
     }
 
     @Test
     fun callWithNamedArgs() {
-        val tree = parse(
-            """
-            modifier Padding {
-                top double
-                constructor(all double) = Padding(top = all)
-            }
-            """.trimIndent()
-        )
-        val ctor = tree.topLevelDecl().single().modifierDecl()!!.memberDecl().last().constructorDecl()!!
+        val tree =
+            parse(
+                """
+                modifier Padding {
+                    top double
+                    constructor(all double) = Padding(top = all)
+                }
+                """.trimIndent(),
+            )
+        val ctor =
+            tree
+                .topLevelDecl()
+                .single()
+                .modifierDecl()!!
+                .memberDecl()
+                .last()
+                .constructorDecl()!!
         val call = ctor.expr()!! as BazaarParser.CallExprContext
         val arg = call.argList()!!.arg().single()
         assertEquals("top", arg.IDENTIFIER()!!.text)
@@ -519,7 +737,14 @@ class ParserTest {
     @Test
     fun addAndMulPrecedence() {
         val tree = parse("component Foo { x int = 1 + 2 * 3 }")
-        val field = tree.topLevelDecl().single().componentDecl()!!.memberDecl().single().fieldDecl()!!
+        val field =
+            tree
+                .topLevelDecl()
+                .single()
+                .componentDecl()!!
+                .memberDecl()
+                .single()
+                .fieldDecl()!!
         val add = assertIs<BazaarParser.AddExprContext>(field.expr()!!)
         assertIs<BazaarParser.NumberExprContext>(add.expr(0)!!)
         assertIs<BazaarParser.MulExprContext>(add.expr(1)!!)
@@ -528,7 +753,14 @@ class ParserTest {
     @Test
     fun rightAssocPower() {
         val tree = parse("component Foo { x int = 2 ** 3 ** 4 }")
-        val field = tree.topLevelDecl().single().componentDecl()!!.memberDecl().single().fieldDecl()!!
+        val field =
+            tree
+                .topLevelDecl()
+                .single()
+                .componentDecl()!!
+                .memberDecl()
+                .single()
+                .fieldDecl()!!
         val outer = assertIs<BazaarParser.PowerExprContext>(field.expr()!!)
         assertIs<BazaarParser.NumberExprContext>(outer.expr(0)!!)
         assertIs<BazaarParser.PowerExprContext>(outer.expr(1)!!)
@@ -537,7 +769,14 @@ class ParserTest {
     @Test
     fun rightAssocCoalesce() {
         val tree = parse("component Foo { x int = a ?? b ?? c }")
-        val field = tree.topLevelDecl().single().componentDecl()!!.memberDecl().single().fieldDecl()!!
+        val field =
+            tree
+                .topLevelDecl()
+                .single()
+                .componentDecl()!!
+                .memberDecl()
+                .single()
+                .fieldDecl()!!
         val outer = assertIs<BazaarParser.CoalesceExprContext>(field.expr()!!)
         assertIs<BazaarParser.IdentExprContext>(outer.expr(0)!!)
         assertIs<BazaarParser.CoalesceExprContext>(outer.expr(1)!!)
@@ -546,7 +785,14 @@ class ParserTest {
     @Test
     fun unaryNotPrecedence() {
         val tree = parse("component Foo { x bool = !a && b }")
-        val field = tree.topLevelDecl().single().componentDecl()!!.memberDecl().single().fieldDecl()!!
+        val field =
+            tree
+                .topLevelDecl()
+                .single()
+                .componentDecl()!!
+                .memberDecl()
+                .single()
+                .fieldDecl()!!
         val and = assertIs<BazaarParser.AndExprContext>(field.expr()!!)
         assertIs<BazaarParser.UnaryExprContext>(and.expr(0)!!)
         assertIs<BazaarParser.IdentExprContext>(and.expr(1)!!)
@@ -555,7 +801,14 @@ class ParserTest {
     @Test
     fun unaryMinusWithPower() {
         val tree = parse("component Foo { x int = -a ** 2 }")
-        val field = tree.topLevelDecl().single().componentDecl()!!.memberDecl().single().fieldDecl()!!
+        val field =
+            tree
+                .topLevelDecl()
+                .single()
+                .componentDecl()!!
+                .memberDecl()
+                .single()
+                .fieldDecl()!!
         // unary binds tighter than **: (-a) ** 2
         val power = assertIs<BazaarParser.PowerExprContext>(field.expr()!!)
         assertIs<BazaarParser.UnaryExprContext>(power.expr(0)!!)
@@ -565,7 +818,14 @@ class ParserTest {
     @Test
     fun mixedPrecedence() {
         val tree = parse("component Foo { x bool = a + b * c == d }")
-        val field = tree.topLevelDecl().single().componentDecl()!!.memberDecl().single().fieldDecl()!!
+        val field =
+            tree
+                .topLevelDecl()
+                .single()
+                .componentDecl()!!
+                .memberDecl()
+                .single()
+                .fieldDecl()!!
         // == is lowest here, wrapping (a + b*c) and d
         val eq = assertIs<BazaarParser.EqualExprContext>(field.expr()!!)
         assertIs<BazaarParser.AddExprContext>(eq.expr(0)!!)
@@ -575,7 +835,14 @@ class ParserTest {
     @Test
     fun logicalPrecedence() {
         val tree = parse("component Foo { x bool = a && b || c }")
-        val field = tree.topLevelDecl().single().componentDecl()!!.memberDecl().single().fieldDecl()!!
+        val field =
+            tree
+                .topLevelDecl()
+                .single()
+                .componentDecl()!!
+                .memberDecl()
+                .single()
+                .fieldDecl()!!
         val or = assertIs<BazaarParser.OrExprContext>(field.expr()!!)
         assertIs<BazaarParser.AndExprContext>(or.expr(0)!!)
         assertIs<BazaarParser.IdentExprContext>(or.expr(1)!!)
@@ -583,30 +850,42 @@ class ParserTest {
 
     @Test
     fun comparisonOps() {
-        val tree = parse(
-            """
-            component Foo {
-                a bool = x < y
-                b bool = x >= y
-            }
-            """.trimIndent()
-        )
-        val members = tree.topLevelDecl().single().componentDecl()!!.memberDecl()
+        val tree =
+            parse(
+                """
+                component Foo {
+                    a bool = x < y
+                    b bool = x >= y
+                }
+                """.trimIndent(),
+            )
+        val members =
+            tree
+                .topLevelDecl()
+                .single()
+                .componentDecl()!!
+                .memberDecl()
         assertIs<BazaarParser.CompareExprContext>(members[0].fieldDecl()!!.expr()!!)
         assertIs<BazaarParser.CompareExprContext>(members[1].fieldDecl()!!.expr()!!)
     }
 
     @Test
     fun equalityOps() {
-        val tree = parse(
-            """
-            component Foo {
-                a bool = x == y
-                b bool = x != y
-            }
-            """.trimIndent()
-        )
-        val members = tree.topLevelDecl().single().componentDecl()!!.memberDecl()
+        val tree =
+            parse(
+                """
+                component Foo {
+                    a bool = x == y
+                    b bool = x != y
+                }
+                """.trimIndent(),
+            )
+        val members =
+            tree
+                .topLevelDecl()
+                .single()
+                .componentDecl()!!
+                .memberDecl()
         assertIs<BazaarParser.EqualExprContext>(members[0].fieldDecl()!!.expr()!!)
         assertIs<BazaarParser.EqualExprContext>(members[1].fieldDecl()!!.expr()!!)
     }
@@ -617,7 +896,14 @@ class ParserTest {
         // Actually: left-to-right at same precedence. + and - are same level:
         // (a + b) - (c * d / e % f)... no, it's ((a + b) - ((((c * d) / e) % f)))
         val tree = parse("component Foo { x int = a + b - c * d / e % f }")
-        val field = tree.topLevelDecl().single().componentDecl()!!.memberDecl().single().fieldDecl()!!
+        val field =
+            tree
+                .topLevelDecl()
+                .single()
+                .componentDecl()!!
+                .memberDecl()
+                .single()
+                .fieldDecl()!!
         // Outermost is addExpr (for the -)
         val sub = assertIs<BazaarParser.AddExprContext>(field.expr()!!)
         // Left of - is addExpr (for the +)
@@ -629,7 +915,14 @@ class ParserTest {
     @Test
     fun unaryNegation() {
         val tree = parse("component Foo { x int = -x }")
-        val field = tree.topLevelDecl().single().componentDecl()!!.memberDecl().single().fieldDecl()!!
+        val field =
+            tree
+                .topLevelDecl()
+                .single()
+                .componentDecl()!!
+                .memberDecl()
+                .single()
+                .fieldDecl()!!
         val unary = assertIs<BazaarParser.UnaryExprContext>(field.expr()!!)
         assertEquals("-", unary.MINUS()!!.text)
     }
@@ -637,7 +930,14 @@ class ParserTest {
     @Test
     fun unaryNot() {
         val tree = parse("component Foo { x bool = !x }")
-        val field = tree.topLevelDecl().single().componentDecl()!!.memberDecl().single().fieldDecl()!!
+        val field =
+            tree
+                .topLevelDecl()
+                .single()
+                .componentDecl()!!
+                .memberDecl()
+                .single()
+                .fieldDecl()!!
         val unary = assertIs<BazaarParser.UnaryExprContext>(field.expr()!!)
         assertEquals("!", unary.BANG()!!.text)
     }
@@ -645,7 +945,14 @@ class ParserTest {
     @Test
     fun postfixBeforeBinary() {
         val tree = parse("component Foo { x int = a.b + c }")
-        val field = tree.topLevelDecl().single().componentDecl()!!.memberDecl().single().fieldDecl()!!
+        val field =
+            tree
+                .topLevelDecl()
+                .single()
+                .componentDecl()!!
+                .memberDecl()
+                .single()
+                .fieldDecl()!!
         val add = assertIs<BazaarParser.AddExprContext>(field.expr()!!)
         assertIs<BazaarParser.MemberExprContext>(add.expr(0)!!)
         assertIs<BazaarParser.IdentExprContext>(add.expr(1)!!)
@@ -654,7 +961,14 @@ class ParserTest {
     @Test
     fun coalesceWithOptionalChain() {
         val tree = parse("component Foo { x int = a?.b ?? c }")
-        val field = tree.topLevelDecl().single().componentDecl()!!.memberDecl().single().fieldDecl()!!
+        val field =
+            tree
+                .topLevelDecl()
+                .single()
+                .componentDecl()!!
+                .memberDecl()
+                .single()
+                .fieldDecl()!!
         val coalesce = assertIs<BazaarParser.CoalesceExprContext>(field.expr()!!)
         assertIs<BazaarParser.OptionalMemberExprContext>(coalesce.expr(0)!!)
         assertIs<BazaarParser.IdentExprContext>(coalesce.expr(1)!!)
@@ -663,7 +977,14 @@ class ParserTest {
     @Test
     fun parenOverridesPrecedence() {
         val tree = parse("component Foo { x int = (a + b) * c }")
-        val field = tree.topLevelDecl().single().componentDecl()!!.memberDecl().single().fieldDecl()!!
+        val field =
+            tree
+                .topLevelDecl()
+                .single()
+                .componentDecl()!!
+                .memberDecl()
+                .single()
+                .fieldDecl()!!
         val mul = assertIs<BazaarParser.MulExprContext>(field.expr()!!)
         assertIs<BazaarParser.ParenExprContext>(mul.expr(0)!!)
         assertIs<BazaarParser.IdentExprContext>(mul.expr(1)!!)
@@ -671,38 +992,39 @@ class ParserTest {
 
     @Test
     fun fullFile() {
-        val tree = parse(
-            """
-            package myapp
+        val tree =
+            parse(
+                """
+                package myapp
 
-            import ui.core
-            import utils as U
+                import ui.core
+                import utils as U
 
-            enum Direction { up, down, left, right }
+                enum Direction { up, down, left, right }
 
-            component Button {
-                label string
-                enabled bool = true
-            }
+                component Button {
+                    label string
+                    enabled bool = true
+                }
 
-            data Config {
-                debug bool
-            }
+                data Config {
+                    debug bool
+                }
 
-            modifier Padding {
-                top double
-                constructor(all double) = Padding(all)
-            }
+                modifier Padding {
+                    top double
+                    constructor(all double) = Padding(all)
+                }
 
-            func Add(x int, y int) -> int
+                func Add(x int, y int) -> int
 
-            template Main(title string) {
-            }
+                template Main(title string) {
+                }
 
-            preview Demo {
-            }
-            """.trimIndent()
-        )
+                preview Demo {
+                }
+                """.trimIndent(),
+            )
         assertEquals(7, tree.topLevelDecl().size)
     }
 
@@ -783,7 +1105,14 @@ class ParserTest {
     fun lambdaTrailingCommaInParams() {
         val expr = parseExpr("{ (a, b,) in a }")
         val lambda = assertIs<BazaarParser.LambdaExprContext>(expr)
-        assertEquals(2, lambda.lambda()!!.lambdaParams()!!.lambdaParam().size)
+        assertEquals(
+            2,
+            lambda
+                .lambda()!!
+                .lambdaParams()!!
+                .lambdaParam()
+                .size,
+        )
     }
 
     @Test
@@ -1203,95 +1532,101 @@ class ParserTest {
 
     @Test
     fun assignsBzr() {
-        val stmts = parseStmts(
-            """
-            x = 1
-            x += 1
-            x -= 1
-            x *= 2
-            x /= 2
-            x %= 3
-            name = "hello"
-            flag = true
-            value = null
-            result = a + b * c
-            """.trimIndent()
-        )
+        val stmts =
+            parseStmts(
+                """
+                x = 1
+                x += 1
+                x -= 1
+                x *= 2
+                x /= 2
+                x %= 3
+                name = "hello"
+                flag = true
+                value = null
+                result = a + b * c
+                """.trimIndent(),
+            )
         assertEquals(10, stmts.size)
     }
 
     @Test
     fun callsBzr() {
-        val stmts = parseStmts(
-            """
-            Print("hello")
-            Add(1, 2)
-            Create(name = "test", value = 42)
-            a.b.c()
-            DoSomething()
-            """.trimIndent()
-        )
+        val stmts =
+            parseStmts(
+                """
+                Print("hello")
+                Add(1, 2)
+                Create(name = "test", value = 42)
+                a.b.c()
+                DoSomething()
+                """.trimIndent(),
+            )
         assertEquals(5, stmts.size)
         stmts.forEach { assertIs<BazaarParser.ExprStmtContext>(it) }
     }
 
     @Test
     fun annotationsBzr() {
-        val stmts = parseStmts(
-            """
-            @State var count = 0
-            @Binding var name = "hello"
-            @State @Observable var items = [1, 2, 3]
-            @Modifier(Padding(all = 16)) Button()
-            @State Column { }
-            """.trimIndent()
-        )
+        val stmts =
+            parseStmts(
+                """
+                @State var count = 0
+                @Binding var name = "hello"
+                @State @Observable var items = [1, 2, 3]
+                @Modifier(Padding(all = 16)) Button()
+                @State Column { }
+                """.trimIndent(),
+            )
         assertEquals(5, stmts.size)
         stmts.forEach { assertIs<BazaarParser.AnnotatedStmtContext>(it) }
     }
 
     @Test
     fun builtinExpressions() {
-        val stmts = parseStmts(
-            """
-            var a = Len("hello")
-            var b = ToString(42)
-            var c = Append([1, 2], 3)
-            var d = Keys({a: 1, b: 2})
-            """.trimIndent()
-        )
+        val stmts =
+            parseStmts(
+                """
+                var a = Len("hello")
+                var b = ToString(42)
+                var c = Append([1, 2], 3)
+                var d = Keys({a: 1, b: 2})
+                """.trimIndent(),
+            )
         assertEquals(4, stmts.size)
         stmts.forEach { assertIs<BazaarParser.VarStmtContext>(it) }
     }
 
     @Test
     fun edgeCaseKeywordVars() {
-        val stmts = parseStmts(
-            """
-            var component = "foo"
-            var data = "bar"
-            var enum = "baz"
-            var modifier = "qux"
-            var template = "quux"
-            var preview = "corge"
-            """.trimIndent()
-        )
+        val stmts =
+            parseStmts(
+                """
+                var component = "foo"
+                var data = "bar"
+                var enum = "baz"
+                var modifier = "qux"
+                var template = "quux"
+                var preview = "corge"
+                """.trimIndent(),
+            )
         assertEquals(6, stmts.size)
         stmts.forEach { assertIs<BazaarParser.VarStmtContext>(it) }
     }
 
     @Test
     fun mixedStatements() {
-        val stmts = parseStmts(
-            """
-            var x = 1
-            x += 2
-            Print(x)
-            @State var y = x
-            @Modifier(Padding(all = 8)) Column { }
-            return y
-            """.trimIndent()
-        )
+        val stmts =
+            parseStmts(
+                """
+                var x = 1
+                x += 2
+                Print(x)
+                @State var y = x
+                @Modifier(Padding(all = 8)) Column { }
+                return y
+                """.trimIndent(),
+            )
         assertEquals(6, stmts.size)
         assertIs<BazaarParser.VarStmtContext>(stmts[0])
         assertIs<BazaarParser.AssignStmtContext>(stmts[1])
@@ -1316,7 +1651,12 @@ class ParserTest {
     fun ifWithExprCondition() {
         val stmt = parseStmt("if foo == bar {}")
         val ifS = assertIs<BazaarParser.IfStatementContext>(stmt)
-        val fragment = ifS.ifStmt()!!.ifFragmentList()!!.ifFragment().single()
+        val fragment =
+            ifS
+                .ifStmt()!!
+                .ifFragmentList()!!
+                .ifFragment()
+                .single()
         val exprFrag = assertIs<BazaarParser.IfExprFragmentContext>(fragment)
         assertIs<BazaarParser.CondEqualExprContext>(exprFrag.condExpr()!!)
     }
@@ -1325,7 +1665,12 @@ class ParserTest {
     fun ifComparisonWithCall() {
         val stmt = parseStmt("if 10 > len(something) {}")
         val ifS = assertIs<BazaarParser.IfStatementContext>(stmt)
-        val fragment = ifS.ifStmt()!!.ifFragmentList()!!.ifFragment().single()
+        val fragment =
+            ifS
+                .ifStmt()!!
+                .ifFragmentList()!!
+                .ifFragment()
+                .single()
         val exprFrag = assertIs<BazaarParser.IfExprFragmentContext>(fragment)
         assertIs<BazaarParser.CondCompareExprContext>(exprFrag.condExpr()!!)
     }
@@ -1415,9 +1760,14 @@ class ParserTest {
     fun ifVarDestructuringElseIf() {
         val stmt = parseStmt("if var (x, y) = coords {} else if var z = fallback {} else {}")
         val ifS = assertIs<BazaarParser.IfStatementContext>(stmt)
-        val outerFrag = assertIs<BazaarParser.IfVarFragmentContext>(
-            ifS.ifStmt()!!.ifFragmentList()!!.ifFragment().single()
-        )
+        val outerFrag =
+            assertIs<BazaarParser.IfVarFragmentContext>(
+                ifS
+                    .ifStmt()!!
+                    .ifFragmentList()!!
+                    .ifFragment()
+                    .single(),
+            )
         assertNotNull(outerFrag.destructuring())
         val inner = ifS.ifStmt()!!.ifStmt()!!
         assertIs<BazaarParser.IfVarFragmentContext>(inner.ifFragmentList()!!.ifFragment().single())
@@ -1459,7 +1809,12 @@ class ParserTest {
     fun ifAndCondition() {
         val stmt = parseStmt("if foo && bar {}")
         val ifS = assertIs<BazaarParser.IfStatementContext>(stmt)
-        val fragment = ifS.ifStmt()!!.ifFragmentList()!!.ifFragment().single()
+        val fragment =
+            ifS
+                .ifStmt()!!
+                .ifFragmentList()!!
+                .ifFragment()
+                .single()
         val exprFrag = assertIs<BazaarParser.IfExprFragmentContext>(fragment)
         assertIs<BazaarParser.CondAndExprContext>(exprFrag.condExpr()!!)
     }
@@ -1468,7 +1823,12 @@ class ParserTest {
     fun ifComplexOrAnd() {
         val stmt = parseStmt("if (foo && bar) || (baz == true) {}")
         val ifS = assertIs<BazaarParser.IfStatementContext>(stmt)
-        val fragment = ifS.ifStmt()!!.ifFragmentList()!!.ifFragment().single()
+        val fragment =
+            ifS
+                .ifStmt()!!
+                .ifFragmentList()!!
+                .ifFragment()
+                .single()
         val exprFrag = assertIs<BazaarParser.IfExprFragmentContext>(fragment)
         assertIs<BazaarParser.CondOrExprContext>(exprFrag.condExpr()!!)
     }
@@ -1477,7 +1837,12 @@ class ParserTest {
     fun ifOptionalChainCondition() {
         val stmt = parseStmt("if a?.b != null {}")
         val ifS = assertIs<BazaarParser.IfStatementContext>(stmt)
-        val fragment = ifS.ifStmt()!!.ifFragmentList()!!.ifFragment().single()
+        val fragment =
+            ifS
+                .ifStmt()!!
+                .ifFragmentList()!!
+                .ifFragment()
+                .single()
         val exprFrag = assertIs<BazaarParser.IfExprFragmentContext>(fragment)
         assertIs<BazaarParser.CondEqualExprContext>(exprFrag.condExpr()!!)
     }
@@ -1486,7 +1851,12 @@ class ParserTest {
     fun ifCoalesceCondition() {
         val stmt = parseStmt("if a ?? b {}")
         val ifS = assertIs<BazaarParser.IfStatementContext>(stmt)
-        val fragment = ifS.ifStmt()!!.ifFragmentList()!!.ifFragment().single()
+        val fragment =
+            ifS
+                .ifStmt()!!
+                .ifFragmentList()!!
+                .ifFragment()
+                .single()
         val exprFrag = assertIs<BazaarParser.IfExprFragmentContext>(fragment)
         assertIs<BazaarParser.CondCoalesceExprContext>(exprFrag.condExpr()!!)
     }
@@ -1593,16 +1963,19 @@ class ParserTest {
 
     @Test
     fun switchBasic() {
-        val stmt = parseStmt("""
-            switch expression {
-            case expr1:
-            case value1:
-                2 + 2
-                foo()
-            default:
-                1 + 1
-            }
-        """.trimIndent())
+        val stmt =
+            parseStmt(
+                """
+                switch expression {
+                case expr1:
+                case value1:
+                    2 + 2
+                    foo()
+                default:
+                    1 + 1
+                }
+                """.trimIndent(),
+            )
         val switchS = assertIs<BazaarParser.SwitchStatementContext>(stmt)
         val sw = switchS.switchStmt()!!
         assertEquals(2, sw.switchCase().size)
@@ -1673,15 +2046,18 @@ class ParserTest {
 
     @Test
     fun switchCaseWithControlFlow() {
-        val stmt = parseStmt("""
-            switch x {
-            case 1:
-                if y { return 0 }
-                for i in items { Print(i) }
-            default:
-                var z = 42
-            }
-        """.trimIndent())
+        val stmt =
+            parseStmt(
+                """
+                switch x {
+                case 1:
+                    if y { return 0 }
+                    for i in items { Print(i) }
+                default:
+                    var z = 42
+                }
+                """.trimIndent(),
+            )
         val switchS = assertIs<BazaarParser.SwitchStatementContext>(stmt)
         val sw = switchS.switchStmt()!!
         assertEquals(1, sw.switchCase().size)
@@ -1698,20 +2074,44 @@ class ParserTest {
     fun ifDoesNotConsumeBlockAsLambda() {
         val stmt = parseStmt("if x { y }")
         val ifS = assertIs<BazaarParser.IfStatementContext>(stmt)
-        val fragment = ifS.ifStmt()!!.ifFragmentList()!!.ifFragment().single()
+        val fragment =
+            ifS
+                .ifStmt()!!
+                .ifFragmentList()!!
+                .ifFragment()
+                .single()
         val exprFrag = assertIs<BazaarParser.IfExprFragmentContext>(fragment)
         assertIs<BazaarParser.CondIdentExprContext>(exprFrag.condExpr()!!)
-        assertEquals(1, ifS.ifStmt()!!.block(0)!!.stmt().size)
+        assertEquals(
+            1,
+            ifS
+                .ifStmt()!!
+                .block(0)!!
+                .stmt()
+                .size,
+        )
     }
 
     @Test
     fun ifCondWithCallDoesNotConsumeBlock() {
         val stmt = parseStmt("if foo() { bar }")
         val ifS = assertIs<BazaarParser.IfStatementContext>(stmt)
-        val fragment = ifS.ifStmt()!!.ifFragmentList()!!.ifFragment().single()
+        val fragment =
+            ifS
+                .ifStmt()!!
+                .ifFragmentList()!!
+                .ifFragment()
+                .single()
         val exprFrag = assertIs<BazaarParser.IfExprFragmentContext>(fragment)
         assertIs<BazaarParser.CondCallExprContext>(exprFrag.condExpr()!!)
-        assertEquals(1, ifS.ifStmt()!!.block(0)!!.stmt().size)
+        assertEquals(
+            1,
+            ifS
+                .ifStmt()!!
+                .block(0)!!
+                .stmt()
+                .size,
+        )
     }
 
     @Test
@@ -1759,57 +2159,69 @@ class ParserTest {
 
     @Test
     fun ifsBzr() {
-        val stmts = parseStmts("""
-            if foo != bar {}
-            if foo == bar {}
-            if foo == bar && foo != true {}
-            if (foo == bar || (foo != true)) {}
-            if true || (!(false) && true) {}
-            if (foo && bar) || (baz == true) {}
-            if var baz, baz == bar {}
-            if var baz = baz, foo == bar == baz {}
-            if var (bar, baz) = foo {}
-            if 10 > len(something) {}
-        """.trimIndent())
+        val stmts =
+            parseStmts(
+                """
+                if foo != bar {}
+                if foo == bar {}
+                if foo == bar && foo != true {}
+                if (foo == bar || (foo != true)) {}
+                if true || (!(false) && true) {}
+                if (foo && bar) || (baz == true) {}
+                if var baz, baz == bar {}
+                if var baz = baz, foo == bar == baz {}
+                if var (bar, baz) = foo {}
+                if 10 > len(something) {}
+                """.trimIndent(),
+            )
         assertEquals(10, stmts.size)
         stmts.forEach { assertIs<BazaarParser.IfStatementContext>(it) }
     }
 
     @Test
     fun ifsWithElse() {
-        val stmts = parseStmts("""
-            if true {} else {}
-            if foo == bar {} else {}
-            if foo == 1 {} else if foo == 2 {}
-            if true {} else if false {} else {}
-            if foo == 1 {} else if foo == 2 {} else if foo == 3 {} else {}
-            if foo && bar {} else if (foo || bar) && baz {} else {}
-            if var x = getValue(), x > 0 {} else if var y = getOther(), y < 0 {} else {}
-        """.trimIndent())
+        val stmts =
+            parseStmts(
+                """
+                if true {} else {}
+                if foo == bar {} else {}
+                if foo == 1 {} else if foo == 2 {}
+                if true {} else if false {} else {}
+                if foo == 1 {} else if foo == 2 {} else if foo == 3 {} else {}
+                if foo && bar {} else if (foo || bar) && baz {} else {}
+                if var x = getValue(), x > 0 {} else if var y = getOther(), y < 0 {} else {}
+                """.trimIndent(),
+            )
         assertEquals(7, stmts.size)
         stmts.forEach { assertIs<BazaarParser.IfStatementContext>(it) }
     }
 
     @Test
     fun forsBzr() {
-        val stmts = parseStmts("""
-            for value in list {}
-            for entry in map {}
-            for entry in enumerate(map) {}
-            for idx in range(0, 10) {}
-            for (idx, value) in enumerate(list) {}
-            for (key, value) in enumerate(map) {}
-        """.trimIndent())
+        val stmts =
+            parseStmts(
+                """
+                for value in list {}
+                for entry in map {}
+                for entry in enumerate(map) {}
+                for idx in range(0, 10) {}
+                for (idx, value) in enumerate(list) {}
+                for (key, value) in enumerate(map) {}
+                """.trimIndent(),
+            )
         assertEquals(6, stmts.size)
         stmts.forEach { assertIs<BazaarParser.ForStatementContext>(it) }
     }
 
     @Test
     fun forConditionBzr() {
-        val stmts = parseStmts("""
-            var idx = 0
-            for idx < len(list) { idx += 1 }
-        """.trimIndent())
+        val stmts =
+            parseStmts(
+                """
+                var idx = 0
+                for idx < len(list) { idx += 1 }
+                """.trimIndent(),
+            )
         assertEquals(2, stmts.size)
         assertIs<BazaarParser.VarStmtContext>(stmts[0])
         assertIs<BazaarParser.ForStatementContext>(stmts[1])
@@ -1817,28 +2229,34 @@ class ParserTest {
 
     @Test
     fun switchesBzr() {
-        val stmt = parseStmt("""
-            switch expression {
-            case expr1:
-            case value1:
-                2 + 2
-                foo()
-            default:
-                1 + 1
-            }
-        """.trimIndent())
+        val stmt =
+            parseStmt(
+                """
+                switch expression {
+                case expr1:
+                case value1:
+                    2 + 2
+                    foo()
+                default:
+                    1 + 1
+                }
+                """.trimIndent(),
+            )
         assertIs<BazaarParser.SwitchStatementContext>(stmt)
     }
 
     @Test
     fun mixedControlFlow() {
-        val stmts = parseStmts("""
-            var x = 1
-            if x == 1 { x = 2 }
-            for i in range(0, 10) { Print(i) }
-            switch x { case 1: foo() default: bar() }
-            return x
-        """.trimIndent())
+        val stmts =
+            parseStmts(
+                """
+                var x = 1
+                if x == 1 { x = 2 }
+                for i in range(0, 10) { Print(i) }
+                switch x { case 1: foo() default: bar() }
+                return x
+                """.trimIndent(),
+            )
         assertEquals(5, stmts.size)
         assertIs<BazaarParser.VarStmtContext>(stmts[0])
         assertIs<BazaarParser.IfStatementContext>(stmts[1])
@@ -1849,18 +2267,21 @@ class ParserTest {
 
     @Test
     fun nestedControlFlow() {
-        val stmt = parseStmt("""
-            if true {
-                for i in items {
-                    if i == 0 {
-                        switch i {
-                        case 0: Print(i)
-                        default: bar()
+        val stmt =
+            parseStmt(
+                """
+                if true {
+                    for i in items {
+                        if i == 0 {
+                            switch i {
+                            case 0: Print(i)
+                            default: bar()
+                            }
                         }
                     }
                 }
-            }
-        """.trimIndent())
+                """.trimIndent(),
+            )
         assertIs<BazaarParser.IfStatementContext>(stmt)
     }
 

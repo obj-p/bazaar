@@ -5,7 +5,6 @@ import org.antlr.v4.kotlinruntime.RecognitionException
 import org.antlr.v4.kotlinruntime.Recognizer
 
 internal class BazaarErrorListener : BaseErrorListener() {
-
     private val _diagnostics = mutableListOf<Diagnostic>()
     val diagnostics: List<Diagnostic> get() = _diagnostics
 
@@ -23,7 +22,7 @@ internal class BazaarErrorListener : BaseErrorListener() {
                 line = line,
                 column = charPositionInLine + 1,
                 message = msg,
-            )
+            ),
         )
     }
 }

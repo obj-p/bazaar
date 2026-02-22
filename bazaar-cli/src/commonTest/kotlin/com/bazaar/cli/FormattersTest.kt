@@ -10,7 +10,6 @@ import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
 class FormattersTest {
-
     private val emptyAst = BazaarFile()
 
     // --- formatTextResult ---
@@ -119,11 +118,12 @@ class FormattersTest {
 
     @Test
     fun jsonMultipleDiagnostics() {
-        val diags = listOf(
-            Diagnostic(Severity.ERROR, 1, 1, "first"),
-            Diagnostic(Severity.WARNING, 2, 5, "second"),
-            Diagnostic(Severity.ERROR, 3, 10, "third"),
-        )
+        val diags =
+            listOf(
+                Diagnostic(Severity.ERROR, 1, 1, "first"),
+                Diagnostic(Severity.WARNING, 2, 5, "second"),
+                Diagnostic(Severity.ERROR, 3, 10, "third"),
+            )
         val result = ParseResult(null, diags)
         val json = formatJsonResult("file.bzr", result)
         assertContains(json, "\"message\": \"first\"")

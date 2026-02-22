@@ -4,7 +4,6 @@ import com.bazaar.parser.ast.BazaarFile
 import com.bazaar.sema.ir.IrFile
 
 object BazaarAnalyzer {
-
     fun analyze(file: BazaarFile): AnalysisResult {
         // Pass 1: collect declarations into symbol table
         val collection = DeclarationCollector.collect(file)

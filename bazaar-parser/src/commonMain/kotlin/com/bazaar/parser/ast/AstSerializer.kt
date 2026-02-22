@@ -1,25 +1,35 @@
 package com.bazaar.parser.ast
 
 object AstSerializer {
-
     fun serialize(file: BazaarFile): String {
         val sb = StringBuilder()
         writeFile(sb, file, 0)
         return sb.toString()
     }
 
-    private fun indent(sb: StringBuilder, level: Int) {
+    private fun indent(
+        sb: StringBuilder,
+        level: Int,
+    ) {
         repeat(level) { sb.append("  ") }
     }
 
-    private fun line(sb: StringBuilder, level: Int, text: String) {
+    private fun line(
+        sb: StringBuilder,
+        level: Int,
+        text: String,
+    ) {
         indent(sb, level)
         sb.appendLine(text)
     }
 
     // --- Root ---
 
-    private fun writeFile(sb: StringBuilder, file: BazaarFile, level: Int) {
+    private fun writeFile(
+        sb: StringBuilder,
+        file: BazaarFile,
+        level: Int,
+    ) {
         line(sb, level, "BazaarFile")
         file.packageDecl?.let {
             line(sb, level + 1, "packageDecl:")
@@ -35,12 +45,20 @@ object AstSerializer {
         }
     }
 
-    private fun writePackageDecl(sb: StringBuilder, decl: PackageDecl, level: Int) {
+    private fun writePackageDecl(
+        sb: StringBuilder,
+        decl: PackageDecl,
+        level: Int,
+    ) {
         line(sb, level, "PackageDecl")
         writeStringList(sb, "segments", decl.segments, level + 1)
     }
 
-    private fun writeImportDecl(sb: StringBuilder, decl: ImportDecl, level: Int) {
+    private fun writeImportDecl(
+        sb: StringBuilder,
+        decl: ImportDecl,
+        level: Int,
+    ) {
         line(sb, level, "ImportDecl")
         writeStringList(sb, "segments", decl.segments, level + 1)
         decl.alias?.let { line(sb, level + 1, "alias: \"$it\"") }
@@ -48,7 +66,11 @@ object AstSerializer {
 
     // --- Declarations ---
 
-    private fun writeDecl(sb: StringBuilder, decl: Decl, level: Int) {
+    private fun writeDecl(
+        sb: StringBuilder,
+        decl: Decl,
+        level: Int,
+    ) {
         when (decl) {
             is EnumDecl -> writeEnumDecl(sb, decl, level)
             is ComponentDecl -> writeComponentDecl(sb, decl, level)
@@ -60,31 +82,51 @@ object AstSerializer {
         }
     }
 
-    private fun writeEnumDecl(sb: StringBuilder, decl: EnumDecl, level: Int) {
+    private fun writeEnumDecl(
+        sb: StringBuilder,
+        decl: EnumDecl,
+        level: Int,
+    ) {
         line(sb, level, "EnumDecl")
         line(sb, level + 1, "name: \"${decl.name}\"")
         writeStringList(sb, "values", decl.values, level + 1)
     }
 
-    private fun writeComponentDecl(sb: StringBuilder, decl: ComponentDecl, level: Int) {
+    private fun writeComponentDecl(
+        sb: StringBuilder,
+        decl: ComponentDecl,
+        level: Int,
+    ) {
         line(sb, level, "ComponentDecl")
         line(sb, level + 1, "name: \"${decl.name}\"")
         writeMembers(sb, decl.members, level + 1)
     }
 
-    private fun writeDataDecl(sb: StringBuilder, decl: DataDecl, level: Int) {
+    private fun writeDataDecl(
+        sb: StringBuilder,
+        decl: DataDecl,
+        level: Int,
+    ) {
         line(sb, level, "DataDecl")
         line(sb, level + 1, "name: \"${decl.name}\"")
         writeMembers(sb, decl.members, level + 1)
     }
 
-    private fun writeModifierDecl(sb: StringBuilder, decl: ModifierDecl, level: Int) {
+    private fun writeModifierDecl(
+        sb: StringBuilder,
+        decl: ModifierDecl,
+        level: Int,
+    ) {
         line(sb, level, "ModifierDecl")
         line(sb, level + 1, "name: \"${decl.name}\"")
         writeMembers(sb, decl.members, level + 1)
     }
 
-    private fun writeFunctionDecl(sb: StringBuilder, decl: FunctionDecl, level: Int) {
+    private fun writeFunctionDecl(
+        sb: StringBuilder,
+        decl: FunctionDecl,
+        level: Int,
+    ) {
         line(sb, level, "FunctionDecl")
         line(sb, level + 1, "name: \"${decl.name}\"")
         writeParams(sb, decl.params, level + 1)
@@ -100,7 +142,11 @@ object AstSerializer {
         }
     }
 
-    private fun writeTemplateDecl(sb: StringBuilder, decl: TemplateDecl, level: Int) {
+    private fun writeTemplateDecl(
+        sb: StringBuilder,
+        decl: TemplateDecl,
+        level: Int,
+    ) {
         line(sb, level, "TemplateDecl")
         line(sb, level + 1, "name: \"${decl.name}\"")
         writeParams(sb, decl.params, level + 1)
@@ -110,7 +156,11 @@ object AstSerializer {
         }
     }
 
-    private fun writePreviewDecl(sb: StringBuilder, decl: PreviewDecl, level: Int) {
+    private fun writePreviewDecl(
+        sb: StringBuilder,
+        decl: PreviewDecl,
+        level: Int,
+    ) {
         line(sb, level, "PreviewDecl")
         line(sb, level + 1, "name: \"${decl.name}\"")
         if (decl.body.isNotEmpty()) {
@@ -121,20 +171,32 @@ object AstSerializer {
 
     // --- Members ---
 
-    private fun writeMembers(sb: StringBuilder, members: List<MemberDecl>, level: Int) {
+    private fun writeMembers(
+        sb: StringBuilder,
+        members: List<MemberDecl>,
+        level: Int,
+    ) {
         if (members.isEmpty()) return
         line(sb, level, "members:")
         members.forEach { writeMemberDecl(sb, it, level + 1) }
     }
 
-    private fun writeMemberDecl(sb: StringBuilder, member: MemberDecl, level: Int) {
+    private fun writeMemberDecl(
+        sb: StringBuilder,
+        member: MemberDecl,
+        level: Int,
+    ) {
         when (member) {
             is FieldDecl -> writeFieldDecl(sb, member, level)
             is ConstructorDecl -> writeConstructorDecl(sb, member, level)
         }
     }
 
-    private fun writeFieldDecl(sb: StringBuilder, decl: FieldDecl, level: Int) {
+    private fun writeFieldDecl(
+        sb: StringBuilder,
+        decl: FieldDecl,
+        level: Int,
+    ) {
         line(sb, level, "FieldDecl")
         line(sb, level + 1, "name: \"${decl.name}\"")
         line(sb, level + 1, "type:")
@@ -145,7 +207,11 @@ object AstSerializer {
         }
     }
 
-    private fun writeConstructorDecl(sb: StringBuilder, decl: ConstructorDecl, level: Int) {
+    private fun writeConstructorDecl(
+        sb: StringBuilder,
+        decl: ConstructorDecl,
+        level: Int,
+    ) {
         line(sb, level, "ConstructorDecl")
         writeParams(sb, decl.params, level + 1)
         line(sb, level + 1, "value:")
@@ -154,13 +220,21 @@ object AstSerializer {
 
     // --- Parameters ---
 
-    private fun writeParams(sb: StringBuilder, params: List<ParameterDecl>, level: Int) {
+    private fun writeParams(
+        sb: StringBuilder,
+        params: List<ParameterDecl>,
+        level: Int,
+    ) {
         if (params.isEmpty()) return
         line(sb, level, "params:")
         params.forEach { writeParameterDecl(sb, it, level + 1) }
     }
 
-    private fun writeParameterDecl(sb: StringBuilder, decl: ParameterDecl, level: Int) {
+    private fun writeParameterDecl(
+        sb: StringBuilder,
+        decl: ParameterDecl,
+        level: Int,
+    ) {
         line(sb, level, "ParameterDecl")
         line(sb, level + 1, "name: \"${decl.name}\"")
         line(sb, level + 1, "type:")
@@ -173,7 +247,11 @@ object AstSerializer {
 
     // --- Types ---
 
-    private fun writeTypeDecl(sb: StringBuilder, type: TypeDecl, level: Int) {
+    private fun writeTypeDecl(
+        sb: StringBuilder,
+        type: TypeDecl,
+        level: Int,
+    ) {
         when (type) {
             is ValueType -> {
                 line(sb, level, "ValueType")
@@ -211,7 +289,11 @@ object AstSerializer {
 
     // --- Expressions ---
 
-    private fun writeExpr(sb: StringBuilder, expr: Expr, level: Int) {
+    private fun writeExpr(
+        sb: StringBuilder,
+        expr: Expr,
+        level: Int,
+    ) {
         when (expr) {
             is BinaryExpr -> writeBinaryExpr(sb, expr, level)
             is UnaryExpr -> writeUnaryExpr(sb, expr, level)
@@ -229,7 +311,11 @@ object AstSerializer {
         }
     }
 
-    private fun writeBinaryExpr(sb: StringBuilder, expr: BinaryExpr, level: Int) {
+    private fun writeBinaryExpr(
+        sb: StringBuilder,
+        expr: BinaryExpr,
+        level: Int,
+    ) {
         line(sb, level, "BinaryExpr")
         line(sb, level + 1, "op: ${expr.op.name}")
         line(sb, level + 1, "left:")
@@ -238,19 +324,31 @@ object AstSerializer {
         writeExpr(sb, expr.right, level + 2)
     }
 
-    private fun writeUnaryExpr(sb: StringBuilder, expr: UnaryExpr, level: Int) {
+    private fun writeUnaryExpr(
+        sb: StringBuilder,
+        expr: UnaryExpr,
+        level: Int,
+    ) {
         line(sb, level, "UnaryExpr")
         line(sb, level + 1, "op: ${expr.op.name}")
         line(sb, level + 1, "operand:")
         writeExpr(sb, expr.operand, level + 2)
     }
 
-    private fun writeReferenceExpr(sb: StringBuilder, expr: ReferenceExpr, level: Int) {
+    private fun writeReferenceExpr(
+        sb: StringBuilder,
+        expr: ReferenceExpr,
+        level: Int,
+    ) {
         line(sb, level, "ReferenceExpr")
         line(sb, level + 1, "name: \"${expr.name}\"")
     }
 
-    private fun writeMemberExpr(sb: StringBuilder, expr: MemberExpr, level: Int) {
+    private fun writeMemberExpr(
+        sb: StringBuilder,
+        expr: MemberExpr,
+        level: Int,
+    ) {
         line(sb, level, "MemberExpr")
         line(sb, level + 1, "target:")
         writeExpr(sb, expr.target, level + 2)
@@ -258,7 +356,11 @@ object AstSerializer {
         if (expr.optional) line(sb, level + 1, "optional: true")
     }
 
-    private fun writeIndexExpr(sb: StringBuilder, expr: IndexExpr, level: Int) {
+    private fun writeIndexExpr(
+        sb: StringBuilder,
+        expr: IndexExpr,
+        level: Int,
+    ) {
         line(sb, level, "IndexExpr")
         line(sb, level + 1, "target:")
         writeExpr(sb, expr.target, level + 2)
@@ -267,7 +369,11 @@ object AstSerializer {
         if (expr.optional) line(sb, level + 1, "optional: true")
     }
 
-    private fun writeCallExpr(sb: StringBuilder, expr: CallExpr, level: Int) {
+    private fun writeCallExpr(
+        sb: StringBuilder,
+        expr: CallExpr,
+        level: Int,
+    ) {
         line(sb, level, "CallExpr")
         line(sb, level + 1, "target:")
         writeExpr(sb, expr.target, level + 2)
@@ -282,7 +388,11 @@ object AstSerializer {
         if (expr.optional) line(sb, level + 1, "optional: true")
     }
 
-    private fun writeLambdaExpr(sb: StringBuilder, expr: LambdaExpr, level: Int) {
+    private fun writeLambdaExpr(
+        sb: StringBuilder,
+        expr: LambdaExpr,
+        level: Int,
+    ) {
         line(sb, level, "LambdaExpr")
         if (expr.params.isNotEmpty()) {
             line(sb, level + 1, "params:")
@@ -298,17 +408,29 @@ object AstSerializer {
         }
     }
 
-    private fun writeBoolLiteral(sb: StringBuilder, expr: BoolLiteral, level: Int) {
+    private fun writeBoolLiteral(
+        sb: StringBuilder,
+        expr: BoolLiteral,
+        level: Int,
+    ) {
         line(sb, level, "BoolLiteral")
         line(sb, level + 1, "value: ${expr.value}")
     }
 
-    private fun writeNumberLiteral(sb: StringBuilder, expr: NumberLiteral, level: Int) {
+    private fun writeNumberLiteral(
+        sb: StringBuilder,
+        expr: NumberLiteral,
+        level: Int,
+    ) {
         line(sb, level, "NumberLiteral")
         line(sb, level + 1, "value: \"${expr.value}\"")
     }
 
-    private fun writeStringLiteral(sb: StringBuilder, expr: StringLiteral, level: Int) {
+    private fun writeStringLiteral(
+        sb: StringBuilder,
+        expr: StringLiteral,
+        level: Int,
+    ) {
         line(sb, level, "StringLiteral")
         if (expr.parts.isNotEmpty()) {
             line(sb, level + 1, "parts:")
@@ -316,7 +438,11 @@ object AstSerializer {
         }
     }
 
-    private fun writeArrayLiteral(sb: StringBuilder, expr: ArrayLiteral, level: Int) {
+    private fun writeArrayLiteral(
+        sb: StringBuilder,
+        expr: ArrayLiteral,
+        level: Int,
+    ) {
         line(sb, level, "ArrayLiteral")
         if (expr.elements.isNotEmpty()) {
             line(sb, level + 1, "elements:")
@@ -324,7 +450,11 @@ object AstSerializer {
         }
     }
 
-    private fun writeMapLiteral(sb: StringBuilder, expr: MapLiteral, level: Int) {
+    private fun writeMapLiteral(
+        sb: StringBuilder,
+        expr: MapLiteral,
+        level: Int,
+    ) {
         line(sb, level, "MapLiteral")
         if (expr.entries.isNotEmpty()) {
             line(sb, level + 1, "entries:")
@@ -334,7 +464,11 @@ object AstSerializer {
 
     // --- String parts ---
 
-    private fun writeStringPart(sb: StringBuilder, part: StringPart, level: Int) {
+    private fun writeStringPart(
+        sb: StringBuilder,
+        part: StringPart,
+        level: Int,
+    ) {
         when (part) {
             is TextPart -> {
                 line(sb, level, "TextPart")
@@ -354,14 +488,22 @@ object AstSerializer {
 
     // --- Support types ---
 
-    private fun writeArgument(sb: StringBuilder, arg: Argument, level: Int) {
+    private fun writeArgument(
+        sb: StringBuilder,
+        arg: Argument,
+        level: Int,
+    ) {
         line(sb, level, "Argument")
         arg.name?.let { line(sb, level + 1, "name: \"$it\"") }
         line(sb, level + 1, "value:")
         writeExpr(sb, arg.value, level + 2)
     }
 
-    private fun writeLambdaParam(sb: StringBuilder, param: LambdaParam, level: Int) {
+    private fun writeLambdaParam(
+        sb: StringBuilder,
+        param: LambdaParam,
+        level: Int,
+    ) {
         line(sb, level, "LambdaParam")
         line(sb, level + 1, "name: \"${param.name}\"")
         param.type?.let {
@@ -370,7 +512,11 @@ object AstSerializer {
         }
     }
 
-    private fun writeMapEntry(sb: StringBuilder, entry: MapEntry, level: Int) {
+    private fun writeMapEntry(
+        sb: StringBuilder,
+        entry: MapEntry,
+        level: Int,
+    ) {
         line(sb, level, "MapEntry")
         line(sb, level + 1, "key:")
         writeExpr(sb, entry.key, level + 2)
@@ -378,7 +524,11 @@ object AstSerializer {
         writeExpr(sb, entry.value, level + 2)
     }
 
-    private fun writeAnnotation(sb: StringBuilder, annotation: Annotation, level: Int) {
+    private fun writeAnnotation(
+        sb: StringBuilder,
+        annotation: Annotation,
+        level: Int,
+    ) {
         line(sb, level, "Annotation")
         line(sb, level + 1, "name: \"${annotation.name}\"")
         annotation.args?.let { args ->
@@ -391,7 +541,11 @@ object AstSerializer {
 
     // --- Statements ---
 
-    private fun writeStmt(sb: StringBuilder, stmt: Stmt, level: Int) {
+    private fun writeStmt(
+        sb: StringBuilder,
+        stmt: Stmt,
+        level: Int,
+    ) {
         when (stmt) {
             is VarDeclStmt -> writeVarDeclStmt(sb, stmt, level)
             is AssignStmt -> writeAssignStmt(sb, stmt, level)
@@ -405,7 +559,11 @@ object AstSerializer {
         }
     }
 
-    private fun writeVarDeclStmt(sb: StringBuilder, stmt: VarDeclStmt, level: Int) {
+    private fun writeVarDeclStmt(
+        sb: StringBuilder,
+        stmt: VarDeclStmt,
+        level: Int,
+    ) {
         line(sb, level, "VarDeclStmt")
         writeStringList(sb, "names", stmt.names, level + 1)
         stmt.type?.let {
@@ -420,7 +578,11 @@ object AstSerializer {
         }
     }
 
-    private fun writeAssignStmt(sb: StringBuilder, stmt: AssignStmt, level: Int) {
+    private fun writeAssignStmt(
+        sb: StringBuilder,
+        stmt: AssignStmt,
+        level: Int,
+    ) {
         line(sb, level, "AssignStmt")
         line(sb, level + 1, "target: \"${stmt.target}\"")
         line(sb, level + 1, "op: ${stmt.op.name}")
@@ -428,7 +590,11 @@ object AstSerializer {
         writeExpr(sb, stmt.value, level + 2)
     }
 
-    private fun writeCallStmt(sb: StringBuilder, stmt: CallStmt, level: Int) {
+    private fun writeCallStmt(
+        sb: StringBuilder,
+        stmt: CallStmt,
+        level: Int,
+    ) {
         line(sb, level, "CallStmt")
         if (stmt.annotations.isNotEmpty()) {
             line(sb, level + 1, "annotations:")
@@ -438,7 +604,11 @@ object AstSerializer {
         writeCallExpr(sb, stmt.expr, level + 2)
     }
 
-    private fun writeReturnStmt(sb: StringBuilder, stmt: ReturnStmt, level: Int) {
+    private fun writeReturnStmt(
+        sb: StringBuilder,
+        stmt: ReturnStmt,
+        level: Int,
+    ) {
         line(sb, level, "ReturnStmt")
         stmt.value?.let {
             line(sb, level + 1, "value:")
@@ -446,7 +616,11 @@ object AstSerializer {
         }
     }
 
-    private fun writeExprStmt(sb: StringBuilder, stmt: ExprStmt, level: Int) {
+    private fun writeExprStmt(
+        sb: StringBuilder,
+        stmt: ExprStmt,
+        level: Int,
+    ) {
         line(sb, level, "ExprStmt")
         line(sb, level + 1, "expr:")
         writeExpr(sb, stmt.expr, level + 2)
@@ -454,7 +628,11 @@ object AstSerializer {
 
     // --- If ---
 
-    private fun writeIfStmt(sb: StringBuilder, stmt: IfStmt, level: Int) {
+    private fun writeIfStmt(
+        sb: StringBuilder,
+        stmt: IfStmt,
+        level: Int,
+    ) {
         line(sb, level, "IfStmt")
         line(sb, level + 1, "fragments:")
         stmt.fragments.forEach { writeIfFragment(sb, it, level + 2) }
@@ -474,7 +652,11 @@ object AstSerializer {
         }
     }
 
-    private fun writeElseIf(sb: StringBuilder, elseIf: ElseIf, level: Int) {
+    private fun writeElseIf(
+        sb: StringBuilder,
+        elseIf: ElseIf,
+        level: Int,
+    ) {
         line(sb, level, "ElseIf")
         line(sb, level + 1, "fragments:")
         elseIf.fragments.forEach { writeIfFragment(sb, it, level + 2) }
@@ -484,7 +666,11 @@ object AstSerializer {
         }
     }
 
-    private fun writeIfFragment(sb: StringBuilder, fragment: IfFragment, level: Int) {
+    private fun writeIfFragment(
+        sb: StringBuilder,
+        fragment: IfFragment,
+        level: Int,
+    ) {
         when (fragment) {
             is IfVarFragment -> {
                 line(sb, level, "IfVarFragment")
@@ -508,7 +694,11 @@ object AstSerializer {
 
     // --- For ---
 
-    private fun writeForInStmt(sb: StringBuilder, stmt: ForInStmt, level: Int) {
+    private fun writeForInStmt(
+        sb: StringBuilder,
+        stmt: ForInStmt,
+        level: Int,
+    ) {
         line(sb, level, "ForInStmt")
         writeStringList(sb, "names", stmt.names, level + 1)
         line(sb, level + 1, "iterable:")
@@ -519,7 +709,11 @@ object AstSerializer {
         }
     }
 
-    private fun writeForCondStmt(sb: StringBuilder, stmt: ForCondStmt, level: Int) {
+    private fun writeForCondStmt(
+        sb: StringBuilder,
+        stmt: ForCondStmt,
+        level: Int,
+    ) {
         line(sb, level, "ForCondStmt")
         line(sb, level + 1, "condition:")
         writeExpr(sb, stmt.condition, level + 2)
@@ -531,7 +725,11 @@ object AstSerializer {
 
     // --- Switch ---
 
-    private fun writeSwitchStmt(sb: StringBuilder, stmt: SwitchStmt, level: Int) {
+    private fun writeSwitchStmt(
+        sb: StringBuilder,
+        stmt: SwitchStmt,
+        level: Int,
+    ) {
         line(sb, level, "SwitchStmt")
         line(sb, level + 1, "expr:")
         writeExpr(sb, stmt.expr, level + 2)
@@ -547,7 +745,11 @@ object AstSerializer {
         }
     }
 
-    private fun writeSwitchCase(sb: StringBuilder, case: SwitchCase, level: Int) {
+    private fun writeSwitchCase(
+        sb: StringBuilder,
+        case: SwitchCase,
+        level: Int,
+    ) {
         line(sb, level, "SwitchCase")
         line(sb, level + 1, "expr:")
         writeExpr(sb, case.expr, level + 2)
@@ -559,7 +761,12 @@ object AstSerializer {
 
     // --- Helpers ---
 
-    private fun writeStringList(sb: StringBuilder, name: String, values: List<String>, level: Int) {
+    private fun writeStringList(
+        sb: StringBuilder,
+        name: String,
+        values: List<String>,
+        level: Int,
+    ) {
         if (values.isEmpty()) return
         val quoted = values.joinToString(", ") { "\"$it\"" }
         line(sb, level, "$name: [$quoted]")

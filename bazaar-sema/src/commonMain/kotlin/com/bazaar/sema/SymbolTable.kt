@@ -4,7 +4,11 @@ import com.bazaar.parser.ast.Decl
 
 enum class SymbolKind { COMPONENT, DATA, MODIFIER, ENUM, FUNCTION, TEMPLATE, PREVIEW }
 
-data class Symbol(val name: String, val kind: SymbolKind, val decl: Decl)
+data class Symbol(
+    val name: String,
+    val kind: SymbolKind,
+    val decl: Decl,
+)
 
 class SymbolTable {
     private val symbols = mutableMapOf<String, Symbol>()
